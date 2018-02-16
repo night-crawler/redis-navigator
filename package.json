@@ -1,0 +1,74 @@
+{
+  "name": "redis-navigator",
+  "version": "0.0.1",
+  "description": "Simple React Component to navigate through Redis kv storage",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "start": "parcel ./app/index.html"
+  },
+  "jest": {
+    "setupFiles": [
+      "./test/jestsetup.js"
+    ],
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/night-crawler/redis-navigator.git"
+  },
+  "keywords": [
+    "redis",
+    "navigator",
+    "react"
+  ],
+  "author": "night-crawler",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/night-crawler/redis-navigator/issues"
+  },
+  "homepage": "https://github.com/night-crawler/redis-navigator#readme",
+  "dependencies": {
+    "es6-error": "^4.1.1",
+    "history": "^4.7.2",
+    "js-cookie": "^2.2.0",
+    "lodash": "^4.17.5",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-helmet": "^5.2.0",
+    "react-redux": "^5.0.6",
+    "react-router-dom": "^4.2.2",
+    "react-router-redux": "^5.0.0-alpha.9",
+    "redux": "^3.7.2",
+    "redux-api-middleware": "^2.2.0",
+    "redux-thunk": "^2.2.0",
+    "semantic-ui-css": "^2.2.14",
+    "semantic-ui-react": "^0.78.2",
+    "styled-components": "^3.1.6"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-eslint": "^8.2.1",
+    "babel-jest": "^22.2.2",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-3": "^6.24.1",
+    "debug": "^3.1.0",
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
+    "enzyme-to-json": "^3.3.1",
+    "eslint": "^4.17.0",
+    "eslint-plugin-jest": "^21.8.0",
+    "eslint-plugin-react": "^7.6.1",
+    "jest": "^22.3.0",
+    "parcel-bundler": "^1.5.1",
+    "react-test-renderer": "^16.2.0",
+    "redux-logger": "^3.0.6",
+    "rewire": "^3.0.2"
+  }
+}
