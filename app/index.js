@@ -19,7 +19,11 @@ const render = () => {
     ReactDOM.render(
         <Provider store={ store }>
             <ConnectedRouter history={ history }>
-                <DefaultLayout redisRpcServer='http://127.0.0.1:8000' />
+                <DefaultLayout
+                    rpcEndpoint='http://127.0.0.1:8000/rpc'
+                    statusUrl='http://127.0.0.1:8000/rpc/status'
+                />
+
             </ConnectedRouter>
         </Provider>,
         MOUNT_NODE

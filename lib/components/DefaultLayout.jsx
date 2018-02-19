@@ -14,24 +14,16 @@ const AppWrapper = styled.div`
 class DefaultLayout extends Component {
     constructor(props) {
         super(props);
-
-        this.urls = {
-            rpcEndpoint: props.redisRpcServer,
-            status: `${props.redisRpcServer}/rpc/status`,
-            rpc: `${props.redisRpcServer}/rpc`,
-        };
         debug.enable('*');
         this.log = debug('DefaultLayout');
         this.log('initialized');
     }
 
     componentDidMount() {
-        this.handleLoadRedisInstances();
+        this.props.actions.handleLoadRedisInstances();
     }
 
-    handleLoadRedisInstances = () => {
-        return this.props.actions.loadRedisInstances(this.urls.status);
-    };
+    // componentWill
 
     render() {
         const { instances } = this.props.instances;
@@ -47,7 +39,7 @@ class DefaultLayout extends Component {
 
                 <Navbar
                     instances={ instances }
-                    handleLoadRedisInstances={ this.handleLoadRedisInstances }
+                    handleLoadRedisInstances={ this.props.actions.handleLoadRedisInstances }
                 />
                 <Grid columns={ 3 } stackable={ true }>
                     <Grid.Column>
