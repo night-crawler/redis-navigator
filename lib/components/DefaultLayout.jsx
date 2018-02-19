@@ -2,6 +2,7 @@ import debug from 'debug';
 import React, { Component } from 'react';
 import { Helmet } from 'react-helmet';
 import { Grid, Segment } from 'semantic-ui-react';
+import { isEmpty } from 'lodash';
 import styled from 'styled-components';
 import Navbar from '../components/Navbar';
 
@@ -17,17 +18,23 @@ class DefaultLayout extends Component {
         debug.enable('*');
         this.log = debug('DefaultLayout');
         this.log('initialized');
+        this.log(props);
     }
 
     componentDidMount() {
         this.props.actions.handleLoadRedisInstances();
     }
 
-    // componentWill
+    componentWillReceiveProps({ instances, activeInstance }) {
+        this.log('wtf?', instances, activeInstance);
+        if (!isEmpty(instances) && !activeInstance) {
+            this.log('loading!', Object.keys(instances)[0]);
+            this.props.actions.handleSetActiveInstance(Object.keys(instances)[0]);
+        }
+    }
 
     render() {
-        const { instances } = this.props.instances;
-
+        const { instances, activeInstance } = this.props;
         return (
             <AppWrapper className='redis-navigator-app'>
                 <Helmet
@@ -39,6 +46,7 @@ class DefaultLayout extends Component {
 
                 <Navbar
                     instances={ instances }
+                    activeInstance={ activeInstance }
                     handleLoadRedisInstances={ this.props.actions.handleLoadRedisInstances }
                 />
                 <Grid columns={ 3 } stackable={ true }>

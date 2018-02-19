@@ -22,7 +22,7 @@ function NavbarRedisItem(props) {
 
 
 export default function Navbar(props) {
-    const { instances = {}, activeInstanceName } = props;
+    const { instances = {}, activeInstance } = props;
 
     return (
         <Menu fixed='top' inverted={ true }>
@@ -47,10 +47,11 @@ export default function Navbar(props) {
                         { !_.isEmpty(instances) && <Dropdown.Divider /> }
                         {
                             Object.entries(instances).map(([, redisOptions], i ) => {
+                                console.log(activeInstance === redisOptions.name, activeInstance, redisOptions.name);
                                 return <NavbarRedisItem
                                     { ...redisOptions }
                                     key={ i }
-                                    selected={ activeInstanceName }
+                                    selected={ activeInstance === redisOptions.name }
                                 />;
                             })
                         }
