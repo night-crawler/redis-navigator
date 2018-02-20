@@ -31,6 +31,8 @@ function NavbarRedisItem(props) {
 
 Navbar.propTypes = {
     onLoadRedisInstances: PropTypes.func.isRequired,
+    onLoadRedisInfo: PropTypes.func.isRequired,
+
     activeInstance: PropTypes.string,
     instances: PropTypes.object.isRequired,
 };
