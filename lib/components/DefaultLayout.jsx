@@ -1,8 +1,9 @@
 import debug from 'debug';
+import { isEmpty } from 'lodash';
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Helmet } from 'react-helmet';
 import { Grid, Segment } from 'semantic-ui-react';
-import { isEmpty } from 'lodash';
 import styled from 'styled-components';
 import Navbar from '../components/Navbar';
 
@@ -13,6 +14,15 @@ const AppWrapper = styled.div`
 
 
 class DefaultLayout extends Component {
+    static propTypes = {
+        actions: PropTypes.shape({
+            handleLoadRedisInstances: PropTypes.func,
+            handleSetActiveInstance: PropTypes.func,
+        }),
+        instances: PropTypes.object,
+        activeInstance: PropTypes.string,
+    };
+
     constructor(props) {
         super(props);
         debug.enable('*');
@@ -26,11 +36,11 @@ class DefaultLayout extends Component {
     }
 
     componentWillReceiveProps({ instances, activeInstance }) {
-        this.log('wtf?', instances, activeInstance);
         if (!isEmpty(instances) && !activeInstance) {
-            this.log('loading!', Object.keys(instances)[0]);
             this.props.actions.handleSetActiveInstance(Object.keys(instances)[0]);
         }
+
+
     }
 
     render() {
@@ -47,7 +57,8 @@ class DefaultLayout extends Component {
                 <Navbar
                     instances={ instances }
                     activeInstance={ activeInstance }
-                    handleLoadRedisInstances={ this.props.actions.handleLoadRedisInstances }
+                    onLoadRedisInstances={ this.props.actions.handleLoadRedisInstances }
+                    onLoadRedisInfo={ () => this.props.actions.handleLoadRedisInfo(activeInstance) }
                 />
                 <Grid columns={ 3 } stackable={ true }>
                     <Grid.Column>
