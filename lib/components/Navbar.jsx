@@ -39,6 +39,11 @@ Navbar.propTypes = {
 export default function Navbar(props) {
     const { instances = {}, activeInstance } = props;
 
+    let ddInstanceText = <span>Instances</span>;
+    if (activeInstance) {
+        ddInstanceText = <span>Instance: <Label size='mini'>{ activeInstance }</Label></span>;
+    }
+
     return (
         <Menu fixed='top'>
             <Container>
@@ -51,7 +56,7 @@ export default function Navbar(props) {
                     Redis Navigator
                 </Menu.Item>
 
-                <Dropdown item={ true } text={ !activeInstance ? 'Instances' : `Instance: [${activeInstance}]` }>
+                <Dropdown item={ true } text={ ddInstanceText }>
                     <Dropdown.Menu>
                         <Dropdown.Item onClick={ props.onLoadRedisInstances }>
                             <Icon name='refresh' />
