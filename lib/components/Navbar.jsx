@@ -76,9 +76,13 @@ export default function Navbar(props) {
                     </Dropdown.Menu>
                 </Dropdown>
 
-                <Menu.Item as='a' onClick={ props.onLoadRedisInfo }>
-                    <Icon name='refresh' />
-                </Menu.Item>
+                {
+                    activeInstance ?
+                        <Menu.Item as='a' onClick={ props.onLoadRedisInfo }>
+                            <Icon name='refresh' />
+                        </Menu.Item>
+                        : ''
+                }
 
             </Container>
         </Menu>
