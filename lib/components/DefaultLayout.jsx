@@ -19,7 +19,7 @@ class DefaultLayout extends Component {
             handleLoadRedisInstances: PropTypes.func,
             handleSetActiveInstance: PropTypes.func,
         }),
-        instances: PropTypes.object,
+        instances: PropTypes.array,
         activeInstance: PropTypes.string,
     };
 
@@ -37,10 +37,8 @@ class DefaultLayout extends Component {
 
     componentWillReceiveProps({ instances, activeInstance }) {
         if (!isEmpty(instances) && !activeInstance) {
-            this.props.actions.handleSetActiveInstance(Object.keys(instances)[0]);
+            this.props.actions.handleSetActiveInstance(instances[0].name);
         }
-
-
     }
 
     render() {

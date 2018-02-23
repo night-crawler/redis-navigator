@@ -1,8 +1,7 @@
 export default {
     redisNavigator: {
-        instances: {},
+        instances: [],
         activeInstance: null,
         instancesData: {},
-        requestResponseByIdMap: {},
     }
 };

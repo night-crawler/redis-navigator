@@ -34,7 +34,7 @@ Navbar.propTypes = {
     onLoadRedisInfo: PropTypes.func.isRequired,
 
     activeInstance: PropTypes.string,
-    instances: PropTypes.object.isRequired,
+    instances: PropTypes.array.isRequired,
 };
 export default function Navbar(props) {
     const { instances = {}, activeInstance } = props;
@@ -65,7 +65,7 @@ export default function Navbar(props) {
 
                         { !_.isEmpty(instances) && <Dropdown.Divider /> }
                         {
-                            Object.entries(instances).map(([, redisOptions], i ) => {
+                            instances.map((redisOptions, i) => {
                                 return <NavbarRedisItem
                                     { ...redisOptions }
                                     key={ i }
