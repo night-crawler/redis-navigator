@@ -17,6 +17,7 @@ module.exports = {
         'eslint:recommended',
         'plugin:react/recommended',
         'plugin:jest/recommended',
+        "plugin:flowtype/recommended",
         // 'plugin:react-native/all'
     ],
     'parser': 'babel-eslint',
@@ -31,6 +32,7 @@ module.exports = {
         'react',
         // 'react-native',
         'jest',
+        "flowtype",
     ],
     'rules': {
         'react/jsx-pascal-case': [2, {'allowAllCaps': true, 'ignore': [] }],
