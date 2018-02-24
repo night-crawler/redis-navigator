@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import React from 'react';
-import { Card, Header, Input, Responsive, Table } from 'semantic-ui-react';
+import { Card, Header, Input, Responsive, Table, Button } from 'semantic-ui-react';
 import styled from 'styled-components';
 
 
@@ -77,6 +77,10 @@ class OptionsCard extends React.Component {
         this.setState({ filter: value });
     };
 
+    handleClearFilter = () => {
+        this.setState({ filter: ''});
+    };
+
     filterOptions = () => {
         const { options } = this.props;
         const { filter } = this.state;
@@ -94,16 +98,21 @@ class OptionsCard extends React.Component {
                 <Card.Content>
                     <Card.Header content={ header } />
                     <Card.Meta content={ description } />
-                    {
-                        error
-                            ? <Card.Description>Error</Card.Description>
-                            : (
-                                <Card.Description>
-                                    <Input fluid={ true } onChange={ this.handleFilterChange } />
-                                    <OptionList options={ this.filterOptions() } />
-                                </Card.Description>
-                            )
-                    }
+
+                    <Card.Description>
+                        <Input
+                            value={ this.state.filter }
+                            icon='search'
+                            iconPosition='left'
+                            fluid={ true }
+                            onChange={ this.handleFilterChange }
+                            label={ <Button basic={ true } icon='remove' onClick={ this.handleClearFilter } /> }
+                            labelPosition='right'
+                            placeholder='Filter options...'
+                        />
+                        <OptionList options={ this.filterOptions() } />
+                    </Card.Description>
+
                 </Card.Content>
             </Card>
         );
