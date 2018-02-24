@@ -6,10 +6,11 @@ import { Helmet } from 'react-helmet';
 import { Grid, Segment } from 'semantic-ui-react';
 import styled from 'styled-components';
 import Navbar from '../components/Navbar';
+import Dashboard from '../components/Dashboard';
 
 
 const AppWrapper = styled.div`
-  margin-top: 3px;
+  margin-top: 4px;
 `;
 
 
@@ -42,7 +43,10 @@ class DefaultLayout extends Component {
     }
 
     render() {
-        const { instances, activeInstance } = this.props;
+        const
+            { instances, activeInstance, instancesData } = this.props,
+            instanceData = instancesData[activeInstance];
+
         return (
             <AppWrapper className='redis-navigator-app'>
                 <Helmet
@@ -60,10 +64,20 @@ class DefaultLayout extends Component {
                 />
                 <Grid columns={ 3 } stackable={ true }>
                     <Grid.Column>
-                        <Segment className='formogen'>
-                            lol
-
+                        <Segment>
+                            1
                         </Segment>
+                    </Grid.Column>
+
+                    <Grid.Column width={ 16 }>
+                        <Segment>
+                            {
+                                instanceData && !isEmpty(instanceData.info)
+                                    ? <Dashboard { ...instanceData.info } />
+                                    : ''
+                            }
+                        </Segment>
+
                     </Grid.Column>
                 </Grid>
             </AppWrapper>

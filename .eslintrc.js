@@ -32,7 +32,7 @@ module.exports = {
         'react',
         // 'react-native',
         'jest',
-        "flowtype",
+        'flowtype',
     ],
     'rules': {
         'react/jsx-pascal-case': [2, {'allowAllCaps': true, 'ignore': [] }],
