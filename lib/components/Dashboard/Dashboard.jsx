@@ -2,6 +2,8 @@ import _ from 'lodash';
 import React from 'react';
 import { Card, Segment } from 'semantic-ui-react';
 import DefinitionsCard from './DefinitionsCard';
+import RedisClientsCard from './RedisClientsCard';
+import PropTypes from 'prop-types';
 
 
 export default class Dashboard extends React.Component {
@@ -24,7 +26,7 @@ export default class Dashboard extends React.Component {
                     <Card.Group itemsPerRow={ 3 } doubling={ true } stackable={ true }>
                         <DefinitionsCard
                             header='Configuration' description='CONFIG GET'
-                            options={ config.result } error={ config.error }
+                            options={ config.result }
                         />
 
                         <DefinitionsCard
@@ -54,6 +56,12 @@ export default class Dashboard extends React.Component {
                             })
                         }
                     </Card.Group>
+                    <Card.Group itemsPerRow={ 1 }>
+                        <RedisClientsCard
+                            clients={ clients.result }
+                        />
+                    </Card.Group>
+
                 </Segment>
 
 

@@ -23,8 +23,8 @@ function OptionRow(props) {
 }
 
 const TableWrapper = styled.div`
-  height: 50vh;  
-  overflow-y: scroll;
+  max-height: 50vh;  
+  overflow-y: auto;
 `;
 
 
