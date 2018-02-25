@@ -20,8 +20,8 @@ function StatsHeader() {
 
 
 StatsRow.propTypes = {
-    optionName: PropTypes.string,
-    optionValue: PropTypes.shape({
+    defName: PropTypes.string,
+    defValue: PropTypes.shape({
         calls: PropTypes.string,
         usec: PropTypes.string,
         usec_per_call: PropTypes.string,
@@ -29,9 +29,9 @@ StatsRow.propTypes = {
     textAlign: PropTypes.string,
 };
 
-function StatsRow({ optionName, optionValue, textAlign }) {
-    const cmdName = optionName.split('cmdstat_').pop();
-    const { calls, usec, usec_per_call } = optionValue;
+function StatsRow({ defName, defValue, textAlign }) {
+    const cmdName = defName.split('cmdstat_').pop();
+    const { calls, usec, usec_per_call } = defValue;
 
     return (
         <Table.Row>
@@ -94,7 +94,7 @@ export default class RedisCommandsStatsCard extends React.Component {
                         />
 
                         <ResponsiveDefinitionTable
-                            options={ this.filterOptions(stats) }
+                            definitions={ this.filterOptions(stats) }
                             headerComponent={ StatsHeader }
                             rowComponent={ StatsRow }
                         />

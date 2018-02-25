@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 
 export default class DefinitionsCard extends React.Component {
     static propTypes = {
-        options: PropTypes.object,
+        definitions: PropTypes.object,
         header: PropTypes.string,
         description: PropTypes.string,
 
@@ -28,11 +28,11 @@ export default class DefinitionsCard extends React.Component {
         this.setState({ filter: '' });
     };
 
-    filterOptions = () => {
-        const { options } = this.props;
+    filterDefinitions = () => {
+        const { definitions } = this.props;
         const { filter } = this.state;
 
-        return _(options)
+        return _(definitions)
             .pickBy((optValue, optKey) =>
                 _.lowerCase(optKey).indexOf(_.lowerCase(filter)) >= 0)
             .value();
@@ -57,7 +57,7 @@ export default class DefinitionsCard extends React.Component {
                             labelPosition='right'
                             placeholder='Filter options...'
                         />
-                        <ResponsiveDefinitionTable options={ this.filterOptions() } />
+                        <ResponsiveDefinitionTable definitions={ this.filterDefinitions() } />
                     </Card.Description>
 
                 </Card.Content>

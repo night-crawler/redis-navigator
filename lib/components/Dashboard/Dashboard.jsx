@@ -31,12 +31,12 @@ export default class Dashboard extends React.Component {
                     <Card.Group itemsPerRow={ 3 } doubling={ true } stackable={ true }>
                         <DefinitionsCard
                             header='Configuration' description='CONFIG GET'
-                            options={ config.result }
+                            definitions={ config.result }
                         />
 
                         <DefinitionsCard
                             header='Miscellaneous' description='db, connection'
-                            options={ {
+                            definitions={ {
                                 dbsize: _.has(dbsize, 'error') ? 'error' : dbsize.result,
                                 name: _.has(name, 'error') ? 'error' : name.result || '-',
                             } }
@@ -59,7 +59,7 @@ export default class Dashboard extends React.Component {
                                     return <DefinitionsCard
                                         key={ i }
                                         header={ _.capitalize(sectionName) }
-                                        options={ sectionOptions }
+                                        definitions={ sectionOptions }
                                     />;
                                 }
                             })

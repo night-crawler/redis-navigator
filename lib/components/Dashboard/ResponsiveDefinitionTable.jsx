@@ -6,19 +6,19 @@ import PropTypes from 'prop-types';
 
 OptionRow.propTypes = {
     textAlign: PropTypes.string,
-    optionName: PropTypes.string,
-    optionValue: PropTypes.any,
+    defName: PropTypes.string,
+    defValue: PropTypes.any,
 };
 function OptionRow(props) {
-    const { textAlign, optionName, optionValue } = props;
+    const { textAlign, defName, defValue } = props;
 
     return (
         <Table.Row>
             <Table.Cell textAlign={ textAlign } width={ 8 }>
-                { optionName }
+                { defName }
             </Table.Cell>
             <Table.Cell width={ 8 }>
-                { optionValue === '' ? '-' : optionValue }
+                { defValue === '' ? '-' : defValue }
             </Table.Cell>
         </Table.Row>
     );
@@ -32,7 +32,7 @@ const TableWrapper = styled.div`
 
 export default class ResponsiveDefinitionTable extends React.Component {
     static propTypes = {
-        options: PropTypes.object,
+        definitions: PropTypes.object,
         rowComponent: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
         headerComponent: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
     };
@@ -41,7 +41,7 @@ export default class ResponsiveDefinitionTable extends React.Component {
     handleOnUpdate = (e, { width }) => this.setState({ width });
 
     render() {
-        const { options, rowComponent = OptionRow, headerComponent } = this.props;
+        const { definitions, rowComponent = OptionRow, headerComponent } = this.props;
         const [ RowComponent, HeaderComponent ] = [ rowComponent, headerComponent ];
         const { width } = this.state;
         const textAlign = width >= Responsive.onlyComputer.minWidth ? 'right' : 'left';
@@ -60,9 +60,9 @@ export default class ResponsiveDefinitionTable extends React.Component {
 
                     <Table.Body>
                         {
-                            Object.entries(options).map(([optionName, optionValue], i) =>
+                            Object.entries(definitions).map(([defName, defValue], i) =>
                                 <RowComponent
-                                    { ...{ optionName, optionValue, textAlign } }
+                                    { ...{ defName, defValue, textAlign } }
                                     key={ i }
                                 />
                             )
