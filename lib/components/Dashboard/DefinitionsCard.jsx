@@ -10,7 +10,8 @@ export default class DefinitionsCard extends React.Component {
         definitions: PropTypes.object,
         header: PropTypes.string,
         description: PropTypes.string,
-
+        rowComponent: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
+        headerComponent: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
     };
 
     constructor(props) {
@@ -57,7 +58,12 @@ export default class DefinitionsCard extends React.Component {
                             labelPosition='right'
                             placeholder='Filter options...'
                         />
-                        <ResponsiveDefinitionTable definitions={ this.filterDefinitions() } />
+
+                        <ResponsiveDefinitionTable
+                            definitions={ this.filterDefinitions() }
+                            rowComponent={ this.props.rowComponent }
+                            headerComponent={ this.props.headerComponent }
+                        />
                     </Card.Description>
 
                 </Card.Content>
