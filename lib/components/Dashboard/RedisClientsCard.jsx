@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import React from 'react';
 import { Card, Table, Popup, Label } from 'semantic-ui-react';
+import PropTypes from 'prop-types';
 
 
 const FIELD_NAMES = [
@@ -81,6 +82,7 @@ function getFlagsRepr(flags, flagMapping) {
                 [...flags].map((flag, i) =>
                     <Popup
                         key={ i }
+                        wide={ true }
                         trigger={ <Label>{ flag }</Label> }
                         content={ flagMapping[flag] }
                     />
@@ -94,6 +96,9 @@ function getFlagsRepr(flags, flagMapping) {
 /*
 '115', '127.0.0.1:4638', '7','', '165141', '0', 'N', '0', '0', '0', '-1', '29', '32739', '0', '1', '6393', 'r', 'client'
 */
+ClientRow.propTypes = {
+    clientArray: PropTypes.arrayOf(PropTypes.string),
+};
 function ClientRow(props) {
     // removes extra empty value at pos 3
     let clientArray = _.compact(props.clientArray);
@@ -110,9 +115,9 @@ function ClientRow(props) {
     return (
         <Table.Row>
             {
-                clientArray.map((clientOption, i) => {
-                    return <Table.Cell key={ i }>{ clientOption }</Table.Cell>;
-                })
+                clientArray.map((clientOption, i) =>
+                    <Table.Cell key={ i }>{ clientOption }</Table.Cell>
+                )
             }
         </Table.Row>
     );
@@ -127,6 +132,7 @@ function ClientHeader() {
                     FIELD_NAMES.map((fieldName, i) =>
                         <Table.HeaderCell key={ i }>
                             <Popup
+                                wide={ true }
                                 trigger={ <span>{ fieldName }</span> }
                                 content={ FIELD_NAME_TO_DESCRIPTION_MAPPING[fieldName] }
                             />
@@ -141,15 +147,19 @@ function ClientHeader() {
 
 
 export default class RedisClientsCard extends React.Component {
+    static propTypes = {
+        clients: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string)),
+    };
+
     render() {
         const { clients } = this.props;
 
         return (
-            <Card>
+            <Card fluid={ true }>
                 <Card.Content>
                     <Card.Header content='Clients' />
 
-                    <Table basic='very' celled={ true } compact={ true } size='small' textAlign='center'>
+                    <Table celled={ true } compact='very' unstackable={ true } size='small' textAlign='center'>
                         <ClientHeader />
                         <Table.Body>
                             {

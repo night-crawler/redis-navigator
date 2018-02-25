@@ -2,9 +2,17 @@ import _ from 'lodash';
 import React from 'react';
 import { Button, Card, Input } from 'semantic-ui-react';
 import ResponsiveDefinitionTable from './ResponsiveDefinitionTable';
+import PropTypes from 'prop-types';
 
 
 export default class DefinitionsCard extends React.Component {
+    static propTypes = {
+        options: PropTypes.object,
+        header: PropTypes.string,
+        description: PropTypes.string,
+
+    };
+
     constructor(props) {
         super(props);
         this.state = {
@@ -31,7 +39,7 @@ export default class DefinitionsCard extends React.Component {
     };
 
     render() {
-        const { header, description, error, options } = this.props;
+        const { header, description } = this.props;
         return (
             <Card>
                 <Card.Content>

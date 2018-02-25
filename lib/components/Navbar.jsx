@@ -56,7 +56,7 @@ export default function Navbar(props) {
                     Redis Navigator
                 </Menu.Item>
 
-                <Dropdown item={ true } text={ ddInstanceText }>
+                <Dropdown item={ true } trigger={ ddInstanceText }>
                     <Dropdown.Menu>
                         <Dropdown.Item onClick={ props.onLoadRedisInstances }>
                             <Icon name='refresh' />

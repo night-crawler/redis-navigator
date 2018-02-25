@@ -1,9 +1,9 @@
 import _ from 'lodash';
 import React from 'react';
-import { Card, Segment } from 'semantic-ui-react';
+import { Card, Segment, Icon, Header } from 'semantic-ui-react';
 import DefinitionsCard from './DefinitionsCard';
 import RedisClientsCard from './RedisClientsCard';
-import PropTypes from 'prop-types';
+import RedisCommandsStatsCard from './RedisCommandStatsCard';
 
 
 export default class Dashboard extends React.Component {
@@ -23,6 +23,11 @@ export default class Dashboard extends React.Component {
         return (
             <Segment.Group>
                 <Segment>
+                    <Header as='h2'>
+                        <Icon name='settings' />
+                        <Header.Content>Configuration</Header.Content>
+                    </Header>
+
                     <Card.Group itemsPerRow={ 3 } doubling={ true } stackable={ true }>
                         <DefinitionsCard
                             header='Configuration' description='CONFIG GET'
@@ -41,6 +46,10 @@ export default class Dashboard extends React.Component {
                 </Segment>
 
                 <Segment>
+                    <Header as='h2'>
+                        <Icon name='info' />
+                        <Header.Content>Information</Header.Content>
+                    </Header>
 
                     <Card.Group itemsPerRow={ 3 } doubling={ true } stackable={ true }>
                         {
@@ -49,18 +58,21 @@ export default class Dashboard extends React.Component {
                                 if (dumbSections.indexOf(sectionName) >= 0) {
                                     return <DefinitionsCard
                                         key={ i }
-                                        header='INFO' description={ _.capitalize(sectionName) }
+                                        header={ _.capitalize(sectionName) }
                                         options={ sectionOptions }
                                     />;
                                 }
                             })
                         }
-                    </Card.Group>
-                    <Card.Group itemsPerRow={ 1 }>
-                        <RedisClientsCard
-                            clients={ clients.result }
+
+                        <RedisCommandsStatsCard
+                            stats={ sections.result.commandstats }
                         />
                     </Card.Group>
+
+                    <RedisClientsCard
+                        clients={ clients.result }
+                    />
 
                 </Segment>
 
