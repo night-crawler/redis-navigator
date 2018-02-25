@@ -4,6 +4,7 @@ import { Card, Segment, Icon, Header } from 'semantic-ui-react';
 import DefinitionsCard from './DefinitionsCard';
 import RedisClientsCard from './RedisClientsCard';
 import RedisCommandsStatsCard from './RedisCommandStatsCard';
+import RedisKeySpaceCard from './RedisKeySpaceCard';
 
 
 export default class Dashboard extends React.Component {
@@ -41,7 +42,6 @@ export default class Dashboard extends React.Component {
                                 name: _.has(name, 'error') ? 'error' : name.result || '-',
                             } }
                         />
-
                     </Card.Group>
                 </Segment>
 
@@ -65,14 +65,15 @@ export default class Dashboard extends React.Component {
                             })
                         }
 
-                        <RedisCommandsStatsCard
-                            stats={ sections.result.commandstats }
-                        />
+                        <RedisCommandsStatsCard stats={ sections.result.commandstats } />
+                        <RedisKeySpaceCard keyspace={ sections.result.keyspace } />
                     </Card.Group>
 
                     <RedisClientsCard
                         clients={ clients.result }
                     />
+
+
 
                 </Segment>
 
