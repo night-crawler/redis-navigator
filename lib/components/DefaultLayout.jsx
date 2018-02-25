@@ -6,7 +6,7 @@ import { Helmet } from 'react-helmet';
 import { Grid, Segment } from 'semantic-ui-react';
 import styled from 'styled-components';
 import Navbar from '../components/Navbar';
-import Dashboard from '../components/Dashboard';
+import Dashboard from './Dashboard/Dashboard';
 
 
 const AppWrapper = styled.div`
@@ -70,13 +70,13 @@ class DefaultLayout extends Component {
                     </Grid.Column>
 
                     <Grid.Column width={ 16 }>
-                        <Segment>
-                            {
-                                instanceData && !isEmpty(instanceData.info)
-                                    ? <Dashboard { ...instanceData.info } />
-                                    : ''
-                            }
-                        </Segment>
+
+                        {
+                            instanceData && !isEmpty(instanceData.info)
+                                ? <Dashboard { ...instanceData.info } />
+                                : ''
+                        }
+
 
                     </Grid.Column>
                 </Grid>
