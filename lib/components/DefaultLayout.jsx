@@ -17,11 +17,14 @@ const AppWrapper = styled.div`
 class DefaultLayout extends Component {
     static propTypes = {
         actions: PropTypes.shape({
-            handleLoadRedisInstances: PropTypes.func,
+            handleLoadInstances: PropTypes.func,
             handleSetActiveInstance: PropTypes.func,
+            handleLoadInspections: PropTypes.func,
+            handleLoadInfo: PropTypes.func,
         }),
         instances: PropTypes.array,
         activeInstance: PropTypes.string,
+        instancesData: PropTypes.object,
     };
 
     constructor(props) {
@@ -33,7 +36,8 @@ class DefaultLayout extends Component {
     }
 
     componentDidMount() {
-        this.props.actions.handleLoadRedisInstances();
+        this.props.actions.handleLoadInstances();
+        this.props.actions.handleLoadInspections();
     }
 
     componentWillReceiveProps({ instances, activeInstance }) {
@@ -59,8 +63,8 @@ class DefaultLayout extends Component {
                 <Navbar
                     instances={ instances }
                     activeInstance={ activeInstance }
-                    onLoadRedisInstances={ this.props.actions.handleLoadRedisInstances }
-                    onLoadRedisInfo={ () => this.props.actions.handleLoadRedisInfo(activeInstance) }
+                    onLoadInstances={ this.props.actions.handleLoadInstances }
+                    onLoadInfo={ () => this.props.actions.handleLoadInfo(activeInstance) }
                 />
                 <Grid columns={ 3 } stackable={ true }>
                     <Grid.Column>

@@ -3,5 +3,6 @@ export default {
         instances: [],
         activeInstance: null,
         instancesData: {},
+        inspections: {},
     }
 };
