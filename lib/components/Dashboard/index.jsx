@@ -1,13 +1,12 @@
 import debug from 'debug';
-import _ from 'lodash';
+import _, { isEmpty } from 'lodash';
+import PropTypes from 'prop-types';
 import React from 'react';
-import { Card, Segment, Icon, Header, Dimmer, Loader } from 'semantic-ui-react';
+import { Card, Dimmer, Header, Icon, Loader, Segment } from 'semantic-ui-react';
 import DefinitionsCard from './DefinitionsCard';
 import RedisClientsCard from './RedisClientsCard';
 import RedisCommandsStatsCard from './RedisCommandStatsCard';
 import RedisKeySpaceCard from './RedisKeySpaceCard';
-import { isEmpty } from 'lodash';
-import PropTypes from 'prop-types';
 
 
 export default class Dashboard extends React.Component {
@@ -32,14 +31,18 @@ export default class Dashboard extends React.Component {
         isEmpty(routeInstanceInfo) && this.props.actions.handleLoadInfo(routeInstanceName);
     }
 
-    componentWillReceiveProps(newProps) {
-        this.log(newProps);
+    componentWillReceiveProps({ routeInstanceInfo, routeInstanceName }) {
+        const { routeInstanceName: oldRouteInstanceName } = this.props;
+
+        if (isEmpty(routeInstanceInfo) && routeInstanceName !== oldRouteInstanceName)
+            this.props.actions.handleLoadInfo(routeInstanceName);
+
     }
 
     render() {
-        const { routeInstanceInfo } = this.props;
+        const { routeInstanceInfo, routeInstanceName } = this.props;
         if (isEmpty(routeInstanceInfo))
-            return <Dimmer active={ true }><Loader size='massive'>Loading</Loader></Dimmer>;
+            return <Dimmer active={ true }><Loader size='massive'>Loading { routeInstanceName } info</Loader></Dimmer>;
 
         const { clients, config, dbsize, name, sections } = routeInstanceInfo;
         const dumbSections = [
@@ -104,7 +107,6 @@ export default class Dashboard extends React.Component {
                     <RedisClientsCard
                         clients={ clients.result }
                     />
-
 
 
                 </Segment>
