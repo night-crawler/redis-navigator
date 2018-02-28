@@ -1,15 +1,46 @@
+import debug from 'debug';
 import _ from 'lodash';
 import React from 'react';
-import { Card, Segment, Icon, Header } from 'semantic-ui-react';
+import { Card, Segment, Icon, Header, Dimmer, Loader } from 'semantic-ui-react';
 import DefinitionsCard from './DefinitionsCard';
 import RedisClientsCard from './RedisClientsCard';
 import RedisCommandsStatsCard from './RedisCommandStatsCard';
 import RedisKeySpaceCard from './RedisKeySpaceCard';
+import { isEmpty } from 'lodash';
+import PropTypes from 'prop-types';
 
 
 export default class Dashboard extends React.Component {
+    static propTypes = {
+        actions: PropTypes.shape({
+            handleLoadInfo: PropTypes.func,
+        }),
+        routeInstanceName: PropTypes.string,
+        routeInstanceInfo: PropTypes.object,
+    };
+
+    constructor(props) {
+        super(props);
+        debug.enable('*');
+        this.log = debug('Dashboard');
+        this.log('initialized');
+        this.log(props);
+    }
+
+    componentDidMount() {
+        this.props.actions.handleLoadInfo(this.props.routeInstanceName);
+    }
+
+    componentWillReceiveProps(newProps) {
+        this.log(newProps);
+    }
+
     render() {
-        const { clients, config, dbsize, name, sections } = this.props;
+        const { routeInstanceInfo } = this.props;
+        if (isEmpty(routeInstanceInfo))
+            return <Dimmer active={ true }><Loader size='massive'>Loading</Loader></Dimmer>;
+
+        const { clients, config, dbsize, name, sections } = routeInstanceInfo;
         const dumbSections = [
             'server',
             'clients',

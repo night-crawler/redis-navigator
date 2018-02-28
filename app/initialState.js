@@ -1,7 +1,7 @@
 export default {
     redisNavigator: {
         instances: [],
-        activeInstance: null,
+        activeInstanceName: '',
         instancesData: {},
         inspections: {},
     }

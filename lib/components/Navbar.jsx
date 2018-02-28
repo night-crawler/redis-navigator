@@ -1,7 +1,8 @@
+import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Container, Dropdown, Image, Menu, Icon, Label } from 'semantic-ui-react';
-import _ from 'lodash';
+import { Link } from 'react-router-dom'
+import { Container, Dropdown, Icon, Image, Label, Menu } from 'semantic-ui-react';
 
 
 NavbarRedisItem.propTypes = {
@@ -13,6 +14,7 @@ NavbarRedisItem.propTypes = {
     name: PropTypes.string,
     display_name: PropTypes.string,
 };
+
 function NavbarRedisItem(props) {
     const circleColor = props.closed === false ? 'green' : 'red';
 
@@ -33,21 +35,20 @@ Navbar.propTypes = {
     onLoadInstances: PropTypes.func.isRequired,
     onLoadInfo: PropTypes.func.isRequired,
 
-    activeInstance: PropTypes.string,
+    activeInstanceName: PropTypes.string,
     instances: PropTypes.array.isRequired,
 };
 export default function Navbar(props) {
-    const { instances = {}, activeInstance } = props;
+    const { instances = {}, activeInstanceName } = props;
 
-    let ddInstanceText = <span>Instances</span>;
-    if (activeInstance) {
-        ddInstanceText = <span>Instance: <Label size='mini'>{ activeInstance }</Label></span>;
-    }
+    const ddInstanceText = activeInstanceName
+        ? <span>Instance: <Label size='mini'>{ activeInstanceName }</Label></span>
+        : <span>Instances</span>;
 
     return (
         <Menu fixed='top'>
             <Container>
-                <Menu.Item as='a' header={ true }>
+                <Menu.Item as={ Link } header={ true } to={ `${activeInstanceName}/dashboard` }>
                     <Image
                         size='mini'
                         src='/logo.png'
@@ -65,23 +66,22 @@ export default function Navbar(props) {
 
                         { !_.isEmpty(instances) && <Dropdown.Divider /> }
                         {
-                            instances.map((redisOptions, i) => {
-                                return <NavbarRedisItem
+                            instances.map((redisOptions, i) =>
+                                <NavbarRedisItem
                                     { ...redisOptions }
                                     key={ i }
-                                    active={ activeInstance === redisOptions.name }
-                                />;
-                            })
+                                    active={ activeInstanceName === redisOptions.name }
+                                />
+                            )
                         }
                     </Dropdown.Menu>
                 </Dropdown>
 
                 {
-                    activeInstance ?
-                        <Menu.Item as='a' onClick={ props.onLoadInfo }>
-                            <Icon name='refresh' />
-                        </Menu.Item>
-                        : ''
+                    activeInstanceName &&
+                    <Menu.Item as='a' onClick={ props.onLoadInfo }>
+                        <Icon name='refresh' />
+                    </Menu.Item>
                 }
 
             </Container>

@@ -3,15 +3,27 @@ import { isEmpty } from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Helmet } from 'react-helmet';
-import { Grid, Segment } from 'semantic-ui-react';
+import { Route, Switch } from 'react-router-dom';
 import styled from 'styled-components';
 import Navbar from '../components/Navbar';
-import Dashboard from './Dashboard/Dashboard';
+// import Dashboard from './Dashboard';
+import Dashboard from '../containers/Dashboard';
+import { Container, Grid, Progress, Dimmer, Segment, Loader } from 'semantic-ui-react';
+import { FullpageDimmer } from './helpers';
 
 
 const AppWrapper = styled.div`
-  margin-top: 4px;
+  margin-top: 45px;
 `;
+
+
+
+const RouteWithActions = ({ component: Component, actions, ...rest }) => (
+    <Route
+        { ...rest }
+        render={ props => <Component { ...props } actions={ actions } /> }
+    />
+);
 
 
 class DefaultLayout extends Component {
@@ -23,7 +35,6 @@ class DefaultLayout extends Component {
             handleLoadInfo: PropTypes.func,
         }),
         instances: PropTypes.array,
-        activeInstance: PropTypes.string,
         instancesData: PropTypes.object,
     };
 
@@ -40,16 +51,16 @@ class DefaultLayout extends Component {
         this.props.actions.handleLoadInspections();
     }
 
-    componentWillReceiveProps({ instances, activeInstance }) {
-        if (!isEmpty(instances) && !activeInstance) {
+    componentWillReceiveProps({ instances, activeInstanceName }) {
+        if (!isEmpty(instances) && !activeInstanceName) {
             this.props.actions.handleSetActiveInstance(instances[0].name);
         }
     }
 
     render() {
-        const
-            { instances, activeInstance, instancesData } = this.props,
-            instanceData = instancesData[activeInstance];
+        const { instances, activeInstanceName } = this.props;
+        if (isEmpty(instances))
+            return <FullpageDimmer message='Loading Redis instances' />;
 
         return (
             <AppWrapper className='redis-navigator-app'>
@@ -62,28 +73,20 @@ class DefaultLayout extends Component {
 
                 <Navbar
                     instances={ instances }
-                    activeInstance={ activeInstance }
+                    activeInstanceName={ activeInstanceName }
                     onLoadInstances={ this.props.actions.handleLoadInstances }
-                    onLoadInfo={ () => this.props.actions.handleLoadInfo(activeInstance) }
+                    onLoadInfo={ () => this.props.actions.handleLoadInfo(activeInstanceName) }
                 />
-                <Grid columns={ 3 } stackable={ true }>
-                    <Grid.Column>
-                        <Segment>
-                            1
-                        </Segment>
-                    </Grid.Column>
 
-                    <Grid.Column width={ 16 }>
+                <Switch>
+                    { /*<Route exact path='/' component={ HomePage } />*/ }
+                    <RouteWithActions
+                        path='/:instanceName/dashboard'
+                        actions={ this.props.actions }
+                        component={ Dashboard } />
+                    { /*<Route path='' component={ NotFoundPage } />*/ }
+                </Switch>
 
-                        {
-                            instanceData && !isEmpty(instanceData.info)
-                                ? <Dashboard { ...instanceData.info } />
-                                : ''
-                        }
-
-
-                    </Grid.Column>
-                </Grid>
             </AppWrapper>
         );
     }
