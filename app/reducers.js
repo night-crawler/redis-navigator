@@ -2,9 +2,9 @@
  * Combine all reducers in this file and export the combined reducers.
  */
 
-import redisNavigator from '../lib/reducer';
 import { LOCATION_CHANGE } from 'react-router-redux';
 import { combineReducers } from 'redux';
+import redisNavigator from '../lib/reducer';
 
 // Initial routing state
 const routeInitialState = {

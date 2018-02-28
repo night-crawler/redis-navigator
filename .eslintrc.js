@@ -35,14 +35,14 @@ module.exports = {
         // 'flowtype',
     ],
     'rules': {
-        'react/jsx-pascal-case': [2, {'allowAllCaps': true, 'ignore': [] }],
-        'react/jsx-curly-spacing': [2, {'when': 'always', 'allowMultiline': true}],
+        'react/jsx-pascal-case': [2, { 'allowAllCaps': true, 'ignore': [] }],
+        'react/jsx-curly-spacing': [2, { 'when': 'always', 'allowMultiline': true }],
         'react/jsx-boolean-value': [2, 'always'],
         'react/jsx-indent-props': [1],
         'react/jsx-indent': [1],
         'react/jsx-handler-names': [1, {
-          'eventHandlerPrefix': 'handle',
-          'eventHandlerPropPrefix': 'on'
+            'eventHandlerPrefix': 'handle',
+            'eventHandlerPropPrefix': 'on'
         }],
         'react/jsx-closing-tag-location': 1,
         'react/jsx-space-before-closing': 1,
@@ -62,7 +62,7 @@ module.exports = {
         //     'error',
         //     4
         // ],
-        'indent': ['error', 4, {SwitchCase: 1}],
+        'indent': ['error', 4, { SwitchCase: 1 }],
         'linebreak-style': [
             'error',
             'unix'
