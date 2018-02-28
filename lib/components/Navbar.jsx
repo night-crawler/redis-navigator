@@ -13,13 +13,14 @@ NavbarRedisItem.propTypes = {
     maxsize: PropTypes.number,
     name: PropTypes.string,
     display_name: PropTypes.string,
+    handleClick: PropTypes.func.isRequired,
 };
 
 function NavbarRedisItem(props) {
     const circleColor = props.closed === false ? 'green' : 'red';
 
     return (
-        <Dropdown.Item active={ props.active }>
+        <Dropdown.Item active={ props.active } onClick={ props.handleClick }>
             <Label circular={ true } size='mini' color={ circleColor }>
                 { props.freesize }/{ props.maxsize }
             </Label>
@@ -32,14 +33,16 @@ function NavbarRedisItem(props) {
 }
 
 Navbar.propTypes = {
-    onLoadInstances: PropTypes.func.isRequired,
-    onLoadInfo: PropTypes.func.isRequired,
-
+    actions: PropTypes.shape({
+        handleLoadInstancesClick: PropTypes.func.isRequired,
+        handleLoadInfoClick: PropTypes.func.isRequired,
+        handleSetActiveInstanceClick: PropTypes.func.isRequired,
+    }).isRequired,
     activeInstanceName: PropTypes.string,
     instances: PropTypes.array.isRequired,
 };
 export default function Navbar(props) {
-    const { instances = {}, activeInstanceName } = props;
+    const { instances = {}, activeInstanceName, actions } = props;
 
     const ddInstanceText = activeInstanceName
         ? <span>Instance: <Label size='mini'>{ activeInstanceName }</Label></span>
@@ -48,7 +51,7 @@ export default function Navbar(props) {
     return (
         <Menu fixed='top'>
             <Container>
-                <Menu.Item as={ Link } header={ true } to={ `${activeInstanceName}/dashboard` }>
+                <Menu.Item as={ Link } header={ true } to={ `/${activeInstanceName}/dashboard` }>
                     <Image
                         size='mini'
                         src='/logo.png'
@@ -59,7 +62,7 @@ export default function Navbar(props) {
 
                 <Dropdown item={ true } trigger={ ddInstanceText }>
                     <Dropdown.Menu>
-                        <Dropdown.Item onClick={ props.onLoadInstances }>
+                        <Dropdown.Item onClick={ actions.handleLoadInstancesClick }>
                             <Icon name='refresh' />
                             Refresh
                         </Dropdown.Item>
@@ -71,6 +74,7 @@ export default function Navbar(props) {
                                     { ...redisOptions }
                                     key={ i }
                                     active={ activeInstanceName === redisOptions.name }
+                                    handleClick={ () => actions.handleSetActiveInstanceClick(redisOptions.name) }
                                 />
                             )
                         }
@@ -79,7 +83,7 @@ export default function Navbar(props) {
 
                 {
                     activeInstanceName &&
-                    <Menu.Item as='a' onClick={ props.onLoadInfo }>
+                    <Menu.Item as='a' onClick={ actions.handleLoadInfoClick }>
                         <Icon name='refresh' />
                     </Menu.Item>
                 }

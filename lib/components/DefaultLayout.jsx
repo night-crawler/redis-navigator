@@ -32,7 +32,9 @@ class DefaultLayout extends Component {
             handleLoadInfo: PropTypes.func,
         }),
         instances: PropTypes.array,
+        inspections: PropTypes.object,
         instancesData: PropTypes.object,
+        activeInstanceName: PropTypes.string,
     };
 
     constructor(props) {
@@ -44,8 +46,9 @@ class DefaultLayout extends Component {
     }
 
     componentDidMount() {
-        this.props.actions.handleLoadInstances();
-        this.props.actions.handleLoadInspections();
+        const { instances, inspections } = this.props;
+        isEmpty(instances) && this.props.actions.handleLoadInstances();
+        isEmpty(inspections) && this.props.actions.handleLoadInspections();
     }
 
     componentWillReceiveProps({ instances, activeInstanceName }) {
@@ -71,8 +74,11 @@ class DefaultLayout extends Component {
                 <Navbar
                     instances={ instances }
                     activeInstanceName={ activeInstanceName }
-                    onLoadInstances={ this.props.actions.handleLoadInstances }
-                    onLoadInfo={ () => this.props.actions.handleLoadInfo(activeInstanceName) }
+                    actions={ {
+                        handleLoadInstancesClick: this.props.actions.handleLoadInstances,
+                        handleLoadInfoClick: () => this.props.actions.handleLoadInfo(activeInstanceName),
+                        handleSetActiveInstanceClick: this.props.actions.handleSetActiveInstance
+                    } }
                 />
 
                 <Switch>
