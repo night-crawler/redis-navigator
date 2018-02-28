@@ -6,16 +6,13 @@ import { Helmet } from 'react-helmet';
 import { Route, Switch } from 'react-router-dom';
 import styled from 'styled-components';
 import Navbar from '../components/Navbar';
-// import Dashboard from './Dashboard';
 import Dashboard from '../containers/Dashboard';
-import { Container, Grid, Progress, Dimmer, Segment, Loader } from 'semantic-ui-react';
 import { FullpageDimmer } from './helpers';
 
 
 const AppWrapper = styled.div`
   margin-top: 45px;
 `;
-
 
 
 const RouteWithActions = ({ component: Component, actions, ...rest }) => (
