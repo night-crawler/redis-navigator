@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import Navbar from '../components/Navbar';
 import Dashboard from '../containers/Dashboard';
 import { FullpageDimmer } from './helpers';
+import NotFound from './NotFound';
 
 
 const AppWrapper = styled.div`
@@ -87,7 +88,7 @@ class DefaultLayout extends Component {
                         path='/:instanceName/dashboard'
                         actions={ this.props.actions }
                         component={ Dashboard } />
-                    { /*<Route path='' component={ NotFoundPage } />*/ }
+                    { <Route path='' component={ NotFound } /> }
                 </Switch>
 
             </AppWrapper>

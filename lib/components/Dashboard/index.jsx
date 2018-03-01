@@ -16,6 +16,7 @@ export default class Dashboard extends React.Component {
         }),
         routeInstanceName: PropTypes.string,
         routeInstanceInfo: PropTypes.object,
+        routeInstanceDataExists: PropTypes.bool,
     };
 
     constructor(props) {
@@ -27,8 +28,10 @@ export default class Dashboard extends React.Component {
     }
 
     componentDidMount() {
-        const { routeInstanceName, routeInstanceInfo } = this.props;
-        isEmpty(routeInstanceInfo) && this.props.actions.handleLoadInfo(routeInstanceName);
+        const { routeInstanceName, routeInstanceInfo, routeInstanceDataExists } = this.props;
+        this.log('dear', routeInstanceDataExists);
+        if (isEmpty(routeInstanceInfo))
+            this.props.actions.handleLoadInfo(routeInstanceName);
     }
 
     componentWillReceiveProps({ routeInstanceInfo, routeInstanceName }) {
