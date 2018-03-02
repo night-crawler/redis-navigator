@@ -4,5 +4,10 @@ export default {
         activeInstanceName: '',
         instancesData: {},
         inspections: {},
+
+        hasLoaded: {
+            inspections: false,
+            instances: false,
+        },
     }
 };

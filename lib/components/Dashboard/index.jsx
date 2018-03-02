@@ -29,13 +29,15 @@ export default class Dashboard extends React.Component {
 
     componentDidMount() {
         const { routeInstanceName, routeInstanceInfo, routeInstanceDataExists } = this.props;
-        this.log('dear', routeInstanceDataExists);
         if (isEmpty(routeInstanceInfo))
             this.props.actions.handleLoadInfo(routeInstanceName);
     }
 
-    componentWillReceiveProps({ routeInstanceInfo, routeInstanceName }) {
+    componentWillReceiveProps(newProps) {
+        this.log('componentWillReceiveProps', newProps);
         const { routeInstanceName: oldRouteInstanceName } = this.props;
+        // new
+        const { routeInstanceInfo, routeInstanceName } = newProps;
 
         if (isEmpty(routeInstanceInfo) && routeInstanceName !== oldRouteInstanceName)
             this.props.actions.handleLoadInfo(routeInstanceName);

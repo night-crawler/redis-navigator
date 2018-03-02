@@ -1,7 +1,3 @@
-/**
- * Create the store with dynamic reducers
- */
-
 import { routerMiddleware } from 'react-router-redux';
 import { applyMiddleware, compose, createStore } from 'redux';
 import { apiMiddleware } from 'redux-api-middleware';

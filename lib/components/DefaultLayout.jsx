@@ -1,12 +1,13 @@
 import debug from 'debug';
 import { isEmpty } from 'lodash';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React from 'react';
 import { Helmet } from 'react-helmet';
 import { Route, Switch } from 'react-router-dom';
 import styled from 'styled-components';
 import Navbar from '../components/Navbar';
 import Dashboard from '../containers/Dashboard';
+import RedisRpc from '../containers/RedisRpc';
 import { FullpageDimmer } from './helpers';
 import NotFound from './NotFound';
 
@@ -24,7 +25,7 @@ const RouteWithActions = ({ component: Component, actions, ...rest }) => (
 );
 
 
-class DefaultLayout extends Component {
+class DefaultLayout extends React.Component {
     static propTypes = {
         actions: PropTypes.shape({
             handleLoadInstances: PropTypes.func,
@@ -36,6 +37,7 @@ class DefaultLayout extends Component {
         inspections: PropTypes.object,
         instancesData: PropTypes.object,
         activeInstanceName: PropTypes.string,
+        isReady: PropTypes.bool,
     };
 
     constructor(props) {
@@ -52,15 +54,17 @@ class DefaultLayout extends Component {
         isEmpty(inspections) && this.props.actions.handleLoadInspections();
     }
 
-    componentWillReceiveProps({ instances, activeInstanceName }) {
+    componentWillReceiveProps(newProps)  {
+        this.log('componentWillReceiveProps', newProps);
+        const { instances, activeInstanceName } = newProps;
         if (!isEmpty(instances) && !activeInstanceName) {
             this.props.actions.handleSetActiveInstance(instances[0].name);
         }
     }
 
     render() {
-        const { instances, activeInstanceName } = this.props;
-        if (isEmpty(instances))
+        const { instances, activeInstanceName, isReady } = this.props;
+        if (!isReady)
             return <FullpageDimmer message='Loading Redis instances' />;
 
         return (
@@ -88,6 +92,10 @@ class DefaultLayout extends Component {
                         path='/:instanceName/dashboard'
                         actions={ this.props.actions }
                         component={ Dashboard } />
+                    <RouteWithActions
+                        path='/:instanceName/rpc'
+                        actions={ this.props.actions }
+                        component={ RedisRpc } />
                     { <Route path='' component={ NotFound } /> }
                 </Switch>
 
