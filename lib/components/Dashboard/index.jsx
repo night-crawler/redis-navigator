@@ -23,8 +23,7 @@ export default class Dashboard extends React.Component {
         super(props);
         debug.enable('*');
         this.log = debug('Dashboard');
-        this.log('initialized');
-        this.log(props);
+        this.log('initialized', props);
     }
 
     componentDidMount() {

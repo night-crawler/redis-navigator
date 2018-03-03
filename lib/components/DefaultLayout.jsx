@@ -44,8 +44,7 @@ class DefaultLayout extends React.Component {
         super(props);
         debug.enable('*');
         this.log = debug('DefaultLayout');
-        this.log('initialized');
-        this.log(props);
+        this.log('initialized', props);
     }
 
     componentDidMount() {
