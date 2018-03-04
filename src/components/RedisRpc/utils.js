@@ -7,10 +7,11 @@ export function reprMethodArgs(parameters) {
         const color = kind === 'KEYWORD_ONLY' ? 'red' : '';
         const varPositional = kind === 'VAR_POSITIONAL' ? '*' : '';
         const varKeyword = kind === 'VAR_KEYWORD' ? '**' : '';
+        const hasDefault = default_ || (typeof default_ === 'number');
         return (
-            <span className={ `ui basic ${color} label` } key={ i }>
+            <span className={ `ui basic ${color} label` } key={ i } title={ kind }>
                 { varPositional || varKeyword }{ name }{ type && `:${type}` }
-                { default_ && `=${default_}` }
+                { hasDefault && `=${default_}` }
             </span>
         );
     });
@@ -18,6 +19,8 @@ export function reprMethodArgs(parameters) {
 
 
 export function cleanMethodDoc(rawDoc, join='\n') {
+    if (!rawDoc)
+        return '';
     return compact(rawDoc.split('\n').map(part => part.trim())).join(join);
 }
 
@@ -32,11 +35,18 @@ export function reprMethodDoc(rawDoc) {
 export function parametersToJson(parameters) {
     const mappedParams = {};
     parameters.forEach(({ name, kind, default: default_, type }) => {
-        let val = default_ || '';
+        const hasDefault = default_ || (typeof default_ === 'number');
+        let val = hasDefault ? default_ : undefined;
         if (kind === 'VAR_POSITIONAL')
             val = default_ || [];
         if (kind === 'VAR_KEYWORD')
             val = default_ || {};
+
+        // this values *must* be set in almost all cases
+        if (kind === 'POSITIONAL_OR_KEYWORD')
+            val = '';
+        if (kind === 'POSITIONAL_ONLY')
+            val = '';
 
         mappedParams[name] = val;
     });

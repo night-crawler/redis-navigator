@@ -4,7 +4,7 @@
 // Wrapper By Ian Grossberg - https://gist.github.com/yoiang/6f82874f4fd8fc1a37631dc9cad27172
 
 import debug from 'debug';
-import JSONEditor from 'jsoneditor';
+import JSONEditor from 'src/components/RedisRpc/JsonEditor';
 import PropTypes from 'prop-types';
 import cloneDeep from 'lodash';
 import isEqual from 'lodash';

@@ -2,8 +2,8 @@ import debug from 'debug';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Dropdown, Grid, Header, Segment } from 'semantic-ui-react';
-import ReactJSONEditor from '../JsonEditor';
 import { parametersToJson, reprMethodArgs, reprMethodDoc } from './utils';
+import ReactJson from 'react-json-view';
 
 
 export default class MethodCallEditor extends React.Component {
@@ -45,8 +45,8 @@ export default class MethodCallEditor extends React.Component {
         });
     };
 
-    handleJsonChanged = (newVal) => {
-        this.log(newVal);
+    handleJsonChanged = ({ updated_src }) => {
+        this.log('handleJsonChanged', updated_src);
     };
 
     renderMethodDropdown() {
@@ -90,9 +90,12 @@ export default class MethodCallEditor extends React.Component {
 
                 <Grid>
                     <Grid.Column width={ 6 }>
-                        <ReactJSONEditor
-                            json={ parametersToJson(methodProps.parameters) }
-                            onChange={ this.handleJsonChanged }
+                        <ReactJson
+                            src={ parametersToJson(methodProps.parameters) }
+                            name='params'
+                            onEdit={ this.handleJsonChanged }
+                            onAdd={ () => null }
+                            onDelete={ () => null }
                         />
                     </Grid.Column>
 
