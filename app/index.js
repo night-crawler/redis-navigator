@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'react-router-redux';
 import 'semantic-ui-css/semantic.min.css';
-import DefaultLayout from '../lib/containers/DefaultLayout';
+import DefaultLayout from '../src/containers/DefaultLayout';
 import configureStore from './configureStore';
 import initialState from './initialState';
 

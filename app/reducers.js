@@ -4,7 +4,7 @@
 
 import { LOCATION_CHANGE } from 'react-router-redux';
 import { combineReducers } from 'redux';
-import redisNavigator from '../lib/reducer';
+import redisNavigator from '../src/reducer';
 
 // Initial routing state
 const routeInitialState = {

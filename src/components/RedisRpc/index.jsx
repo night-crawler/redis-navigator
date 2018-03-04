@@ -1,8 +1,9 @@
 import debug from 'debug';
-import { isEmpty } from 'lodash';
+import { isEmpty, compact } from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Button, Container, Dropdown, Grid, Header, Label, Segment } from 'semantic-ui-react';
+import { Button, Dropdown, Grid, Header, Segment } from 'semantic-ui-react';
+import ReactJSONEditor from '../JsonEditor';
 
 
 DropdownRpcMethod.propTypes = {
@@ -27,7 +28,7 @@ function DropdownRpcMethod(props) {
             {
                 parameters.length &&
                 <div className='ui blue basic button' style={ { padding: 2 } }>
-                    { reprCallArgs(parameters) }
+                    { reprMethodArgs(parameters) }
                 </div>
             }
 
@@ -38,7 +39,7 @@ function DropdownRpcMethod(props) {
     );
 }
 
-function reprCallArgs(parameters) {
+function reprMethodArgs(parameters) {
     return parameters.map(({ name, kind, default: default_, type }, i) => {
         const color = kind === 'KEYWORD_ONLY' ? 'red' : '';
         const varPositional = kind === 'VAR_POSITIONAL' ? '*' : '';
@@ -52,8 +53,35 @@ function reprCallArgs(parameters) {
     });
 }
 
+function parametersToJson(parameters) {
+    const mappedParams = {};
+    parameters.forEach(({ name, kind, default: default_, type }) => {
+        let val = default_ || '';
+        if (kind === 'VAR_POSITIONAL')
+            val = default_ || [];
+        if (kind === 'VAR_KEYWORD')
+            val = default_ || {};
+
+        console.log(name, kind, default_, type, '?', val);
+        mappedParams[name] = val;
+    });
+    console.log(mappedParams);
+    return mappedParams;
+}
+
 
 class RedisRpcMethodCall extends React.Component {
+    static propTypes = {
+        inspections: PropTypes.object.isRequired,
+        ddMethodsOptions: PropTypes.arrayOf(PropTypes.shape({
+            key: PropTypes.string.isRequired,
+            text: PropTypes.string.isRequired,
+            value: PropTypes.string.isRequired,
+            content: PropTypes.element.isRequired,
+        })).isRequired,
+        routeInstanceName: PropTypes.string.isRequired,
+    };
+
     constructor(props) {
         super(props);
         debug.enable('*');
@@ -81,11 +109,14 @@ class RedisRpcMethodCall extends React.Component {
         });
     };
 
-    renderMethodDropdown() {
-        const { ddMethodProps } = this.props;
+    handleJsonChanged = (newVal) => {
+        this.log(newVal);
+    };
 
+    renderMethodDropdown() {
+        const { ddMethodsOptions } = this.props;
         return <Dropdown
-            options={ ddMethodProps }
+            options={ ddMethodsOptions }
             placeholder='Find command'
             search={ true }
             fluid={ true }
@@ -104,17 +135,37 @@ class RedisRpcMethodCall extends React.Component {
         }
 
         return (
-            <Segment>
-                <Header as='h1'>
-                    <div className='ui button' onClick={ this.handleClearSelectedMethodClick }>
-                        <i className='icon remove' />
-                    </div>
-
-                    { routeInstanceName }.{ methodName }
-                    { reprCallArgs(methodProps.parameters) }
+            <Segment raised={ true } color='red'>
+                <Header as='h2' block={ true }>
+                    <Header.Content>
+                        <Button
+                            color='orange' icon='remove' size='huge'
+                            onClick={ this.handleClearSelectedMethodClick } />
+                    </Header.Content>
+                    <Header.Content>
+                        { routeInstanceName }.{ methodName }
+                        { reprMethodArgs(methodProps.parameters) }
+                    </Header.Content>
+                    <Header.Subheader>
+                        <pre style={ { 'lineHeight': 1 } }>{ methodProps.doc.trim() }</pre>
+                    </Header.Subheader>
                 </Header>
 
-                <Button fluid={ true }>Run</Button>
+
+                <Grid>
+                    <Grid.Column width={ 6 }>
+                        <ReactJSONEditor
+                            json={ parametersToJson(methodProps.parameters) }
+                            onChange={ this.handleJsonChanged }
+                        />
+                    </Grid.Column>
+
+                    <Grid.Column width={ 1 }>
+                        <Button fluid={ true }>Run</Button>
+                    </Grid.Column>
+                </Grid>
+
+
             </Segment>
         );
     }
@@ -122,6 +173,11 @@ class RedisRpcMethodCall extends React.Component {
 
 
 export default class RedisRpc extends React.Component {
+    static propTypes = {
+        inspections: PropTypes.object.isRequired,
+        routeInstanceName: PropTypes.string.isRequired,
+    };
+
     constructor(props) {
         super(props);
         debug.enable('*');
@@ -129,7 +185,7 @@ export default class RedisRpc extends React.Component {
         this.log('initialized', props);
         this.state = {
             cmd: null,
-            ddMethodProps: [],
+            ddMethodsOptions: [],
         };
     }
 
@@ -139,7 +195,7 @@ export default class RedisRpc extends React.Component {
 
     prepareOptions() {
         const { inspections } = this.props;
-        const ddMethodProps = Object.entries(inspections).map(([fName, fOptions]) => {
+        const ddMethodsOptions = Object.entries(inspections).map(([fName, fOptions]) => {
             return {
                 key: fName,
                 text: fName,
@@ -147,31 +203,25 @@ export default class RedisRpc extends React.Component {
                 content: <DropdownRpcMethod { ...fOptions } name={ fName } />
             };
         });
-        this.setState({ ddMethodProps });
+        this.setState({ ddMethodsOptions });
     }
 
     render() {
         this.log('render');
         const { inspections, routeInstanceName } = this.props;
-        const { ddMethodProps } = this.state;
+        const { ddMethodsOptions } = this.state;
 
-        if (isEmpty(ddMethodProps))
+        if (isEmpty(ddMethodsOptions))
             return false;
 
         return (
-            <Container fluid={ true }>
-                <Grid width={ 16 }>
-                    <Grid.Column width={ 16 }>
-
-                        <RedisRpcMethodCall
-                            routeInstanceName={ routeInstanceName }
-                            inspections={ inspections }
-                            ddMethodProps={ ddMethodProps }
-                        />
-
-                    </Grid.Column>
-                </Grid>
-            </Container>
+            <Segment.Group>
+                <RedisRpcMethodCall
+                    routeInstanceName={ routeInstanceName }
+                    inspections={ inspections }
+                    ddMethodsOptions={ ddMethodsOptions }
+                />
+            </Segment.Group>
         );
     }
 }
