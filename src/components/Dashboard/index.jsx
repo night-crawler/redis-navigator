@@ -2,6 +2,7 @@ import debug from 'debug';
 import _, { isEmpty } from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Helmet } from 'react-helmet';
 import { Card, Dimmer, Header, Icon, Loader, Segment } from 'semantic-ui-react';
 import DefinitionsCard from './DefinitionsCard';
 import RedisClientsCard from './RedisClientsCard';
@@ -45,6 +46,7 @@ export default class Dashboard extends React.Component {
 
     render() {
         const { routeInstanceInfo, routeInstanceName } = this.props;
+        this.log('WTF?!!', routeInstanceName);
         if (isEmpty(routeInstanceInfo))
             return <Dimmer active={ true }><Loader size='massive'>Loading { routeInstanceName } info</Loader></Dimmer>;
 
@@ -62,6 +64,10 @@ export default class Dashboard extends React.Component {
 
         return (
             <Segment.Group>
+                <Helmet>
+                    <title>{ `Dashboard: ${routeInstanceName}` }</title>
+                </Helmet>
+
                 <Segment>
                     <Header as='h2'>
                         <Icon name='settings' />

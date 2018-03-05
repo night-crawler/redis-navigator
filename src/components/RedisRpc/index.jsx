@@ -2,6 +2,7 @@ import debug from 'debug';
 import { isEmpty } from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Helmet } from 'react-helmet';
 import { Segment } from 'semantic-ui-react';
 import DropdownRpcMethodItem from './DropdownRpcMethodItem';
 import RedisRpcMethodCallEditor from './MethodCallEditor';
@@ -51,6 +52,10 @@ export default class RedisRpc extends React.Component {
 
         return (
             <Segment.Group>
+                <Helmet>
+                    <title>Call RPC method</title>
+                </Helmet>
+
                 <RedisRpcMethodCallEditor
                     routeInstanceName={ routeInstanceName }
                     inspections={ inspections }
