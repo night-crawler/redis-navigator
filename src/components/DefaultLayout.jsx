@@ -53,7 +53,7 @@ class DefaultLayout extends React.Component {
         isEmpty(inspections) && this.props.actions.handleLoadInspections();
     }
 
-    componentWillReceiveProps(newProps)  {
+    componentWillReceiveProps(newProps) {
         this.log('componentWillReceiveProps', newProps);
         const { instances, activeInstanceName } = newProps;
         if (!isEmpty(instances) && !activeInstanceName) {

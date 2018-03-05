@@ -1,9 +1,9 @@
 import debug from 'debug';
 import PropTypes from 'prop-types';
 import React from 'react';
+import ReactJson from 'react-json-view';
 import { Button, Dropdown, Grid, Header, Segment } from 'semantic-ui-react';
 import { parametersToJson, reprMethodArgs, reprMethodDoc } from './utils';
-import ReactJson from 'react-json-view';
 
 
 export default class MethodCallEditor extends React.Component {
@@ -16,67 +16,64 @@ export default class MethodCallEditor extends React.Component {
             content: PropTypes.element.isRequired,
         })).isRequired,
         routeInstanceName: PropTypes.string.isRequired,
+        isFinished: PropTypes.bool,
+        color: PropTypes.string,
+        methodName: PropTypes.string,
+
+        onMethodNameChange: PropTypes.func,
+        onRemove: PropTypes.func,
+    };
+
+    static defaultProps = {
+        color: 'red',
+        isFinished: false,
+        methodName: null,
+        onMethodNameChange: () => {},
+        onRemove: () => {},
     };
 
     constructor(props) {
         super(props);
+        const { methodName, inspections } = props;
+
         debug.enable('*');
         this.log = debug('RedisRpcMethodCall');
         this.log('initialized', props);
         this.state = {
-            methodName: null,
-            methodProps: {},
+            methodName,
+            methodProps: methodName ? inspections[methodName] : [],
         };
-    }
-
-    handleMethodNameChange = (e, { value }) => {
-        const { inspections } = this.props;
-        this.log('handleMethodNameChange', value, inspections[value]);
-        this.setState({
-            methodName: value,
-            methodProps: inspections[value]
-        });
-    };
-
-    handleClearSelectedMethodClick = () => {
-        this.setState({
-            methodName: null,
-            methodProps: {}
-        });
-    };
-
-    handleJsonChanged = ({ updated_src }) => {
-        this.log('handleJsonChanged', updated_src);
-    };
-
-    renderMethodDropdown() {
-        const { ddMethodsOptions } = this.props;
-        return <Dropdown
-            options={ ddMethodsOptions }
-            placeholder='Find command'
-            search={ true }
-            fluid={ true }
-            selection={ true }
-            onChange={ this.handleMethodNameChange }
-        />;
     }
 
     render() {
         this.log('render');
         const { methodName, methodProps } = this.state;
-        const { routeInstanceName } = this.props;
+        const { routeInstanceName, color, onRemove } = this.props;
 
         if (!methodName) {
-            return <Segment content={ this.renderMethodDropdown() } />;
+            return (
+                <Segment raised={ true } color={ color }>
+                    <Header as='h2' block={ true }>
+                        <Header.Content>
+                            <Button
+                                color='orange' icon='remove' size='huge'
+                                onClick={ onRemove }
+                            />
+                        </Header.Content>
+                        <Header.Content>{ routeInstanceName }.?</Header.Content>
+                    </Header>
+                    { this.renderMethodDropdown() }
+                </Segment>
+            );
         }
-
         return (
-            <Segment raised={ true } color='red'>
+            <Segment raised={ true } color={ color }>
                 <Header as='h2' block={ true }>
                     <Header.Content>
                         <Button
                             color='orange' icon='remove' size='huge'
-                            onClick={ this.handleClearSelectedMethodClick } />
+                            onClick={ onRemove }
+                        />
                     </Header.Content>
                     <Header.Content>
                         { routeInstanceName }.{ methodName }
@@ -98,14 +95,36 @@ export default class MethodCallEditor extends React.Component {
                             onDelete={ () => null }
                         />
                     </Grid.Column>
-
-                    <Grid.Column width={ 1 }>
-                        <Button fluid={ true }>Run</Button>
-                    </Grid.Column>
                 </Grid>
 
 
             </Segment>
         );
     }
+
+    handleMethodNameChange = (e, { value }) => {
+        const { inspections, onMethodNameChange } = this.props;
+        this.setState({
+            methodName: value,
+            methodProps: inspections[value]
+        });
+        onMethodNameChange(value);
+    };
+
+    handleJsonChanged = ({ updated_src }) => {
+        this.log('handleJsonChanged', updated_src);
+    };
+
+    renderMethodDropdown() {
+        const { ddMethodsOptions } = this.props;
+        return <Dropdown
+            options={ ddMethodsOptions }
+            placeholder='Find command'
+            search={ true }
+            fluid={ true }
+            selection={ true }
+            onChange={ this.handleMethodNameChange }
+        />;
+    }
+
 }
