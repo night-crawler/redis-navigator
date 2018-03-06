@@ -5,6 +5,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import { Segment, Button, Icon } from 'semantic-ui-react';
 import { COLORS } from 'semantic-ui-react/dist/es/lib/SUI';
+import { uuid4 } from '../../utils';
 import DropdownRpcMethodItem from './DropdownRpcMethodItem';
 import RedisRpcMethodCallEditor from './MethodCallEditor';
 
@@ -51,7 +52,7 @@ export default class RedisRpc extends React.Component {
                 <Helmet><title>Call RPC method</title></Helmet>
 
                 <Button.Group widths='4' attached='top'>
-                    <Button basic={ true } color='red' onClick={ this.handleClearEditorsOptionsClick }>
+                    <Button basic={ true } color='red' onClick={ this.handleClearEditorsOptionsClicked }>
                         <Icon name='trash outline' />Clear
                     </Button>
 
@@ -65,7 +66,7 @@ export default class RedisRpc extends React.Component {
 
                 { this.renderEditors() }
 
-                <Button attached='bottom' icon='add' onClick={ this.handleAppendEditorClick } />
+                <Button attached='bottom' icon='add' onClick={ this.handleAppendEditorClicked } />
             </Segment.Group>
         );
     }
@@ -73,16 +74,17 @@ export default class RedisRpc extends React.Component {
     renderEditors() {
         return this.state.editorsOptions.map(((editorOptions, i) =>
             <RedisRpcMethodCallEditor
-                key={ editorOptions.timestamp }
                 color={ COLORS[i % COLORS.length] }
                 { ...editorOptions }
-                onMethodNameChange={ methodName => this.handleMethodNameChange(methodName, i) }
-                onRemove={ () => this.handleMethodRemoveClick(i) }
+                key={ editorOptions.key }
+                onMethodNameChange={ methodName => this.handleMethodNameChanged(methodName, i) }
+                onRemove={ () => this.handleMethodRemoveClicked(i) }
+                onJsonChange={ newJson => this.handleJsonChanged(newJson, i) }
             />
         ));
     }
 
-    handleClearEditorsOptionsClick = () => {
+    handleClearEditorsOptionsClicked = () => {
         this.setState({ editorsOptions: [] });
     };
 
@@ -90,31 +92,39 @@ export default class RedisRpc extends React.Component {
         const { editorsOptions, ddMethodsOptions } = this.state;
         const { routeInstanceName, inspections } = this.props;
 
-        const newEditor = {
-            routeInstanceName,
+        const newEditorOptions = {
+            key: uuid4(),
+            instanceName: routeInstanceName,
             inspections,
             ddMethodsOptions,
+
             result: null,
             methodName: null,
-            timestamp: +new Date(),
+            json: null,
         };
 
-        this.setState({ editorsOptions: [...editorsOptions, newEditor] });
+        this.setState({ editorsOptions: [...editorsOptions, newEditorOptions] });
     }
 
-    handleAppendEditorClick = () => {
+    handleAppendEditorClicked = () => {
         this.appendEditorOptions();
     };
 
-    handleMethodNameChange = (methodName, index) => {
+    handleMethodNameChanged = (methodName, index) => {
         const { editorsOptions } = this.state;
         editorsOptions[index].methodName = methodName;
         this.setState({ editorsOptions });
     };
 
-    handleMethodRemoveClick = (index) => {
+    handleMethodRemoveClicked = (index) => {
         const { editorsOptions } = this.state;
         editorsOptions.splice(index, 1);
         this.setState({ editorsOptions: [...editorsOptions] });
     };
+
+    handleJsonChanged = (newJson, index) => {
+        const { editorsOptions } = this.state;
+        editorsOptions[index].json = newJson;
+        this.setState({ editorsOptions });
+    }
 }

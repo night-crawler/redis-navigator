@@ -3,6 +3,7 @@ import { withRouter } from 'react-router-dom';
 import { loadInspections } from '../actions/loadInspections';
 import { loadInstances } from '../actions/loadInstances';
 import RedisRpc from '../actions/redisRpc';
+import { RpcActionCreator } from '../actions/rpc';
 import { setActiveInstance } from '../actions/setActiveInstance';
 import { createStructuredSelector } from 'reselect';
 import DefaultLayout from '../components/DefaultLayout';
@@ -18,7 +19,9 @@ import {
 
 function mapDispatchToProps(dispatch, ownProps) {
     const { rpcEndpointUrl, statusUrl, inspectionsUrl } = ownProps;
-    const rpc = new RedisRpc({ dispatch, endpoint: rpcEndpointUrl });
+
+    const rpcActionCreator = new RpcActionCreator({ endpoint: rpcEndpointUrl });
+    const rpc = new RedisRpc({ dispatch, rpcActionCreator });
 
     return {
         actions: {

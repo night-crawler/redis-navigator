@@ -15,12 +15,14 @@ export default class MethodCallEditor extends React.Component {
             value: PropTypes.string.isRequired,
             content: PropTypes.element.isRequired,
         })).isRequired,
-        routeInstanceName: PropTypes.string.isRequired,
+        instanceName: PropTypes.string.isRequired,
         isFinished: PropTypes.bool,
         color: PropTypes.string,
         methodName: PropTypes.string,
+        json: PropTypes.object,
 
         onMethodNameChange: PropTypes.func,
+        onJsonChange: PropTypes.func,
         onRemove: PropTypes.func,
     };
 
@@ -29,6 +31,7 @@ export default class MethodCallEditor extends React.Component {
         isFinished: false,
         methodName: null,
         onMethodNameChange: () => {},
+        onJsonChange: () => {},
         onRemove: () => {},
     };
 
@@ -48,24 +51,13 @@ export default class MethodCallEditor extends React.Component {
     render() {
         this.log('render');
         const { methodName, methodProps } = this.state;
-        const { routeInstanceName, color, onRemove } = this.props;
+        const { instanceName, color, onRemove, json } = this.props;
 
-        if (!methodName) {
-            return (
-                <Segment raised={ true } color={ color }>
-                    <Header as='h2' block={ true }>
-                        <Header.Content>
-                            <Button
-                                color='orange' icon='remove' size='huge'
-                                onClick={ onRemove }
-                            />
-                        </Header.Content>
-                        <Header.Content>{ routeInstanceName }.?</Header.Content>
-                    </Header>
-                    { this.renderMethodDropdown() }
-                </Segment>
-            );
-        }
+        if (!methodName)
+            return this.renderMethodSelector();
+
+        const jsonParameters = json || parametersToJson(methodProps.parameters);
+
         return (
             <Segment raised={ true } color={ color }>
                 <Header as='h2' block={ true }>
@@ -76,7 +68,7 @@ export default class MethodCallEditor extends React.Component {
                         />
                     </Header.Content>
                     <Header.Content>
-                        { routeInstanceName }.{ methodName }
+                        { instanceName }.{ methodName }
                         { reprMethodArgs(methodProps.parameters) }
                     </Header.Content>
                     <Header.Subheader>
@@ -88,7 +80,7 @@ export default class MethodCallEditor extends React.Component {
                 <Grid>
                     <Grid.Column width={ 6 }>
                         <ReactJson
-                            src={ parametersToJson(methodProps.parameters) }
+                            src={ jsonParameters }
                             name='params'
                             onEdit={ this.handleJsonChanged }
                             onAdd={ () => null }
@@ -102,7 +94,7 @@ export default class MethodCallEditor extends React.Component {
         );
     }
 
-    handleMethodNameChange = (e, { value }) => {
+    handleMethodNameChanged = (e, { value }) => {
         const { inspections, onMethodNameChange } = this.props;
         this.setState({
             methodName: value,
@@ -112,8 +104,28 @@ export default class MethodCallEditor extends React.Component {
     };
 
     handleJsonChanged = ({ updated_src }) => {
-        this.log('handleJsonChanged', updated_src);
+        const { onJsonChange } = this.props;
+        onJsonChange(updated_src);
     };
+
+    renderMethodSelector() {
+        const { instanceName, color, onRemove } = this.props;
+
+        return (
+            <Segment raised={ true } color={ color }>
+                <Header as='h2' block={ true }>
+                    <Header.Content>
+                        <Button
+                            color='orange' icon='remove' size='huge'
+                            onClick={ onRemove }
+                        />
+                    </Header.Content>
+                    <Header.Content>{ instanceName }.?</Header.Content>
+                </Header>
+                { this.renderMethodDropdown() }
+            </Segment>
+        );
+    }
 
     renderMethodDropdown() {
         const { ddMethodsOptions } = this.props;
@@ -123,7 +135,7 @@ export default class MethodCallEditor extends React.Component {
             search={ true }
             fluid={ true }
             selection={ true }
-            onChange={ this.handleMethodNameChange }
+            onChange={ this.handleMethodNameChanged }
         />;
     }
 
