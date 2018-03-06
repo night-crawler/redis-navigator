@@ -1,11 +1,11 @@
 import { connect } from 'react-redux';
-import Dashboard from '../components/Dashboard';
+import Dashboard from './components';
 import { createStructuredSelector } from 'reselect';
 import {
     routeInstanceName,
     routeInstanceInfo,
     routeInstanceDataExists,
-} from '../selectors';
+} from '../../selectors';
 
 
 export default connect(

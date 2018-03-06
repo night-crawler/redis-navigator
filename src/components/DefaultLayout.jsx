@@ -5,8 +5,8 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import { Route, Switch } from 'react-router-dom';
 import styled from 'styled-components';
-import Navbar from '../components/Navbar';
-import Dashboard from '../containers/Dashboard';
+import Navbar from '../features/Navbar';
+import Dashboard from '../features/Dashboard/index';
 import RedisRpc from '../containers/RedisRpc';
 import { FullpageDimmer } from './helpers';
 import NotFound from './NotFound';
@@ -75,15 +75,17 @@ class DefaultLayout extends React.Component {
                     <meta name='description' content='Redis Navigator application' />
                 </Helmet>
 
-                <Navbar
-                    instances={ instances }
-                    activeInstanceName={ activeInstanceName }
-                    actions={ {
-                        handleLoadInstancesClick: this.props.actions.handleLoadInstances,
-                        handleLoadInfoClick: () => this.props.actions.handleLoadInfo(activeInstanceName),
-                        handleSetActiveInstanceClick: this.props.actions.handleSetActiveInstance
-                    } }
-                />
+                <Navbar actions={ this.props.actions } />
+
+                {/*<Navbar*/}
+                    {/*instances={ instances }*/}
+                    {/*activeInstanceName={ activeInstanceName }*/}
+                    {/*actions={ {*/}
+                        {/*handleLoadInstancesClick: this.props.actions.handleLoadInstances,*/}
+                        {/*handleLoadInfoClick: () => this.props.actions.handleLoadInfo(activeInstanceName),*/}
+                        {/*handleSetActiveInstanceClick: this.props.actions.handleSetActiveInstance*/}
+                    {/*} }*/}
+                {/*/>*/}
 
                 <Switch>
                     { /*<Route exact path='/' component={ HomePage } />*/ }

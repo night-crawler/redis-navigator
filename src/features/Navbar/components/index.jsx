@@ -34,9 +34,9 @@ function NavbarRedisItem(props) {
 
 Navbar.propTypes = {
     actions: PropTypes.shape({
-        handleLoadInstancesClick: PropTypes.func.isRequired,
-        handleLoadInfoClick: PropTypes.func.isRequired,
-        handleSetActiveInstanceClick: PropTypes.func.isRequired,
+        handleLoadInstances: PropTypes.func.isRequired,
+        handleLoadInfo: PropTypes.func.isRequired,
+        handleSetActiveInstance: PropTypes.func.isRequired,
     }).isRequired,
     activeInstanceName: PropTypes.string,
     instances: PropTypes.array.isRequired,
@@ -62,7 +62,7 @@ export default function Navbar(props) {
 
                 <Dropdown item={ true } trigger={ ddInstanceText }>
                     <Dropdown.Menu>
-                        <Dropdown.Item onClick={ actions.handleLoadInstancesClick }>
+                        <Dropdown.Item onClick={ actions.handleLoadInstances }>
                             <Icon name='refresh' />
                             Refresh
                         </Dropdown.Item>
@@ -74,7 +74,7 @@ export default function Navbar(props) {
                                     { ...redisOptions }
                                     key={ i }
                                     active={ activeInstanceName === redisOptions.name }
-                                    handleClick={ () => actions.handleSetActiveInstanceClick(redisOptions.name) }
+                                    handleClick={ () => actions.handleSetActiveInstance(redisOptions.name) }
                                 />
                             )
                         }
@@ -83,7 +83,7 @@ export default function Navbar(props) {
 
                 {
                     activeInstanceName &&
-                    <Menu.Item as='a' onClick={ actions.handleLoadInfoClick }>
+                    <Menu.Item as='a' onClick={ () => actions.handleLoadInfo(activeInstanceName) }>
                         <Icon name='refresh' />
                     </Menu.Item>
                 }
