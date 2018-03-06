@@ -1,5 +1,5 @@
 import debug from 'debug';
-import { isEmpty } from 'lodash';
+import { isEmpty, filter } from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Helmet } from 'react-helmet';
@@ -14,6 +14,9 @@ export default class RedisRpc extends React.Component {
     static propTypes = {
         inspections: PropTypes.object.isRequired,
         routeInstanceName: PropTypes.string.isRequired,
+        actions: PropTypes.shape({
+            handleBatchExecute: PropTypes.func.isRequired,
+        }).isRequired,
     };
 
     constructor(props) {
@@ -59,7 +62,7 @@ export default class RedisRpc extends React.Component {
                     <Button>Export</Button>
                     <Button>Import</Button>
 
-                    <Button basic={ true } color='green'>
+                    <Button basic={ true } color='green' onClick={ this.handleExecuteAllClicked }>
                         <Icon name='lightning' />Execute
                     </Button>
                 </Button.Group>
@@ -79,36 +82,14 @@ export default class RedisRpc extends React.Component {
                 key={ editorOptions.key }
                 onMethodNameChange={ methodName => this.handleMethodNameChanged(methodName, i) }
                 onRemove={ () => this.handleMethodRemoveClicked(i) }
-                onJsonChange={ newJson => this.handleJsonChanged(newJson, i) }
+                onCallParamsChange={ newCallParams => this.handleCallParamsChanged(newCallParams, i) }
             />
         ));
     }
 
-    handleClearEditorsOptionsClicked = () => {
-        this.setState({ editorsOptions: [] });
-    };
+    handleClearEditorsOptionsClicked = () => this.setState({ editorsOptions: [] });
 
-    appendEditorOptions() {
-        const { editorsOptions, ddMethodsOptions } = this.state;
-        const { routeInstanceName, inspections } = this.props;
-
-        const newEditorOptions = {
-            key: uuid4(),
-            instanceName: routeInstanceName,
-            inspections,
-            ddMethodsOptions,
-
-            result: null,
-            methodName: null,
-            json: null,
-        };
-
-        this.setState({ editorsOptions: [...editorsOptions, newEditorOptions] });
-    }
-
-    handleAppendEditorClicked = () => {
-        this.appendEditorOptions();
-    };
+    handleAppendEditorClicked = () => this.appendEditorOptions();
 
     handleMethodNameChanged = (methodName, index) => {
         const { editorsOptions } = this.state;
@@ -122,9 +103,39 @@ export default class RedisRpc extends React.Component {
         this.setState({ editorsOptions: [...editorsOptions] });
     };
 
-    handleJsonChanged = (newJson, index) => {
+    handleCallParamsChanged = (newCallParams, index) => {
         const { editorsOptions } = this.state;
-        editorsOptions[index].json = newJson;
+        editorsOptions[index].callParams = newCallParams;
         this.setState({ editorsOptions });
+    };
+    
+    handleExecuteAllClicked = () => {
+        const { editorsOptions } = this.state;
+        const { actions: handleBatchExecute } = this.props;
+
+        console.log(this.getReadyEditors());
+    };
+
+    getReadyEditors() {
+        const { editorsOptions } = this.state;
+        return filter(editorsOptions, { result: undefined });
+    }
+
+    appendEditorOptions() {
+        const { editorsOptions, ddMethodsOptions } = this.state;
+        const { routeInstanceName, inspections } = this.props;
+
+        const newEditorOptions = {
+            key: uuid4(),
+            instanceName: routeInstanceName,
+            inspections,
+            ddMethodsOptions,
+
+            result: undefined,
+            methodName: null,
+            callParams: null,
+        };
+
+        this.setState({ editorsOptions: [...editorsOptions, newEditorOptions] });
     }
 }

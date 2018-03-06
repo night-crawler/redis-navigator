@@ -4,6 +4,7 @@ import React from 'react';
 import ReactJson from 'react-json-view';
 import { Button, Dropdown, Grid, Header, Segment } from 'semantic-ui-react';
 import { parametersToJson, reprMethodArgs, reprMethodDoc } from './utils';
+import { isEqual } from 'lodash';
 
 
 export default class MethodCallEditor extends React.Component {
@@ -19,10 +20,10 @@ export default class MethodCallEditor extends React.Component {
         isFinished: PropTypes.bool,
         color: PropTypes.string,
         methodName: PropTypes.string,
-        json: PropTypes.object,
+        callParams: PropTypes.object,
 
         onMethodNameChange: PropTypes.func,
-        onJsonChange: PropTypes.func,
+        onCallParamsChange: PropTypes.func,
         onRemove: PropTypes.func,
     };
 
@@ -31,7 +32,7 @@ export default class MethodCallEditor extends React.Component {
         isFinished: false,
         methodName: null,
         onMethodNameChange: () => {},
-        onJsonChange: () => {},
+        onCallParamsChange: () => {},
         onRemove: () => {},
     };
 
@@ -51,12 +52,13 @@ export default class MethodCallEditor extends React.Component {
     render() {
         this.log('render');
         const { methodName, methodProps } = this.state;
-        const { instanceName, color, onRemove, json } = this.props;
+        const { instanceName, color, onRemove, callParams } = this.props;
 
         if (!methodName)
             return this.renderMethodSelector();
 
-        const jsonParameters = json || parametersToJson(methodProps.parameters);
+        const initialCallParams = parametersToJson(methodProps.parameters);
+        const params = callParams || initialCallParams;
 
         return (
             <Segment raised={ true } color={ color }>
@@ -80,7 +82,7 @@ export default class MethodCallEditor extends React.Component {
                 <Grid>
                     <Grid.Column width={ 6 }>
                         <ReactJson
-                            src={ jsonParameters }
+                            src={ params }
                             name='params'
                             onEdit={ this.handleJsonChanged }
                             onAdd={ () => null }
@@ -104,8 +106,8 @@ export default class MethodCallEditor extends React.Component {
     };
 
     handleJsonChanged = ({ updated_src }) => {
-        const { onJsonChange } = this.props;
-        onJsonChange(updated_src);
+        const { onCallParamsChange } = this.props;
+        onCallParamsChange(updated_src);
     };
 
     renderMethodSelector() {

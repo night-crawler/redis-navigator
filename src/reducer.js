@@ -73,7 +73,7 @@ export const redisNavigator = (state = {}, action) => produce(state, draft => {
             draft.hasLoaded.instances = true;
             payload.forEach(({ name }) => {
                 if (!instancesData[name])
-                    draft.instancesData[name] = { requests: {}, responses: {}, info: {} };
+                    draft.instancesData[name] = { requests: {}, responses: {}, info: {}, calls: [] };
             });
             break;
 

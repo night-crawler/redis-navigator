@@ -35,7 +35,15 @@ export default class RedisRpc {
                 ['client_getname'],
             );
         return this.dispatch(actionBundle);
-    }
+    };
+
+    batchExecute = (redisInstance, ...pairs) => {
+        const actionBundle = this.rpcActionCreator
+            .path(redisInstance)
+            .batchExecute(...pairs);
+
+        return this.dispatch(actionBundle);
+    };
 }
 
 
