@@ -11,6 +11,8 @@ import { FullPageDimmer, NotFound } from '../../Common/components';
 import AppWrapper from './AppWrapper';
 import RouteWithActions from './RouteWithActions';
 
+import AppContentWrapper from './AppContentWrapper';
+
 
 export default class DefaultLayout extends React.Component {
     static propTypes = {
@@ -64,18 +66,20 @@ export default class DefaultLayout extends React.Component {
 
                 <Navbar actions={ this.props.actions } />
 
-                <Switch>
-                    { /*<Route exact path='/' component={ HomePage } />*/ }
-                    <RouteWithActions
-                        path='/:instanceName/dashboard'
-                        actions={ this.props.actions }
-                        component={ Dashboard } />
-                    <RouteWithActions
-                        path='/:instanceName/console'
-                        actions={ this.props.actions }
-                        component={ RedisConsole } />
-                    { <Route path='' component={ NotFound } /> }
-                </Switch>
+                <AppContentWrapper>
+                    <Switch>
+                        { /*<Route exact path='/' component={ HomePage } />*/ }
+                        <RouteWithActions
+                            path='/:instanceName/dashboard'
+                            actions={ this.props.actions }
+                            component={ Dashboard } />
+                        <RouteWithActions
+                            path='/:instanceName/console'
+                            actions={ this.props.actions }
+                            component={ RedisConsole } />
+                        { <Route path='' component={ NotFound } /> }
+                    </Switch>
+                </AppContentWrapper>
 
             </AppWrapper>
         );
