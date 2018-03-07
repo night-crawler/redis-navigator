@@ -4,6 +4,7 @@ import { LOAD_INSPECTIONS_START, LOAD_INSPECTIONS_SUCCESS } from './features/act
 import { LOAD_INSTANCES_START, LOAD_INSTANCES_SUCCESS } from './features/actions/loadInstances';
 import { REDIS_RPC_FETCH_INFO_START, REDIS_RPC_FETCH_INFO_SUCCESS, } from './features/actions/redisRpc';
 import { SET_ACTIVE_INSTANCE } from './features/actions/setActiveInstance';
+import { APPEND_METHOD_CALL_EDITOR } from './features/RedisConsole/actions';
 
 
 function mapRpcRequestsById(rpcRequest) {
@@ -77,7 +78,12 @@ export const redisNavigator = (state = {}, action) => produce(state, draft => {
             draft.hasLoaded.instances = true;
             payload.forEach(({ name }) => {
                 if (!instancesData[name])
-                    draft.instancesData[name] = { requests: {}, responses: {}, info: {}, calls: [] };
+                    draft.instancesData[name] = {
+                        requests: {},
+                        responses: {},
+                        info: {},
+                        console: []
+                    };
             });
             break;
 
@@ -103,6 +109,10 @@ export const redisNavigator = (state = {}, action) => produce(state, draft => {
         case LOAD_INSPECTIONS_SUCCESS:
             draft.hasLoaded.inspections = true;
             draft.inspections = payload;
+            break;
+
+        case APPEND_METHOD_CALL_EDITOR:
+            draft.instancesData[meta.path].console.push(payload);
             break;
     }
 });

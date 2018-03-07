@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
-import RedisConsole from './components/index';
+import { appendMethodCallEditor } from './actions';
+import RedisConsole from './components';
 import { createStructuredSelector } from 'reselect';
 import {
     routeInstanceName,
@@ -9,11 +10,23 @@ import {
 } from '../selectors';
 
 
+function mapDispatchToProps(dispatch, ownProps) {
+    const { actions = {} } = ownProps;
+
+    return {
+        actions: {
+            ...actions,
+            appendMethodCallEditor: redisInstance => dispatch(appendMethodCallEditor(redisInstance))
+        }
+    };
+}
+
 export default connect(
     createStructuredSelector({
         routeInstanceName,
         inspections,
         routeInstanceRequests,
         routeInstanceResponses,
-    })
+    }),
+    mapDispatchToProps
 )(RedisConsole);

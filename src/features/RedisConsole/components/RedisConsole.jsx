@@ -40,7 +40,7 @@ export default class RedisConsole extends React.Component {
 
     componentDidMount() {
         const { editorsOptions } = this.state;
-        isEmpty(editorsOptions) && this.appendEditorOptions();
+        isEmpty(editorsOptions) && this.appendMethodCallEditor();
     }
 
     render() {
@@ -89,7 +89,7 @@ export default class RedisConsole extends React.Component {
 
     handleClearEditorsOptionsClicked = () => this.setState({ editorsOptions: [] });
 
-    handleAppendEditorClicked = () => this.appendEditorOptions();
+    handleAppendEditorClicked = () => this.appendMethodCallEditor();
 
     handleMethodNameChanged = (methodName, index) => {
         const { editorsOptions } = this.state;
@@ -121,9 +121,11 @@ export default class RedisConsole extends React.Component {
         return filter(editorsOptions, { result: undefined });
     }
 
-    appendEditorOptions() {
+    appendMethodCallEditor() {
         const { editorsOptions, ddMethodsOptions } = this.state;
         const { routeInstanceName, inspections } = this.props;
+        const { actions } = this.props;
+        actions.appendMethodCallEditor(routeInstanceName);
 
         const newEditorOptions = {
             key: uuid4(),
