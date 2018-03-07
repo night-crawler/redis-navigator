@@ -4,7 +4,7 @@ import { createStructuredSelector } from 'reselect';
 import {
     instances,
     activeInstanceName,
-} from '../../selectors';
+} from '../selectors';
 
 
 export default connect(

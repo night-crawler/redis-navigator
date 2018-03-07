@@ -1,9 +1,9 @@
 import produce from 'immer';
 import _ from 'lodash';
-import { LOAD_INSPECTIONS_START, LOAD_INSPECTIONS_SUCCESS } from './actions/loadInspections';
-import { LOAD_INSTANCES_START, LOAD_INSTANCES_SUCCESS } from './actions/loadInstances';
-import { REDIS_RPC_FETCH_INFO_START, REDIS_RPC_FETCH_INFO_SUCCESS, } from './actions/redisRpc';
-import { SET_ACTIVE_INSTANCE } from './actions/setActiveInstance';
+import { LOAD_INSPECTIONS_START, LOAD_INSPECTIONS_SUCCESS } from './features/actions/loadInspections';
+import { LOAD_INSTANCES_START, LOAD_INSTANCES_SUCCESS } from './features/actions/loadInstances';
+import { REDIS_RPC_FETCH_INFO_START, REDIS_RPC_FETCH_INFO_SUCCESS, } from './features/actions/redisRpc';
+import { SET_ACTIVE_INSTANCE } from './features/actions/setActiveInstance';
 
 
 function mapRpcRequestsById(rpcRequest) {

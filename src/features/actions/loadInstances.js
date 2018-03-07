@@ -1,5 +1,5 @@
 import { RSAA } from 'redux-api-middleware';
-import { getApiMiddlewareOptions } from '../utils';
+import { getApiMiddlewareOptions } from '../../utils';
 
 
 export const LOAD_INSTANCES_START = 'redisNavigator/load/redis-instances/start';

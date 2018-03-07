@@ -4,21 +4,21 @@ import { Dimmer, Loader } from 'semantic-ui-react';
 import styled from 'styled-components';
 
 
-const Fullpage = styled.div`
+const FullPage = styled.div`
     height: 100vh;
 `;
 
 
-FullpageDimmer.propTypes = {
+FullPageDimmer.propTypes = {
     message: PropTypes.string,
 };
 
-export function FullpageDimmer({ message = 'Loading' }) {
+export default function FullPageDimmer({ message = 'Loading' }) {
     return (
-        <Fullpage>
+        <FullPage>
             <Dimmer active={ true }>
                 <Loader size='massive'>{ message }</Loader>
             </Dimmer>
-        </Fullpage>
+        </FullPage>
     );
 }

@@ -6,7 +6,7 @@ import {
     inspections,
     routeInstanceRequests,
     routeInstanceResponses,
-} from '../../selectors';
+} from '../selectors';
 
 
 export default connect(

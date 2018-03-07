@@ -1,4 +1,4 @@
-import RedisRpc from '../actions/redisRpc';
+import RedisRpc from '../features/actions/redisRpc';
 
 
 describe('RedisRpc', () => {

@@ -5,7 +5,7 @@ import {
     routeInstanceName,
     routeInstanceInfo,
     routeInstanceDataExists,
-} from '../../selectors';
+} from '../selectors';
 
 
 export default connect(

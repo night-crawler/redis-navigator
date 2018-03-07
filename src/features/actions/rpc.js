@@ -3,8 +3,8 @@ import { RSAA } from 'redux-api-middleware';
 import {
     RPCBatchArgumentsError, RPCMethodNameError, RPCEndpointError, RPCBadActionTypesError,
     RPCEmptyRequestError
-} from '../errors/rpc';
-import { getApiMiddlewareOptions, jsonRequestHeaders } from '../utils';
+} from '../../errors/rpc';
+import { getApiMiddlewareOptions, jsonRequestHeaders } from '../../utils';
 
 
 export const RPC_EXECUTE_START = 'redisNavigator/rpc/execute/start';

@@ -4,28 +4,15 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import { Route, Switch } from 'react-router-dom';
-import styled from 'styled-components';
-import Navbar from '../features/Navbar';
-import Dashboard from '../features/Dashboard';
-import RedisRpc from '../features/RedisRpc';
-import { FullpageDimmer } from '../features/Common/components/FullpageDimmer';
-import NotFound from '../features/Common/components/NotFound';
+import Navbar from '../../Navbar/index';
+import Dashboard from '../../Dashboard';
+import RedisRpc from '../../RedisRpc';
+import { FullPageDimmer, NotFound } from '../../Common/components';
+import AppWrapper from './AppWrapper';
+import RouteWithActions from './RouteWithActions';
 
 
-const AppWrapper = styled.div`
-  margin-top: 45px;
-`;
-
-
-const RouteWithActions = ({ component: Component, actions, ...rest }) => (
-    <Route
-        { ...rest }
-        render={ props => <Component { ...props } actions={ actions } /> }
-    />
-);
-
-
-class DefaultLayout extends React.Component {
+export default class DefaultLayout extends React.Component {
     static propTypes = {
         actions: PropTypes.shape({
             handleLoadInstances: PropTypes.func,
@@ -64,7 +51,7 @@ class DefaultLayout extends React.Component {
     render() {
         const { isReady } = this.props;
         if (!isReady)
-            return <FullpageDimmer message='Loading Redis instances' />;
+            return <FullPageDimmer message='Loading Redis instances' />;
 
         return (
             <AppWrapper className='redis-navigator-app'>
@@ -94,5 +81,3 @@ class DefaultLayout extends React.Component {
         );
     }
 }
-
-export default DefaultLayout;

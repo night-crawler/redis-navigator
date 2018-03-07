@@ -6,7 +6,7 @@ import RedisRpc from '../actions/redisRpc';
 import { RpcActionCreator } from '../actions/rpc';
 import { setActiveInstance } from '../actions/setActiveInstance';
 import { createStructuredSelector } from 'reselect';
-import DefaultLayout from '../components/DefaultLayout';
+import DefaultLayout from './components';
 import {
     instances,
     activeInstanceName,

@@ -10,7 +10,7 @@ import {
     RpcActionCreator,
     RpcRequestBuilder,
     RSAARpcActionCreator,
-} from '../actions/rpc';
+} from '../features/actions/rpc';
 
 import { RPCBatchArgumentsError, RPCEmptyRequestError, RPCEndpointError, RPCMethodNameError } from '../errors/rpc';
 
