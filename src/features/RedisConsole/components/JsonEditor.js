@@ -2,9 +2,8 @@
 // JSON Editor by Jos de Jong - https://github.com/josdejong/jsoneditor
 // Based on post by Hassan Khan - https://github.com/josdejong/jsoneditor/issues/274#issuecomment-263986071
 // Wrapper By Ian Grossberg - https://gist.github.com/yoiang/6f82874f4fd8fc1a37631dc9cad27172
-
+import JSONEditor from 'jsoneditor';
 import debug from 'debug';
-import JSONEditor from 'src/features/RedisRpc/components/JsonEditor';
 import PropTypes from 'prop-types';
 import cloneDeep from 'lodash';
 import isEqual from 'lodash';

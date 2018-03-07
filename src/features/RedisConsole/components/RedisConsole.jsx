@@ -7,10 +7,10 @@ import { Segment, Button, Icon } from 'semantic-ui-react';
 import { COLORS } from 'semantic-ui-react/dist/es/lib/SUI';
 import { uuid4 } from '../../../utils';
 import DropdownRpcMethodItem from './DropdownRpcMethodItem';
-import RedisRpcMethodCallEditor from './MethodCallEditor';
+import RedisConsoleMethodCallEditor from './MethodCallEditor';
 
 
-export default class RedisRpc extends React.Component {
+export default class RedisConsole extends React.Component {
     static propTypes = {
         inspections: PropTypes.object.isRequired,
         routeInstanceName: PropTypes.string.isRequired,
@@ -23,7 +23,7 @@ export default class RedisRpc extends React.Component {
         super(props);
         const { inspections } = props;
         debug.enable('*');
-        this.log = debug('RedisRpc');
+        this.log = debug('RedisConsole');
         this.log('initialized', props);
         this.state = {
             ddMethodsOptions: Object.entries(inspections).map(([fName, fOptions]) => {
@@ -52,7 +52,7 @@ export default class RedisRpc extends React.Component {
 
         return (
             <Segment.Group>
-                <Helmet><title>Call RPC method</title></Helmet>
+                <Helmet><title>RPC Console</title></Helmet>
 
                 <Button.Group widths='4' attached='top'>
                     <Button basic={ true } color='red' onClick={ this.handleClearEditorsOptionsClicked }>
@@ -76,7 +76,7 @@ export default class RedisRpc extends React.Component {
 
     renderEditors() {
         return this.state.editorsOptions.map(((editorOptions, i) =>
-            <RedisRpcMethodCallEditor
+            <RedisConsoleMethodCallEditor
                 color={ COLORS[i % COLORS.length] }
                 { ...editorOptions }
                 key={ editorOptions.key }

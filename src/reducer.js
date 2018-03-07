@@ -64,6 +64,10 @@ export const redisNavigator = (state = {}, action) => produce(state, draft => {
     const { payload, meta } = action;
 
     switch (action.type) {
+        case SET_ACTIVE_INSTANCE:
+            draft.activeInstanceName = payload.name;
+            break;
+
         case LOAD_INSTANCES_START:
             draft.hasLoaded.instances = false;
             break;
@@ -75,10 +79,6 @@ export const redisNavigator = (state = {}, action) => produce(state, draft => {
                 if (!instancesData[name])
                     draft.instancesData[name] = { requests: {}, responses: {}, info: {}, calls: [] };
             });
-            break;
-
-        case SET_ACTIVE_INSTANCE:
-            draft.activeInstanceName = payload.name;
             break;
 
         case REDIS_RPC_FETCH_INFO_START:

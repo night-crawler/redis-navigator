@@ -6,7 +6,7 @@ import { Helmet } from 'react-helmet';
 import { Route, Switch } from 'react-router-dom';
 import Navbar from '../../Navbar/index';
 import Dashboard from '../../Dashboard';
-import RedisRpc from '../../RedisRpc';
+import RedisConsole from '../../RedisConsole';
 import { FullPageDimmer, NotFound } from '../../Common/components';
 import AppWrapper from './AppWrapper';
 import RouteWithActions from './RouteWithActions';
@@ -71,9 +71,9 @@ export default class DefaultLayout extends React.Component {
                         actions={ this.props.actions }
                         component={ Dashboard } />
                     <RouteWithActions
-                        path='/:instanceName/rpc'
+                        path='/:instanceName/console'
                         actions={ this.props.actions }
-                        component={ RedisRpc } />
+                        component={ RedisConsole } />
                     { <Route path='' component={ NotFound } /> }
                 </Switch>
 

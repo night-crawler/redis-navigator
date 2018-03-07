@@ -34,6 +34,10 @@ export default function Navbar(props) {
                     Redis Navigator
                 </Menu.Item>
 
+                <Menu.Item as={ Link } header={ true } to={ `/${activeInstanceName}/console` }>
+                    <Icon name='terminal' />
+                </Menu.Item>
+
                 <Dropdown item={ true } trigger={ ddInstanceText }>
                     <Dropdown.Menu>
                         <Dropdown.Item onClick={ actions.handleLoadInstances }>
