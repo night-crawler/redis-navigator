@@ -6,8 +6,8 @@ import { Helmet } from 'react-helmet';
 import { Route, Switch } from 'react-router-dom';
 import styled from 'styled-components';
 import Navbar from '../features/Navbar';
-import Dashboard from '../features/Dashboard/index';
-import RedisRpc from '../containers/RedisRpc';
+import Dashboard from '../features/Dashboard';
+import RedisRpc from '../features/RedisRpc';
 import { FullpageDimmer } from './helpers';
 import NotFound from './NotFound';
 
@@ -62,7 +62,7 @@ class DefaultLayout extends React.Component {
     }
 
     render() {
-        const { instances, activeInstanceName, isReady } = this.props;
+        const { isReady } = this.props;
         if (!isReady)
             return <FullpageDimmer message='Loading Redis instances' />;
 
@@ -76,16 +76,6 @@ class DefaultLayout extends React.Component {
                 </Helmet>
 
                 <Navbar actions={ this.props.actions } />
-
-                {/*<Navbar*/}
-                    {/*instances={ instances }*/}
-                    {/*activeInstanceName={ activeInstanceName }*/}
-                    {/*actions={ {*/}
-                        {/*handleLoadInstancesClick: this.props.actions.handleLoadInstances,*/}
-                        {/*handleLoadInfoClick: () => this.props.actions.handleLoadInfo(activeInstanceName),*/}
-                        {/*handleSetActiveInstanceClick: this.props.actions.handleSetActiveInstance*/}
-                    {/*} }*/}
-                {/*/>*/}
 
                 <Switch>
                     { /*<Route exact path='/' component={ HomePage } />*/ }

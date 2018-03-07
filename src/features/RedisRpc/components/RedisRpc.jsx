@@ -5,7 +5,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import { Segment, Button, Icon } from 'semantic-ui-react';
 import { COLORS } from 'semantic-ui-react/dist/es/lib/SUI';
-import { uuid4 } from '../../utils';
+import { uuid4 } from '../../../utils';
 import DropdownRpcMethodItem from './DropdownRpcMethodItem';
 import RedisRpcMethodCallEditor from './MethodCallEditor';
 
@@ -108,7 +108,7 @@ export default class RedisRpc extends React.Component {
         editorsOptions[index].callParams = newCallParams;
         this.setState({ editorsOptions });
     };
-    
+
     handleExecuteAllClicked = () => {
         const { editorsOptions } = this.state;
         const { actions: handleBatchExecute } = this.props;
