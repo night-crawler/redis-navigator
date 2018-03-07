@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ReactJson from 'react-json-view';
 import { Button, Dropdown, Grid, Header, Segment } from 'semantic-ui-react';
-import { parametersToJson, reprMethodArgs, reprMethodDoc } from './utils';
+import { reprMethodArgs, reprMethodDoc } from './utils';
 import { isEqual } from 'lodash';
 
 
@@ -20,10 +20,10 @@ export default class MethodCallEditor extends React.Component {
         isFinished: PropTypes.bool,
         color: PropTypes.string,
         methodName: PropTypes.string,
-        callParams: PropTypes.object,
+        methodParams: PropTypes.object,
 
         onMethodNameChange: PropTypes.func,
-        onCallParamsChange: PropTypes.func,
+        onMethodParamsChange: PropTypes.func,
         onRemove: PropTypes.func,
     };
 
@@ -32,33 +32,30 @@ export default class MethodCallEditor extends React.Component {
         isFinished: false,
         methodName: null,
         onMethodNameChange: () => {},
-        onCallParamsChange: () => {},
+        onMethodParamsChange: () => {},
         onRemove: () => {},
     };
 
     constructor(props) {
         super(props);
-        const { methodName, inspections } = props;
-
         debug.enable('*');
-        this.log = debug('RedisRpcMethodCall');
+        this.log = debug('MethodCallEditor');
         this.log('initialized', props);
-        this.state = {
-            methodName,
-            methodProps: methodName ? inspections[methodName] : [],
-        };
     }
 
     render() {
         this.log('render');
-        const { methodName, methodProps } = this.state;
-        const { instanceName, color, onRemove, callParams } = this.props;
+        const {
+            methodName,
+            methodParams,
+            instanceName, color, inspections,
+            onRemove
+        } = this.props;
 
         if (!methodName)
             return this.renderMethodSelector();
 
-        const initialCallParams = parametersToJson(methodProps.parameters);
-        const params = callParams || initialCallParams;
+        const methodProps = inspections[methodName];
 
         return (
             <Segment raised={ true } color={ color }>
@@ -82,7 +79,7 @@ export default class MethodCallEditor extends React.Component {
                 <Grid>
                     <Grid.Column width={ 6 }>
                         <ReactJson
-                            src={ params }
+                            src={ methodParams }
                             name='params'
                             onEdit={ this.handleJsonChanged }
                             onAdd={ () => null }
@@ -97,17 +94,13 @@ export default class MethodCallEditor extends React.Component {
     }
 
     handleMethodNameChanged = (e, { value }) => {
-        const { inspections, onMethodNameChange } = this.props;
-        this.setState({
-            methodName: value,
-            methodProps: inspections[value]
-        });
+        const { onMethodNameChange } = this.props;
         onMethodNameChange(value);
     };
 
     handleJsonChanged = ({ updated_src }) => {
-        const { onCallParamsChange } = this.props;
-        onCallParamsChange(updated_src);
+        const { onMethodParamsChange } = this.props;
+        onMethodParamsChange(updated_src);
     };
 
     renderMethodSelector() {

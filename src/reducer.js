@@ -4,7 +4,14 @@ import { LOAD_INSPECTIONS_START, LOAD_INSPECTIONS_SUCCESS } from './features/act
 import { LOAD_INSTANCES_START, LOAD_INSTANCES_SUCCESS } from './features/actions/loadInstances';
 import { REDIS_RPC_FETCH_INFO_START, REDIS_RPC_FETCH_INFO_SUCCESS, } from './features/actions/redisRpc';
 import { SET_ACTIVE_INSTANCE } from './features/actions/setActiveInstance';
-import { APPEND_METHOD_CALL_EDITOR } from './features/RedisConsole/actions';
+import {
+    APPEND_CALL_EDITOR,
+    REMOVE_CALL_EDITOR,
+    CHANGE_CALL_EDITOR_METHOD_NAME,
+    CHANGE_CALL_EDITOR_METHOD_PARAMS,
+    CLEAR_CALL_EDITORS,
+} from './features/RedisConsole/actions';
+import { parametersToJson } from './features/RedisConsole/components/utils';
 
 
 function mapRpcRequestsById(rpcRequest) {
@@ -82,7 +89,7 @@ export const redisNavigator = (state = {}, action) => produce(state, draft => {
                         requests: {},
                         responses: {},
                         info: {},
-                        console: []
+                        consoleCommands: []
                     };
             });
             break;
@@ -111,8 +118,27 @@ export const redisNavigator = (state = {}, action) => produce(state, draft => {
             draft.inspections = payload;
             break;
 
-        case APPEND_METHOD_CALL_EDITOR:
-            draft.instancesData[meta.path].console.push(payload);
+        case APPEND_CALL_EDITOR:
+            draft.instancesData[meta.path].consoleCommands.push(payload);
+            break;
+
+        case REMOVE_CALL_EDITOR:
+            draft.instancesData[meta.path].consoleCommands.splice(payload.id, 1);
+            break;
+
+        case CHANGE_CALL_EDITOR_METHOD_NAME:
+            draft.instancesData[meta.path].consoleCommands[payload.id].methodName = payload.methodName;
+            draft.instancesData[meta.path].consoleCommands[payload.id].methodParams = parametersToJson(
+                state.inspections[payload.methodName].parameters
+            );
+            break;
+
+        case CHANGE_CALL_EDITOR_METHOD_PARAMS:
+            draft.instancesData[meta.path].consoleCommands[payload.id].methodParams = payload.methodParams;
+            break;
+
+        case CLEAR_CALL_EDITORS:
+            draft.instancesData[meta.path].consoleCommands = [];
             break;
     }
 });

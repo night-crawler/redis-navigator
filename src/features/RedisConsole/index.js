@@ -1,13 +1,20 @@
 import { connect } from 'react-redux';
-import { appendMethodCallEditor } from './actions';
-import RedisConsole from './components';
 import { createStructuredSelector } from 'reselect';
 import {
-    routeInstanceName,
     inspections,
+    routeConsoleCommands,
+    routeInstanceName,
     routeInstanceRequests,
     routeInstanceResponses,
 } from '../selectors';
+import {
+    appendCallEditor,
+    changeCallEditorMethodName,
+    changeCallEditorMethodParams,
+    removeCallEditor,
+    clearCallEditors,
+} from './actions';
+import RedisConsole from './components';
 
 
 function mapDispatchToProps(dispatch, ownProps) {
@@ -16,7 +23,13 @@ function mapDispatchToProps(dispatch, ownProps) {
     return {
         actions: {
             ...actions,
-            appendMethodCallEditor: redisInstance => dispatch(appendMethodCallEditor(redisInstance))
+            appendCallEditor: redisInstance => dispatch(appendCallEditor(redisInstance)),
+            removeCallEditor: (redisInstance, id) => dispatch(removeCallEditor(redisInstance, id)),
+            changeCallEditorMethodName: (redisInstance, methodName, id) =>
+                dispatch(changeCallEditorMethodName(redisInstance, methodName, id)),
+            changeCallEditorMethodParams: (redisInstance, methodParams, id) =>
+                dispatch(changeCallEditorMethodParams(redisInstance, methodParams, id)),
+            clearCallEditors: redisInstance => dispatch(clearCallEditors(redisInstance)),
         }
     };
 }
@@ -27,6 +40,7 @@ export default connect(
         inspections,
         routeInstanceRequests,
         routeInstanceResponses,
+        routeConsoleCommands,
     }),
     mapDispatchToProps
 )(RedisConsole);

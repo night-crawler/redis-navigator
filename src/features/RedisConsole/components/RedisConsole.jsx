@@ -5,9 +5,8 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import { Segment, Button, Icon } from 'semantic-ui-react';
 import { COLORS } from 'semantic-ui-react/dist/es/lib/SUI';
-import { uuid4 } from '../../../utils';
 import DropdownRpcMethodItem from './DropdownRpcMethodItem';
-import RedisConsoleMethodCallEditor from './MethodCallEditor';
+import MethodCallEditor from './MethodCallEditor';
 
 
 export default class RedisConsole extends React.Component {
@@ -16,7 +15,19 @@ export default class RedisConsole extends React.Component {
         routeInstanceName: PropTypes.string.isRequired,
         actions: PropTypes.shape({
             handleBatchExecute: PropTypes.func.isRequired,
+
+            appendCallEditor: PropTypes.func.isRequired,
+            removeCallEditor: PropTypes.func.isRequired,
+            changeCallEditorMethodName: PropTypes.func.isRequired,
+            changeCallEditorMethodParams: PropTypes.func.isRequired,
+            clearCallEditors: PropTypes.func.isRequired,
         }).isRequired,
+        routeConsoleCommands: PropTypes.arrayOf(PropTypes.shape({
+            key: PropTypes.string,
+            methodName: PropTypes.string,
+            methodParams: PropTypes.object,
+            result: PropTypes.any,
+        })),
     };
 
     constructor(props) {
@@ -25,37 +36,35 @@ export default class RedisConsole extends React.Component {
         debug.enable('*');
         this.log = debug('RedisConsole');
         this.log('initialized', props);
+
+        this.ddMethodsOptions = Object.entries(inspections).map(([fName, fOptions]) => {
+            return {
+                key: fName,
+                text: fName,
+                value: fName,
+                content: <DropdownRpcMethodItem { ...fOptions } name={ fName } />
+            };
+        });
+
         this.state = {
-            ddMethodsOptions: Object.entries(inspections).map(([fName, fOptions]) => {
-                return {
-                    key: fName,
-                    text: fName,
-                    value: fName,
-                    content: <DropdownRpcMethodItem { ...fOptions } name={ fName } />
-                };
-            }),
             editorsOptions: [],
         };
     }
 
     componentDidMount() {
-        const { editorsOptions } = this.state;
-        isEmpty(editorsOptions) && this.appendMethodCallEditor();
+        const { routeConsoleCommands } = this.props;
+        isEmpty(routeConsoleCommands) && this.appendMethodCallEditor();
     }
 
     render() {
         this.log('render');
-        const { ddMethodsOptions } = this.state;
-
-        if (isEmpty(ddMethodsOptions))
-            return false;
 
         return (
             <Segment.Group>
                 <Helmet><title>RPC Console</title></Helmet>
 
                 <Button.Group widths='4' attached='top'>
-                    <Button basic={ true } color='red' onClick={ this.handleClearEditorsOptionsClicked }>
+                    <Button basic={ true } color='red' onClick={ this.handleClearCallEditorsClicked }>
                         <Icon name='trash outline' />Clear
                     </Button>
 
@@ -69,75 +78,47 @@ export default class RedisConsole extends React.Component {
 
                 { this.renderEditors() }
 
-                <Button attached='bottom' icon='add' onClick={ this.handleAppendEditorClicked } />
+                <Button attached='bottom' icon='add' onClick={ this.handleAppendCallEditorClicked } />
             </Segment.Group>
         );
     }
 
     renderEditors() {
-        return this.state.editorsOptions.map(((editorOptions, i) =>
-            <RedisConsoleMethodCallEditor
+        const { routeConsoleCommands, inspections, actions, routeInstanceName } = this.props;
+
+        return routeConsoleCommands.map((editorOptions, i) =>
+            <MethodCallEditor
                 color={ COLORS[i % COLORS.length] }
-                { ...editorOptions }
                 key={ editorOptions.key }
-                onMethodNameChange={ methodName => this.handleMethodNameChanged(methodName, i) }
-                onRemove={ () => this.handleMethodRemoveClicked(i) }
-                onCallParamsChange={ newCallParams => this.handleCallParamsChanged(newCallParams, i) }
+                instanceName={ routeInstanceName }
+                { ...editorOptions }
+                ddMethodsOptions={ this.ddMethodsOptions }
+                inspections={ inspections }
+                onRemove={ () => actions.removeCallEditor(routeInstanceName, i) }
+                onMethodNameChange={
+                    methodName => actions.changeCallEditorMethodName(routeInstanceName, methodName, i)
+                }
+                onMethodParamsChange={
+                    methodParams => actions.changeCallEditorMethodParams(routeInstanceName, methodParams, i)
+                }
             />
-        ));
+        );
     }
 
-    handleClearEditorsOptionsClicked = () => this.setState({ editorsOptions: [] });
-
-    handleAppendEditorClicked = () => this.appendMethodCallEditor();
-
-    handleMethodNameChanged = (methodName, index) => {
-        const { editorsOptions } = this.state;
-        editorsOptions[index].methodName = methodName;
-        this.setState({ editorsOptions });
+    handleClearCallEditorsClicked = () => {
+        const { actions, routeInstanceName } = this.props;
+        actions.clearCallEditors(routeInstanceName);
     };
 
-    handleMethodRemoveClicked = (index) => {
-        const { editorsOptions } = this.state;
-        editorsOptions.splice(index, 1);
-        this.setState({ editorsOptions: [...editorsOptions] });
-    };
-
-    handleCallParamsChanged = (newCallParams, index) => {
-        const { editorsOptions } = this.state;
-        editorsOptions[index].callParams = newCallParams;
-        this.setState({ editorsOptions });
-    };
+    handleAppendCallEditorClicked = () => this.appendMethodCallEditor();
 
     handleExecuteAllClicked = () => {
         const { editorsOptions } = this.state;
         const { actions: handleBatchExecute } = this.props;
-
-        console.log(this.getReadyEditors());
     };
 
-    getReadyEditors() {
-        const { editorsOptions } = this.state;
-        return filter(editorsOptions, { result: undefined });
-    }
-
     appendMethodCallEditor() {
-        const { editorsOptions, ddMethodsOptions } = this.state;
-        const { routeInstanceName, inspections } = this.props;
-        const { actions } = this.props;
-        actions.appendMethodCallEditor(routeInstanceName);
-
-        const newEditorOptions = {
-            key: uuid4(),
-            instanceName: routeInstanceName,
-            inspections,
-            ddMethodsOptions,
-
-            result: undefined,
-            methodName: null,
-            callParams: null,
-        };
-
-        this.setState({ editorsOptions: [...editorsOptions, newEditorOptions] });
+        const { routeInstanceName, actions } = this.props;
+        actions.appendCallEditor(routeInstanceName);
     }
 }
