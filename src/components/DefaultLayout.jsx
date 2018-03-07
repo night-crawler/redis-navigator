@@ -8,8 +8,8 @@ import styled from 'styled-components';
 import Navbar from '../features/Navbar';
 import Dashboard from '../features/Dashboard';
 import RedisRpc from '../features/RedisRpc';
-import { FullpageDimmer } from './helpers';
-import NotFound from './NotFound';
+import { FullpageDimmer } from '../features/Common/components/FullpageDimmer';
+import NotFound from '../features/Common/components/NotFound';
 
 
 const AppWrapper = styled.div`
