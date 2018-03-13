@@ -9,5 +9,11 @@ export default {
             inspections: false,
             instances: false,
         },
+
+        urls: {
+            rpcEndpointUrl: null,
+            statusUrl: null,
+            inspectionsUrl: null,
+        }
     }
 };

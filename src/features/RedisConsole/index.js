@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import { RedisRpc } from '../actions';
 import {
     inspections,
     routeConsoleCommands,
@@ -7,6 +8,7 @@ import {
     routeInstanceRequests,
     routeInstanceResponses,
     routeConsoleCommandsToExecute,
+    urls,
 } from '../selectors';
 import {
     appendCallEditor,
@@ -18,12 +20,10 @@ import {
 import RedisConsole from './components';
 
 
-function mapDispatchToProps(dispatch, ownProps) {
-    const { actions = {} } = ownProps;
-
+function mapDispatchToProps(dispatch) {
     return {
+        dispatch,
         actions: {
-            ...actions,
             appendCallEditor: redisInstance => dispatch(appendCallEditor(redisInstance)),
             removeCallEditor: (redisInstance, id) => dispatch(removeCallEditor(redisInstance, id)),
             changeCallEditorMethodName: (redisInstance, methodName, id) =>
@@ -35,6 +35,26 @@ function mapDispatchToProps(dispatch, ownProps) {
     };
 }
 
+
+function mergeProps(stateProps, dispatchProps, ownProps) {
+    const { urls: { rpcEndpointUrl } } = stateProps;
+    const { dispatch } = dispatchProps;
+
+    const rpc = new RedisRpc({ endpoint: rpcEndpointUrl, dispatch });
+
+    return {
+        ...ownProps,
+        ...stateProps,
+        ...dispatchProps,
+        actions: {
+            ...dispatchProps.actions,
+            batchExecute: (name, ...pairs) => rpc.batchExecute(name, ...pairs),
+        },
+        dispatch: undefined,
+    };
+}
+
+
 export default connect(
     createStructuredSelector({
         routeInstanceName,
@@ -43,6 +63,8 @@ export default connect(
         routeInstanceResponses,
         routeConsoleCommands,
         routeConsoleCommandsToExecute,
+        urls,
     }),
-    mapDispatchToProps
+    mapDispatchToProps,
+    mergeProps
 )(RedisConsole);

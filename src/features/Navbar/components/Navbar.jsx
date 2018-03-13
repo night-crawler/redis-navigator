@@ -8,9 +8,9 @@ import DropdownRedisItem from './DropdownRedisItem';
 
 Navbar.propTypes = {
     actions: PropTypes.shape({
-        handleLoadInstances: PropTypes.func.isRequired,
-        handleLoadInfo: PropTypes.func.isRequired,
-        handleSetActiveInstance: PropTypes.func.isRequired,
+        loadInstances: PropTypes.func.isRequired,
+        loadInfo: PropTypes.func.isRequired,
+        setActiveInstance: PropTypes.func.isRequired,
     }).isRequired,
     activeInstanceName: PropTypes.string,
     instances: PropTypes.array.isRequired,
@@ -26,11 +26,13 @@ export default function Navbar(props) {
         <Menu fixed='top'>
             <Container>
                 <Menu.Item as={ Link } header={ true } to={ `/${activeInstanceName}/dashboard` }>
-                    <Image
-                        size='mini'
-                        src='/logo.png'
-                        style={ { marginRight: '1.5em' } }
-                    />
+                    {/*<Image*/}
+                    {/*size='mini'*/}
+                    {/*src='/logo.png'*/}
+                    {/*style={ { marginRight: '1.5em' } }*/}
+                    {/*/>*/}
+
+                    <Icon name='map' />
                     Redis Navigator
                 </Menu.Item>
 
@@ -40,7 +42,7 @@ export default function Navbar(props) {
 
                 <Dropdown item={ true } trigger={ ddInstanceText }>
                     <Dropdown.Menu>
-                        <Dropdown.Item onClick={ actions.handleLoadInstances }>
+                        <Dropdown.Item onClick={ actions.loadInstances }>
                             <Icon name='refresh' />
                             Refresh
                         </Dropdown.Item>
@@ -52,7 +54,7 @@ export default function Navbar(props) {
                                     { ...redisOptions }
                                     key={ i }
                                     active={ activeInstanceName === redisOptions.name }
-                                    handleClick={ () => actions.handleSetActiveInstance(redisOptions.name) }
+                                    handleClick={ () => actions.setActiveInstance(redisOptions.name) }
                                 />
                             )
                         }
@@ -61,7 +63,7 @@ export default function Navbar(props) {
 
                 {
                     activeInstanceName &&
-                    <Menu.Item as='a' onClick={ () => actions.handleLoadInfo(activeInstanceName) }>
+                    <Menu.Item as='a' onClick={ () => actions.loadInfo(activeInstanceName) }>
                         <Icon name='refresh' />
                     </Menu.Item>
                 }

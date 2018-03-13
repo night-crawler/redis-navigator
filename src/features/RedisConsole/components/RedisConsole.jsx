@@ -21,7 +21,7 @@ export default class RedisConsole extends React.Component {
         inspections: PropTypes.object.isRequired,
         routeInstanceName: PropTypes.string.isRequired,
         actions: PropTypes.shape({
-            handleBatchExecute: PropTypes.func.isRequired,
+            batchExecute: PropTypes.func.isRequired,
 
             appendCallEditor: PropTypes.func.isRequired,
             removeCallEditor: PropTypes.func.isRequired,
@@ -127,7 +127,7 @@ export default class RedisConsole extends React.Component {
             { routeConsoleCommandsToExecute: commands } = this.props,
             cmdPairBundles = commands.map(cmd => [ cmd.methodName, cmd.methodParams ]);
 
-        const response = this.props.actions.handleBatchExecute(
+        const response = this.props.actions.batchExecute(
             this.props.routeInstanceName,
             ...cmdPairBundles
         );

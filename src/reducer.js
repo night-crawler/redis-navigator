@@ -6,6 +6,7 @@ import {
     REDIS_RPC_FETCH_INFO_START, REDIS_RPC_FETCH_INFO_SUCCESS,
     LOAD_INSTANCES_START, LOAD_INSTANCES_SUCCESS,
     RPC_BATCH_START, RPC_BATCH_SUCCESS,
+    INIT_STORE_WITH_URLS,
 } from './features/actions';
 
 import {
@@ -148,6 +149,11 @@ export const redisNavigator = (state = {}, action) => produce(state, draft => {
         case CLEAR_CALL_EDITORS:
             draft.instancesData[meta.path].consoleCommands = [];
             break;
+
+        case INIT_STORE_WITH_URLS:
+            draft.urls = payload;
+            break;
+
     }
 });
 

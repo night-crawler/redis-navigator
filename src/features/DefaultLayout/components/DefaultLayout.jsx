@@ -9,7 +9,6 @@ import Dashboard from '../../Dashboard';
 import RedisConsole from '../../RedisConsole';
 import { FullPageDimmer, NotFound } from '../../Common/components';
 import AppWrapper from './AppWrapper';
-import RouteWithActions from './RouteWithActions';
 
 import AppContentWrapper from './AppContentWrapper';
 
@@ -17,11 +16,11 @@ import AppContentWrapper from './AppContentWrapper';
 export default class DefaultLayout extends React.Component {
     static propTypes = {
         actions: PropTypes.shape({
-            handleLoadInstances: PropTypes.func,
-            handleSetActiveInstance: PropTypes.func,
-            handleLoadInspections: PropTypes.func,
-            handleLoadInfo: PropTypes.func,
-            handleInitStoreWithUrls: PropTypes.func,
+            loadInstances: PropTypes.func,
+            setActiveInstance: PropTypes.func,
+            loadInspections: PropTypes.func,
+            loadInfo: PropTypes.func,
+            initStoreWithUrls: PropTypes.func,
         }),
         instances: PropTypes.array,
         inspections: PropTypes.object,
@@ -41,23 +40,26 @@ export default class DefaultLayout extends React.Component {
         this.log('initialized', props);
     }
 
+    handleInitStoreWithUrls = () => {
+        const { rpcEndpointUrl, statusUrl, inspectionsUrl } = this.props;
+        const { initStoreWithUrls } = this.props.actions;
+        initStoreWithUrls({ rpcEndpointUrl, statusUrl, inspectionsUrl });
+    };
+
     componentDidMount() {
-        const {
-            instances, inspections,
-            rpcEndpointUrl, statusUrl, inspectionsUrl,
-        } = this.props;
-        isEmpty(instances) && this.props.actions.handleLoadInstances();
-        isEmpty(inspections) && this.props.actions.handleLoadInspections();
+        this.handleInitStoreWithUrls();
 
-
+        const { instances, inspections } = this.props;
+        isEmpty(instances) && this.props.actions.loadInstances();
+        isEmpty(inspections) && this.props.actions.loadInspections();
     }
 
     componentWillReceiveProps(newProps) {
-        this.log('componentWillReceiveProps', newProps);
         const { instances, activeInstanceName } = newProps;
         if (!isEmpty(instances) && !activeInstanceName) {
-            this.props.actions.handleSetActiveInstance(instances[0].name);
+            this.props.actions.setActiveInstance(instances[0].name);
         }
+        // this.handleInitStoreWithUrls();
     }
 
     render() {
@@ -79,15 +81,9 @@ export default class DefaultLayout extends React.Component {
                 <AppContentWrapper>
                     <Switch>
                         { /*<Route exact path='/' component={ HomePage } />*/ }
-                        <RouteWithActions
-                            path='/:instanceName/dashboard'
-                            actions={ this.props.actions }
-                            component={ Dashboard } />
-                        <RouteWithActions
-                            path='/:instanceName/console'
-                            actions={ this.props.actions }
-                            component={ RedisConsole } />
-                        { <Route path='' component={ NotFound } /> }
+                        <Route path='/:instanceName/dashboard' component={ Dashboard } />
+                        <Route path='/:instanceName/console' component={ RedisConsole } />
+                        <Route path='' component={ NotFound } />
                     </Switch>
                 </AppContentWrapper>
 

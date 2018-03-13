@@ -5,6 +5,13 @@ import { createSelector } from 'reselect';
 export const redisNavigator = state => state.redisNavigator;
 export const props = (state, props) => props;
 
+
+/**
+ * state.redisNavigator.urls
+ */
+export const urls = createSelector(redisNavigator, redisNavigator => redisNavigator.urls || {});
+
+
 /**
  * state.redisNavigator.instancesData
  */

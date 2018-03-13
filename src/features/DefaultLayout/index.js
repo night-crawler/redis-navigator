@@ -4,10 +4,10 @@ import {
     RedisRpc, RpcActionCreator,
     setActiveInstance,
     loadInspections,
-    loadInstances
+    loadInstances,
+    initStoreWithUrls,
 } from '../actions';
 import { createStructuredSelector } from 'reselect';
-import { initStoreWithUrls } from './actions';
 import DefaultLayout from './components';
 import {
     instances,
@@ -22,18 +22,17 @@ import {
 function mapDispatchToProps(dispatch, ownProps) {
     const { rpcEndpointUrl, statusUrl, inspectionsUrl } = ownProps;
 
-    const rpcActionCreator = new RpcActionCreator({ endpoint: rpcEndpointUrl });
-    const rpc = new RedisRpc({ dispatch, rpcActionCreator });
+    const rpc = new RedisRpc({ endpoint: rpcEndpointUrl, dispatch });
 
     return {
         actions: {
-            handleInitStoreWithUrls: urls => dispatch(initStoreWithUrls(urls)),
+            initStoreWithUrls: urls => dispatch(initStoreWithUrls(urls)),
 
-            handleLoadInstances: () => dispatch(loadInstances(statusUrl)),
-            handleLoadInfo: name => rpc.loadInfo(name),
-            handleSetActiveInstance: name => dispatch(setActiveInstance(name)),
-            handleLoadInspections: () => dispatch(loadInspections(inspectionsUrl)),
-            handleBatchExecute: (name, ...pairs) => rpc.batchExecute(name, ...pairs),
+            loadInstances: () => dispatch(loadInstances(statusUrl)),
+            loadInfo: name => rpc.loadInfo(name),
+            setActiveInstance: name => dispatch(setActiveInstance(name)),
+            loadInspections: () => dispatch(loadInspections(inspectionsUrl)),
+            batchExecute: (name, ...pairs) => rpc.batchExecute(name, ...pairs),
         }
     };
 }

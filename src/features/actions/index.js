@@ -34,3 +34,6 @@ export {
     createRedisRpcCreator,
     RedisRpc
 } from './redisRpc';
+
+
+export { initStoreWithUrls, INIT_STORE_WITH_URLS } from './initStoreWithUrls';
