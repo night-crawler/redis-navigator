@@ -15,22 +15,32 @@ import {
     changeCallEditorMethodName,
     changeCallEditorMethodParams,
     removeCallEditor,
-    clearCallEditors,
+    clearCallEditors, bindCallEditorToId,
 } from './actions';
-import RedisConsole from './components';
+import { RedisConsole } from './components';
 
 
 function mapDispatchToProps(dispatch) {
     return {
         dispatch,
         actions: {
-            appendCallEditor: redisInstance => dispatch(appendCallEditor(redisInstance)),
-            removeCallEditor: (redisInstance, id) => dispatch(removeCallEditor(redisInstance, id)),
+            appendCallEditor: redisInstance =>
+                dispatch(appendCallEditor(redisInstance)),
+
+            removeCallEditor: (redisInstance, id) =>
+                dispatch(removeCallEditor(redisInstance, id)),
+
             changeCallEditorMethodName: (redisInstance, methodName, id) =>
                 dispatch(changeCallEditorMethodName(redisInstance, methodName, id)),
+
             changeCallEditorMethodParams: (redisInstance, methodParams, id) =>
                 dispatch(changeCallEditorMethodParams(redisInstance, methodParams, id)),
-            clearCallEditors: redisInstance => dispatch(clearCallEditors(redisInstance)),
+
+            clearCallEditors: redisInstance =>
+                dispatch(clearCallEditors(redisInstance)),
+
+            bindCallEditorToId: (redisInstance, key, id) =>
+                dispatch(bindCallEditorToId(redisInstance, key, id))
         }
     };
 }

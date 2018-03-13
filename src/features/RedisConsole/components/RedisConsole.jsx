@@ -1,5 +1,5 @@
 import debug from 'debug';
-import { isEmpty, map, zip, fromPairs } from 'lodash';
+import { isEmpty, map, zip } from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Helmet } from 'react-helmet';
@@ -13,13 +13,17 @@ const ConsoleCommandType = PropTypes.shape({
     key: PropTypes.string,
     methodName: PropTypes.string,
     methodParams: PropTypes.object,
-    result: PropTypes.any,
+    response: PropTypes.any,
 });
 
 export default class RedisConsole extends React.Component {
     static propTypes = {
         inspections: PropTypes.object.isRequired,
+
         routeInstanceName: PropTypes.string.isRequired,
+        routeConsoleCommands: PropTypes.arrayOf(ConsoleCommandType),
+        routeConsoleCommandsToExecute: PropTypes.arrayOf(ConsoleCommandType),
+
         actions: PropTypes.shape({
             batchExecute: PropTypes.func.isRequired,
 
@@ -28,9 +32,8 @@ export default class RedisConsole extends React.Component {
             changeCallEditorMethodName: PropTypes.func.isRequired,
             changeCallEditorMethodParams: PropTypes.func.isRequired,
             clearCallEditors: PropTypes.func.isRequired,
+            bindCallEditorToId: PropTypes.func.isRequired,
         }).isRequired,
-        routeConsoleCommands: PropTypes.arrayOf(ConsoleCommandType),
-        routeConsoleCommandsToExecute: PropTypes.arrayOf(ConsoleCommandType),
     };
 
     constructor(props) {
@@ -40,18 +43,12 @@ export default class RedisConsole extends React.Component {
         this.log = debug('RedisConsole');
         this.log('initialized', props);
 
-        this.ddMethodsOptions = Object.entries(inspections).map(([fName, fOptions]) => {
-            return {
-                key: fName,
-                text: fName,
-                value: fName,
-                content: <DropdownRpcMethodItem { ...fOptions } name={ fName } />
-            };
-        });
-
-        this.state = {
-            editorsOptions: [],
-        };
+        this.ddMethodsOptions = Object.entries(inspections).map(([ fName, fOptions ]) => ({
+            key: fName,
+            text: fName,
+            value: fName,
+            content: <DropdownRpcMethodItem { ...fOptions } name={ fName } />
+        }));
     }
 
     componentDidMount() {
@@ -98,12 +95,14 @@ export default class RedisConsole extends React.Component {
 
         return routeConsoleCommands.map((editorOptions, i) =>
             <MethodCallEditor
-                color={ COLORS[i % COLORS.length] }
+                { ...editorOptions }
+
                 key={ editorOptions.key }
                 instanceName={ routeInstanceName }
-                { ...editorOptions }
-                ddMethodsOptions={ this.ddMethodsOptions }
                 inspections={ inspections }
+                color={ COLORS[i % COLORS.length] }
+                ddMethodsOptions={ this.ddMethodsOptions }
+
                 onRemove={ () => actions.removeCallEditor(routeInstanceName, i) }
                 onMethodNameChange={
                     methodName => actions.changeCallEditorMethodName(routeInstanceName, methodName, i)
@@ -123,24 +122,21 @@ export default class RedisConsole extends React.Component {
     handleAppendCallEditorClicked = () => this.appendMethodCallEditor();
 
     handleExecuteAllClicked = () => {
-        const
-            { routeConsoleCommandsToExecute: commands } = this.props,
+        const {
+                routeConsoleCommandsToExecute: commands,
+                routeInstanceName,
+                actions: { bindCallEditorToId, batchExecute }
+            } = this.props,
             cmdPairBundles = commands.map(cmd => [ cmd.methodName, cmd.methodParams ]);
 
-        const response = this.props.actions.batchExecute(
-            this.props.routeInstanceName,
-            ...cmdPairBundles
-        );
+        console.log(cmdPairBundles);
 
-        response.then((data) => {
-            const idToKeyMap = fromPairs(zip(
-                map(data.meta.request, 'id'),
-                map(commands, 'key')
-            ));
-
-            console.log(idToKeyMap);
-        });
-
+        batchExecute(routeInstanceName, ...cmdPairBundles)
+            .then((data) => {
+                zip(map(commands, 'key'), map(data.meta.request, 'id'))
+                    .forEach(([ key, id ]) =>
+                        bindCallEditorToId(routeInstanceName, key, id));
+            });
     };
 
     appendMethodCallEditor() {

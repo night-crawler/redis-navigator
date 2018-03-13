@@ -1,5 +1,4 @@
 import produce from 'immer';
-import _ from 'lodash';
 import {
     SET_ACTIVE_INSTANCE,
     LOAD_INSPECTIONS_START, LOAD_INSPECTIONS_SUCCESS,
@@ -8,6 +7,7 @@ import {
     RPC_BATCH_START, RPC_BATCH_SUCCESS,
     INIT_STORE_WITH_URLS,
 } from './features/actions';
+import { isArray, fromPairs, pick, findIndex } from 'lodash';
 
 import {
     APPEND_CALL_EDITOR,
@@ -15,23 +15,24 @@ import {
     CHANGE_CALL_EDITOR_METHOD_NAME,
     CHANGE_CALL_EDITOR_METHOD_PARAMS,
     CLEAR_CALL_EDITORS,
+    BIND_CALL_EDITOR_TO_ID,
 } from './features/RedisConsole/actions';
 import { parametersToJson } from './features/RedisConsole/components/utils';
 
 
 function mapRpcRequestsById(rpcRequest) {
-    return _(_.isArray(rpcRequest) ? rpcRequest : [rpcRequest])
-        .map(request => [request.id, _.pick(request, ['method', 'params'])])
-        .fromPairs()
-        .value();
+    const requests = isArray(rpcRequest) ? rpcRequest : [rpcRequest];
+    return fromPairs(
+        requests.map(request => [request.id, pick(request, ['method', 'params'])])
+    );
 }
 
 
 function mapRpcResponsesById(rpcResponse) {
-    return _(_.isArray(rpcResponse) ? rpcResponse : [rpcResponse])
-        .map(response => [response.id, _.pick(response, ['result', 'error'])])
-        .fromPairs()
-        .value();
+    const responses = isArray(rpcResponse) ? rpcResponse : [rpcResponse];
+    return fromPairs(
+        responses.map(response => [response.id, pick(response, ['result', 'error'])])
+    );
 }
 
 
@@ -47,9 +48,8 @@ function mapRpcResponsesById(rpcResponse) {
 
 
 function registerInfo(instanceData, rpcResponse) {
-    return _(mapRpcResponsesById(rpcResponse))
-        .entries()
-        .map(([id, response]) => {
+    const pairs = Object.entries(mapRpcResponsesById(rpcResponse))
+        .map(([ id, response ]) => {
             const
                 request = instanceData.requests[id],
                 methodName = request.method.split('.').pop();
@@ -66,9 +66,8 @@ function registerInfo(instanceData, rpcResponse) {
                 case 'client_getname':
                     return ['name', response];
             }
-        })
-        .fromPairs()
-        .value();
+        });
+    return fromPairs(pairs);
 }
 
 
@@ -128,34 +127,59 @@ export const redisNavigator = (state = {}, action) => produce(state, draft => {
             break;
 
         case APPEND_CALL_EDITOR:
-            draft.instancesData[meta.path].consoleCommands.push(payload);
+            draft
+                .instancesData[meta.path]
+                .consoleCommands.push(payload);
             break;
 
         case REMOVE_CALL_EDITOR:
-            draft.instancesData[meta.path].consoleCommands.splice(payload.id, 1);
+            draft
+                .instancesData[meta.path]
+                .consoleCommands.splice(payload.id, 1);
             break;
 
         case CHANGE_CALL_EDITOR_METHOD_NAME:
-            draft.instancesData[meta.path].consoleCommands[payload.id].methodName = payload.methodName;
-            draft.instancesData[meta.path].consoleCommands[payload.id].methodParams = parametersToJson(
-                state.inspections[payload.methodName].parameters
-            );
+            draft
+                .instancesData[meta.path]
+                .consoleCommands[payload.id]
+                .methodName = payload.methodName;
+
+            draft
+                .instancesData[meta.path]
+                .consoleCommands[payload.id]
+                .methodParams = parametersToJson(
+                    state.inspections[payload.methodName].parameters);
             break;
 
         case CHANGE_CALL_EDITOR_METHOD_PARAMS:
-            draft.instancesData[meta.path].consoleCommands[payload.id].methodParams = payload.methodParams;
+            draft
+                .instancesData[meta.path]
+                .consoleCommands[payload.id]
+                .methodParams = payload.methodParams;
             break;
 
         case CLEAR_CALL_EDITORS:
-            draft.instancesData[meta.path].consoleCommands = [];
+            draft
+                .instancesData[meta.path]
+                .consoleCommands = [];
             break;
 
         case INIT_STORE_WITH_URLS:
             draft.urls = payload;
             break;
 
+        case BIND_CALL_EDITOR_TO_ID:
+            draft
+                .instancesData[meta.path]
+                .consoleCommands[
+                    findIndex(
+                        instancesData[meta.path].consoleCommands,
+                        { key: payload.key }
+                    )
+                ]
+                .response = instancesData[meta.path].responses[payload.requestId];
+            break;
     }
 });
-
 
 export default redisNavigator;

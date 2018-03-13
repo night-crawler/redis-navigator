@@ -2,9 +2,9 @@ import debug from 'debug';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ReactJson from 'react-json-view';
-import { Button, Dropdown, Grid, Header, Segment } from 'semantic-ui-react';
+import { Button, Dropdown, Grid, Header, Segment, Icon } from 'semantic-ui-react';
 import { reprMethodArgs, reprMethodDoc } from './utils';
-import { isEqual } from 'lodash';
+import RpcResponse from './RpcResponse';
 
 
 export default class MethodCallEditor extends React.Component {
@@ -21,6 +21,10 @@ export default class MethodCallEditor extends React.Component {
         color: PropTypes.string,
         methodName: PropTypes.string,
         methodParams: PropTypes.object,
+        response: PropTypes.shape({
+            result: PropTypes.any,
+            error: PropTypes.any,
+        }),
 
         onMethodNameChange: PropTypes.func,
         onMethodParamsChange: PropTypes.func,
@@ -46,8 +50,7 @@ export default class MethodCallEditor extends React.Component {
     render() {
         this.log('render');
         const {
-            methodName,
-            methodParams,
+            methodName, methodParams, response,
             instanceName, color, inspections,
             onRemove
         } = this.props;
@@ -73,10 +76,13 @@ export default class MethodCallEditor extends React.Component {
                     <Header.Subheader>
                         { reprMethodDoc(methodProps.doc) }
                     </Header.Subheader>
+                    <Header.Subheader>
+                        <Button floated='right'><Icon name='reply' rotated='clockwise' /></Button>
+                    </Header.Subheader>
                 </Header>
 
 
-                <Grid>
+                <Grid stackable={ true }>
                     <Grid.Column width={ 6 }>
                         <ReactJson
                             src={ methodParams }
@@ -86,6 +92,13 @@ export default class MethodCallEditor extends React.Component {
                             onDelete={ () => null }
                         />
                     </Grid.Column>
+                    {
+                        response && (
+                            <Grid.Column width={ 9 }>
+                                <RpcResponse response={ response } />
+                            </Grid.Column>
+                        )
+                    }
                 </Grid>
 
 

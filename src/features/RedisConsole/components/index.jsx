@@ -1,3 +1,3 @@
 import RedisConsole from './RedisConsole';
 
-export default RedisConsole;
+export { RedisConsole };

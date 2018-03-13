@@ -123,7 +123,7 @@ export const routeConsoleCommandsToExecute = createSelector(
     routeConsoleCommands,
     routeConsoleCommands => filter(
         routeConsoleCommands,
-        cmd => cmd.result === null && cmd.methodName
+        cmd => cmd.response === null && cmd.methodName
     )
 );
 

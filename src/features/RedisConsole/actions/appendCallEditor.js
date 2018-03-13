@@ -9,7 +9,7 @@ export const appendCallEditor = (instanceName, key=uuid4()) => ({
         key: key,
         methodName: null,
         methodParams: null,
-        result: null,
+        response: null,
     },
     meta: { path: instanceName },
 });
