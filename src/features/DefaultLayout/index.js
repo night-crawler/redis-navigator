@@ -32,7 +32,6 @@ function mapDispatchToProps(dispatch, ownProps) {
             loadInfo: name => rpc.loadInfo(name),
             setActiveInstance: name => dispatch(setActiveInstance(name)),
             loadInspections: () => dispatch(loadInspections(inspectionsUrl)),
-            batchExecute: (name, ...pairs) => rpc.batchExecute(name, ...pairs),
         }
     };
 }

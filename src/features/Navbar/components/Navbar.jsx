@@ -15,7 +15,7 @@ Navbar.propTypes = {
     activeInstanceName: PropTypes.string,
     instances: PropTypes.array.isRequired,
 };
-export default function Navbar(props) {
+export function Navbar(props) {
     const { instances = {}, activeInstanceName, actions } = props;
 
     const ddInstanceText = activeInstanceName

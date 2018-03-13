@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import Navbar from './components';
+import { Navbar } from './components';
 import { createStructuredSelector } from 'reselect';
 import {
     instances,
