@@ -1,11 +1,13 @@
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { loadInspections } from '../actions/loadInspections';
-import { loadInstances } from '../actions/loadInstances';
-import RedisRpc from '../actions/redisRpc';
-import { RpcActionCreator } from '../actions/rpc';
-import { setActiveInstance } from '../actions/setActiveInstance';
+import {
+    RedisRpc, RpcActionCreator,
+    setActiveInstance,
+    loadInspections,
+    loadInstances
+} from '../actions';
 import { createStructuredSelector } from 'reselect';
+import { initStoreWithUrls } from './actions';
 import DefaultLayout from './components';
 import {
     instances,
@@ -25,6 +27,8 @@ function mapDispatchToProps(dispatch, ownProps) {
 
     return {
         actions: {
+            handleInitStoreWithUrls: urls => dispatch(initStoreWithUrls(urls)),
+
             handleLoadInstances: () => dispatch(loadInstances(statusUrl)),
             handleLoadInfo: name => rpc.loadInfo(name),
             handleSetActiveInstance: name => dispatch(setActiveInstance(name)),

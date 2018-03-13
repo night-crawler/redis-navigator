@@ -1,5 +1,5 @@
 import debug from 'debug';
-import { isEmpty, filter } from 'lodash';
+import { isEmpty, map, zip, fromPairs } from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Helmet } from 'react-helmet';
@@ -8,6 +8,13 @@ import { COLORS } from 'semantic-ui-react/dist/es/lib/SUI';
 import DropdownRpcMethodItem from './DropdownRpcMethodItem';
 import MethodCallEditor from './MethodCallEditor';
 
+
+const ConsoleCommandType = PropTypes.shape({
+    key: PropTypes.string,
+    methodName: PropTypes.string,
+    methodParams: PropTypes.object,
+    result: PropTypes.any,
+});
 
 export default class RedisConsole extends React.Component {
     static propTypes = {
@@ -22,12 +29,8 @@ export default class RedisConsole extends React.Component {
             changeCallEditorMethodParams: PropTypes.func.isRequired,
             clearCallEditors: PropTypes.func.isRequired,
         }).isRequired,
-        routeConsoleCommands: PropTypes.arrayOf(PropTypes.shape({
-            key: PropTypes.string,
-            methodName: PropTypes.string,
-            methodParams: PropTypes.object,
-            result: PropTypes.any,
-        })),
+        routeConsoleCommands: PropTypes.arrayOf(ConsoleCommandType),
+        routeConsoleCommandsToExecute: PropTypes.arrayOf(ConsoleCommandType),
     };
 
     constructor(props) {
@@ -63,22 +66,29 @@ export default class RedisConsole extends React.Component {
             <Segment.Group>
                 <Helmet><title>RPC Console</title></Helmet>
 
-                <Button.Group widths='4' attached='top'>
+                { this.renderEditors() }
+
+                <Button.Group widths='5' attached='bottom'>
+                    <Button basic={ true } color='grey' onClick={ this.handleAppendCallEditorClicked }>
+                        <Icon name='add' />Append
+                    </Button>
+
+                    <Button basic={ true } color='grey'>
+                        <Icon name='external' />Export
+                    </Button>
+                    <Button basic={ true } color='grey'>
+                        <Icon name='download' />Import
+                    </Button>
+
                     <Button basic={ true } color='red' onClick={ this.handleClearCallEditorsClicked }>
                         <Icon name='trash outline' />Clear
                     </Button>
-
-                    <Button>Export</Button>
-                    <Button>Import</Button>
 
                     <Button basic={ true } color='green' onClick={ this.handleExecuteAllClicked }>
                         <Icon name='lightning' />Execute
                     </Button>
                 </Button.Group>
 
-                { this.renderEditors() }
-
-                <Button attached='bottom' icon='add' onClick={ this.handleAppendCallEditorClicked } />
             </Segment.Group>
         );
     }
@@ -113,8 +123,24 @@ export default class RedisConsole extends React.Component {
     handleAppendCallEditorClicked = () => this.appendMethodCallEditor();
 
     handleExecuteAllClicked = () => {
-        const { editorsOptions } = this.state;
-        const { actions: handleBatchExecute } = this.props;
+        const
+            { routeConsoleCommandsToExecute: commands } = this.props,
+            cmdPairBundles = commands.map(cmd => [ cmd.methodName, cmd.methodParams ]);
+
+        const response = this.props.actions.handleBatchExecute(
+            this.props.routeInstanceName,
+            ...cmdPairBundles
+        );
+
+        response.then((data) => {
+            const idToKeyMap = fromPairs(zip(
+                map(data.meta.request, 'id'),
+                map(commands, 'key')
+            ));
+
+            console.log(idToKeyMap);
+        });
+
     };
 
     appendMethodCallEditor() {

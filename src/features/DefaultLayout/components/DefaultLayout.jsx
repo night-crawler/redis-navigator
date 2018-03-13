@@ -21,12 +21,17 @@ export default class DefaultLayout extends React.Component {
             handleSetActiveInstance: PropTypes.func,
             handleLoadInspections: PropTypes.func,
             handleLoadInfo: PropTypes.func,
+            handleInitStoreWithUrls: PropTypes.func,
         }),
         instances: PropTypes.array,
         inspections: PropTypes.object,
         instancesData: PropTypes.object,
         activeInstanceName: PropTypes.string,
         isReady: PropTypes.bool,
+
+        rpcEndpointUrl: PropTypes.string.isRequired,
+        statusUrl: PropTypes.string.isRequired,
+        inspectionsUrl: PropTypes.string.isRequired,
     };
 
     constructor(props) {
@@ -37,9 +42,14 @@ export default class DefaultLayout extends React.Component {
     }
 
     componentDidMount() {
-        const { instances, inspections } = this.props;
+        const {
+            instances, inspections,
+            rpcEndpointUrl, statusUrl, inspectionsUrl,
+        } = this.props;
         isEmpty(instances) && this.props.actions.handleLoadInstances();
         isEmpty(inspections) && this.props.actions.handleLoadInspections();
+
+
     }
 
     componentWillReceiveProps(newProps) {

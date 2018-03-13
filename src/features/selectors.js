@@ -1,4 +1,4 @@
-import { find, every } from 'lodash';
+import { find, every, filter } from 'lodash';
 import { createSelector } from 'reselect';
 
 
@@ -109,6 +109,15 @@ export const routeInstanceResponses = createSelector(
 export const routeConsoleCommands = createSelector(
     routeInstanceData,
     routeInstanceData => routeInstanceData.consoleCommands
+);
+
+
+export const routeConsoleCommandsToExecute = createSelector(
+    routeConsoleCommands,
+    routeConsoleCommands => filter(
+        routeConsoleCommands,
+        cmd => cmd.result === null && cmd.methodName
+    )
 );
 
 

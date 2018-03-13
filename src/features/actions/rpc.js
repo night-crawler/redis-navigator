@@ -10,10 +10,21 @@ import { getApiMiddlewareOptions, jsonRequestHeaders } from '../../utils';
 export const RPC_EXECUTE_START = 'redisNavigator/rpc/execute/start';
 export const RPC_EXECUTE_SUCCESS = 'redisNavigator/rpc/execute/success';
 export const RPC_EXECUTE_FAIL = 'redisNavigator/rpc/execute/fail';
+export const RPC_EXECUTE_TRIPLE = [
+    RPC_EXECUTE_START,
+    RPC_EXECUTE_SUCCESS,
+    RPC_EXECUTE_FAIL,
+];
+
 
 export const RPC_BATCH_START = 'redisNavigator/rpc/batchExecute/start';
 export const RPC_BATCH_SUCCESS = 'redisNavigator/rpc/batchExecute/success';
 export const RPC_BATCH_FAIL = 'redisNavigator/rpc/batchExecute/fail';
+export const RPC_BATCH_TRIPLE = [
+    RPC_BATCH_START,
+    RPC_BATCH_SUCCESS,
+    RPC_BATCH_FAIL,
+];
 
 
 function validateRpcBatchCallArguments(pairs) {
@@ -62,11 +73,14 @@ export class RpcRequestBuilder {
 }
 
 
+const defaultRpcRequestBuilder = new RpcRequestBuilder();
+
+
 export class RSAARpcActionCreator {
     constructor(
         endpoint = '/rpc',
-        executeActionTypes = [RPC_EXECUTE_START, RPC_EXECUTE_SUCCESS, RPC_EXECUTE_FAIL],
-        batchExecuteActionTypes = [RPC_BATCH_START, RPC_BATCH_SUCCESS, RPC_BATCH_FAIL],
+        executeActionTypes = RPC_EXECUTE_TRIPLE,
+        batchExecuteActionTypes = RPC_BATCH_TRIPLE,
     ) {
         if (executeActionTypes.length !== 3)
             throw new RPCBadActionTypesError();
@@ -127,7 +141,7 @@ export class RpcActionCreator {
     constructor({
         endpoint = '/rpc',
         path = '',
-        requestBuilder = new RpcRequestBuilder(),
+        requestBuilder = defaultRpcRequestBuilder,
         rsaaActionCreator = new RSAARpcActionCreator(endpoint),
     } = {}) {
         if (!endpoint || typeof endpoint !== 'string')

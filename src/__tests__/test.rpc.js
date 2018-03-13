@@ -131,7 +131,10 @@ describe('RpcActionCreator', () => {
     });
 
     it('can perform a batch execute', () => {
-        const redisRpc = new RpcActionCreator({ path: 'redis_0' });
+        const redisRpc = new RpcActionCreator({
+            path: 'redis_0',
+            requestBuilder: new RpcRequestBuilder()
+        });
         const expectedBody = [
             {
                 id: 1,

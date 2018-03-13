@@ -1,9 +1,13 @@
 import produce from 'immer';
 import _ from 'lodash';
-import { LOAD_INSPECTIONS_START, LOAD_INSPECTIONS_SUCCESS } from './features/actions/loadInspections';
-import { LOAD_INSTANCES_START, LOAD_INSTANCES_SUCCESS } from './features/actions/loadInstances';
-import { REDIS_RPC_FETCH_INFO_START, REDIS_RPC_FETCH_INFO_SUCCESS, } from './features/actions/redisRpc';
-import { SET_ACTIVE_INSTANCE } from './features/actions/setActiveInstance';
+import {
+    SET_ACTIVE_INSTANCE,
+    LOAD_INSPECTIONS_START, LOAD_INSPECTIONS_SUCCESS,
+    REDIS_RPC_FETCH_INFO_START, REDIS_RPC_FETCH_INFO_SUCCESS,
+    LOAD_INSTANCES_START, LOAD_INSTANCES_SUCCESS,
+    RPC_BATCH_START, RPC_BATCH_SUCCESS,
+} from './features/actions';
+
 import {
     APPEND_CALL_EDITOR,
     REMOVE_CALL_EDITOR,
@@ -94,6 +98,7 @@ export const redisNavigator = (state = {}, action) => produce(state, draft => {
             });
             break;
 
+        case RPC_BATCH_START:
         case REDIS_RPC_FETCH_INFO_START:
             draft.instancesData[meta.path].requests = {
                 ...instancesData[meta.path].requests,
@@ -101,12 +106,15 @@ export const redisNavigator = (state = {}, action) => produce(state, draft => {
             };
             break;
 
+        case RPC_BATCH_SUCCESS:
         case REDIS_RPC_FETCH_INFO_SUCCESS:
             draft.instancesData[meta.path].responses = {
                 ...instancesData[meta.path].responses,
                 ...mapRpcResponsesById(payload)
             };
-            draft.instancesData[meta.path].info = registerInfo(instancesData[meta.path], payload);
+            action.type === REDIS_RPC_FETCH_INFO_SUCCESS
+                ? draft.instancesData[meta.path].info = registerInfo(instancesData[meta.path], payload)
+                : null;
             break;
 
         case LOAD_INSPECTIONS_START:

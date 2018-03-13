@@ -6,6 +6,7 @@ import {
     routeInstanceName,
     routeInstanceRequests,
     routeInstanceResponses,
+    routeConsoleCommandsToExecute,
 } from '../selectors';
 import {
     appendCallEditor,
@@ -41,6 +42,7 @@ export default connect(
         routeInstanceRequests,
         routeInstanceResponses,
         routeConsoleCommands,
+        routeConsoleCommandsToExecute,
     }),
     mapDispatchToProps
 )(RedisConsole);

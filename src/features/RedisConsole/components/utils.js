@@ -35,19 +35,18 @@ export function reprMethodDoc(rawDoc) {
 export function parametersToJson(parameters) {
     const mappedParams = {};
     parameters.forEach(({ name, kind, default: default_, type }) => {
-        const hasDefault = default_ || (typeof default_ === 'number');
-        let val = hasDefault ? default_ : undefined;
         if (kind === 'VAR_POSITIONAL')
-            val = default_ || [];
+            return mappedParams[name] = default_ || [];
         if (kind === 'VAR_KEYWORD')
-            val = default_ || {};
+            return mappedParams[name] = default_ || {};
 
-        // this values *must* be set in almost all cases
-        if (kind === 'POSITIONAL_OR_KEYWORD')
+        let val;
+        if (kind === 'POSITIONAL_OR_KEYWORD' || kind === 'POSITIONAL_ONLY')
             val = '';
-        if (kind === 'POSITIONAL_ONLY')
-            val = '';
+        if (default_ !== null)
+            val = default_;
 
+        // undefined for the rest
         mappedParams[name] = val;
     });
     return mappedParams;

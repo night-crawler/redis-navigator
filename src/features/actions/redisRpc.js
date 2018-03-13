@@ -13,7 +13,7 @@ const REDIS_RPC_FETCH_INFO = [
 
 
 
-export default class RedisRpc {
+export class RedisRpc {
     constructor({
         dispatch,
         endpoint,
