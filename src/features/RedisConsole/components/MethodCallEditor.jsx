@@ -94,7 +94,7 @@ export default class MethodCallEditor extends React.Component {
                     </Grid.Column>
                     {
                         response && (
-                            <Grid.Column width={ 9 }>
+                            <Grid.Column width={ 10 }>
                                 <RpcResponse response={ response } />
                             </Grid.Column>
                         )

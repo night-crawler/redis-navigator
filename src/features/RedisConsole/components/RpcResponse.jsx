@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { isEmpty } from 'lodash';
+import { isEmpty, isString, isPlainObject, isArray } from 'lodash';
 import { Header, Segment } from 'semantic-ui-react';
 import ReactJson from 'react-json-view';
-
+import { isBase64 } from '../../../utils';
 
 RpcResult.propTypes = {
     result: PropTypes.any,
@@ -11,10 +11,19 @@ RpcResult.propTypes = {
 function RpcResult(props) {
     const { result } = props;
 
-    return <ReactJson
-        src={ result }
-        name={ false }
-    />;
+    if (isArray(result) || isPlainObject(result)) {
+        return <ReactJson
+            src={ result }
+            groupArraysAfterLength={ 20 }
+            name={ false }
+        />;
+    }
+
+    if (isString(result)) {
+        return <div>{ isBase64(result) ? atob(result) : result }</div>;
+    }
+
+    return <div>{ result }</div>;
 }
 
 RpcError.propTypes = {
