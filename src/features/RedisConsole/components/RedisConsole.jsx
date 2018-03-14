@@ -129,7 +129,7 @@ export default class RedisConsole extends React.Component {
             } = this.props,
             cmdPairBundles = commands.map(cmd => [ cmd.methodName, cmd.methodParams ]);
 
-        console.log(cmdPairBundles);
+//        console.log(cmdPairBundles);
 
         batchExecute(routeInstanceName, ...cmdPairBundles)
             .then((data) => {

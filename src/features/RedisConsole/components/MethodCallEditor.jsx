@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ReactJson from 'react-json-view';
 import { Button, Dropdown, Grid, Header, Segment, Icon } from 'semantic-ui-react';
-import { reprMethodArgs, reprMethodDoc } from './utils';
+import {parametersToJson, reprMethodArgs, reprMethodDoc} from './utils';
 import RpcResponse from './RpcResponse';
 
 
@@ -47,6 +47,17 @@ export default class MethodCallEditor extends React.Component {
         this.log('initialized', props);
     }
 
+    componentWillReceiveProps(newProps) {
+        const { methodParams: oldMethodParams, onMethodParamsChange } = this.props;
+
+        const { methodName, methodParams, inspections } = newProps;
+        const methodProps = inspections[methodName];
+
+        if (!methodParams || !oldMethodParams) {
+            onMethodParamsChange(parametersToJson(methodProps.parameters));
+        }
+    }
+
     render() {
         this.log('render');
         const {
@@ -59,6 +70,9 @@ export default class MethodCallEditor extends React.Component {
             return this.renderMethodSelector();
 
         const methodProps = inspections[methodName];
+
+        if (!methodParams)
+            return false;
 
         return (
             <Segment raised={ true } color={ color }>
@@ -75,10 +89,9 @@ export default class MethodCallEditor extends React.Component {
                     </Header.Content>
                     <Header.Subheader>
                         { reprMethodDoc(methodProps.doc) }
+                        <Button floated='right' icon='repeat' size='big' color='orange' circular={ true } />
                     </Header.Subheader>
-                    <Header.Subheader>
-                        <Button floated='right'><Icon name='reply' rotated='clockwise' /></Button>
-                    </Header.Subheader>
+
                 </Header>
 
 

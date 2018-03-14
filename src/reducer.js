@@ -1,8 +1,9 @@
+import { combineReducers } from 'redux';
 import produce from 'immer';
 import {
     SET_ACTIVE_INSTANCE,
     LOAD_INSPECTIONS_START, LOAD_INSPECTIONS_SUCCESS,
-    REDIS_RPC_FETCH_INFO_START, REDIS_RPC_FETCH_INFO_SUCCESS,
+    REDIS_RPC_FETCH_INFO_SUCCESS,
     LOAD_INSTANCES_START, LOAD_INSTANCES_SUCCESS,
     RPC_BATCH_START, RPC_BATCH_SUCCESS,
     INIT_STORE_WITH_URLS,
@@ -17,7 +18,6 @@ import {
     CLEAR_CALL_EDITORS,
     BIND_CALL_EDITOR_TO_ID,
 } from './features/RedisConsole/actions';
-import { parametersToJson } from './features/RedisConsole/components/utils';
 
 
 function mapRpcRequestsById(rpcRequest) {
@@ -47,12 +47,11 @@ function mapRpcResponsesById(rpcResponse) {
 * */
 
 
-function registerInfo(instanceData, rpcResponse) {
+function registerInfo(requests, rpcResponse) {
+    const requestsByIdMap = mapRpcRequestsById(requests);
     const pairs = Object.entries(mapRpcResponsesById(rpcResponse))
         .map(([ id, response ]) => {
-            const
-                request = instanceData.requests[id],
-                methodName = request.method.split('.').pop();
+            const methodName = requestsByIdMap[id].method.split('.').pop();
 
             switch (methodName) {
                 case 'config_get':
@@ -71,25 +70,28 @@ function registerInfo(instanceData, rpcResponse) {
 }
 
 
-export const redisNavigator = (state = {}, action) => produce(state, draft => {
-    const { instancesData } = state;
+const instances = (state = [], action) => {
+    switch (action.type) {
+        case LOAD_INSTANCES_SUCCESS:
+            return action.payload;
+
+        default:
+            return state;
+    }
+};
+
+
+const instancesData = (state = {}, action) => produce(state, draft => {
     const { payload, meta } = action;
 
+    const draftRedis = meta ? draft[meta.path] : null;
+    const redis = meta ? state[meta.path] : null;
+
     switch (action.type) {
-        case SET_ACTIVE_INSTANCE:
-            draft.activeInstanceName = payload.name;
-            break;
-
-        case LOAD_INSTANCES_START:
-            draft.hasLoaded.instances = false;
-            break;
-
         case LOAD_INSTANCES_SUCCESS:
-            draft.instances = payload;
-            draft.hasLoaded.instances = true;
             payload.forEach(({ name }) => {
-                if (!instancesData[name])
-                    draft.instancesData[name] = {
+                if (!state[name])
+                    draft[name] = {
                         requests: {},
                         responses: {},
                         info: {},
@@ -99,87 +101,120 @@ export const redisNavigator = (state = {}, action) => produce(state, draft => {
             break;
 
         case RPC_BATCH_START:
-        case REDIS_RPC_FETCH_INFO_START:
-            draft.instancesData[meta.path].requests = {
-                ...instancesData[meta.path].requests,
+            draftRedis.requests = {
+                ...state[meta.path].requests,
                 ...mapRpcRequestsById(meta.request)
             };
             break;
 
         case RPC_BATCH_SUCCESS:
-        case REDIS_RPC_FETCH_INFO_SUCCESS:
-            draft.instancesData[meta.path].responses = {
-                ...instancesData[meta.path].responses,
+            draftRedis.responses = {
+                ...redis.responses,
                 ...mapRpcResponsesById(payload)
             };
-            action.type === REDIS_RPC_FETCH_INFO_SUCCESS
-                ? draft.instancesData[meta.path].info = registerInfo(instancesData[meta.path], payload)
-                : null;
             break;
 
-        case LOAD_INSPECTIONS_START:
-            draft.hasLoaded.inspections = false;
-            break;
-
-        case LOAD_INSPECTIONS_SUCCESS:
-            draft.hasLoaded.inspections = true;
-            draft.inspections = payload;
+        case REDIS_RPC_FETCH_INFO_SUCCESS:
+            draftRedis.info = registerInfo(meta.request, payload);
             break;
 
         case APPEND_CALL_EDITOR:
-            draft
-                .instancesData[meta.path]
-                .consoleCommands.push(payload);
+            draftRedis.consoleCommands.push(payload);
             break;
 
         case REMOVE_CALL_EDITOR:
-            draft
-                .instancesData[meta.path]
-                .consoleCommands.splice(payload.id, 1);
+            draftRedis.consoleCommands.splice(payload.id, 1);
             break;
 
         case CHANGE_CALL_EDITOR_METHOD_NAME:
-            draft
-                .instancesData[meta.path]
+            draftRedis
                 .consoleCommands[payload.id]
                 .methodName = payload.methodName;
-
-            draft
-                .instancesData[meta.path]
-                .consoleCommands[payload.id]
-                .methodParams = parametersToJson(
-                    state.inspections[payload.methodName].parameters);
             break;
 
         case CHANGE_CALL_EDITOR_METHOD_PARAMS:
-            draft
-                .instancesData[meta.path]
+            draftRedis
                 .consoleCommands[payload.id]
                 .methodParams = payload.methodParams;
             break;
 
         case CLEAR_CALL_EDITORS:
-            draft
-                .instancesData[meta.path]
+            draftRedis
                 .consoleCommands = [];
             break;
 
-        case INIT_STORE_WITH_URLS:
-            draft.urls = payload;
-            break;
-
         case BIND_CALL_EDITOR_TO_ID:
-            draft
-                .instancesData[meta.path]
+            draftRedis
                 .consoleCommands[
                     findIndex(
-                        instancesData[meta.path].consoleCommands,
+                        redis.consoleCommands,
                         { key: payload.key }
                     )
                 ]
-                .response = instancesData[meta.path].responses[payload.requestId];
+                .response = redis.responses[payload.requestId];
             break;
     }
 });
 
-export default redisNavigator;
+
+const activeInstanceName = (state = '', action) => {
+    switch (action.type) {
+        case SET_ACTIVE_INSTANCE:
+            return action.payload.name;
+
+        default:
+            return state;
+    }
+};
+
+
+const hasLoaded = (state = {}, action) => {
+    switch (action.type) {
+        case LOAD_INSPECTIONS_START:
+            return { ...state, inspections: false };
+
+        case LOAD_INSPECTIONS_SUCCESS:
+            return { ...state, inspections: true };
+
+        case LOAD_INSTANCES_START:
+            return { ...state, instances: false };
+
+        case LOAD_INSTANCES_SUCCESS:
+            return { ...state, instances: true };
+
+        default:
+            return state;
+    }
+};
+
+
+const inspections = (state = {}, action) => {
+    switch (action.type) {
+        case LOAD_INSPECTIONS_SUCCESS:
+            return action.payload;
+
+        default:
+            return state;
+    }
+};
+
+
+const urls = (state = {}, action) => {
+    switch (action.type) {
+        case INIT_STORE_WITH_URLS:
+            return action.payload;
+
+        default:
+            return state;
+    }
+};
+
+
+export default combineReducers({
+    instances,
+    instancesData,
+    activeInstanceName,
+    hasLoaded,
+    inspections,
+    urls,
+});
