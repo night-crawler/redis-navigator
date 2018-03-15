@@ -130,12 +130,16 @@ const instancesData = (state = {}, action) => produce(state, draft => {
             draftRedis
                 .consoleCommands[payload.id]
                 .methodName = payload.methodName;
+            draftRedis
+                .consoleCommands[payload.id]
+                .dirty = true;
             break;
 
         case CHANGE_CALL_EDITOR_METHOD_PARAMS:
             draftRedis
                 .consoleCommands[payload.id]
                 .methodParams = payload.methodParams;
+            draftRedis.consoleCommands[payload.id].dirty = true;
             break;
 
         case CLEAR_CALL_EDITORS:
@@ -144,14 +148,14 @@ const instancesData = (state = {}, action) => produce(state, draft => {
             break;
 
         case BIND_CALL_EDITOR_TO_ID:
+            const index = findIndex(redis.consoleCommands, { key: payload.key });
+            console.log('/SUKA', redis.responses[payload.requestId]);
             draftRedis
-                .consoleCommands[
-                    findIndex(
-                        redis.consoleCommands,
-                        { key: payload.key }
-                    )
-                ]
+                .consoleCommands[index]
                 .response = redis.responses[payload.requestId];
+            draftRedis
+                .consoleCommands[index]
+                .dirty = false;
             break;
     }
 });

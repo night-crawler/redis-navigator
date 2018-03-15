@@ -25,6 +25,7 @@ export default class MethodCallEditor extends React.Component {
             result: PropTypes.any,
             error: PropTypes.any,
         }),
+        dirty: PropTypes.bool,
 
         onMethodNameChange: PropTypes.func,
         onMethodParamsChange: PropTypes.func,
@@ -53,15 +54,29 @@ export default class MethodCallEditor extends React.Component {
         const { methodName, methodParams, inspections } = newProps;
         const methodProps = inspections[methodName];
 
-        if (!methodParams || !oldMethodParams) {
+        if (methodProps && methodName && (!methodParams || !oldMethodParams)) {
             onMethodParamsChange(parametersToJson(methodProps.parameters));
         }
+    }
+
+    isSuccess() {
+        const { response } = this.props;
+        if (!response)
+            return false;
+
+        if (response.result !== undefined)
+            return true;
+
+        if (response.error !== undefined)
+            return false;
+
+        return false
     }
 
     render() {
         this.log('render');
         const {
-            methodName, methodParams, response,
+            methodName, methodParams, response, dirty,
             instanceName, color, inspections,
             onRemove
         } = this.props;
@@ -76,7 +91,7 @@ export default class MethodCallEditor extends React.Component {
 
         return (
             <Segment raised={ true } color={ color }>
-                <Header as='h2' block={ true }>
+                <Header as='h2' block={ true } color={ this.isSuccess() && !dirty ? 'green' : undefined }>
                     <Header.Content>
                         <Button
                             color='orange' icon='remove' size='huge'
@@ -86,14 +101,13 @@ export default class MethodCallEditor extends React.Component {
                     <Header.Content>
                         { instanceName }.{ methodName }
                         { reprMethodArgs(methodProps.parameters) }
+                        <Button floated='right' icon='repeat'  color='orange' circular={ true } />
                     </Header.Content>
                     <Header.Subheader>
                         { reprMethodDoc(methodProps.doc) }
-                        <Button floated='right' icon='repeat' size='big' color='orange' circular={ true } />
                     </Header.Subheader>
 
                 </Header>
-
 
                 <Grid stackable={ true }>
                     <Grid.Column width={ 6 }>
@@ -101,8 +115,8 @@ export default class MethodCallEditor extends React.Component {
                             src={ methodParams }
                             name='params'
                             onEdit={ this.handleJsonChanged }
-                            onAdd={ () => null }
-                            onDelete={ () => null }
+                            onAdd={ this.handleJsonChanged }
+                            onDelete={ this.handleJsonChanged }
                         />
                     </Grid.Column>
                     {

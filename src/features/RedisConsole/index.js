@@ -1,21 +1,23 @@
+import { success, warning } from 'react-notification-system-redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { RedisRpc } from '../actions';
 import {
     inspections,
     routeConsoleCommands,
+    routeConsoleCommandsToExecute,
     routeInstanceName,
     routeInstanceRequests,
     routeInstanceResponses,
-    routeConsoleCommandsToExecute,
     urls,
 } from '../selectors';
 import {
     appendCallEditor,
+    bindCallEditorToId,
     changeCallEditorMethodName,
     changeCallEditorMethodParams,
+    clearCallEditors,
     removeCallEditor,
-    clearCallEditors, bindCallEditorToId,
 } from './actions';
 import { RedisConsole } from './components';
 
@@ -41,6 +43,14 @@ function mapDispatchToProps(dispatch) {
 
             bindCallEditorToId: (redisInstance, key, id) =>
                 dispatch(bindCallEditorToId(redisInstance, key, id))
+        },
+        notifications: {
+            nothingToExecute: () => dispatch(warning({
+                title: 'Nothing to execute here',
+                message: 'Change something and try again',
+                position: 'tr',
+                autoDismiss: 2,
+            })),
         }
     };
 }

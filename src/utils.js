@@ -61,3 +61,13 @@ export function isBase64(str) {
         return false;
     }
 }
+
+
+export function isJson(str) {
+    try {
+        return !!JSON.parse(str);
+    }
+    catch (e) {
+        return false;
+    }
+}

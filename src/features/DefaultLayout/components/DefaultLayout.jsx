@@ -9,8 +9,8 @@ import Dashboard from '../../Dashboard';
 import RedisConsole from '../../RedisConsole';
 import { FullPageDimmer, NotFound } from '../../Common/components';
 import AppWrapper from './AppWrapper';
-
 import AppContentWrapper from './AppContentWrapper';
+import NotificationSystem from '../../NotificationSystem';
 
 
 export default class DefaultLayout extends React.Component {
@@ -86,6 +86,8 @@ export default class DefaultLayout extends React.Component {
                         <Route path='' component={ NotFound } />
                     </Switch>
                 </AppContentWrapper>
+
+                <NotificationSystem />
 
             </AppWrapper>
         );

@@ -3,7 +3,8 @@ import { isEmpty, map, zip } from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { Segment, Button, Icon } from 'semantic-ui-react';
+import { success } from 'react-notification-system-redux';
+import { Button, Icon, Segment } from 'semantic-ui-react';
 import { COLORS } from 'semantic-ui-react/dist/es/lib/SUI';
 import DropdownRpcMethodItem from './DropdownRpcMethodItem';
 import MethodCallEditor from './MethodCallEditor';
@@ -34,6 +35,10 @@ export default class RedisConsole extends React.Component {
             clearCallEditors: PropTypes.func.isRequired,
             bindCallEditorToId: PropTypes.func.isRequired,
         }).isRequired,
+
+        notifications: PropTypes.shape({
+            nothingToExecute: PropTypes.func,
+        }),
     };
 
     constructor(props) {
@@ -43,18 +48,21 @@ export default class RedisConsole extends React.Component {
         this.log = debug('RedisConsole');
         this.log('initialized', props);
 
-        this.ddMethodsOptions = Object.entries(inspections).map(([ fName, fOptions ]) => ({
+        this.ddMethodsOptions = Object.entries(inspections).map(([fName, fOptions]) => ( {
             key: fName,
             text: fName,
             value: fName,
             content: <DropdownRpcMethodItem { ...fOptions } name={ fName } />
-        }));
+        } ));
     }
 
     componentDidMount() {
         const { routeConsoleCommands } = this.props;
         isEmpty(routeConsoleCommands) && this.appendMethodCallEditor();
     }
+
+    handleExportClicked = () => {};
+    handleImportClicked = () => {};
 
     render() {
         this.log('render');
@@ -70,10 +78,10 @@ export default class RedisConsole extends React.Component {
                         <Icon name='add' />Append
                     </Button>
 
-                    <Button basic={ true } color='grey'>
+                    <Button basic={ true } color='grey' onClick={ this.handleExportClicked  }>
                         <Icon name='external' />Export
                     </Button>
-                    <Button basic={ true } color='grey'>
+                    <Button basic={ true } color='grey' onClick={ this.handleImportClicked }>
                         <Icon name='download' />Import
                     </Button>
 
@@ -125,16 +133,19 @@ export default class RedisConsole extends React.Component {
         const {
                 routeConsoleCommandsToExecute: commands,
                 routeInstanceName,
-                actions: { bindCallEditorToId, batchExecute }
+                actions: { bindCallEditorToId, batchExecute },
+                notifications: { nothingToExecute },
             } = this.props,
-            cmdPairBundles = commands.map(cmd => [ cmd.methodName, cmd.methodParams ]);
+            cmdPairBundles = commands.map(cmd => [cmd.methodName, cmd.methodParams]);
 
-//        console.log(cmdPairBundles);
+        // console.log(cmdPairBundles);
+        if (isEmpty(cmdPairBundles))
+            return nothingToExecute();
 
         batchExecute(routeInstanceName, ...cmdPairBundles)
             .then((data) => {
                 zip(map(commands, 'key'), map(data.meta.request, 'id'))
-                    .forEach(([ key, id ]) =>
+                    .forEach(([key, id]) =>
                         bindCallEditorToId(routeInstanceName, key, id));
             });
     };

@@ -5,6 +5,8 @@
 import { LOCATION_CHANGE } from 'react-router-redux';
 import { combineReducers } from 'redux';
 import redisNavigator from '../src/reducer';
+import { reducer as notifications } from 'react-notification-system-redux';
+
 
 // Initial routing state
 const routeInitialState = {
@@ -29,8 +31,11 @@ function routeReducer(state = routeInitialState, action) {
  */
 export default function createReducer(injectedReducers) {
     return combineReducers({
+        notifications,
+        redisNavigator,
+
         route: routeReducer,
-        redisNavigator: redisNavigator,
+
         ...injectedReducers,
     });
 }
