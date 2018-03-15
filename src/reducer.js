@@ -149,7 +149,6 @@ const instancesData = (state = {}, action) => produce(state, draft => {
 
         case BIND_CALL_EDITOR_TO_ID:
             const index = findIndex(redis.consoleCommands, { key: payload.key });
-            console.log('/SUKA', redis.responses[payload.requestId]);
             draftRedis
                 .consoleCommands[index]
                 .response = redis.responses[payload.requestId];
