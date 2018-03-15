@@ -15,5 +15,6 @@ export default {
             statusUrl: null,
             inspectionsUrl: null,
         }
-    }
+    },
+    notifications: [],
 };

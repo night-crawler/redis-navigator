@@ -1,10 +1,11 @@
-import { isArray, isBoolean, isPlainObject, isString, size } from 'lodash';
+import { isArray, isBoolean, isPlainObject, isString, isNumber, size } from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
 import ReactJson from 'react-json-view';
-import { Card, Header, Segment } from 'semantic-ui-react';
-import { isBase64, isJson } from '../../../utils';
+import { Card, Header, Segment, Image } from 'semantic-ui-react';
+import { convertStringToBinary, isBase64, isImage, isJson, MimeDetector } from '../../../utils';
+import fileType from 'file-type';
 
 
 const Textarea = styled.textarea`
@@ -54,6 +55,11 @@ function BooleanCard(props) {
 }
 
 
+function ImageCard(props) {
+    const { dataUri } = props;
+    return <Image src={ dataUri } size='medium' />;
+}
+
 
 function ReactJsonCard(props) {
     const { result, groupArraysAfterLength = 20 } = props;
@@ -80,6 +86,8 @@ function StringCard(props) {
     if (isBase64(result)) {
         innerResult = atob(result);
         type = 'base64';
+    } else if (isNumber(result * 1)) {
+        // just deny json conversion
     } else if (isJson(result)) {
         innerResult = JSON.parse(result);
         type = 'json';
@@ -113,7 +121,13 @@ RpcResult.propTypes = {
 };
 
 function RpcResult(props) {
-    const { result } = props;
+    const
+        { result } = props,
+        detector = new MimeDetector(result);
+
+    if (detector.isImage) {
+        return <ImageCard dataUri={ detector.imageDataURI } />;
+    }
 
     if (isBoolean(result))
         return <BooleanCard result={ result } />;

@@ -1,4 +1,6 @@
 import Cookies from 'js-cookie';
+import fileType from 'file-type';
+import { isEmpty, startsWith } from 'lodash';
 
 
 export function csrfSafeMethod(method) {
@@ -54,20 +56,50 @@ export function uuid4() {
 }
 
 
-export function isBase64(str) {
+export function isBase64(rawStr) {
     try {
-        return btoa(atob(str)) === str;
+        return btoa(atob(rawStr)) === rawStr;
     } catch (err) {
         return false;
     }
 }
 
 
-export function isJson(str) {
+export function isJson(rawStr) {
     try {
-        return !!JSON.parse(str);
-    }
-    catch (e) {
+        return !!JSON.parse(rawStr);
+    } catch (err) {
         return false;
     }
+}
+
+
+export class MimeDetector {
+    constructor(rawStr) {
+        const
+            binary = convertStringToBinary(rawStr),
+            ft = fileType(binary);
+        const { mime = null, ext = null } = isEmpty(ft) ? {} : ft;
+        this.mime = mime;
+        this.ext = ext;
+        this.rawStr = rawStr;
+    }
+
+    get imageDataURI() {
+        const b64 = btoa(this.rawStr);
+        return `data:${this.mime};charset=utf-8;base64,${b64}`;
+    }
+
+    get isImage() {
+        return startsWith(this.mime, 'image');
+    }
+}
+
+
+export function convertStringToBinary(rawStr) {
+    const arr = new Uint8Array(new ArrayBuffer(rawStr.length));
+    for (let i=0; i<rawStr.length; i++) {
+        arr[i] = rawStr.charCodeAt(i);
+    }
+    return arr;
 }

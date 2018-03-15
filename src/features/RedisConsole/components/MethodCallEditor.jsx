@@ -2,7 +2,7 @@ import debug from 'debug';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ReactJson from 'react-json-view';
-import { Button, Dropdown, Grid, Header, Segment, Icon } from 'semantic-ui-react';
+import { Button, Dropdown, Grid, Header, Segment, Icon, Label } from 'semantic-ui-react';
 import {parametersToJson, reprMethodArgs, reprMethodDoc} from './utils';
 import RpcResponse from './RpcResponse';
 
@@ -30,6 +30,7 @@ export default class MethodCallEditor extends React.Component {
         onMethodNameChange: PropTypes.func,
         onMethodParamsChange: PropTypes.func,
         onRemove: PropTypes.func,
+        onRetry: PropTypes.func,
     };
 
     static defaultProps = {
@@ -39,6 +40,7 @@ export default class MethodCallEditor extends React.Component {
         onMethodNameChange: () => {},
         onMethodParamsChange: () => {},
         onRemove: () => {},
+        onRetry: () => {},
     };
 
     constructor(props) {
@@ -70,7 +72,7 @@ export default class MethodCallEditor extends React.Component {
         if (response.error !== undefined)
             return false;
 
-        return false
+        return false;
     }
 
     render() {
@@ -78,7 +80,7 @@ export default class MethodCallEditor extends React.Component {
         const {
             methodName, methodParams, response, dirty,
             instanceName, color, inspections,
-            onRemove
+            onRemove, onRetry
         } = this.props;
 
         if (!methodName)
@@ -94,14 +96,14 @@ export default class MethodCallEditor extends React.Component {
                 <Header as='h2' block={ true } color={ this.isSuccess() && !dirty ? 'green' : undefined }>
                     <Header.Content>
                         <Button
-                            color='orange' icon='remove' size='huge'
+                            basic={ true } color='orange' icon='remove' size='huge'
                             onClick={ onRemove }
                         />
                     </Header.Content>
                     <Header.Content>
                         { instanceName }.{ methodName }
                         { reprMethodArgs(methodProps.parameters) }
-                        <Button floated='right' icon='repeat'  color='orange' circular={ true } />
+                        <Button as={ Label } icon='repeat' color='orange' basic={ true } circular={ true } onClick={ onRetry } />
                     </Header.Content>
                     <Header.Subheader>
                         { reprMethodDoc(methodProps.doc) }
@@ -151,7 +153,7 @@ export default class MethodCallEditor extends React.Component {
                 <Header as='h2' block={ true }>
                     <Header.Content>
                         <Button
-                            color='orange' icon='remove' size='huge'
+                            basic={ true } color='orange' icon='remove' size='huge'
                             onClick={ onRemove }
                         />
                     </Header.Content>
