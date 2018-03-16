@@ -87,7 +87,10 @@ const instancesData = (state = {}, action) => produce(state, draft => {
     const draftRedis = meta ? draft[meta.path] : null;
     const redis = meta ? state[meta.path] : null;
 
-    const cmdIndex = redis && payload && payload.key ? findIndex(redis.consoleCommands, { key: payload.key }) : null;
+    // index of call editor's actions
+    const cmdIndex = redis && payload && payload.key
+        ? findIndex(redis.consoleCommands, { key: payload.key })
+        : null;
 
     switch (action.type) {
         case LOAD_INSTANCES_SUCCESS:
@@ -125,10 +128,7 @@ const instancesData = (state = {}, action) => produce(state, draft => {
             break;
 
         case REMOVE_CALL_EDITOR:
-            draftRedis.consoleCommands.splice(
-                findIndex(redis.consoleCommands, { key: payload.key }),
-                1
-            );
+            draftRedis.consoleCommands.splice(cmdIndex, 1);
             break;
 
         case CHANGE_CALL_EDITOR_METHOD_NAME:

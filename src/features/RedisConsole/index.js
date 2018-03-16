@@ -26,8 +26,8 @@ function mapDispatchToProps(dispatch) {
     return {
         dispatch,
         actions: {
-            appendCallEditor: redisInstance =>
-                dispatch(appendCallEditor(redisInstance)),
+            appendCallEditor: (redisInstance, color) =>
+                dispatch(appendCallEditor(redisInstance, undefined, color)),
 
             removeCallEditor: (redisInstance, key) =>
                 dispatch(removeCallEditor(redisInstance, key)),

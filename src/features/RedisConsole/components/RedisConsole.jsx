@@ -118,14 +118,13 @@ export default class RedisConsole extends React.Component {
     renderEditors() {
         const { routeConsoleCommands, inspections, actions, routeInstanceName } = this.props;
 
-        return routeConsoleCommands.map((editorOptions, i) =>
+        return routeConsoleCommands.map(editorOptions =>
             <MethodCallEditor
                 { ...editorOptions }
 
                 key={ editorOptions.key }
                 instanceName={ routeInstanceName }
                 inspections={ inspections }
-                color={ COLORS[i % COLORS.length] }
                 ddMethodsOptions={ this.ddMethodsOptions }
 
                 onRemove={
@@ -190,8 +189,11 @@ export default class RedisConsole extends React.Component {
     };
 
     appendMethodCallEditor() {
-        const { routeInstanceName, actions } = this.props;
-        actions.appendCallEditor(routeInstanceName);
+        const { routeInstanceName, actions, routeConsoleCommands } = this.props;
+        actions.appendCallEditor(
+            routeInstanceName,
+            COLORS[routeConsoleCommands.length % COLORS.length]
+        );
     }
 
 }

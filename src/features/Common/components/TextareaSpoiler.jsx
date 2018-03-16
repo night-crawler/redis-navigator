@@ -36,7 +36,7 @@ export default class TextareaSpoiler extends React.Component {
         return (
             <div>
                 <div onClick={ this.handleHide }>Hide</div>
-                <Textarea rows={ 6 }>{ result }</Textarea>
+                <Textarea rows={ 6 } value={ result } readOnly={ true } />
             </div>
         );
     }

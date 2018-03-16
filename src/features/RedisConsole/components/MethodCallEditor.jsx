@@ -1,4 +1,4 @@
-import { isEqual } from 'lodash';
+import { isEqual, pickBy, isFunction } from 'lodash';
 import debug from 'debug';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -51,9 +51,13 @@ export default class MethodCallEditor extends React.Component {
         this.log('initialized', props);
     }
 
-    // shouldComponentUpdate(nextProps) {
-    //     return true;
-    // }
+    shouldComponentUpdate(nextProps) {
+        // don't worry about changed on*-signatures, since all of them are bound to uuid
+        return !isEqual(
+            pickBy(nextProps, val => !isFunction(val)),
+            pickBy(this.props, val => !isFunction(val)),
+        );
+    }
 
     componentWillReceiveProps(newProps) {
         const { onMethodParamsChange } = this.props;
