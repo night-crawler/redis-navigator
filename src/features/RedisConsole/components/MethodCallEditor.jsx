@@ -1,3 +1,4 @@
+import { isEqual } from 'lodash';
 import debug from 'debug';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -51,12 +52,12 @@ export default class MethodCallEditor extends React.Component {
     }
 
     componentWillReceiveProps(newProps) {
-        const { methodParams: oldMethodParams, onMethodParamsChange } = this.props;
+        const { onMethodParamsChange } = this.props;
 
         const { methodName, methodParams, inspections } = newProps;
         const methodProps = inspections[methodName];
 
-        if (methodProps && methodName && (!methodParams || !oldMethodParams)) {
+        if (methodProps && methodName && !methodParams) {
             onMethodParamsChange(parametersToJson(methodProps.parameters));
         }
     }

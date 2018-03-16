@@ -8,7 +8,6 @@ import { COLORS } from 'semantic-ui-react/dist/es/lib/SUI';
 import DropdownRpcMethodItem from './DropdownRpcMethodItem';
 import { HotKeys } from 'react-hotkeys';
 import MethodCallEditor from './MethodCallEditor';
-import ReactDOM from 'react-dom';
 
 
 const ConsoleCommandType = PropTypes.shape({
@@ -43,7 +42,7 @@ export default class RedisConsole extends React.Component {
     };
 
     keyMap = {
-        executeAll: 'alt+e',
+        executeAll: 'alt+x',
         clearCallEditors: 'alt+c',
         appendCallEditor: 'alt+a',
     };
