@@ -97,6 +97,9 @@ export class MimeDetector {
 
 
 export function convertStringToBinary(rawStr) {
+    if (!rawStr)
+        return new Uint8Array(new ArrayBuffer(0));
+
     const arr = new Uint8Array(new ArrayBuffer(rawStr.length));
     for (let i=0; i<rawStr.length; i++) {
         arr[i] = rawStr.charCodeAt(i);

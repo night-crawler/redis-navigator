@@ -1,5 +1,5 @@
 import debug from 'debug';
-import { isEmpty, map, zip } from 'lodash';
+import { isEmpty, map, zip, find } from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Helmet } from 'react-helmet';
@@ -128,14 +128,18 @@ export default class RedisConsole extends React.Component {
                 color={ COLORS[i % COLORS.length] }
                 ddMethodsOptions={ this.ddMethodsOptions }
 
-                onRemove={ () => actions.removeCallEditor(routeInstanceName, i) }
+                onRemove={
+                    () => actions.removeCallEditor(routeInstanceName, editorOptions.key)
+                }
                 onMethodNameChange={
-                    methodName => actions.changeCallEditorMethodName(routeInstanceName, methodName, i)
+                    methodName => actions.changeCallEditorMethodName(routeInstanceName, methodName, editorOptions.key)
                 }
                 onMethodParamsChange={
-                    methodParams => actions.changeCallEditorMethodParams(routeInstanceName, methodParams, i)
+                    methodParams => actions.changeCallEditorMethodParams(routeInstanceName, methodParams, editorOptions.key)
                 }
-                onRetry={ () => this.handleCallEditorRetryClicked(i) }
+                onRetry={
+                    () => this.handleCallEditorRetryClicked(editorOptions.key)
+                }
             />
         );
     }
@@ -143,9 +147,9 @@ export default class RedisConsole extends React.Component {
     handleExportClicked = () => {};
     handleImportClicked = () => {};
 
-    handleCallEditorRetryClicked = (index) => {
+    handleCallEditorRetryClicked = (key) => {
         const { routeConsoleCommands } = this.props;
-        const cmd = routeConsoleCommands[index];
+        const cmd = find(routeConsoleCommands, { key });
         this.handleBatchExecute([cmd]);
     };
 

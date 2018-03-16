@@ -51,6 +51,10 @@ export default class MethodCallEditor extends React.Component {
         this.log('initialized', props);
     }
 
+    // shouldComponentUpdate(nextProps) {
+    //     return true;
+    // }
+
     componentWillReceiveProps(newProps) {
         const { onMethodParamsChange } = this.props;
 

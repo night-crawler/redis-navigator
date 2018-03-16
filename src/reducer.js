@@ -87,6 +87,8 @@ const instancesData = (state = {}, action) => produce(state, draft => {
     const draftRedis = meta ? draft[meta.path] : null;
     const redis = meta ? state[meta.path] : null;
 
+    const cmdIndex = redis && payload && payload.key ? findIndex(redis.consoleCommands, { key: payload.key }) : null;
+
     switch (action.type) {
         case LOAD_INSTANCES_SUCCESS:
             payload.forEach(({ name }) => {
@@ -123,23 +125,26 @@ const instancesData = (state = {}, action) => produce(state, draft => {
             break;
 
         case REMOVE_CALL_EDITOR:
-            draftRedis.consoleCommands.splice(payload.id, 1);
+            draftRedis.consoleCommands.splice(
+                findIndex(redis.consoleCommands, { key: payload.key }),
+                1
+            );
             break;
 
         case CHANGE_CALL_EDITOR_METHOD_NAME:
             draftRedis
-                .consoleCommands[payload.id]
+                .consoleCommands[cmdIndex]
                 .methodName = payload.methodName;
             draftRedis
-                .consoleCommands[payload.id]
+                .consoleCommands[cmdIndex]
                 .dirty = true;
             break;
 
         case CHANGE_CALL_EDITOR_METHOD_PARAMS:
             draftRedis
-                .consoleCommands[payload.id]
+                .consoleCommands[cmdIndex]
                 .methodParams = payload.methodParams;
-            draftRedis.consoleCommands[payload.id].dirty = true;
+            draftRedis.consoleCommands[cmdIndex].dirty = true;
             break;
 
         case CLEAR_CALL_EDITORS:
@@ -148,12 +153,11 @@ const instancesData = (state = {}, action) => produce(state, draft => {
             break;
 
         case BIND_CALL_EDITOR_TO_ID:
-            const index = findIndex(redis.consoleCommands, { key: payload.key });
             draftRedis
-                .consoleCommands[index]
+                .consoleCommands[cmdIndex]
                 .response = redis.responses[payload.requestId];
             draftRedis
-                .consoleCommands[index]
+                .consoleCommands[cmdIndex]
                 .dirty = false;
             break;
     }

@@ -29,14 +29,14 @@ function mapDispatchToProps(dispatch) {
             appendCallEditor: redisInstance =>
                 dispatch(appendCallEditor(redisInstance)),
 
-            removeCallEditor: (redisInstance, id) =>
-                dispatch(removeCallEditor(redisInstance, id)),
+            removeCallEditor: (redisInstance, key) =>
+                dispatch(removeCallEditor(redisInstance, key)),
 
-            changeCallEditorMethodName: (redisInstance, methodName, id) =>
-                dispatch(changeCallEditorMethodName(redisInstance, methodName, id)),
+            changeCallEditorMethodName: (redisInstance, methodName, key) =>
+                dispatch(changeCallEditorMethodName(redisInstance, methodName, key)),
 
-            changeCallEditorMethodParams: (redisInstance, methodParams, id) =>
-                dispatch(changeCallEditorMethodParams(redisInstance, methodParams, id)),
+            changeCallEditorMethodParams: (redisInstance, methodParams, key) =>
+                dispatch(changeCallEditorMethodParams(redisInstance, methodParams, key)),
 
             clearCallEditors: redisInstance =>
                 dispatch(clearCallEditors(redisInstance)),
