@@ -3,10 +3,12 @@ import { isEmpty, map, zip } from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { Button, Icon, Segment, Responsive } from 'semantic-ui-react';
+import { Button, Icon, Segment } from 'semantic-ui-react';
 import { COLORS } from 'semantic-ui-react/dist/es/lib/SUI';
 import DropdownRpcMethodItem from './DropdownRpcMethodItem';
+import { HotKeys } from 'react-hotkeys';
 import MethodCallEditor from './MethodCallEditor';
+import ReactDOM from 'react-dom';
 
 
 const ConsoleCommandType = PropTypes.shape({
@@ -40,6 +42,12 @@ export default class RedisConsole extends React.Component {
         }),
     };
 
+    keyMap = {
+        executeAll: 'alt+e',
+        clearCallEditors: 'alt+c',
+        appendCallEditor: 'alt+a',
+    };
+
     constructor(props) {
         super(props);
         const { inspections } = props;
@@ -53,6 +61,12 @@ export default class RedisConsole extends React.Component {
             value: fName,
             content: <DropdownRpcMethodItem { ...fOptions } name={ fName } />
         } ));
+
+        this.keyMapHandlers = {
+            executeAll: this.handleExecuteAllClicked,
+            clearCallEditors: this.handleClearCallEditorsClicked,
+            appendCallEditor: this.handleAppendCallEditorClicked,
+        };
     }
 
     render() {
@@ -60,38 +74,40 @@ export default class RedisConsole extends React.Component {
         const shouldShowButtonCaptions = true;
 
         return (
-            <Segment.Group>
-                <Helmet><title>RPC Console</title></Helmet>
+            <HotKeys keyMap={ this.keyMap } handlers={ this.keyMapHandlers } focused={ true }>
+                <Segment.Group>
+                    <Helmet><title>RPC Console</title></Helmet>
 
-                { this.renderEditors() }
+                    { this.renderEditors() }
 
-                <Button.Group widths='5' attached='bottom'>
-                    <Button basic={ true } color='grey' onClick={ this.handleAppendCallEditorClicked }>
-                        <Icon name='add' />
-                        { shouldShowButtonCaptions && 'Append' }
-                    </Button>
+                    <Button.Group widths='5' attached='bottom'>
+                        <Button basic={ true } color='grey' onClick={ this.handleAppendCallEditorClicked }>
+                            <Icon name='add' />
+                            { shouldShowButtonCaptions && 'Append' }
+                        </Button>
 
-                    <Button basic={ true } color='grey' onClick={ this.handleExportClicked  }>
-                        <Icon name='external' />
-                        { shouldShowButtonCaptions && 'Export' }
-                    </Button>
-                    <Button basic={ true } color='grey' onClick={ this.handleImportClicked }>
-                        <Icon name='download' />
-                        { shouldShowButtonCaptions && 'Import' }
-                    </Button>
+                        <Button basic={ true } color='grey' onClick={ this.handleExportClicked  }>
+                            <Icon name='external' />
+                            { shouldShowButtonCaptions && 'Export' }
+                        </Button>
+                        <Button basic={ true } color='grey' onClick={ this.handleImportClicked }>
+                            <Icon name='download' />
+                            { shouldShowButtonCaptions && 'Import' }
+                        </Button>
 
-                    <Button basic={ true } color='red' onClick={ this.handleClearCallEditorsClicked }>
-                        <Icon name='trash outline' />
-                        { shouldShowButtonCaptions && 'Clear' }
-                    </Button>
+                        <Button basic={ true } color='red' onClick={ this.handleClearCallEditorsClicked }>
+                            <Icon name='trash outline' />
+                            { shouldShowButtonCaptions && 'Clear' }
+                        </Button>
 
-                    <Button basic={ true } color='green' onClick={ this.handleExecuteAllClicked }>
-                        <Icon name='lightning' />
-                        { shouldShowButtonCaptions && 'Execute' }
-                    </Button>
-                </Button.Group>
+                        <Button basic={ true } color='green' onClick={ this.handleExecuteAllClicked }>
+                            <Icon name='lightning' />
+                            { shouldShowButtonCaptions && 'Execute' }
+                        </Button>
+                    </Button.Group>
 
-            </Segment.Group>
+                </Segment.Group>
+            </HotKeys>
         );
     }
 

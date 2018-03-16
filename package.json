@@ -44,6 +44,7 @@
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-helmet": "^5.2.0",
+    "react-hotkeys": "^0.10.0",
     "react-json-view": "^1.16.1",
     "react-notification-system": "^0.2.17",
     "react-notification-system-redux": "^1.2.0",

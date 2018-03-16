@@ -1615,7 +1615,7 @@ create-hmac@^1.1.0, create-hmac@^1.1.2, create-hmac@^1.1.4:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
-create-react-class@^15.5.1:
+create-react-class@^15.5.1, create-react-class@^15.5.2:
   version "15.6.3"
   resolved "https://registry.yarnpkg.com/create-react-class/-/create-react-class-15.6.3.tgz#2d73237fb3f970ae6ebe011a9e66f46dbca80036"
   dependencies:
@@ -4067,6 +4067,10 @@ mixin-deep@^1.2.0:
   dependencies:
     minimist "0.0.8"
 
+mousetrap@^1.5.2:
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/mousetrap/-/mousetrap-1.6.1.tgz#2a085f5c751294c75e7e81f6ec2545b29cbf42d9"
+
 ms@2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.0.0.tgz#5608aeadfc00be6c2901df5f9861788de0d597c8"
@@ -4979,7 +4983,7 @@ promise@^7.1.1:
   dependencies:
     asap "~2.0.3"
 
-prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.5.6, prop-types@^15.6.0, prop-types@^15.6.1:
+prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.5.6, prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.6.1:
   version "15.6.1"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.6.1.tgz#36644453564255ddda391191fb3a125cbdf654ca"
   dependencies:
@@ -5136,6 +5140,15 @@ react-helmet@^5.2.0:
     object-assign "^4.1.1"
     prop-types "^15.5.4"
     react-side-effect "^1.1.0"
+
+react-hotkeys@^0.10.0:
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/react-hotkeys/-/react-hotkeys-0.10.0.tgz#d1e78bd63f16d6db58d550d33c8eb071f35d94fb"
+  dependencies:
+    create-react-class "^15.5.2"
+    lodash "^4.13.1"
+    mousetrap "^1.5.2"
+    prop-types "^15.5.8"
 
 react-json-view@^1.16.1:
   version "1.16.1"

@@ -20,7 +20,8 @@ function StringCard(props) {
     if (isBase64(result)) {
         innerResult = atob(result);
         type = 'base64';
-    } else if (isNumber(result * 1)) {
+    } else if (!isNaN(+result)) {
+        // _.isNumber(NaN) === true, lol
         // just deny json conversion
     } else if (isJson(result)) {
         innerResult = JSON.parse(result);
@@ -63,17 +64,17 @@ export default function Result(props) {
         return <ImageCard dataUri={ detector.imageDataURI } />;
     }
 
-    if (isBoolean(result))
-        return <BooleanCard result={ result } />;
-
-    if (isString(result))
-        return <StringCard result={ result } />;
-
     if (isArray(result))
         return <ReactJsonCard result={ result } />;
 
     if (isPlainObject(result))
         return <ReactJsonCard result={ result } />;
+
+    if (isBoolean(result))
+        return <BooleanCard result={ result } />;
+
+    if (isString(result))
+        return <StringCard result={ result } />;
 
     return <div>{ result }</div>;
 }

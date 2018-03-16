@@ -173,6 +173,7 @@ export default class MethodCallEditor extends React.Component {
             fluid={ true }
             selection={ true }
             onChange={ this.handleMethodNameChanged }
+            selectOnNavigation={ false }
         />;
     }
 
