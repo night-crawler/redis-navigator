@@ -2,8 +2,8 @@ import debug from 'debug';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ReactJson from 'react-json-view';
-import { Button, Dropdown, Grid, Header, Segment, Icon, Label } from 'semantic-ui-react';
-import {parametersToJson, reprMethodArgs, reprMethodDoc} from './utils';
+import { Button, Dropdown, Grid, Header, Segment, Label } from 'semantic-ui-react';
+import { parametersToJson, reprMethodArgs, reprMethodDoc } from './utils';
 import RpcResponse from './RpcResponse';
 
 
