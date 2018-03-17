@@ -5,6 +5,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import { Button, Icon, Segment } from 'semantic-ui-react';
 import { COLORS } from 'semantic-ui-react/dist/es/lib/SUI';
+import { saveFile } from '../../../utils';
 import DropdownRpcMethodItem from './DropdownRpcMethodItem';
 import { HotKeys } from 'react-hotkeys';
 import MethodCallEditor from './MethodCallEditor';
@@ -143,7 +144,14 @@ export default class RedisConsole extends React.Component {
         );
     }
 
-    handleExportClicked = () => {};
+    handleExportClicked = () => {
+        const { routeConsoleCommands } = this.props;
+        saveFile(
+            'consoleCommands.json',
+            JSON.stringify(routeConsoleCommands, null, 4)
+        );
+    };
+
     handleImportClicked = () => {};
 
     handleCallEditorRetryClicked = (key) => {

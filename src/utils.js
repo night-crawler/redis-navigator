@@ -1,7 +1,7 @@
-import Cookies from 'js-cookie';
 import fileType from 'file-type';
-import { isEmpty, startsWith, isString } from 'lodash';
 import checkIsBase64 from 'is-base64';
+import Cookies from 'js-cookie';
+import { isEmpty, isString, startsWith } from 'lodash';
 
 
 export function csrfSafeMethod(method) {
@@ -63,7 +63,7 @@ export function isJson(rawStr) {
 
     let _rawStr = rawStr.trim();
 
-    if ( !(startsWith(_rawStr, '{') || startsWith(_rawStr, '[')) )
+    if (!( startsWith(_rawStr, '{') || startsWith(_rawStr, '[') ))
         return false;
 
     try {
@@ -104,7 +104,7 @@ export function convertStringToBinary(rawStr) {
         return null;
 
     const arr = new Uint8Array(new ArrayBuffer(rawStr.length));
-    for (let i=0; i<rawStr.length; i++) {
+    for (let i = 0; i < rawStr.length; i++) {
         arr[i] = rawStr.charCodeAt(i);
     }
     return arr;
@@ -128,4 +128,14 @@ export function isValidNumber(value) {
     // _.isNumber(NaN) === true, lol
     // typeof NaN === 'number' <-- true
     return !isNaN(+value);
+}
+
+
+export function saveFile(filename, data, content_type = 'application/json') {
+    const a = window.document.createElement('a');
+    a.href = window.URL.createObjectURL(new Blob([data], { type: content_type }));
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
 }
