@@ -8,6 +8,7 @@ RpcError.propTypes = {
     error: PropTypes.shape({
         message: PropTypes.string,
         data: PropTypes.any,
+        code: PropTypes.any,
     }),
 };
 
@@ -15,7 +16,7 @@ export default function RpcError(props) {
     const { error } = props;
     const errorRepr = isArray(error.data) || isPlainObject(error.data)
         ? <ReactJson src={ error.data } name={ false } />
-        : <div>{ error.data }</div>;
+        : <div className='plain-error'>{ error.data }</div>;
 
     return (
         <div>

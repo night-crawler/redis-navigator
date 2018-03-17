@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FullPageDimmer should render FullPageDimmer 1`] = `
+<styled.div>
+  <Dimmer
+    active={true}
+  >
+    <Loader
+      size="massive"
+    >
+      lol
+    </Loader>
+  </Dimmer>
+</styled.div>
+`;

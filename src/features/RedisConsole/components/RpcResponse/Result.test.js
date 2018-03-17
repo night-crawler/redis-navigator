@@ -1,3 +1,4 @@
+import { TextareaSpoiler } from '../../../Common/components';
 /* eslint-disable react/react-in-jsx-scope,no-undef */
 import BooleanCard from './BooleanCard';
 import ReactJsonCard from './ReactJsonCard';
@@ -51,5 +52,13 @@ describe('Result', () => {
         const wrapper = shallow(<Result result={ GIF_BIN } />);
         expect(wrapper).toMatchSnapshot();
         expect(wrapper.find(ImageCard)).toHaveLength(1);
+    });
+});
+
+
+describe('StringCard', () => {
+    it('should render TextareaSpoiler for base64', () => {
+        const wrapper = shallow(<StringCard result='buck' />);
+        expect(wrapper.find(TextareaSpoiler)).toHaveLength(1);
     });
 });

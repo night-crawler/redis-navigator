@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ReactJsonCard should render ReactJsonCard 1`] = `
+<Card
+  fluid={true}
+>
+  <CardContent
+    header="Object"
+  />
+  <CardDescription>
+    <t
+      groupArraysAfterLength={20}
+      name={false}
+      src={
+        Object {
+          "a": 1,
+        }
+      }
+    />
+  </CardDescription>
+</Card>
+`;

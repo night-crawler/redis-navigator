@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TextareaSpoiler should render hidden TextareaSpoiler 1`] = `
+<div
+  className="show-hidden"
+  onClick={[Function]}
+>
+  Show
+</div>
+`;
+
+exports[`TextareaSpoiler should render shown TextareaSpoiler 1`] = `
+<div>
+  <div
+    className="hide-shown"
+    onClick={[Function]}
+  >
+    Hide
+  </div>
+  <styled.textarea
+    readOnly={true}
+    rows={6}
+    value="result"
+  />
+</div>
+`;

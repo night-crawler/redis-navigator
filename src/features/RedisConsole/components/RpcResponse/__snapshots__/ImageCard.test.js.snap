@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ImageCard should render ImageCard 1`] = `
+<Image
+  as="img"
+  size="medium"
+  src="1"
+  ui={true}
+/>
+`;

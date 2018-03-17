@@ -1,0 +1,69 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NotFound should render NotFound 1`] = `
+<Segment>
+  <Header
+    as="h1"
+    textAlign="center"
+  >
+    <IconGroup
+      as="i"
+      size="large"
+    >
+      <Icon
+        as="i"
+        color="red"
+        loading={true}
+        name="target"
+        size="big"
+      />
+      <Icon
+        as="i"
+        corner={true}
+        name="detective"
+        size="big"
+      />
+      <IconGroup
+        as="i"
+        size="big"
+      >
+        <Icon
+          as="i"
+          color="red"
+          loading={true}
+          name="target"
+          size="big"
+        />
+        <Icon
+          as="i"
+          color="green"
+          corner={true}
+          loading={true}
+          name="find"
+          size="tiny"
+        />
+        <IconGroup
+          as="i"
+          size="small"
+        >
+          <Icon
+            as="i"
+            color="red"
+            loading={true}
+            name="target"
+            size="big"
+          />
+          <Icon
+            as="i"
+            name="detective"
+          />
+        </IconGroup>
+      </IconGroup>
+    </IconGroup>
+    <HeaderContent>
+      404. 
+      lol
+    </HeaderContent>
+  </Header>
+</Segment>
+`;

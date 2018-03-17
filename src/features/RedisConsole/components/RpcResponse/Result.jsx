@@ -17,7 +17,6 @@ export function StringCard(props) {
     const { result } = props;
 
     let innerResult = false, type = '';
-    window.b64 = isBase64;
 
     if (isBase64(result, { paddingRequired: true })) {
         innerResult = atob(result);

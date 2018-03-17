@@ -3,7 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 
-const Textarea = styled.textarea`
+export const Textarea = styled.textarea`
     width: 100%;
 `;
 
@@ -30,12 +30,12 @@ export default class TextareaSpoiler extends React.Component {
         const { isShown } = this.state;
 
         if (!isShown) {
-            return <div onClick={ this.handleShow }>Show</div>;
+            return <div onClick={ this.handleShow } className='show-hidden'>Show</div>;
         }
 
         return (
             <div>
-                <div onClick={ this.handleHide }>Hide</div>
+                <div onClick={ this.handleHide } className='hide-shown'>Hide</div>
                 <Textarea rows={ 6 } value={ result } readOnly={ true } />
             </div>
         );
