@@ -2,12 +2,11 @@ import { isArray, isBoolean, isPlainObject, isString } from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Card, Header, Segment } from 'semantic-ui-react';
-import { isJson, MimeDetector } from '../../../../utils';
+import { isJson, MimeDetector, isBase64, isValidNumber } from '../../../../utils';
 import { TextareaSpoiler } from '../../../Common/components';
 import BooleanCard from './BooleanCard';
 import ImageCard from './ImageCard';
 import ReactJsonCard from './ReactJsonCard';
-import isBase64 from 'is-base64';
 
 
 StringCard.propTypes = {
@@ -21,8 +20,7 @@ export function StringCard(props) {
     if (isBase64(result, { paddingRequired: true })) {
         innerResult = atob(result);
         type = 'base64';
-    } else if (!isNaN(+result)) {
-        // _.isNumber(NaN) === true, lol
+    } else if (isValidNumber(result)) {
         // just deny json conversion
     } else if (isJson(result)) {
         innerResult = JSON.parse(result);

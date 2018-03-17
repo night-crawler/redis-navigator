@@ -4,6 +4,8 @@ import {
     uuid4,
     isJson,
     convertStringToBinary,
+    isBase64,
+    isValidNumber,
 } from './utils';
 
 
@@ -26,6 +28,27 @@ describe('utils', () => {
         expect(isJson(1)).toEqual(false);
         expect(isJson('1')).toEqual(false);
         expect(isJson('{"a": \'1}')).toEqual(false);
+    });
+
+    it('isBase64', () => {
+        expect(isBase64('')).toEqual(false);
+        expect(isBase64([1, 2, 3])).toEqual(false);
+        expect(isBase64('test')).toEqual(true);
+    });
+
+    it('isValidNumber', () => {
+        expect(isValidNumber('')).toEqual(false);
+        expect(isValidNumber([1, 2, 3])).toEqual(false);
+        expect(isValidNumber({a: 1})).toEqual(false);
+        expect(isValidNumber('test')).toEqual(false);
+
+        expect(isValidNumber(0)).toEqual(true);
+        expect(isValidNumber(1)).toEqual(true);
+        expect(isValidNumber('0')).toEqual(true);
+        expect(isValidNumber('1')).toEqual(true);
+
+        expect(isValidNumber(1.12)).toEqual(true);
+        expect(isValidNumber(0.12)).toEqual(true);
     });
 
     it('convertStringToBinary', () => {

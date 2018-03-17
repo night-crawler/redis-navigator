@@ -1,6 +1,7 @@
 import Cookies from 'js-cookie';
 import fileType from 'file-type';
 import { isEmpty, startsWith, isString } from 'lodash';
+import checkIsBase64 from 'is-base64';
 
 
 export function csrfSafeMethod(method) {
@@ -96,10 +97,10 @@ export class MimeDetector {
 
 
 export function convertStringToBinary(rawStr) {
-    if (!isString(rawStr))
+    if (!rawStr)
         return null;
 
-    if (!rawStr)
+    if (!isString(rawStr))
         return null;
 
     const arr = new Uint8Array(new ArrayBuffer(rawStr.length));
@@ -107,4 +108,24 @@ export function convertStringToBinary(rawStr) {
         arr[i] = rawStr.charCodeAt(i);
     }
     return arr;
+}
+
+
+export function isBase64(rawStr) {
+    if (!rawStr)
+        return false;
+
+    if (!isString(rawStr))
+        return false;
+
+    return checkIsBase64(rawStr, { paddingRequired: true });
+}
+
+
+export function isValidNumber(value) {
+    if (isString(value) && !value)
+        return false;
+    // _.isNumber(NaN) === true, lol
+    // typeof NaN === 'number' <-- true
+    return !isNaN(+value);
 }
