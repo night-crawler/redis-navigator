@@ -10,9 +10,9 @@ import {
     RpcActionCreator,
     RpcRequestBuilder,
     RSAARpcActionCreator,
-} from '../features/actions/rpc';
+} from '.';
 
-import { RPCBatchArgumentsError, RPCEmptyRequestError, RPCEndpointError, RPCMethodNameError } from '../errors/rpc';
+import { RPCBatchArgumentsError, RPCEmptyRequestError, RPCEndpointError, RPCMethodNameError } from '../../errors/rpc';
 
 
 describe('RpcRequestBuilder', () => {

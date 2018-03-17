@@ -38,6 +38,7 @@
     "file-type": "^7.6.0",
     "history": "^4.7.2",
     "immer": "^1.1.1",
+    "is-base64": "^0.0.4",
     "js-cookie": "^2.2.0",
     "jsoneditor": "^5.14.0",
     "prop-types": "^15.6.1",

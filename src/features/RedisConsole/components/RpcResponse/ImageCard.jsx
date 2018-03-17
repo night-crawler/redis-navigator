@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 
 ImageCard.propTypes = {
-    dataUri: PropTypes.string,
+    dataUri: PropTypes.string.isRequired,
 };
 export default function ImageCard(props) {
     const { dataUri } = props;

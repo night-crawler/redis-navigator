@@ -1,11 +1,11 @@
 import Cookies from 'js-cookie';
 import fileType from 'file-type';
-import { isEmpty, startsWith } from 'lodash';
+import { isEmpty, startsWith, isString } from 'lodash';
 
 
 export function csrfSafeMethod(method) {
     // these HTTP methods do not require CSRF protection
-    return ( /^(GET|HEAD|OPTIONS|TRACE)$/.test(method) );
+    return ( /^(GET|HEAD|OPTIONS|TRACE)$/i.test(method) );
 }
 
 
@@ -56,18 +56,17 @@ export function uuid4() {
 }
 
 
-export function isBase64(rawStr) {
-    try {
-        return btoa(atob(rawStr)) === rawStr;
-    } catch (err) {
-        return false;
-    }
-}
-
-
 export function isJson(rawStr) {
+    if (!isString(rawStr) || !rawStr)
+        return false;
+
+    let _rawStr = rawStr.trim();
+
+    if ( !(startsWith(_rawStr, '{') || startsWith(_rawStr, '[')) )
+        return false;
+
     try {
-        return !!JSON.parse(rawStr);
+        return !!JSON.parse(_rawStr);
     } catch (err) {
         return false;
     }
@@ -97,8 +96,11 @@ export class MimeDetector {
 
 
 export function convertStringToBinary(rawStr) {
+    if (!isString(rawStr))
+        return null;
+
     if (!rawStr)
-        return new Uint8Array(new ArrayBuffer(0));
+        return null;
 
     const arr = new Uint8Array(new ArrayBuffer(rawStr.length));
     for (let i=0; i<rawStr.length; i++) {

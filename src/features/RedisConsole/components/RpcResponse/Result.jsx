@@ -1,23 +1,25 @@
-import { isArray, isBoolean, isNumber, isPlainObject, isString } from 'lodash';
+import { isArray, isBoolean, isPlainObject, isString } from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Card, Header, Segment } from 'semantic-ui-react';
-import { isBase64, isJson, MimeDetector } from '../../../../utils';
+import { isJson, MimeDetector } from '../../../../utils';
 import { TextareaSpoiler } from '../../../Common/components';
 import BooleanCard from './BooleanCard';
 import ImageCard from './ImageCard';
 import ReactJsonCard from './ReactJsonCard';
+import isBase64 from 'is-base64';
 
 
 StringCard.propTypes = {
     result: PropTypes.string.isRequired,
 };
-function StringCard(props) {
+export function StringCard(props) {
     const { result } = props;
 
     let innerResult = false, type = '';
+    window.b64 = isBase64;
 
-    if (isBase64(result)) {
+    if (isBase64(result, { paddingRequired: true })) {
         innerResult = atob(result);
         type = 'base64';
     } else if (!isNaN(+result)) {
@@ -75,6 +77,9 @@ export default function Result(props) {
 
     if (isString(result))
         return <StringCard result={ result } />;
+
+    if (result === null)
+        return <div>null</div>;
 
     return <div>{ result }</div>;
 }
