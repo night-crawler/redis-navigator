@@ -1,13 +1,13 @@
 import debug from 'debug';
-import { isEmpty, map, zip, find } from 'lodash';
+import { find, isEmpty, map, zip } from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Helmet } from 'react-helmet';
+import { HotKeys } from 'react-hotkeys';
 import { Button, Icon, Segment } from 'semantic-ui-react';
 import { COLORS } from 'semantic-ui-react/dist/es/lib/SUI';
 import { saveFile } from '../../../utils';
 import DropdownRpcMethodItem from './DropdownRpcMethodItem';
-import { HotKeys } from 'react-hotkeys';
 import MethodCallEditor from './MethodCallEditor';
 
 
@@ -86,7 +86,7 @@ export default class RedisConsole extends React.Component {
                             { shouldShowButtonCaptions && 'Append' }
                         </Button>
 
-                        <Button basic={ true } color='grey' onClick={ this.handleExportClicked  }>
+                        <Button basic={ true } color='grey' onClick={ this.handleExportClicked }>
                             <Icon name='external' />
                             { shouldShowButtonCaptions && 'Export' }
                         </Button>
@@ -152,7 +152,8 @@ export default class RedisConsole extends React.Component {
         );
     };
 
-    handleImportClicked = () => {};
+    handleImportClicked = () => {
+    };
 
     handleCallEditorRetryClicked = (key) => {
         const { routeConsoleCommands } = this.props;

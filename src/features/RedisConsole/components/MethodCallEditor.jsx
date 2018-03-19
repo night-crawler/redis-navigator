@@ -1,12 +1,11 @@
-import { isEqual, pickBy, isFunction } from 'lodash';
 import debug from 'debug';
+import { isEqual, isFunction, pickBy } from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
-import ReactJson from 'react-json-view';
-import { Button, Dropdown, Grid, Header, Segment, Label } from 'semantic-ui-react';
+import { Button, Dropdown, Grid, Header, Label, Segment } from 'semantic-ui-react';
 import MethodParamsEditor from './MethodParamsEditor';
-import { parametersToJson, reprMethodArgs, reprMethodDoc } from './utils';
 import RpcResponse from './RpcResponse';
+import { parametersToJson, reprMethodArgs, reprMethodDoc } from './utils';
 
 
 export default class MethodCallEditor extends React.Component {
@@ -113,7 +112,11 @@ export default class MethodCallEditor extends React.Component {
                     <Header.Content>
                         { instanceName }.{ methodName }
                         { reprMethodArgs(methodProps.parameters) }
-                        <Button as={ Label } icon='repeat' color='orange' basic={ true } circular={ true } onClick={ onRetry } />
+                        <Button
+                            as={ Label } icon='repeat' color='orange'
+                            basic={ true } circular={ true }
+                            onClick={ onRetry }
+                        />
                     </Header.Content>
                     <Header.Subheader>
                         { reprMethodDoc(methodProps.doc) }
