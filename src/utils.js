@@ -92,11 +92,15 @@ export function isYaml(rawStr) {
     if (isValidJson(rawStr))
         return false;
 
-    const result = yaml.safeLoad(rawStr);
-    if (!isPlainObject(result))
-        return false;
+    try {
+        const result = yaml.safeLoad(rawStr);
+        if (!isPlainObject(result))
+            return false;
 
-    return true;
+        return true;
+    } catch (e) {
+        return false;
+    }
 }
 
 

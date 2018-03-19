@@ -22,16 +22,14 @@ export default class ObjectCard extends React.Component {
     constructor(props) {
         super(props);
 
-        const { widget, mode } = props;
+        const { widget } = props;
 
-        this.state = {
-            widget,
-            mode,
-        };
+        this.state = { widget };
     }
 
     render() {
-        const { widget, mode } = this.state;
+        const { widget } = this.state;
+        const { mode } = this.props;
 
         return (
             <Card fluid={ true }>
@@ -63,8 +61,7 @@ export default class ObjectCard extends React.Component {
     }
 
     renderJsonEditor() {
-        const { result } = this.props;
-        const { mode } = this.state;
+        const { result, mode } = this.props;
 
         if (mode === 'json')
             return <EditorWidgetJson result={ result } />;
@@ -73,8 +70,7 @@ export default class ObjectCard extends React.Component {
     }
 
     renderJsonView() {
-        const { result } = this.props;
-        const { mode } = this.state;
+        const { result, mode } = this.props;
 
         if (mode === 'json') {
             const resultObject = JSON.parse(result);

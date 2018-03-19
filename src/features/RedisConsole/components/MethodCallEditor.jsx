@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ReactJson from 'react-json-view';
 import { Button, Dropdown, Grid, Header, Segment, Label } from 'semantic-ui-react';
+import MethodParamsEditor from './MethodParamsEditor';
 import { parametersToJson, reprMethodArgs, reprMethodDoc } from './utils';
 import RpcResponse from './RpcResponse';
 
@@ -122,13 +123,7 @@ export default class MethodCallEditor extends React.Component {
 
                 <Grid stackable={ true }>
                     <Grid.Column width={ 6 }>
-                        <ReactJson
-                            src={ methodParams }
-                            name='params'
-                            onEdit={ this.handleJsonChanged }
-                            onAdd={ this.handleJsonChanged }
-                            onDelete={ this.handleJsonChanged }
-                        />
+                        <MethodParamsEditor params={ methodParams } onChange={ this.handleJsonChanged } />
                     </Grid.Column>
                     {
                         response && (
@@ -149,9 +144,9 @@ export default class MethodCallEditor extends React.Component {
         onMethodNameChange(value);
     };
 
-    handleJsonChanged = ({ updated_src }) => {
+    handleJsonChanged = newObject => {
         const { onMethodParamsChange } = this.props;
-        onMethodParamsChange(updated_src);
+        onMethodParamsChange(newObject);
     };
 
     renderMethodSelector() {
