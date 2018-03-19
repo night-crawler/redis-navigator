@@ -1,7 +1,7 @@
 import fileType from 'file-type';
 import checkIsBase64 from 'is-base64';
 import Cookies from 'js-cookie';
-import { isEmpty, isString, startsWith, isPlainObject, isArray } from 'lodash';
+import { isEmpty, isString, startsWith, isPlainObject, isArray, some } from 'lodash';
 import yaml from 'js-yaml';
 
 
@@ -70,37 +70,45 @@ export function isValidJson(rawStr) {
 }
 
 
-export function isJson(rawStr) {
+export function isValidYaml(rawStr) {
+    if (!isString(rawStr) || !rawStr)
+        return false;
+
+    try {
+        return !!yaml.safeLoad(rawStr);
+    } catch (e) {
+        return false;
+    }
+}
+
+
+export function isJson(rawStr, checks=[isPlainObject, isArray]) {
     const isValid = isValidJson(rawStr);
     if (!isValid)
         return false;
 
-    const data = JSON.parse(rawStr);
+    if (isEmpty(checks))
+        return true;
 
+    const data = JSON.parse(rawStr);
     // believe it's json only if it is an object/array
-    if (!(isPlainObject(data) || isArray(data)))
-        return false;
-    return true;
+    return some(checks.map(check => check(data)));
 }
 
 
-export function isYaml(rawStr) {
-    if (!isString(rawStr) || !rawStr)
+export function isYaml(rawStr, checks=[isPlainObject]) {
+    if (!isValidYaml(rawStr))
         return false;
 
     // it should not be json and yaml simultaneously
     if (isValidJson(rawStr))
         return false;
 
-    try {
-        const result = yaml.safeLoad(rawStr);
-        if (!isPlainObject(result))
-            return false;
-
+    if (isEmpty(checks))
         return true;
-    } catch (e) {
-        return false;
-    }
+
+    const data = yaml.safeLoad(rawStr);
+    return some(checks.map(check => check(data)));
 }
 
 

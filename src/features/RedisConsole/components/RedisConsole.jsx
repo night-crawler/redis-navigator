@@ -8,6 +8,7 @@ import { Button, Icon, Segment } from 'semantic-ui-react';
 import { COLORS } from 'semantic-ui-react/dist/es/lib/SUI';
 import { saveFile } from '../../../utils';
 import DropdownRpcMethodItem from './DropdownRpcMethodItem';
+import CommandImporter from './CommandImporter';
 import MethodCallEditor from './MethodCallEditor';
 
 
@@ -105,6 +106,10 @@ export default class RedisConsole extends React.Component {
                             { shouldShowButtonCaptions && 'Execute' }
                         </Button>
                     </Button.Group>
+
+                    <Segment attached='top'>
+                        <CommandImporter />
+                    </Segment>
 
                 </Segment.Group>
             </HotKeys>

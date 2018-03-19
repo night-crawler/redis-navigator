@@ -5,8 +5,8 @@ import './MethodParamsEditor.css';
 import yaml from 'js-yaml';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Controlled as CodeMirror } from 'react-codemirror2';
-
+import { UnControlled as CodeMirror } from 'react-codemirror2';
+import { isEqual } from 'lodash';
 
 
 export default class MethodParamsEditor extends React.Component {
@@ -21,18 +21,23 @@ export default class MethodParamsEditor extends React.Component {
         const { params } = this.props;
         this.state = {
             params,
-            dumpedParams: this.dump(params),
-            error: null,
+            textParams: this.dump(params),
+            error: false,
         };
     }
 
     componentWillReceiveProps(newProps) {
-        const { params } = newProps;
-        this.setState({ dumpedParams: this.dump(params), params });
+        const { params: newParams } = newProps;
+        const { params: oldParams } = this.state;
+
+        // death from above
+        if (!isEqual(newParams, oldParams)) {
+            this.setState({ textParams: this.dump(newParams), params: newParams });
+        }
     }
 
     render() {
-        const { error } = this.state;
+        const { error, textParams } = this.state;
 
         return (
             <div>
@@ -46,12 +51,10 @@ export default class MethodParamsEditor extends React.Component {
                     } }
                     autoScroll={ false }
                     autoFocus={ true }
-                    value={ this.state.dumpedParams }
-                    onBeforeChange={ (editor, data, value) => {
-                        this.setState({ dumpedParams: value, error: false });
+                    value={ textParams }
+                    onChange={ (editor, data, value) => {
+                        this.handleOnChange(value);
                     } }
-
-                    onBlur={ this.handleOnChange }
                 />
 
                 { error
@@ -66,11 +69,14 @@ export default class MethodParamsEditor extends React.Component {
     dump = obj => yaml.dump(obj);
     load = rawStr => yaml.load(rawStr);
 
-    handleOnChange = () => {
+    handleOnChange = (value) => {
         const { onChange } = this.props;
-        const { dumpedParams } = this.state;
         try {
-            onChange(this.load(dumpedParams));
+            const newParams = this.load(value);
+            this.setState(
+                { error: false, params: newParams },
+                () => onChange(newParams)  // no race conditions
+            );
         } catch (e) {
             this.setState({ error: e });
         }
