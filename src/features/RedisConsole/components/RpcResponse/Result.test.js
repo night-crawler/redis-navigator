@@ -1,7 +1,7 @@
 import { TextareaSpoiler } from '../../../Common/components';
 /* eslint-disable react/react-in-jsx-scope,no-undef */
 import BooleanCard from './BooleanCard';
-import ReactJsonCard from './ReactJsonCard';
+import ObjectTreeViewWidget from './ObjectTreeViewWidget';
 import ImageCard from './ImageCard.jsx';
 import Result, { StringCard } from './Result';
 
@@ -30,16 +30,16 @@ describe('Result', () => {
         expect(wrapper.containsMatchingElement(<BooleanCard result={ true } />)).toEqual(true);
     });
 
-    it('should render Result.ReactJsonCard[Array]', () => {
+    it('should render Result.ObjectTreeViewWidget[Array]', () => {
         const wrapper = shallow(<Result result={ [1, 2, 3] } />);
         expect(wrapper).toMatchSnapshot();
-        expect(wrapper.contains(<ReactJsonCard result={ [1, 2, 3] } />)).toEqual(true);
+        expect(wrapper.contains(<ObjectTreeViewWidget result={ [1, 2, 3] } />)).toEqual(true);
     });
 
-    it('should render Result.ReactJsonCard[Object]', () => {
+    it('should render Result.ObjectTreeViewWidget[Object]', () => {
         const wrapper = shallow(<Result result={ { a: 1, b: 2, c: 3 } } />);
         expect(wrapper).toMatchSnapshot();
-        expect(wrapper.contains(<ReactJsonCard result={ { a: 1, b: 2, c: 3 } } />)).toEqual(true);
+        expect(wrapper.contains(<ObjectTreeViewWidget result={ { a: 1, b: 2, c: 3 } } />)).toEqual(true);
     });
 
     it('should render null', () => {

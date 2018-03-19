@@ -6,8 +6,8 @@ exports[`Result should render Result.BooleanCard 1`] = `
 />
 `;
 
-exports[`Result should render Result.ReactJsonCard[Array] 1`] = `
-<ReactJsonCard
+exports[`Result should render Result.ObjectTreeViewWidget[Array] 1`] = `
+<ObjectTreeViewWidget
   result={
     Array [
       1,
@@ -18,8 +18,8 @@ exports[`Result should render Result.ReactJsonCard[Array] 1`] = `
 />
 `;
 
-exports[`Result should render Result.ReactJsonCard[Object] 1`] = `
-<ReactJsonCard
+exports[`Result should render Result.ObjectTreeViewWidget[Object] 1`] = `
+<ObjectTreeViewWidget
   result={
     Object {
       "a": 1,

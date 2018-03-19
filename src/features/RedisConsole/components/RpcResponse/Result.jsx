@@ -2,11 +2,13 @@ import { isArray, isBoolean, isPlainObject, isString } from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Card, Header, Segment } from 'semantic-ui-react';
-import { isJson, MimeDetector, isBase64, isValidNumber } from '../../../../utils';
+import { isJson, MimeDetector, isBase64, isValidNumber, isYaml } from '../../../../utils';
 import { TextareaSpoiler } from '../../../Common/components';
 import BooleanCard from './BooleanCard';
 import ImageCard from './ImageCard';
-import ReactJsonCard from './ReactJsonCard';
+import ObjectCard from './ObjectCard';
+import ObjectTreeViewWidget from './ObjectTreeViewWidget';
+
 
 
 StringCard.propTypes = {
@@ -22,9 +24,6 @@ export function StringCard(props) {
         type = 'base64';
     } else if (isValidNumber(result)) {
         // just deny json conversion
-    } else if (isJson(result)) {
-        innerResult = JSON.parse(result);
-        type = 'json';
     }
 
     if (innerResult) {
@@ -42,7 +41,7 @@ export function StringCard(props) {
             <Card.Content>
                 <Card.Header>String[{ result.length }]{ type ? ', ' : '' }{ type }</Card.Header>
                 <Card.Description>
-                    { result }
+                    <pre>{ result }</pre>
                 </Card.Description>
             </Card.Content>
         </Card>
@@ -59,18 +58,23 @@ export default function Result(props) {
         { result } = props,
         detector = new MimeDetector(result);
 
-    if (detector.isImage) {
+    if (detector.isImage)
         return <ImageCard dataUri={ detector.imageDataURI } />;
-    }
 
     if (isArray(result))
-        return <ReactJsonCard result={ result } />;
+        return <ObjectTreeViewWidget result={ result } />;
 
     if (isPlainObject(result))
-        return <ReactJsonCard result={ result } />;
+        return <ObjectTreeViewWidget result={ result } />;
 
     if (isBoolean(result))
         return <BooleanCard result={ result } />;
+
+    if (isJson(result))
+        return <ObjectCard result={ result } mode='json' />;
+
+    if (isYaml(result))
+        return <ObjectCard result={ result } mode='yaml' />;
 
     if (isString(result))
         return <StringCard result={ result } />;

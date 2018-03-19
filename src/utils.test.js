@@ -6,6 +6,7 @@ import {
     convertStringToBinary,
     isBase64,
     isValidNumber,
+    isYaml,
 } from './utils';
 
 
@@ -28,6 +29,20 @@ describe('utils', () => {
         expect(isJson(1)).toEqual(false);
         expect(isJson('1')).toEqual(false);
         expect(isJson('{"a": \'1}')).toEqual(false);
+    });
+
+    it('isYaml', () => {
+        const _yaml = `
+        glossary:
+            title: example glossary`;
+
+        expect(isYaml('true')).toEqual(false);
+        expect(isYaml(true)).toEqual(false);
+        expect(isYaml([1, 2, 3])).toEqual(false);
+        expect(isYaml({a: 1})).toEqual(false);
+        expect(isYaml('trash')).toEqual(false);
+
+        expect(isYaml(_yaml)).toEqual(true);
     });
 
     it('isBase64', () => {

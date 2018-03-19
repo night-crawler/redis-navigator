@@ -1,7 +1,8 @@
 import fileType from 'file-type';
 import checkIsBase64 from 'is-base64';
 import Cookies from 'js-cookie';
-import { isEmpty, isString, startsWith } from 'lodash';
+import { isEmpty, isString, startsWith, isPlainObject, isArray } from 'lodash';
+import yaml from 'js-yaml';
 
 
 export function csrfSafeMethod(method) {
@@ -57,20 +58,45 @@ export function uuid4() {
 }
 
 
-export function isJson(rawStr) {
+export function isValidJson(rawStr) {
     if (!isString(rawStr) || !rawStr)
         return false;
 
-    let _rawStr = rawStr.trim();
-
-    if (!( startsWith(_rawStr, '{') || startsWith(_rawStr, '[') ))
-        return false;
-
     try {
-        return !!JSON.parse(_rawStr);
+        return !!JSON.parse(rawStr);
     } catch (err) {
         return false;
     }
+}
+
+
+export function isJson(rawStr) {
+    const isValid = isValidJson(rawStr);
+    if (!isValid)
+        return false;
+
+    const data = JSON.parse(rawStr);
+
+    // believe it's json only if it is an object/array
+    if (!(isPlainObject(data) || isArray(data)))
+        return false;
+    return true;
+}
+
+
+export function isYaml(rawStr) {
+    if (!isString(rawStr) || !rawStr)
+        return false;
+
+    // it should not be json and yaml simultaneously
+    if (isValidJson(rawStr))
+        return false;
+
+    const result = yaml.safeLoad(rawStr);
+    if (!isPlainObject(result))
+        return false;
+
+    return true;
 }
 
 

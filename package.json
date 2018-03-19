@@ -15,7 +15,12 @@
     ],
     "snapshotSerializers": [
       "enzyme-to-json/serializer"
-    ]
+    ],
+    "moduleNameMapper": {
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$":
+        "<rootDir>/__mocks__/fileMock.js",
+      "\\.(css|less)$": "identity-obj-proxy"
+    }
   },
   "repository": {
     "type": "git",
@@ -33,6 +38,7 @@
   },
   "homepage": "https://github.com/night-crawler/redis-navigator#readme",
   "dependencies": {
+    "codemirror": "^5.35.0",
     "es6-error": "^4.1.1",
     "eslint-plugin-flowtype": "^2.46.1",
     "file-type": "^7.6.0",
@@ -40,9 +46,11 @@
     "immer": "^1.1.1",
     "is-base64": "^0.0.4",
     "js-cookie": "^2.2.0",
+    "js-yaml": "^3.11.0",
     "jsoneditor": "^5.14.0",
     "prop-types": "^15.6.1",
     "react": "^16.2.0",
+    "react-codemirror2": "^4.2.1",
     "react-dom": "^16.2.0",
     "react-helmet": "^5.2.0",
     "react-hotkeys": "^0.10.0",
@@ -79,7 +87,9 @@
     "eslint-plugin-jest": "^21.8.0",
     "eslint-plugin-react": "^7.6.1",
     "flow-bin": "^0.66.0",
+    "identity-obj-proxy": "^3.0.0",
     "jest": "^22.3.0",
+    "jest-css-modules": "^1.1.0",
     "lodash": "^4.17.5",
     "parcel-bundler": "^1.5.1",
     "react-test-renderer": "^16.2.0",
