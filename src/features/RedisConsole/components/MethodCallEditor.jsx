@@ -102,8 +102,8 @@ export default class MethodCallEditor extends React.Component {
             return false;
 
         return (
-            <Segment raised={ true } color={ color }>
-                <Header as='h2' block={ true } color={ this.isSuccess() && !dirty ? 'green' : undefined }>
+            <Segment basic={ true } color={ color }>
+                <Header as='h2' color={ this.isSuccess() && !dirty ? 'green' : undefined }>
                     <Header.Content>
                         <Button
                             basic={ true } color='orange' icon='remove' size='huge'
@@ -157,8 +157,8 @@ export default class MethodCallEditor extends React.Component {
         const { instanceName, color, onRemove } = this.props;
 
         return (
-            <Segment raised={ true } color={ color }>
-                <Header as='h2' block={ true }>
+            <Segment basic={ true } color={ color }>
+                <Header as='h2'>
                     <Header.Content>
                         <Button
                             basic={ true } color='orange' icon='remove' size='huge'
