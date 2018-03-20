@@ -24,6 +24,8 @@ export default class RedisConsole extends React.Component {
         inspections: PropTypes.object.isRequired,
 
         routeInstanceName: PropTypes.string.isRequired,
+        routeInstanceImportDialogIsVisible: PropTypes.bool,
+
         routeConsoleCommands: PropTypes.arrayOf(ConsoleCommandType),
         routeConsoleCommandsToExecute: PropTypes.arrayOf(ConsoleCommandType),
 
@@ -36,6 +38,7 @@ export default class RedisConsole extends React.Component {
             changeCallEditorMethodParams: PropTypes.func.isRequired,
             clearCallEditors: PropTypes.func.isRequired,
             bindCallEditorToId: PropTypes.func.isRequired,
+            toggleImportDialogVisible: PropTypes.func,
         }).isRequired,
 
         notifications: PropTypes.shape({
@@ -73,6 +76,7 @@ export default class RedisConsole extends React.Component {
     render() {
         this.log('render');
         const shouldShowButtonCaptions = true;
+        const { inspections, routeInstanceImportDialogIsVisible } = this.props;
 
         return (
             <HotKeys keyMap={ this.keyMap } handlers={ this.keyMapHandlers } focused={ true }>
@@ -91,6 +95,7 @@ export default class RedisConsole extends React.Component {
                             <Icon name='external' />
                             { shouldShowButtonCaptions && 'Export' }
                         </Button>
+
                         <Button basic={ true } color='grey' onClick={ this.handleImportClicked }>
                             <Icon name='download' />
                             { shouldShowButtonCaptions && 'Import' }
@@ -107,9 +112,13 @@ export default class RedisConsole extends React.Component {
                         </Button>
                     </Button.Group>
 
-                    <Segment attached='top'>
-                        <CommandImporter />
-                    </Segment>
+                    {
+                        routeInstanceImportDialogIsVisible &&
+                        <Segment attached='top'>
+                            <CommandImporter inspections={ inspections } onImport={ this.handleImport } />
+                        </Segment>
+                    }
+
 
                 </Segment.Group>
             </HotKeys>
@@ -158,6 +167,19 @@ export default class RedisConsole extends React.Component {
     };
 
     handleImportClicked = () => {
+        const { actions, routeInstanceName } = this.props;
+        actions.toggleImportDialogVisible(routeInstanceName);
+    };
+
+    handleImport = (commands) => {
+        const { actions, routeInstanceName } = this.props;
+        commands.forEach((command, i)=> {
+            actions.appendCallEditor({
+                instanceName: routeInstanceName,
+                color: COLORS[i % COLORS.length],
+                ...command
+            });
+        });
     };
 
     handleCallEditorRetryClicked = (key) => {
@@ -174,40 +196,36 @@ export default class RedisConsole extends React.Component {
     handleAppendCallEditorClicked = () => this.appendMethodCallEditor();
 
     handleBatchExecute(commands) {
-        const {
-            routeInstanceName,
-            actions: { bindCallEditorToId, batchExecute },
-        } = this.props;
-
+        const { routeInstanceName, actions } = this.props;
         const cmdPairBundles = commands.map(cmd => [cmd.methodName, cmd.methodParams]);
 
-        batchExecute(routeInstanceName, ...cmdPairBundles)
-            .then((data) => {
+        actions.batchExecute(routeInstanceName, ...cmdPairBundles)
+            .then(data =>
                 zip(map(commands, 'key'), map(data.meta.request, 'id'))
                     .forEach(([key, id]) =>
-                        bindCallEditorToId(routeInstanceName, key, id));
-            });
+                        actions.bindCallEditorToId(routeInstanceName, key, id))
+            );
     }
 
     handleExecuteAllClicked = () => {
         const {
                 routeConsoleCommandsToExecute: commands,
-                notifications: { nothingToExecute },
+                notifications,
             } = this.props,
             cmdPairBundles = commands.map(cmd => [cmd.methodName, cmd.methodParams]);
 
         if (isEmpty(cmdPairBundles))
-            return nothingToExecute();
+            return notifications.nothingToExecute();
 
         this.handleBatchExecute(commands);
     };
 
     appendMethodCallEditor() {
         const { routeInstanceName, actions, routeConsoleCommands } = this.props;
-        actions.appendCallEditor(
-            routeInstanceName,
-            COLORS[routeConsoleCommands.length % COLORS.length]
-        );
+        actions.appendCallEditor({
+            instanceName: routeInstanceName,
+            color: COLORS[routeConsoleCommands.length % COLORS.length],
+        });
     }
 
 }

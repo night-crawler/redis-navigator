@@ -8,5 +8,5 @@ BooleanCard.propTypes = {
 };
 export default function BooleanCard(props) {
     const { result } = props;
-    return <Card header='Boolean' description={ `${result}` } />;
+    return <Card fluid={ true } header='Boolean' description={ `${result}` } />;
 }

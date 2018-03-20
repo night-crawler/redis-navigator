@@ -4,8 +4,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Dropdown, Grid, Header, Label, Segment } from 'semantic-ui-react';
 import MethodParamsEditor from './MethodParamsEditor';
+import MethodParametersList from './MethodParametersList';
 import RpcResponse from './RpcResponse';
-import { parametersToJson, reprMethodArgs, reprMethodDoc } from './utils';
+import { parametersToJson, reprMethodDoc } from '../utils';
 
 
 export default class MethodCallEditor extends React.Component {
@@ -111,7 +112,7 @@ export default class MethodCallEditor extends React.Component {
                     </Header.Content>
                     <Header.Content>
                         { instanceName }.{ methodName }
-                        { reprMethodArgs(methodProps.parameters) }
+                        { <MethodParametersList parameters={ methodProps.parameters } /> }
                         <Button
                             as={ Label } icon='repeat' color='orange'
                             basic={ true } circular={ true }

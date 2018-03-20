@@ -118,6 +118,14 @@ export const routeConsoleCommands = createSelector(
     routeInstanceData => routeInstanceData.consoleCommands
 );
 
+/**
+ * state.redisNavigator.instancesData[:instanceName].importDialogIsVisible
+ */
+export const routeInstanceImportDialogIsVisible = createSelector(
+    routeInstanceData,
+    routeInstanceData => routeInstanceData.importDialogIsVisible
+);
+
 
 export const routeConsoleCommandsToExecute = createSelector(
     routeConsoleCommands,

@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { cleanMethodDoc, reprMethodArgs } from './utils';
+import { cleanMethodDoc } from '../utils';
+import MethodParametersList from './MethodParametersList';
 
 
 DropdownRpcMethodItem.propTypes = {
@@ -24,7 +25,7 @@ export default function DropdownRpcMethodItem(props) {
             {
                 parameters.length &&
                 <div className='ui blue basic button' style={ { padding: 2 } }>
-                    { reprMethodArgs(parameters) }
+                    { <MethodParametersList parameters={ parameters } /> }
                 </div>
             }
 

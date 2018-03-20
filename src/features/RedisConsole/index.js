@@ -9,6 +9,7 @@ import {
     routeInstanceName,
     routeInstanceRequests,
     routeInstanceResponses,
+    routeInstanceImportDialogIsVisible,
     urls,
 } from '../selectors';
 import {
@@ -18,6 +19,7 @@ import {
     changeCallEditorMethodParams,
     clearCallEditors,
     removeCallEditor,
+    toggleImportDialogVisible,
 } from './actions';
 import { RedisConsole } from './components';
 
@@ -26,8 +28,8 @@ function mapDispatchToProps(dispatch) {
     return {
         dispatch,
         actions: {
-            appendCallEditor: (redisInstance, color) =>
-                dispatch(appendCallEditor(redisInstance, undefined, color)),
+            appendCallEditor: ({ ...kwargs }) =>
+                dispatch(appendCallEditor({ ...kwargs })),
 
             removeCallEditor: (redisInstance, key) =>
                 dispatch(removeCallEditor(redisInstance, key)),
@@ -42,7 +44,10 @@ function mapDispatchToProps(dispatch) {
                 dispatch(clearCallEditors(redisInstance)),
 
             bindCallEditorToId: (redisInstance, key, id) =>
-                dispatch(bindCallEditorToId(redisInstance, key, id))
+                dispatch(bindCallEditorToId(redisInstance, key, id)),
+
+            toggleImportDialogVisible: (redisInstance, isVisible) =>
+                dispatch(toggleImportDialogVisible(redisInstance, isVisible)),
         },
         notifications: {
             nothingToExecute: () => dispatch(warning({
@@ -83,6 +88,7 @@ export default connect(
         routeInstanceResponses,
         routeConsoleCommands,
         routeConsoleCommandsToExecute,
+        routeInstanceImportDialogIsVisible,
         urls,
     }),
     mapDispatchToProps,

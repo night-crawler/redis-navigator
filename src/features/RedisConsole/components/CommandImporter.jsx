@@ -3,40 +3,21 @@ import 'codemirror/lib/codemirror.css';
 import 'codemirror/mode/javascript/javascript';
 import 'codemirror/mode/yaml/yaml';
 
+import yaml from 'js-yaml';
+
 import PropTypes from 'prop-types';
 import React from 'react';
 import { UnControlled as CodeMirror } from 'react-codemirror2';
-import { Button, Grid, Header, Segment, Icon } from 'semantic-ui-react';
+import { Button, Grid, Header, Icon, Segment } from 'semantic-ui-react';
 import { isJson, isYaml } from '../../../utils';
-import { isArray, isPlainObject, every } from 'lodash';
-import yaml from 'js-yaml';
-
-
-const checkCommandsValid = (commands) => {
-    if (!isArray(commands))
-        return false;
-
-    const allCommandsHaveMethodName = every(commands.map(
-        command => isPlainObject(command) && typeof command.methodName === 'string'
-    ));
-
-    if (!allCommandsHaveMethodName)
-        return false;
-
-    const allCommandsHaveValidParams = every(commands.map(
-        command => command.methodParams === undefined || isPlainObject(command.methodParams)
-    ));
-
-    if (!allCommandsHaveValidParams)
-        return false;
-
-    return true;
-};
+import { checkCommandsValid } from '../utils';
+import ImportingCommandListPreview from './ImportingCommandListPreview';
 
 
 export default class CommandImporter extends React.Component {
     static propTypes = {
-        text: PropTypes.any,
+        inspections: PropTypes.object,
+        onImport: PropTypes.func,
     };
 
     constructor(props) {
@@ -53,17 +34,22 @@ export default class CommandImporter extends React.Component {
 
     render() {
         const { isValid, mode, value, textValue } = this.state;
+        const { onImport } = this.props;
+
         return (
             <Segment>
                 <Header as='h2'>
-                    Import commands { !isValid && '(invalid)' } { isValid && `[${value.length}]`  }
+                    Import commands { !isValid && '(invalid)' } { isValid && `[${value.length}]` }
                 </Header>
                 <Grid stackable={ true }>
                     <Grid.Column width={ 4 } verticalAlign='bottom'>
 
-                        <Button basic={ true } color='green' fluid={ true } disabled={ !isValid }>
-                            <Icon name='checkmark' />
-                            Import
+                        { isValid && <ImportingCommandListPreview commands={ value } /> }
+
+                        <Button
+                            basic={ true } fluid={ true } disabled={ !isValid } color='green'
+                            onClick={ () => onImport(value) }>
+                            <Icon name='checkmark' />Import
                         </Button>
 
                     </Grid.Column>

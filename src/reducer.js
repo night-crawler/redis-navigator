@@ -8,7 +8,7 @@ import {
     RPC_BATCH_START, RPC_BATCH_SUCCESS,
     INIT_STORE_WITH_URLS,
 } from './features/actions';
-import { isArray, fromPairs, pick, findIndex } from 'lodash';
+import { isArray, fromPairs, pick, findIndex, isBoolean } from 'lodash';
 
 import {
     APPEND_CALL_EDITOR,
@@ -17,6 +17,7 @@ import {
     CHANGE_CALL_EDITOR_METHOD_PARAMS,
     CLEAR_CALL_EDITORS,
     BIND_CALL_EDITOR_TO_ID,
+    TOGGLE_IMPORT_DIALOG_VISIBLE,
 } from './features/RedisConsole/actions';
 
 
@@ -100,7 +101,8 @@ const instancesData = (state = {}, action) => produce(state, draft => {
                         requests: {},
                         responses: {},
                         info: {},
-                        consoleCommands: []
+                        consoleCommands: [],
+                        importDialogIsVisible: false,
                     };
             });
             break;
@@ -159,6 +161,13 @@ const instancesData = (state = {}, action) => produce(state, draft => {
             draftRedis
                 .consoleCommands[cmdIndex]
                 .dirty = false;
+            break;
+
+        case TOGGLE_IMPORT_DIALOG_VISIBLE:
+            draftRedis.importDialogIsVisible =
+                isBoolean(payload.isVisible)
+                    ? payload.isVisible
+                    : !redis.importDialogIsVisible;
             break;
     }
 });
