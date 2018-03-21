@@ -9,7 +9,6 @@ import DropdownRedisItem from './DropdownRedisItem';
 Navbar.propTypes = {
     actions: PropTypes.shape({
         loadInstances: PropTypes.func.isRequired,
-        loadInfo: PropTypes.func.isRequired,
         setActiveInstance: PropTypes.func.isRequired,
     }).isRequired,
     activeInstanceName: PropTypes.string,
@@ -25,15 +24,13 @@ export default function Navbar(props) {
     return (
         <Menu fixed='top'>
             <Container>
-                <Menu.Item as={ Link } header={ true } to={ `/${activeInstanceName}/dashboard` }>
-                    {/*<Image*/}
-                    {/*size='mini'*/}
-                    {/*src='/logo.png'*/}
-                    {/*style={ { marginRight: '1.5em' } }*/}
-                    {/*/>*/}
-
+                <Menu.Item as={ Link } header={ true } to={ `/${activeInstanceName}` }>
                     <Icon name='map' />
                     Redis Navigator
+                </Menu.Item>
+
+                <Menu.Item as={ Link } header={ true } to={ `/${activeInstanceName}/dashboard` }>
+                    <Icon name='dashboard' />
                 </Menu.Item>
 
                 <Menu.Item as={ Link } header={ true } to={ `/${activeInstanceName}/console` }>
@@ -60,14 +57,6 @@ export default function Navbar(props) {
                         }
                     </Dropdown.Menu>
                 </Dropdown>
-
-                {
-                    activeInstanceName &&
-                    <Menu.Item as='a' onClick={ () => actions.loadInfo(activeInstanceName) }>
-                        <Icon name='refresh' />
-                    </Menu.Item>
-                }
-
             </Container>
         </Menu>
     );

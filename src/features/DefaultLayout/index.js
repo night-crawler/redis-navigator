@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import {
-    RedisRpc, RpcActionCreator,
+    RedisRpc,
     setActiveInstance,
     loadInspections,
     loadInstances,

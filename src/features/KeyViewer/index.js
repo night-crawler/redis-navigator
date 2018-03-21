@@ -1,30 +1,31 @@
 import { connect } from 'react-redux';
+import { RedisRpc } from '../actions';
+import { KeyViewer } from './components';
 import { createStructuredSelector } from 'reselect';
-import { loadInstances, setActiveInstance } from '../actions';
-import { activeInstanceName, instances, urls, } from '../selectors';
-import { Navbar } from './components';
+import {
+    routeInstanceName,
+    routeInstanceInfo,
+    urls,
+} from '../selectors';
 
 
 function mapDispatchToProps(dispatch) {
-    return {
-        actions: {
-            setActiveInstance: name => dispatch(setActiveInstance(name)),
-        }
-    };
+    return { dispatch };
 }
 
 
 function mergeProps(stateProps, dispatchProps, ownProps) {
-    const { urls: { statusUrl } } = stateProps;
+    const { urls: { rpcEndpointUrl }, routeInstanceName } = stateProps;
     const { dispatch } = dispatchProps;
+
+    const rpc = new RedisRpc({ endpoint: rpcEndpointUrl, dispatch });
 
     return {
         ...ownProps,
         ...stateProps,
         ...dispatchProps,
         actions: {
-            ...dispatchProps.actions,
-            loadInstances: () => dispatch(loadInstances(statusUrl)),
+            loadInfo: () => rpc.loadInfo(routeInstanceName),
         },
         dispatch: undefined,
     };
@@ -33,10 +34,10 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
 
 export default connect(
     createStructuredSelector({
-        instances,
-        activeInstanceName,
+        routeInstanceName,
+        routeInstanceInfo,
         urls,
     }),
     mapDispatchToProps,
     mergeProps
-)(Navbar);
+)(KeyViewer);

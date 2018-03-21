@@ -7,6 +7,7 @@ import { Route, Switch } from 'react-router-dom';
 import Navbar from '../../Navbar/index';
 import Dashboard from '../../Dashboard';
 import RedisConsole from '../../RedisConsole';
+import KeyViewer from '../../KeyViewer';
 import { FullPageDimmer, NotFound } from '../../Common/components';
 import AppWrapper from './AppWrapper';
 import AppContentWrapper from './AppContentWrapper';
@@ -41,9 +42,8 @@ export default class DefaultLayout extends React.Component {
     }
 
     handleInitStoreWithUrls = () => {
-        const { rpcEndpointUrl, statusUrl, inspectionsUrl } = this.props;
-        const { initStoreWithUrls } = this.props.actions;
-        initStoreWithUrls({ rpcEndpointUrl, statusUrl, inspectionsUrl });
+        const { rpcEndpointUrl, statusUrl, inspectionsUrl, actions } = this.props;
+        actions.initStoreWithUrls({ rpcEndpointUrl, statusUrl, inspectionsUrl });
     };
 
     componentDidMount() {
@@ -76,13 +76,14 @@ export default class DefaultLayout extends React.Component {
                     <meta name='description' content='Redis Navigator application' />
                 </Helmet>
 
-                <Navbar actions={ this.props.actions } />
+                <Navbar />
 
                 <AppContentWrapper>
                     <Switch>
                         { /*<Route exact path='/' component={ HomePage } />*/ }
                         <Route path='/:instanceName/dashboard' component={ Dashboard } />
                         <Route path='/:instanceName/console' component={ RedisConsole } />
+                        <Route path='/:instanceName' component={ KeyViewer } />
                         <Route path='' component={ NotFound } />
                     </Switch>
                 </AppContentWrapper>

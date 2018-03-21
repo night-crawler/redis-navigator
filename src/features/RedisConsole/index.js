@@ -1,4 +1,4 @@
-import { success, warning } from 'react-notification-system-redux';
+import { warning } from 'react-notification-system-redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { RedisRpc } from '../actions';

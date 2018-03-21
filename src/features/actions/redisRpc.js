@@ -12,7 +12,6 @@ const REDIS_RPC_FETCH_INFO = [
 ];
 
 
-
 export class RedisRpc {
     constructor({
         dispatch,
@@ -29,7 +28,7 @@ export class RedisRpc {
             .action(undefined, REDIS_RPC_FETCH_INFO)
             .batchExecute(
                 ['config_get'],
-                ['info', {section: 'all'}],
+                ['info', { section: 'all' }],
                 ['dbsize'],
                 ['client_list'],
                 ['client_getname'],
