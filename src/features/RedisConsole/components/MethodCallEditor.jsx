@@ -2,11 +2,12 @@ import debug from 'debug';
 import { isEqual, isFunction, pickBy } from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { HotKeys } from 'react-hotkeys';
 import { Button, Dropdown, Grid, Header, Label, Segment } from 'semantic-ui-react';
-import MethodParamsEditor from './MethodParamsEditor';
-import MethodParametersList from './MethodParametersList';
-import RpcResponse from './RpcResponse';
 import { parametersToJson, reprMethodDoc } from '../utils';
+import MethodParametersList from './MethodParametersList';
+import MethodParamsEditor from './MethodParamsEditor';
+import RpcResponse from './RpcResponse';
 
 
 export default class MethodCallEditor extends React.Component {
@@ -45,11 +46,19 @@ export default class MethodCallEditor extends React.Component {
         onRetry: () => {},
     };
 
+    keyMap = {
+        execute: 'ctrl+enter',
+    };
+
     constructor(props) {
         super(props);
         debug.enable('*');
         this.log = debug('MethodCallEditor');
         this.log('initialized', props);
+
+        this.keyMapHandlers = {
+            execute: this.props.onRetry,
+        };
     }
 
     shouldComponentUpdate(nextProps) {
@@ -102,44 +111,46 @@ export default class MethodCallEditor extends React.Component {
             return false;
 
         return (
-            <Segment basic={ true } color={ color }>
-                <Header as='h2' color={ this.isSuccess() && !dirty ? 'green' : undefined }>
-                    <Header.Content>
-                        <Button
-                            basic={ true } color='orange' icon='remove' size='huge'
-                            onClick={ onRemove }
-                        />
-                    </Header.Content>
-                    <Header.Content>
-                        { instanceName }.{ methodName }
-                        { <MethodParametersList parameters={ methodProps.parameters } /> }
-                        <Button
-                            as={ Label } icon='repeat' color='orange'
-                            basic={ true } circular={ true }
-                            onClick={ onRetry }
-                        />
-                    </Header.Content>
-                    <Header.Subheader>
-                        { reprMethodDoc(methodProps.doc) }
-                    </Header.Subheader>
+            <HotKeys keyMap={ this.keyMap } handlers={ this.keyMapHandlers } focused={ true }>
+                <Segment basic={ true } color={ color }>
+                    <Header as='h2' color={ this.isSuccess() && !dirty ? 'green' : undefined }>
+                        <Header.Content>
+                            <Button
+                                basic={ true } color='orange' icon='remove' size='huge'
+                                onClick={ onRemove }
+                            />
+                        </Header.Content>
+                        <Header.Content>
+                            { instanceName }.{ methodName }
+                            { <MethodParametersList parameters={ methodProps.parameters } /> }
+                            <Button
+                                as={ Label } icon='repeat' color='orange'
+                                basic={ true } circular={ true }
+                                onClick={ onRetry }
+                            />
+                        </Header.Content>
+                        <Header.Subheader>
+                            { reprMethodDoc(methodProps.doc) }
+                        </Header.Subheader>
 
-                </Header>
+                    </Header>
 
-                <Grid stackable={ true }>
-                    <Grid.Column width={ 6 }>
-                        <MethodParamsEditor params={ methodParams } onChange={ this.handleJsonChanged } />
-                    </Grid.Column>
-                    {
-                        response && (
-                            <Grid.Column width={ 10 }>
-                                <RpcResponse response={ response } />
-                            </Grid.Column>
-                        )
-                    }
-                </Grid>
+                    <Grid stackable={ true }>
+                        <Grid.Column width={ 6 }>
+                            <MethodParamsEditor params={ methodParams } onChange={ this.handleJsonChanged } />
+                        </Grid.Column>
+                        {
+                            response && (
+                                <Grid.Column width={ 10 }>
+                                    <RpcResponse response={ response } />
+                                </Grid.Column>
+                            )
+                        }
+                    </Grid>
 
 
-            </Segment>
+                </Segment>
+            </HotKeys>
         );
     }
 
