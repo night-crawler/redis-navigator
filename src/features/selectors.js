@@ -35,6 +35,24 @@ export const inspections = createSelector(redisNavigator, redisNavigator => redi
 
 
 /**
+ * state.redisNavigator.progress
+ */
+export const progress = createSelector(redisNavigator, redisNavigator => redisNavigator.progress || {});
+
+
+/**
+ * state.redisNavigator.progress.percent
+ */
+export const progressPercent = createSelector(progress, progress => progress.percent || 0);
+
+
+/**
+ * state.redisNavigator.progress.isVisible
+ */
+export const progressIsVisible = createSelector(progress, progress => progress.isVisible || false);
+
+
+/**
  * state.redisNavigator.hasLoaded
  */
 export const hasLoaded = createSelector(redisNavigator, redisNavigator => redisNavigator.hasLoaded);

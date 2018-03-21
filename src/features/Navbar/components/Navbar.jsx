@@ -2,8 +2,9 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Container, Dropdown, Icon, Image, Label, Menu } from 'semantic-ui-react';
+import { Container, Dropdown, Icon, Label, Menu, Progress } from 'semantic-ui-react';
 import DropdownRedisItem from './DropdownRedisItem';
+import TopNailedFullWidthContainer from './TopNailedFullWidthContainer';
 
 
 Navbar.propTypes = {
@@ -13,9 +14,17 @@ Navbar.propTypes = {
     }).isRequired,
     activeInstanceName: PropTypes.string,
     instances: PropTypes.array.isRequired,
+    progressPercent: PropTypes.number,
+    progressIsVisible: PropTypes.bool,
 };
 export default function Navbar(props) {
-    const { instances = {}, activeInstanceName, actions } = props;
+    const {
+        instances = {},
+        activeInstanceName,
+        actions,
+        progressPercent,
+        progressIsVisible,
+    } = props;
 
     const ddInstanceText = activeInstanceName
         ? <span>Instance: <Label size='mini'>{ activeInstanceName }</Label></span>
@@ -23,6 +32,13 @@ export default function Navbar(props) {
 
     return (
         <Menu fixed='top'>
+            {
+                progressIsVisible &&
+                <TopNailedFullWidthContainer>
+                    <Progress indicating={ true } percent={ progressPercent } attached='top' color='green' />
+                </TopNailedFullWidthContainer>
+            }
+
             <Container>
                 <Menu.Item as={ Link } header={ true } to={ `/${activeInstanceName}` }>
                     <Icon name='map' />

@@ -14,6 +14,11 @@ export default {
             rpcEndpointUrl: null,
             statusUrl: null,
             inspectionsUrl: null,
+        },
+
+        progress: {
+            percent: 0,
+            isVisible: false,
         }
     },
     notifications: [],

@@ -1,7 +1,13 @@
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { loadInstances, setActiveInstance } from '../actions';
-import { activeInstanceName, instances, urls, } from '../selectors';
+import {
+    activeInstanceName,
+    instances,
+    urls,
+    progressIsVisible,
+    progressPercent,
+} from '../selectors';
 import { Navbar } from './components';
 
 
@@ -36,6 +42,8 @@ export default connect(
         instances,
         activeInstanceName,
         urls,
+        progressIsVisible,
+        progressPercent,
     }),
     mapDispatchToProps,
     mergeProps

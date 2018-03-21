@@ -226,6 +226,15 @@ const urls = (state = {}, action) => {
 };
 
 
+const progress = (state = {}, action) => {
+    switch (action.type) {
+
+        default:
+            return state;
+    }
+};
+
+
 export default combineReducers({
     instances,
     instancesData,
@@ -233,4 +242,5 @@ export default combineReducers({
     hasLoaded,
     inspections,
     urls,
+    progress,
 });
