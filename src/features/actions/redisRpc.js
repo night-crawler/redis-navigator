@@ -15,16 +15,16 @@ const REDIS_RPC_FETCH_INFO = [
 export class RedisRpc {
     constructor({
         dispatch,
+        instanceName,
         endpoint,
         rpcActionCreator = new RpcActionCreator({ endpoint })
     } = {}) {
-        this.rpcActionCreator = rpcActionCreator;
+        this.rpcActionCreator = rpcActionCreator.path(instanceName);
         this.dispatch = dispatch;
     }
 
-    fetchInfo = redisInstance => {
+    fetchInfo = () => {
         const actionBundle = this.rpcActionCreator
-            .path(redisInstance)
             .action(undefined, REDIS_RPC_FETCH_INFO)
             .batchExecute(
                 ['config_get'],
@@ -36,9 +36,8 @@ export class RedisRpc {
         return this.dispatch(actionBundle);
     };
 
-    batchExecute = (redisInstance, ...pairs) => {
+    batchExecute = (...pairs) => {
         const actionBundle = this.rpcActionCreator
-            .path(redisInstance)
             .batchExecute(...pairs);
 
         return this.dispatch(actionBundle);

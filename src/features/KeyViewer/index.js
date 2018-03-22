@@ -23,14 +23,18 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
 
     const { dispatch } = dispatchProps;
 
-    const rpc = new RedisRpc({ endpoint: rpcEndpointUrl, dispatch });
+    const rpc = new RedisRpc({
+        dispatch,
+        instanceName: routeInstanceName,
+        endpoint: rpcEndpointUrl,
+    });
 
     return {
         ...ownProps,
         ...stateProps,
         ...dispatchProps,
         actions: {
-            fetchInfo: () => rpc.fetchInfo(routeInstanceName),
+            fetchInfo: rpc.fetchInfo,
         },
         dispatch: undefined,
     };
