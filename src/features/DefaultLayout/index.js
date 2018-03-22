@@ -1,7 +1,6 @@
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import {
-    RedisRpc,
     setActiveInstance,
     loadInspections,
     loadInstances,
@@ -20,16 +19,14 @@ import {
 
 
 function mapDispatchToProps(dispatch, ownProps) {
-    const { rpcEndpointUrl, statusUrl, inspectionsUrl } = ownProps;
+    const { statusUrl, inspectionsUrl } = ownProps;
 
-    const rpc = new RedisRpc({ endpoint: rpcEndpointUrl, dispatch });
 
     return {
         actions: {
             initStoreWithUrls: urls => dispatch(initStoreWithUrls(urls)),
 
             loadInstances: () => dispatch(loadInstances(statusUrl)),
-            loadInfo: name => rpc.loadInfo(name),
             setActiveInstance: name => dispatch(setActiveInstance(name)),
             loadInspections: () => dispatch(loadInspections(inspectionsUrl)),
         }

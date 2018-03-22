@@ -19,7 +19,9 @@ export default {
         progress: {
             percent: 0,
             isVisible: false,
-        }
+        },
+
+        keyViewer: {},
     },
     notifications: [],
 };
