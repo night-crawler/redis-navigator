@@ -22,7 +22,7 @@ export class RedisRpc {
         this.dispatch = dispatch;
     }
 
-    loadInfo = redisInstance => {
+    fetchInfo = redisInstance => {
         const actionBundle = this.rpcActionCreator
             .path(redisInstance)
             .action(undefined, REDIS_RPC_FETCH_INFO)

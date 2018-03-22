@@ -30,7 +30,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
         ...stateProps,
         ...dispatchProps,
         actions: {
-            loadInfo: () => rpc.loadInfo(routeInstanceName),
+            fetchInfo: () => rpc.fetchInfo(routeInstanceName),
         },
         dispatch: undefined,
     };

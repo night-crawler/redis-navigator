@@ -20,7 +20,7 @@ export default class DefaultLayout extends React.Component {
             loadInstances: PropTypes.func,
             setActiveInstance: PropTypes.func,
             loadInspections: PropTypes.func,
-            loadInfo: PropTypes.func,
+            fetchInfo: PropTypes.func,
             initStoreWithUrls: PropTypes.func,
         }),
         instances: PropTypes.array,

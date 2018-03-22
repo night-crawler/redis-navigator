@@ -13,7 +13,7 @@ import RedisKeySpaceCard from './RedisKeySpaceCard';
 export default class Dashboard extends React.Component {
     static propTypes = {
         actions: PropTypes.shape({
-            loadInfo: PropTypes.func.isRequired,
+            fetchInfo: PropTypes.func.isRequired,
         }),
         routeInstanceName: PropTypes.string.isRequired,
         routeInstanceInfo: PropTypes.object,
@@ -30,7 +30,7 @@ export default class Dashboard extends React.Component {
     componentDidMount() {
         const { routeInstanceName, routeInstanceInfo, routeInstanceDataExists } = this.props;
         if (isEmpty(routeInstanceInfo))
-            this.props.actions.loadInfo(routeInstanceName);
+            this.props.actions.fetchInfo(routeInstanceName);
     }
 
     componentWillReceiveProps(newProps) {
@@ -39,7 +39,7 @@ export default class Dashboard extends React.Component {
         const { routeInstanceInfo, routeInstanceName } = newProps;
 
         if (isEmpty(routeInstanceInfo) && routeInstanceName !== oldRouteInstanceName)
-            this.props.actions.loadInfo(routeInstanceName);
+            this.props.actions.fetchInfo(routeInstanceName);
 
     }
 

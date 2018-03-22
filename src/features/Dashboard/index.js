@@ -26,7 +26,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
         ...stateProps,
         ...dispatchProps,
         actions: {
-            loadInfo: name => rpc.loadInfo(name),
+            fetchInfo: name => rpc.fetchInfo(name),
         },
         dispatch: undefined,
     };

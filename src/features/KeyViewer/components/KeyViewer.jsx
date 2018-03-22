@@ -6,13 +6,13 @@ import { Segment } from 'semantic-ui-react';
 export default class KeyViewer extends React.Component {
     static propTypes = {
         actions: PropTypes.shape({
-            loadInfo: PropTypes.func.isRequired,
+            fetchInfo: PropTypes.func.isRequired,
         }),
     };
 
     componentDidMount() {
         const { actions } = this.props;
-        actions.loadInfo();
+        actions.fetchInfo();
     }
 
     render() {

@@ -6,7 +6,7 @@ describe('RedisRpc', () => {
         const dispatch = jest.fn(action => action);
         const rpc = new RedisRpc({endpoint: '/test', dispatch});
 
-        rpc.loadInfo();
+        rpc.fetchInfo();
         expect(dispatch).toHaveBeenCalled();
     });
 
