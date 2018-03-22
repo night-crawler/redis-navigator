@@ -12,6 +12,18 @@ const REDIS_RPC_FETCH_INFO = [
 ];
 
 
+export const REDIS_RPC_FETCH_MATCH_COUNT_START = 'redisNavigator/rpc/execute/fetch-match-count/start';
+export const REDIS_RPC_FETCH_MATCH_COUNT_SUCCESS = 'redisNavigator/rpc/execute/fetch-match-count/success';
+export const REDIS_RPC_FETCH_MATCH_COUNT_FAIL = 'redisNavigator/rpc/execute/fetch-match-count/fail';
+
+
+const REDIS_RPC_FETCH_MATCH_COUNT = [
+    REDIS_RPC_FETCH_MATCH_COUNT_START,
+    REDIS_RPC_FETCH_MATCH_COUNT_SUCCESS,
+    REDIS_RPC_FETCH_MATCH_COUNT_FAIL
+];
+
+
 export class RedisRpc {
     constructor({
         dispatch,
@@ -42,6 +54,38 @@ export class RedisRpc {
 
         return this.dispatch(actionBundle);
     };
+
+    fetchMatchCount = (pattern, count=50000) => {
+        const actionBundle = this.rpcActionCreator
+            .action(REDIS_RPC_FETCH_MATCH_COUNT)
+            .execute('eval', { script: this._formatMatchCountScript(pattern, count) });
+        return this.dispatch(actionBundle);
+    };
+
+    _formatMatchCountScript = (pattern, count=50000) => {
+        if (typeof count !== 'number')
+            throw new Error(`Count must be a number, but it is ${count}, ${typeof count}`);
+
+        if (typeof pattern !== 'string')
+            throw new Error(`Count must be a string, but it is ${pattern}, ${typeof pattern}`);
+
+        return `
+            local cursor = "0"
+            local count = 0
+            
+            repeat
+                local r = redis.call(
+                    "SCAN", cursor, 
+                    "MATCH", "${ pattern.replace('"', '\\"') }",
+                    "COUNT", ${ count }
+                )
+                cursor = r[1]
+                count = count + #r[2]
+            until cursor == "0"
+            
+            return count
+        `;
+    }
 }
 
 

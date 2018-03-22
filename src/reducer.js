@@ -7,6 +7,7 @@ import {
     LOAD_INSTANCES_START, LOAD_INSTANCES_SUCCESS,
     RPC_BATCH_START, RPC_BATCH_SUCCESS,
     INIT_STORE_WITH_URLS,
+    TOGGLE_PROGRESS_BAR_VISIBLE,
 } from './features/actions';
 import { isArray, fromPairs, pick, findIndex, isBoolean } from 'lodash';
 
@@ -227,6 +228,38 @@ const urls = (state = {}, action) => {
 
 
 const progress = (state = {}, action) => {
+    const { payload, meta, type } = action;
+
+    switch (type) {
+        case RPC_BATCH_START:
+            return {
+                ...state,
+                count: isArray(meta.request) ? meta.request.length : 1,
+                percent: 0,
+                isVisible: true,
+            };
+
+        case BIND_CALL_EDITOR_TO_ID:
+            return {
+                ...state,
+                percent: state.percent + 100 / state.count,
+            };
+
+        case TOGGLE_PROGRESS_BAR_VISIBLE:
+            return {
+                ...state,
+                isVisible: isBoolean(payload.isVisible)
+                    ? payload.isVisible
+                    : !state.isVisible
+            };
+
+        default:
+            return state;
+    }
+};
+
+
+const keyViewer = (state = {}, action) => {
     switch (action.type) {
 
         default:
@@ -243,4 +276,5 @@ export default combineReducers({
     inspections,
     urls,
     progress,
+    keyViewer,
 });

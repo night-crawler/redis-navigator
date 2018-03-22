@@ -35,6 +35,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
         ...dispatchProps,
         actions: {
             fetchInfo: rpc.fetchInfo,
+            fetchMatchCount: rpc.fetchMatchCount
         },
         dispatch: undefined,
     };

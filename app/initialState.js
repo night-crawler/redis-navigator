@@ -19,6 +19,7 @@ export default {
         progress: {
             percent: 0,
             isVisible: false,
+            count: 1,
         },
 
         keyViewer: {},

@@ -180,6 +180,7 @@ export default class RedisConsole extends React.Component {
                 ...command
             });
         });
+        actions.toggleImportDialogVisible(routeInstanceName);
     };
 
     handleCallEditorRetryClicked = (key) => {

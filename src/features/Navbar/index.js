@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { loadInstances, setActiveInstance } from '../actions';
+import { loadInstances, setActiveInstance, toggleProgressBarVisible } from '../actions';
 import {
     activeInstanceName,
     instances,
@@ -15,6 +15,7 @@ function mapDispatchToProps(dispatch) {
     return {
         actions: {
             setActiveInstance: name => dispatch(setActiveInstance(name)),
+            toggleProgressBarVisible: isVisible => dispatch(toggleProgressBarVisible(isVisible)),
         }
     };
 }

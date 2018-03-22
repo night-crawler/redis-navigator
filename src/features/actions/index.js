@@ -21,6 +21,11 @@ export {
 
 
 export {
+    TOGGLE_PROGRESS_BAR_VISIBLE,
+    toggleProgressBarVisible,
+} from './toggleProgressBarVisible';
+
+export {
     RPC_BATCH_START, RPC_BATCH_SUCCESS, RPC_BATCH_FAIL,
     RPC_EXECUTE_START, RPC_EXECUTE_SUCCESS, RPC_EXECUTE_FAIL,
     RpcActionCreator,
