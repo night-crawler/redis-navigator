@@ -5,6 +5,7 @@ import { createStructuredSelector } from 'reselect';
 import {
     routeInstanceName,
     routeInstanceInfo,
+    routeInstanceDbSize,
     urls,
 } from '../selectors';
 
@@ -15,7 +16,11 @@ function mapDispatchToProps(dispatch) {
 
 
 function mergeProps(stateProps, dispatchProps, ownProps) {
-    const { urls: { rpcEndpointUrl }, routeInstanceName } = stateProps;
+    const {
+        urls: { rpcEndpointUrl },
+        routeInstanceName
+    } = stateProps;
+
     const { dispatch } = dispatchProps;
 
     const rpc = new RedisRpc({ endpoint: rpcEndpointUrl, dispatch });
@@ -36,6 +41,7 @@ export default connect(
     createStructuredSelector({
         routeInstanceName,
         routeInstanceInfo,
+        routeInstanceDbSize,
         urls,
     }),
     mapDispatchToProps,
