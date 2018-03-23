@@ -48,7 +48,9 @@ describe('utils', () => {
     it('isBase64', () => {
         expect(isBase64('')).toEqual(false);
         expect(isBase64([1, 2, 3])).toEqual(false);
-        expect(isBase64('test')).toEqual(true);
+
+        expect(isBase64('test')).toEqual(false);
+        expect(isBase64('test', 0)).toEqual(true);
     });
 
     it('isValidNumber', () => {

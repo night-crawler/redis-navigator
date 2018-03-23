@@ -149,11 +149,14 @@ export function convertStringToBinary(rawStr) {
 }
 
 
-export function isBase64(rawStr) {
+export function isBase64(rawStr, minLength=4) {
     if (!rawStr)
         return false;
 
     if (!isString(rawStr))
+        return false;
+
+    if (rawStr.length <= minLength)
         return false;
 
     return checkIsBase64(rawStr, { paddingRequired: true });
