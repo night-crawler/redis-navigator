@@ -1,3 +1,4 @@
+import { SortedMap } from 'collections/sorted-map';
 import {
     csrfSafeMethod,
     getApiMiddlewareOptions,
@@ -7,6 +8,9 @@ import {
     isBase64,
     isValidNumber,
     isYaml,
+    splitKey,
+    findFirstDelimiter,
+    initializeSortedMapPath,
 } from './utils';
 
 
@@ -72,5 +76,27 @@ describe('utils', () => {
         expect(convertStringToBinary(null)).toEqual(null);
         expect(convertStringToBinary('')).toEqual(null);
         expect(convertStringToBinary('123')).toBeTruthy();
+    });
+
+    it('findFirstDelimiter', () => {
+        expect(findFirstDelimiter('myLongStringWithoutDelimiters')).toEqual(null);
+        expect(findFirstDelimiter('some::trash:1:/2/3::4')).toEqual('::');
+        expect(findFirstDelimiter('some/trash:1:/2/3::4')).toEqual('/');
+    });
+
+    it('splitKey', () => {
+        expect(splitKey('myLongStringWithoutDelimiters')).toEqual(['myLongStringWithoutDelimiters']);
+        expect(splitKey('a::b:c/d')).toEqual([ 'a', 'b:c/d' ]);
+        expect(splitKey('a:b:c:d')).toEqual([ 'a', 'b', 'c', 'd' ]);
+    });
+
+    it('initializeSortedMapPath', () => {
+        const m = SortedMap();
+
+        initializeSortedMapPath(m, ['lengthOfOne'], 1);
+        expect(m.get('lengthOfOne')).toEqual(1);
+
+        initializeSortedMapPath(m, ['a', 'b', 'c'], 'abc!');
+        expect(m.get('a').get('b').get('c')).toEqual('abc!');
     });
 });

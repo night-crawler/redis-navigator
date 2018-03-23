@@ -1,8 +1,9 @@
 import fileType from 'file-type';
 import checkIsBase64 from 'is-base64';
 import Cookies from 'js-cookie';
-import { isEmpty, isString, startsWith, isPlainObject, isArray, some } from 'lodash';
+import { isEmpty, isString, startsWith, isPlainObject, isArray, some, zip, minBy } from 'lodash';
 import yaml from 'js-yaml';
+import { SortedMap } from 'collections/sorted-map';
 
 
 export function csrfSafeMethod(method) {
@@ -179,4 +180,53 @@ export function saveFile(filename, data, content_type = 'application/json') {
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
+}
+
+
+
+export function findFirstDelimiter(rawStrKey, delimiters=['::', ':', '/']) {
+    const delimiterIndexMap = zip(
+        delimiters,
+        delimiters.map(d => rawStrKey.indexOf(d))
+    ).filter(([ , index ]) => index >= 0);
+
+    if (!delimiterIndexMap.length)
+        return null;
+
+    return minBy(
+        delimiterIndexMap,
+        ([ , index ]) => index
+    )[0];
+}
+
+
+export function splitKey(rawStrKey, delimiters=['::', ':', '/']) {
+    if (!rawStrKey)
+        return [];
+    if (!isString(rawStrKey))
+        throw new Error(`rawStrKey must be a string but got ${typeof rawStrKey}: ${rawStrKey}`);
+
+    const delimiter = findFirstDelimiter(rawStrKey, delimiters);
+    if (delimiter === null)
+        return [ rawStrKey ];
+
+    return rawStrKey.split(delimiter);
+}
+
+
+export function initializeSortedMapPath(sortedMap, path, value) {
+    if (!isArray(path))
+        throw new Error('Path must be array of strings');
+    if (!path.length)
+        throw new Error('Length of path must be > 0');
+
+    let _map = sortedMap;
+    for (let pathItem of path.slice(0, -1)) {
+        if (_map.get(pathItem) === undefined)
+            _map.set(pathItem, SortedMap());
+
+        _map = _map.get(pathItem);
+    }
+
+    _map.set(path[path.length - 1], value);
 }
