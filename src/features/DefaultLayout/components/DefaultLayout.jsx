@@ -83,6 +83,7 @@ export default class DefaultLayout extends React.Component {
                         { /*<Route exact path='/' component={ HomePage } />*/ }
                         <Route path='/:instanceName/dashboard' component={ Dashboard } />
                         <Route path='/:instanceName/console' component={ RedisConsole } />
+                        {/*<Route path='/:instanceName/keys/:pattern' component={ KeyViewer } />*/}
                         <Route path='/:instanceName' component={ KeyViewer } />
                         <Route path='' component={ NotFound } />
                     </Switch>

@@ -32,7 +32,7 @@ export default function Navbar(props) {
         ? <span>Instance: <Label size='mini'>{ activeInstanceName }</Label></span>
         : <span>Instances</span>;
 
-    progressIsVisible && progressPercent >= 100 && Timeouts.add({
+    progressIsVisible && progressPercent >= 99.0 && Timeouts.add({
         name: 'Navbar.toggleProgressBarVisible:false',
         callback: () => actions.toggleProgressBarVisible(false),
         timeout: 500,

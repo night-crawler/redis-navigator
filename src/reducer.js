@@ -8,6 +8,8 @@ import {
     RPC_BATCH_START, RPC_BATCH_SUCCESS,
     INIT_STORE_WITH_URLS,
     TOGGLE_PROGRESS_BAR_VISIBLE,
+    REDIS_RPC_FETCH_MATCH_COUNT_START, REDIS_RPC_FETCH_MATCH_COUNT_SUCCESS,
+    REDIS_RPC_FETCH_MATCH_CHUNK_START, REDIS_RPC_FETCH_MATCH_CHUNK_SUCCESS,
 } from './features/actions';
 import { isArray, fromPairs, pick, findIndex, isBoolean } from 'lodash';
 
@@ -228,9 +230,9 @@ const urls = (state = {}, action) => {
 
 
 const progress = (state = {}, action) => {
-    const { payload, meta, type } = action;
+    const { payload, meta } = action;
 
-    switch (type) {
+    switch (action.type) {
         case RPC_BATCH_START:
             return {
                 ...state,
@@ -253,19 +255,75 @@ const progress = (state = {}, action) => {
                     : !state.isVisible
             };
 
+        case REDIS_RPC_FETCH_MATCH_COUNT_START:
+            return {
+                ...state,
+                count: 100,  // temp count
+                percent: 0,
+                isVisible: true,
+            };
+        case REDIS_RPC_FETCH_MATCH_COUNT_SUCCESS:
+            return {
+                ...state,
+                count: payload.result,
+            };
+
+        case REDIS_RPC_FETCH_MATCH_CHUNK_SUCCESS:
+            return {
+                ...state,
+                percent: state.percent + (payload.result[1].length / state.count) * 100
+            };
+
         default:
             return state;
     }
 };
 
 
-const keyViewer = (state = {}, action) => {
+const keys = (state = {}, action) => produce(state, draft => {
+    const { payload, meta } = action;
+
+    const draftRedis = meta ? draft[meta.path] : null;
+    const redis = meta ? state[meta.path] : null;
+
     switch (action.type) {
+        case REDIS_RPC_FETCH_MATCH_COUNT_START:
+            // initialize and/or clear
+            if(!redis)
+                draft[meta.path] = {};
+            draft[meta.path][meta.pattern] = {};
+            break;
 
-        default:
-            return state;
+        case REDIS_RPC_FETCH_MATCH_COUNT_SUCCESS:
+            draftRedis[meta.pattern] = {
+                blockSize: meta.blockSize,
+                count: payload.result,
+                completed: false,
+                cursor: 0,
+                prevCursor: 0,
+                keyBundles: [],
+            };
+            break;
+
+        case REDIS_RPC_FETCH_MATCH_CHUNK_START:
+            draftRedis[meta.request.params.match].cursor = null;
+            break;
+
+        case REDIS_RPC_FETCH_MATCH_CHUNK_SUCCESS:
+            const [ cursor, fetchedKeys ] = payload.result;
+
+            if (+cursor === 0 && redis[meta.request.params.match].prevCursor) {
+                draftRedis[meta.request.params.match].completed = true;
+            }
+
+            draftRedis[meta.request.params.match].cursor = cursor;
+            draftRedis[meta.request.params.match].prevCursor = cursor;
+            draftRedis[meta.request.params.match].keyBundles.push(fetchedKeys);
+            // fetchedKeys.forEach(k => draftRedis[meta.request.params.match].keys.push(k));
+            break;
+
     }
-};
+});
 
 
 export default combineReducers({
@@ -276,5 +334,5 @@ export default combineReducers({
     inspections,
     urls,
     progress,
-    keyViewer,
+    keys,
 });

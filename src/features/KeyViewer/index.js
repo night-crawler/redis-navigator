@@ -4,8 +4,7 @@ import { KeyViewer } from './components';
 import { createStructuredSelector } from 'reselect';
 import {
     routeInstanceName,
-    routeInstanceInfo,
-    routeInstanceDbSize,
+    routeKeys,
     urls,
 } from '../selectors';
 
@@ -34,8 +33,8 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
         ...stateProps,
         ...dispatchProps,
         actions: {
-            fetchInfo: rpc.fetchInfo,
-            fetchMatchCount: rpc.fetchMatchCount
+            fetchMatchCount: rpc.fetchMatchCount,
+            fetchMatchChunk: rpc.fetchMatchChunk,
         },
         dispatch: undefined,
     };
@@ -45,8 +44,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
 export default connect(
     createStructuredSelector({
         routeInstanceName,
-        routeInstanceInfo,
-        routeInstanceDbSize,
+        routeKeys,
         urls,
     }),
     mapDispatchToProps,

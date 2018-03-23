@@ -1,4 +1,5 @@
 import { RpcActionCreator, RpcRequestBuilder } from './rpc';
+import { RSAA } from 'redux-api-middleware';
 
 
 export const REDIS_RPC_FETCH_INFO_START = 'redisNavigator/rpc/batch/execute/fetch-info/start';
@@ -24,6 +25,18 @@ const REDIS_RPC_FETCH_MATCH_COUNT = [
 ];
 
 
+export const REDIS_RPC_FETCH_MATCH_CHUNK_START = 'redisNavigator/rpc/execute/fetch-match-chunk/start';
+export const REDIS_RPC_FETCH_MATCH_CHUNK_SUCCESS = 'redisNavigator/rpc/execute/fetch-match-chunk/success';
+export const REDIS_RPC_FETCH_MATCH_CHUNK_FAIL = 'redisNavigator/rpc/execute/fetch-match-chunk/fail';
+
+
+const REDIS_RPC_FETCH_MATCH_CHUNK = [
+    REDIS_RPC_FETCH_MATCH_CHUNK_START,
+    REDIS_RPC_FETCH_MATCH_CHUNK_SUCCESS,
+    REDIS_RPC_FETCH_MATCH_CHUNK_FAIL
+];
+
+
 export class RedisRpc {
     constructor({
         dispatch,
@@ -31,6 +44,7 @@ export class RedisRpc {
         endpoint,
         rpcActionCreator = new RpcActionCreator({ endpoint })
     } = {}) {
+        this.instanceName = instanceName;
         this.rpcActionCreator = rpcActionCreator.path(instanceName);
         this.dispatch = dispatch;
     }
@@ -55,10 +69,23 @@ export class RedisRpc {
         return this.dispatch(actionBundle);
     };
 
-    fetchMatchCount = (pattern, count=50000) => {
+    fetchMatchCount = (pattern, blockSize=50000) => {
+        // use the same COUNT attribute for counting and lookups later
         const actionBundle = this.rpcActionCreator
             .action(REDIS_RPC_FETCH_MATCH_COUNT)
-            .execute('eval', { script: this._formatMatchCountScript(pattern, count) });
+            .execute('eval', { script: this._formatMatchCountScript(pattern, blockSize) });
+
+        // update action type's meta
+        actionBundle[RSAA].types.forEach(
+            type => type.meta = { ...type.meta, pattern, blockSize }
+        );
+        return this.dispatch(actionBundle);
+    };
+
+    fetchMatchChunk = (pattern, cursor, blockSize=50000) => {
+        const actionBundle = this.rpcActionCreator
+            .action(REDIS_RPC_FETCH_MATCH_CHUNK)
+            .execute('scan', { match: pattern, cursor, count: blockSize });
         return this.dispatch(actionBundle);
     };
 

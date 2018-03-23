@@ -22,7 +22,7 @@ export default {
             count: 1,
         },
 
-        keyViewer: {},
+        keys: {},
     },
     notifications: [],
 };

@@ -37,6 +37,12 @@ export const inspections = createSelector(redisNavigator, redisNavigator => redi
 
 
 /**
+ * state.redisNavigator.keys
+ */
+export const keys = createSelector(redisNavigator, redisNavigator => redisNavigator.keys || {});
+
+
+/**
  * state.redisNavigator.progress
  */
 export const progress = createSelector(redisNavigator, redisNavigator => redisNavigator.progress || {});
@@ -184,4 +190,14 @@ export const activeInstance = createSelector(
     [instances, activeInstanceName],
     (instances, activeInstanceName) =>
         find(instances, { name: activeInstanceName })
+);
+
+
+
+/**
+ * state.redisNavigator.keys[:instanceName]
+ */
+export const routeKeys = createSelector(
+    [keys, routeInstanceName],
+    (keys, routeInstanceName) => keys[routeInstanceName] || {}
 );
