@@ -10,7 +10,8 @@ import {
     isYaml,
     splitKey,
     findFirstDelimiter,
-    initializeSortedMapPath,
+    addToSMTree,
+    dumpSMTree,
 } from './utils';
 
 
@@ -90,13 +91,33 @@ describe('utils', () => {
         expect(splitKey('a:b:c:d')).toEqual([ 'a', 'b', 'c', 'd' ]);
     });
 
-    it('initializeSortedMapPath', () => {
-        const m = SortedMap();
 
-        initializeSortedMapPath(m, ['lengthOfOne'], 1);
-        expect(m.get('lengthOfOne')).toEqual(1);
+    it('addToSMTree', () => {
+        const tree = {};
+        addToSMTree(tree, 'a:b:c', 'abc');
+        addToSMTree(tree, 'a:b', 'ab');
+        addToSMTree(tree, 'a', 'a');
+        
+        const expected = {
+            keyMap: {
+                a: {
+                    value: 'a',
+                    keyMap: {
+                        b: {
+                            value: 'ab',
+                            keyMap: {
+                                c: {
+                                    value: 'abc',
+                                    keyMap: {}
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        };
 
-        initializeSortedMapPath(m, ['a', 'b', 'c'], 'abc!');
-        expect(m.get('a').get('b').get('c')).toEqual('abc!');
+        expect(dumpSMTree(tree)).toEqual(expected);
     });
+
 });

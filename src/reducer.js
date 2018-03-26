@@ -23,7 +23,7 @@ import {
     BIND_CALL_EDITOR_TO_ID,
     TOGGLE_IMPORT_DIALOG_VISIBLE,
 } from './features/RedisConsole/actions';
-import { initializeSortedMapPath, splitKey } from './utils';
+import { splitKey } from './utils';
 
 
 function mapRpcRequestsById(rpcRequest) {
@@ -304,7 +304,7 @@ const keys = (state = {}, action) => produce(state, draft => {
                 cursor: 0,
                 prevCursor: 0,
                 // keyBundles: [],
-                keyTypeMap: SortedMap(),
+                keyTypeMap: {},
             };
             break;
 
@@ -322,27 +322,7 @@ const keys = (state = {}, action) => produce(state, draft => {
             draftRedis[meta.request.params.match].cursor = cursor;
             draftRedis[meta.request.params.match].prevCursor = cursor;
 
-
-            // fetchedKeys.forEach(k => console.log(splitKey(k)));
-
-            // initializeSortedMapPath(
-            //     redis[meta.request.params.match].keyTypeMap,
-            //     ['a', 'b', 'c'],
-            //     null
-            // );
-
-            // console.log(redis[meta.request.params.match].keyTypeMap)
-
-            fetchedKeys.forEach(
-                k => initializeSortedMapPath(
-                    redis[meta.request.params.match].keyTypeMap,
-                    splitKey(k),
-                    null
-                )
-            );
-
-            // draftRedis[meta.request.params.match].keyBundles.push(fetchedKeys);
-            // fetchedKeys.forEach(k => draftRedis[meta.request.params.match].keys.push(k));
+            // fetchedKeys.forEach(k => draftRedis[meta.request.params.match].keyTypeMap[k] = null);
             break;
 
     }

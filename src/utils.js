@@ -1,7 +1,7 @@
 import fileType from 'file-type';
 import checkIsBase64 from 'is-base64';
 import Cookies from 'js-cookie';
-import { isEmpty, isString, startsWith, isPlainObject, isArray, some, zip, minBy } from 'lodash';
+import { isEmpty, isString, startsWith, isPlainObject, isArray, some, zip, minBy, fromPairs } from 'lodash';
 import yaml from 'js-yaml';
 import { SortedMap } from 'collections/sorted-map';
 
@@ -214,19 +214,55 @@ export function splitKey(rawStrKey, delimiters=['::', ':', '/']) {
 }
 
 
-export function initializeSortedMapPath(sortedMap, path, value) {
-    if (!isArray(path))
-        throw new Error('Path must be array of strings');
-    if (!path.length)
-        throw new Error('Length of path must be > 0');
+/**
+    myns:1:trash:2:value:16 = 16
+    myns:1:trash:2:bla:13 = 16
+    myns:1 = 32
 
-    let _map = sortedMap;
-    for (let pathItem of path.slice(0, -1)) {
-        if (_map.get(pathItem) === undefined)
-            _map.set(pathItem, SortedMap());
-
-        _map = _map.get(pathItem);
+    keyMap = {
+        keys: {
+            myns: {
+                value: undefined
+                keys: {
+                    1: {
+                        value: 32,
+                        keys: {
+                            trash:
+                        }
+                    }
+                }
+            }
+        }
     }
+ */
+export function addToSMTree(rootObject, path, value, delimiters=['::', ':', '/']) {
+    const
+        pathParts = splitKey(path, delimiters),
+        delimiter = findFirstDelimiter(path, delimiters);
 
-    _map.set(path[path.length - 1], value);
+    if (rootObject.keyMap === undefined)
+        rootObject.keyMap = SortedMap();
+
+    let obj = rootObject;
+    for (let pathItem of pathParts) {
+        if (!obj.keyMap.has(pathItem))
+            obj.keyMap.set(pathItem, {
+                keyMap: SortedMap(),
+                value: undefined,
+            });
+
+        obj = obj.keyMap.get(pathItem);
+    }
+    obj.value = value;
+    return obj;
 }
+
+
+export function dumpSMTree(tree) {
+    const newObject = { value: tree.value };
+    // newObject.keyMap = newObject.keyMap.keys().map(key => dumpSMTree())
+    newObject.keyMap = fromPairs(tree.keyMap.entries().map(( [keyName, inner] ) => [ keyName, dumpSMTree(inner) ]));
+    return newObject;
+}
+
+
