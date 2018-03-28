@@ -1,4 +1,3 @@
-import { SortedMap } from 'collections/sorted-map';
 import {
     csrfSafeMethod,
     getApiMiddlewareOptions,
@@ -91,13 +90,12 @@ describe('utils', () => {
         expect(splitKey('a:b:c:d')).toEqual([ 'a', 'b', 'c', 'd' ]);
     });
 
-
     it('addToSMTree', () => {
         const tree = {};
         addToSMTree(tree, 'a:b:c', 'abc');
         addToSMTree(tree, 'a:b', 'ab');
         addToSMTree(tree, 'a', 'a');
-        
+
         const expected = {
             keyMap: {
                 a: {
