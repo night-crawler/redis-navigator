@@ -1,15 +1,17 @@
 export {
-    LOAD_INSPECTIONS_START,
-    LOAD_INSPECTIONS_SUCCESS,
-    LOAD_INSPECTIONS_FAIL,
+    SEARCH_KEYS_START, SEARCH_KEYS_SUCCESS, SEARCH_KEYS_FAIL,
+    searchKeys,
+} from './searchKeys';
+
+
+export {
+    LOAD_INSPECTIONS_START, LOAD_INSPECTIONS_SUCCESS, LOAD_INSPECTIONS_FAIL,
     loadInspections,
 } from './loadInspections';
 
 
 export {
-    LOAD_INSTANCES_START,
-    LOAD_INSTANCES_SUCCESS,
-    LOAD_INSTANCES_FAIL,
+    LOAD_INSTANCES_START, LOAD_INSTANCES_SUCCESS, LOAD_INSTANCES_FAIL,
     loadInstances,
 } from './loadInstances';
 
@@ -24,6 +26,7 @@ export {
     TOGGLE_PROGRESS_BAR_VISIBLE,
     toggleProgressBarVisible,
 } from './toggleProgressBarVisible';
+
 
 export {
     RPC_BATCH_START, RPC_BATCH_SUCCESS, RPC_BATCH_FAIL,

@@ -193,6 +193,24 @@ export const activeInstance = createSelector(
 );
 
 
+/**
+ * state.redisNavigator.instances[:instanceName]
+ */
+export const routeInstance = createSelector(
+    [instances, routeInstanceName],
+    (instances, routeInstanceName) =>
+        find(instances, { name: routeInstanceName })
+);
+
+
+/**
+ * state.redisNavigator.instances[:instanceName].search_url
+ */
+export const routeInstanceSearchUrl = createSelector(
+    routeInstance,
+    routeInstance => routeInstance.search_url
+);
+
 
 /**
  * state.redisNavigator.keys[:instanceName]

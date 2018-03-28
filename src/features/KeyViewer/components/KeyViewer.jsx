@@ -8,15 +8,20 @@ import isNumber from 'lodash/isNumber';
 export default class KeyViewer extends React.Component {
     static propTypes = {
         actions: PropTypes.shape({
-
+            searchKeys: PropTypes.func,
         }),
+        routeInstanceSearchUrl: PropTypes.string,
         routeKeys: PropTypes.object,
     };
+
+    componentDidMount() {
+        this.props.actions.searchKeys({ pattern: 'bla' });
+    }
 
     render() {
         return (
             <Segment>
-                sample
+                { this.props.routeInstanceSearchUrl }
             </Segment>
         );
     }
