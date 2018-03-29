@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { loadInstances, setActiveInstance, toggleProgressBarVisible } from '../actions';
+import { fetchInstances, setActiveInstance, toggleProgressBarVisible } from '../actions';
 import {
     activeInstanceName,
     instances,
@@ -31,7 +31,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
         ...dispatchProps,
         actions: {
             ...dispatchProps.actions,
-            loadInstances: () => dispatch(loadInstances(statusUrl)),
+            loadInstances: () => dispatch(fetchInstances(statusUrl)),
         },
         dispatch: undefined,
     };

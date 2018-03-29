@@ -11,15 +11,15 @@ export {
 
 
 export {
-    LOAD_INSPECTIONS_START, LOAD_INSPECTIONS_SUCCESS, LOAD_INSPECTIONS_FAIL,
-    loadInspections,
-} from './loadInspections';
+    FETCH_INSPECTIONS_START, FETCH_INSPECTIONS_SUCCESS, FETCH_INSPECTIONS_FAIL,
+    fetchInspections,
+} from './fetchInspections';
 
 
 export {
-    LOAD_INSTANCES_START, LOAD_INSTANCES_SUCCESS, LOAD_INSTANCES_FAIL,
-    loadInstances,
-} from './loadInstances';
+    FETCH_INSTANCES_START, FETCH_INSTANCES_SUCCESS, FETCH_INSTANCES_FAIL,
+    fetchInstances,
+} from './fetchInstances';
 
 
 export {

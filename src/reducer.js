@@ -3,9 +3,9 @@ import produce from 'immer';
 import {
     SET_ACTIVE_INSTANCE,
     FETCH_ENDPOINTS_START, FETCH_ENDPOINTS_SUCCESS,
-    LOAD_INSPECTIONS_START, LOAD_INSPECTIONS_SUCCESS,
+    FETCH_INSPECTIONS_START, FETCH_INSPECTIONS_SUCCESS,
     REDIS_RPC_FETCH_INFO_SUCCESS,
-    LOAD_INSTANCES_START, LOAD_INSTANCES_SUCCESS,
+    FETCH_INSTANCES_START, FETCH_INSTANCES_SUCCESS,
     RPC_BATCH_START, RPC_BATCH_SUCCESS,
     INIT_STORE_WITH_URLS,
     TOGGLE_PROGRESS_BAR_VISIBLE,
@@ -76,7 +76,7 @@ function registerInfo(requests, rpcResponse) {
 
 const instances = (state = [], action) => {
     switch (action.type) {
-        case LOAD_INSTANCES_SUCCESS:
+        case FETCH_INSTANCES_SUCCESS:
             return action.payload;
 
         default:
@@ -97,7 +97,7 @@ const instancesData = (state = {}, action) => produce(state, draft => {
         : null;
 
     switch (action.type) {
-        case LOAD_INSTANCES_SUCCESS:
+        case FETCH_INSTANCES_SUCCESS:
             payload.forEach(({ name }) => {
                 if (!state[name])
                     draft[name] = {
@@ -189,19 +189,19 @@ const activeInstanceName = (state = '', action) => {
 
 const hasLoaded = (state = {}, action) => produce(state, draft => {
     switch (action.type) {
-        case LOAD_INSPECTIONS_START:
+        case FETCH_INSPECTIONS_START:
             draft.inspections = false;
             break;
 
-        case LOAD_INSPECTIONS_SUCCESS:
+        case FETCH_INSPECTIONS_SUCCESS:
             draft.inspections = true;
             break;
 
-        case LOAD_INSTANCES_START:
+        case FETCH_INSTANCES_START:
             draft.instances = false;
             break;
 
-        case LOAD_INSTANCES_SUCCESS:
+        case FETCH_INSTANCES_SUCCESS:
             draft.instances = true;
             break;
 
@@ -218,7 +218,7 @@ const hasLoaded = (state = {}, action) => produce(state, draft => {
 
 const inspections = (state = {}, action) => {
     switch (action.type) {
-        case LOAD_INSPECTIONS_SUCCESS:
+        case FETCH_INSPECTIONS_SUCCESS:
             return action.payload;
 
         default:

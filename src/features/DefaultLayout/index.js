@@ -2,8 +2,8 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import {
     setActiveInstance,
-    loadInspections,
-    loadInstances,
+    fetchInspections,
+    fetchInstances,
     initStoreWithUrls,
     fetchEndpoints,
 } from '../actions';
@@ -46,8 +46,8 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
             ...dispatchProps.actions,
 
             fetchEndpoints: () => dispatch(fetchEndpoints(urls.endpoints)),
-            loadInstances: () => dispatch(loadInstances(urls.status)),
-            loadInspections: () => dispatch(loadInspections(urls.inspections)),
+            loadInstances: () => dispatch(fetchInstances(urls.status)),
+            loadInspections: () => dispatch(fetchInspections(urls.inspections)),
         },
         dispatch: undefined,
     };
