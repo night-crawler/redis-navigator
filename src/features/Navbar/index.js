@@ -31,7 +31,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
         ...dispatchProps,
         actions: {
             ...dispatchProps.actions,
-            loadInstances: () => dispatch(fetchInstances(statusUrl)),
+            fetchInstances: () => dispatch(fetchInstances(statusUrl)),
         },
         dispatch: undefined,
     };

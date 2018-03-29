@@ -18,9 +18,9 @@ export default class DefaultLayout extends React.Component {
     static propTypes = {
         actions: PropTypes.shape({
             fetchEndpoints: PropTypes.func,
-            loadInstances: PropTypes.func,
+            fetchInstances: PropTypes.func,
             setActiveInstance: PropTypes.func,
-            loadInspections: PropTypes.func,
+            fetchInspections: PropTypes.func,
             fetchInfo: PropTypes.func,
             initStoreWithUrls: PropTypes.func,
         }),
@@ -64,10 +64,10 @@ export default class DefaultLayout extends React.Component {
             actions.fetchEndpoints();
 
         if (hasLoadedEndpoints && isEmpty(instances))
-            actions.loadInstances();
+            actions.fetchInstances();
 
         if (hasLoadedEndpoints && isEmpty(inspections))
-            actions.loadInspections();
+            actions.fetchInspections();
     }
 
     render() {

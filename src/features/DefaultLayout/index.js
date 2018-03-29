@@ -46,8 +46,8 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
             ...dispatchProps.actions,
 
             fetchEndpoints: () => dispatch(fetchEndpoints(urls.endpoints)),
-            loadInstances: () => dispatch(fetchInstances(urls.status)),
-            loadInspections: () => dispatch(fetchInspections(urls.inspections)),
+            fetchInstances: () => dispatch(fetchInstances(urls.status)),
+            fetchInspections: () => dispatch(fetchInspections(urls.inspections)),
         },
         dispatch: undefined,
     };

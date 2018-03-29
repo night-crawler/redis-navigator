@@ -10,7 +10,7 @@ import { Timeouts } from '../../../timers';
 
 Navbar.propTypes = {
     actions: PropTypes.shape({
-        loadInstances: PropTypes.func.isRequired,
+        fetchInstances: PropTypes.func.isRequired,
         setActiveInstance: PropTypes.func.isRequired,
         toggleProgressBarVisible: PropTypes.func.isRequired,
     }).isRequired,
@@ -63,7 +63,7 @@ export default function Navbar(props) {
 
                 <Dropdown item={ true } trigger={ ddInstanceText }>
                     <Dropdown.Menu>
-                        <Dropdown.Item onClick={ actions.loadInstances }>
+                        <Dropdown.Item onClick={ actions.fetchInstances }>
                             <Icon name='refresh' />
                             Refresh
                         </Dropdown.Item>
