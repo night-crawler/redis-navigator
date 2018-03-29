@@ -5,13 +5,13 @@ export default {
         instancesData: {},
         inspections: {},
 
-        hasLoaded: {
+        hasFetched: {
             inspections: false,
             instances: false,
             endpoints: false,
         },
 
-        isLoading: {
+        isFetching: {
             inspections: false,
             instances: false,
             endpoints: false,

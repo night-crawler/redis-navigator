@@ -61,50 +61,50 @@ export const progressIsVisible = createSelector(progress, progress => progress.i
 
 
 /**
- * state.redisNavigator.hasLoaded
+ * state.redisNavigator.hasFetched
  */
-export const hasLoaded = createSelector(redisNavigator, redisNavigator => redisNavigator.hasLoaded);
+export const hasLoaded = createSelector(redisNavigator, redisNavigator => redisNavigator.hasFetched);
 
 
 /**
- * state.redisNavigator.isLoading
+ * state.redisNavigator.isFetching
  */
-export const isLoading = createSelector(redisNavigator, redisNavigator => redisNavigator.isLoading);
+export const isLoading = createSelector(redisNavigator, redisNavigator => redisNavigator.isFetching);
 
 
 /**
- * state.redisNavigator.hasLoaded.inspections
+ * state.redisNavigator.hasFetched.inspections
  */
 export const hasLoadedInspections = createSelector(hasLoaded, hasLoaded => hasLoaded.inspections);
 
 
 /**
- * state.redisNavigator.isLoading.inspections
+ * state.redisNavigator.isFetching.inspections
  */
 export const isLoadingInspections = createSelector(isLoading, isLoading => isLoading.inspections);
 
 
 /**
- * state.redisNavigator.hasLoaded.instances
+ * state.redisNavigator.hasFetched.instances
  */
 export const hasLoadedInstances = createSelector(hasLoaded, hasLoaded => hasLoaded.instances);
 
 
 /**
- * state.redisNavigator.isLoading.instances
+ * state.redisNavigator.isFetching.instances
  */
 export const isLoadingInstances = createSelector(isLoading, isLoading => isLoading.instances);
 
 
 
 /**
- * state.redisNavigator.hasLoaded.endpoints
+ * state.redisNavigator.hasFetched.endpoints
  */
 export const hasLoadedEndpoints = createSelector(hasLoaded, hasLoaded => hasLoaded.endpoints);
 
 
 /**
- * state.redisNavigator.isLoading.endpoints
+ * state.redisNavigator.isFetching.endpoints
  */
 export const isLoadingEndpoints = createSelector(isLoading, isLoading => isLoading.endpoints);
 

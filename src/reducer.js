@@ -187,7 +187,7 @@ const activeInstanceName = (state = '', action) => {
 };
 
 
-const hasLoaded = (state = {}, action) => {
+const hasFetched = (state = {}, action) => {
     const updateState = {
         [FETCH_INSPECTIONS_START]: { inspections: false },
         [FETCH_INSPECTIONS_SUCCESS]: { inspections: true },
@@ -203,7 +203,7 @@ const hasLoaded = (state = {}, action) => {
 };
 
 
-const isLoading = (state = {}, action) => {
+const isFetching = (state = {}, action) => {
     const updateState = {
         [FETCH_INSPECTIONS_START]: { inspections: true },
         [FETCH_INSPECTIONS_SUCCESS]: { inspections: false },
@@ -306,8 +306,8 @@ export default combineReducers({
     instances,
     instancesData,
     activeInstanceName,
-    hasLoaded,
-    isLoading,
+    hasFetched,
+    isFetching,
     inspections,
     urls,
     progress,
