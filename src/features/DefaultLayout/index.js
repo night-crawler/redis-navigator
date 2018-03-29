@@ -5,6 +5,7 @@ import {
     loadInspections,
     loadInstances,
     initStoreWithUrls,
+    fetchEndpoints,
 } from '../actions';
 import { createStructuredSelector } from 'reselect';
 import DefaultLayout from './components';
@@ -14,25 +15,43 @@ import {
     instancesData,
     inspections,
     activeInstance,
+    urls,
+
     isReady,
+    hasLoadedEndpoints,
+    hasLoadedInspections,
+    hasLoadedInstances,
 } from '../selectors';
 
 
 function mapDispatchToProps(dispatch, ownProps) {
-    const { statusUrl, inspectionsUrl } = ownProps;
-
-
     return {
+        dispatch,
         actions: {
             initStoreWithUrls: urls => dispatch(initStoreWithUrls(urls)),
-
-            loadInstances: () => dispatch(loadInstances(statusUrl)),
             setActiveInstance: name => dispatch(setActiveInstance(name)),
-            loadInspections: () => dispatch(loadInspections(inspectionsUrl)),
         }
     };
 }
 
+function mergeProps(stateProps, dispatchProps, ownProps) {
+    const { urls } = stateProps;
+    const { dispatch } = dispatchProps;
+
+    return {
+        ...ownProps,
+        ...stateProps,
+        ...dispatchProps,
+        actions: {
+            ...dispatchProps.actions,
+
+            fetchEndpoints: () => dispatch(fetchEndpoints(urls.endpoints)),
+            loadInstances: () => dispatch(loadInstances(urls.status)),
+            loadInspections: () => dispatch(loadInspections(urls.inspections)),
+        },
+        dispatch: undefined,
+    };
+}
 
 export default withRouter(connect(
     createStructuredSelector({
@@ -41,7 +60,14 @@ export default withRouter(connect(
         instancesData,
         inspections,
         activeInstance,
+
         isReady,
+        hasLoadedEndpoints,
+        hasLoadedInspections,
+        hasLoadedInstances,
+
+        urls,
     }),
-    mapDispatchToProps
+    mapDispatchToProps,
+    mergeProps
 )(DefaultLayout));

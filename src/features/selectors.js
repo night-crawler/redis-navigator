@@ -78,8 +78,14 @@ export const hasLoadedInspections = createSelector(hasLoaded, hasLoaded => hasLo
 export const hasLoadedInstances = createSelector(hasLoaded, hasLoaded => hasLoaded.instances);
 
 
+/**
+ * state.redisNavigator.hasLoaded.endpoints
+ */
+export const hasLoadedEndpoints = createSelector(hasLoaded, hasLoaded => hasLoaded.endpoints);
+
+
 export const isReady = createSelector(
-    [hasLoadedInspections, hasLoadedInstances],
+    [hasLoadedInspections, hasLoadedInstances, hasLoadedEndpoints],
     (...flags) => every(flags)
 );
 

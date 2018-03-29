@@ -62,13 +62,13 @@ function mapDispatchToProps(dispatch) {
 
 
 function mergeProps(stateProps, dispatchProps, ownProps) {
-    const { urls: { rpcEndpointUrl }, routeInstanceName } = stateProps;
+    const { urls, routeInstanceName } = stateProps;
     const { dispatch } = dispatchProps;
 
     const rpc = new RedisRpc({
         dispatch,
         instanceName: routeInstanceName,
-        endpoint: rpcEndpointUrl
+        endpoint: urls.rpc
     });
 
     return {

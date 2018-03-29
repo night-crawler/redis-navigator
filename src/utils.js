@@ -1,9 +1,21 @@
+import { SortedMap } from 'collections/sorted-map';
 import fileType from 'file-type';
 import checkIsBase64 from 'is-base64';
 import Cookies from 'js-cookie';
-import { isEmpty, isString, startsWith, isPlainObject, isArray, some, zip, minBy, fromPairs } from 'lodash';
 import yaml from 'js-yaml';
-import { SortedMap } from 'collections/sorted-map';
+import {
+    fromPairs,
+    isArray,
+    isEmpty,
+    isPlainObject,
+    isString,
+    minBy,
+    some,
+    startsWith,
+    trimEnd,
+    trimStart,
+    zip
+} from 'lodash';
 
 
 export function csrfSafeMethod(method) {
@@ -83,7 +95,7 @@ export function isValidYaml(rawStr) {
 }
 
 
-export function isJson(rawStr, checks=[isPlainObject, isArray]) {
+export function isJson(rawStr, checks = [isPlainObject, isArray]) {
     const isValid = isValidJson(rawStr);
     if (!isValid)
         return false;
@@ -97,7 +109,7 @@ export function isJson(rawStr, checks=[isPlainObject, isArray]) {
 }
 
 
-export function isYaml(rawStr, checks=[isPlainObject]) {
+export function isYaml(rawStr, checks = [isPlainObject]) {
     if (!isValidYaml(rawStr))
         return false;
 
@@ -150,7 +162,7 @@ export function convertStringToBinary(rawStr) {
 }
 
 
-export function isBase64(rawStr, minLength=4) {
+export function isBase64(rawStr, minLength = 4) {
     if (!rawStr)
         return false;
 
@@ -183,24 +195,23 @@ export function saveFile(filename, data, content_type = 'application/json') {
 }
 
 
-
-export function findFirstDelimiter(rawStrKey, delimiters=['::', ':', '/']) {
+export function findFirstDelimiter(rawStrKey, delimiters = ['::', ':', '/']) {
     const delimiterIndexMap = zip(
         delimiters,
         delimiters.map(d => rawStrKey.indexOf(d))
-    ).filter(([ , index ]) => index >= 0);
+    ).filter(([, index]) => index >= 0);
 
     if (!delimiterIndexMap.length)
         return null;
 
     return minBy(
         delimiterIndexMap,
-        ([ , index ]) => index
+        ([, index]) => index
     )[0];
 }
 
 
-export function splitKey(rawStrKey, delimiters=['::', ':', '/']) {
+export function splitKey(rawStrKey, delimiters = ['::', ':', '/']) {
     if (!rawStrKey)
         return [];
     if (!isString(rawStrKey))
@@ -208,18 +219,18 @@ export function splitKey(rawStrKey, delimiters=['::', ':', '/']) {
 
     const delimiter = findFirstDelimiter(rawStrKey, delimiters);
     if (delimiter === null)
-        return [ rawStrKey ];
+        return [rawStrKey];
 
     return rawStrKey.split(delimiter);
 }
 
 
 /**
-    myns:1:trash:2:value:16 = 16
-    myns:1:trash:2:bla:13 = 16
-    myns:1 = 32
+ myns:1:trash:2:value:16 = 16
+ myns:1:trash:2:bla:13 = 16
+ myns:1 = 32
 
-    keyMap = {
+ keyMap = {
         keys: {
             myns: {
                 value: undefined
@@ -235,7 +246,7 @@ export function splitKey(rawStrKey, delimiters=['::', ':', '/']) {
         }
     }
  */
-export function addToSMTree(rootObject, path, value, delimiters=['::', ':', '/']) {
+export function addToSMTree(rootObject, path, value, delimiters = ['::', ':', '/']) {
     const
         pathParts = splitKey(path, delimiters),
         delimiter = findFirstDelimiter(path, delimiters);
@@ -261,8 +272,15 @@ export function addToSMTree(rootObject, path, value, delimiters=['::', ':', '/']
 export function dumpSMTree(tree) {
     const newObject = { value: tree.value };
     // newObject.keyMap = newObject.keyMap.keys().map(key => dumpSMTree())
-    newObject.keyMap = fromPairs(tree.keyMap.entries().map(( [keyName, inner] ) => [ keyName, dumpSMTree(inner) ]));
+    newObject.keyMap = fromPairs(
+        tree.keyMap.entries().map(
+            ([keyName, inner]) => [keyName, dumpSMTree(inner)]
+        )
+    );
     return newObject;
 }
 
 
+export function makeAbsoluteUrl(baseUrl, endpointUrl) {
+    return `${trimEnd(baseUrl, '/')}/${trimStart(endpointUrl, '/')}`;
+}

@@ -8,12 +8,15 @@ export default {
         hasLoaded: {
             inspections: false,
             instances: false,
+            endpoints: false,
         },
 
         urls: {
-            rpcEndpointUrl: null,
-            statusUrl: null,
-            inspectionsUrl: null,
+            base: '',
+            endpoints: null,
+            rpc: null,
+            status: null,
+            inspections: null,
         },
 
         progress: {

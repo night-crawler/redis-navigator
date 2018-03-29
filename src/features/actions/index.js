@@ -1,4 +1,10 @@
 export {
+    FETCH_ENDPOINTS_START, FETCH_ENDPOINTS_SUCCESS, FETCH_ENDPOINTS_FAIL,
+    fetchEndpoints,
+} from './fetchEndpoints';
+
+
+export {
     SEARCH_KEYS_START, SEARCH_KEYS_SUCCESS, SEARCH_KEYS_FAIL,
     searchKeys,
 } from './searchKeys';

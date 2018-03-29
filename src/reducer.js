@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 import produce from 'immer';
 import {
     SET_ACTIVE_INSTANCE,
+    FETCH_ENDPOINTS_START, FETCH_ENDPOINTS_SUCCESS,
     LOAD_INSPECTIONS_START, LOAD_INSPECTIONS_SUCCESS,
     REDIS_RPC_FETCH_INFO_SUCCESS,
     LOAD_INSTANCES_START, LOAD_INSTANCES_SUCCESS,
@@ -20,6 +21,7 @@ import {
     BIND_CALL_EDITOR_TO_ID,
     TOGGLE_IMPORT_DIALOG_VISIBLE,
 } from './features/RedisConsole/actions';
+import { makeAbsoluteUrl } from './utils';
 
 
 function mapRpcRequestsById(rpcRequest) {
@@ -185,24 +187,33 @@ const activeInstanceName = (state = '', action) => {
 };
 
 
-const hasLoaded = (state = {}, action) => {
+const hasLoaded = (state = {}, action) => produce(state, draft => {
     switch (action.type) {
         case LOAD_INSPECTIONS_START:
-            return { ...state, inspections: false };
+            draft.inspections = false;
+            break;
 
         case LOAD_INSPECTIONS_SUCCESS:
-            return { ...state, inspections: true };
+            draft.inspections = true;
+            break;
 
         case LOAD_INSTANCES_START:
-            return { ...state, instances: false };
+            draft.instances = false;
+            break;
 
         case LOAD_INSTANCES_SUCCESS:
-            return { ...state, instances: true };
+            draft.instances = true;
+            break;
 
-        default:
-            return state;
+        case FETCH_ENDPOINTS_START:
+            draft.endpoints = false;
+            break;
+
+        case FETCH_ENDPOINTS_SUCCESS:
+            draft.endpoints = true;
+            break;
     }
-};
+});
 
 
 const inspections = (state = {}, action) => {
@@ -216,10 +227,27 @@ const inspections = (state = {}, action) => {
 };
 
 
+/**
+ * Also makes all urls absolute
+ */
 const urls = (state = {}, action) => {
+    const { payload } = action;
+
     switch (action.type) {
         case INIT_STORE_WITH_URLS:
-            return action.payload;
+            return {
+                ...state,
+                base: payload.base,
+                endpoints: makeAbsoluteUrl(payload.base, payload.endpoints)
+            };
+
+        case FETCH_ENDPOINTS_SUCCESS:
+            return {
+                ...state,
+                ...fromPairs(Object.entries(payload).map(
+                    ([ name, endpoint ]) => [ name, makeAbsoluteUrl(state.base, endpoint) ]
+                )),
+            };
 
         default:
             return state;

@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { makeAbsoluteUrl } from '../../utils';
 import { RedisRpc, searchKeys } from '../actions';
 import { KeyViewer } from './components';
 import { createStructuredSelector } from 'reselect';
@@ -17,7 +18,7 @@ function mapDispatchToProps(dispatch) {
 
 function mergeProps(stateProps, dispatchProps, ownProps) {
     const {
-        urls: { rpcEndpointUrl },
+        urls,
         routeInstanceSearchUrl,
         routeInstanceName
     } = stateProps;
@@ -27,7 +28,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     const rpc = new RedisRpc({
         dispatch,
         instanceName: routeInstanceName,
-        endpoint: rpcEndpointUrl,
+        endpoint: urls.rpc,
     });
 
     return {
@@ -37,7 +38,8 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
         actions: {
             searchKeys: ({ scanCount = 5000, pattern = '*', sortKeys = true, ttlSeconds = 5 * 60 }) =>
                 dispatch(searchKeys({
-                    url: routeInstanceSearchUrl, scanCount, pattern, sortKeys, ttlSeconds
+                    url: makeAbsoluteUrl(urls.base, routeInstanceSearchUrl),
+                    scanCount, pattern, sortKeys, ttlSeconds
                 }))
         },
         dispatch: undefined,

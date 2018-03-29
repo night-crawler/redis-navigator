@@ -17,6 +17,7 @@ import NotificationSystem from '../../NotificationSystem';
 export default class DefaultLayout extends React.Component {
     static propTypes = {
         actions: PropTypes.shape({
+            fetchEndpoints: PropTypes.func,
             loadInstances: PropTypes.func,
             setActiveInstance: PropTypes.func,
             loadInspections: PropTypes.func,
@@ -27,11 +28,14 @@ export default class DefaultLayout extends React.Component {
         inspections: PropTypes.object,
         instancesData: PropTypes.object,
         activeInstanceName: PropTypes.string,
-        isReady: PropTypes.bool,
 
-        rpcEndpointUrl: PropTypes.string.isRequired,
-        statusUrl: PropTypes.string.isRequired,
-        inspectionsUrl: PropTypes.string.isRequired,
+        isReady: PropTypes.bool,
+        hasLoadedEndpoints: PropTypes.bool,
+        hasLoadedInspections: PropTypes.bool,
+        hasLoadedInstances: PropTypes.bool,
+
+        endpointsUrl: PropTypes.string.isRequired,
+        baseUrl: PropTypes.string,
     };
 
     constructor(props) {
@@ -42,24 +46,28 @@ export default class DefaultLayout extends React.Component {
     }
 
     handleInitStoreWithUrls = () => {
-        const { rpcEndpointUrl, statusUrl, inspectionsUrl, actions } = this.props;
-        actions.initStoreWithUrls({ rpcEndpointUrl, statusUrl, inspectionsUrl });
+        const { endpointsUrl, baseUrl, actions } = this.props;
+        actions.initStoreWithUrls({ endpoints: endpointsUrl, base: baseUrl });
     };
 
     componentDidMount() {
         this.handleInitStoreWithUrls();
-
-        const { instances, inspections } = this.props;
-        isEmpty(instances) && this.props.actions.loadInstances();
-        isEmpty(inspections) && this.props.actions.loadInspections();
     }
 
     componentWillReceiveProps(newProps) {
-        const { instances, activeInstanceName } = newProps;
-        if (!isEmpty(instances) && !activeInstanceName) {
-            this.props.actions.setActiveInstance(instances[0].name);
-        }
-        // this.handleInitStoreWithUrls();
+        const { instances, inspections, activeInstanceName, urls, hasLoadedEndpoints, actions } = newProps;
+
+        if (!isEmpty(instances) && !activeInstanceName)
+            actions.setActiveInstance(instances[0].name);
+
+        if (!hasLoadedEndpoints && urls.endpoints)
+            actions.fetchEndpoints();
+
+        if (hasLoadedEndpoints && isEmpty(instances))
+            actions.loadInstances();
+
+        if (hasLoadedEndpoints && isEmpty(inspections))
+            actions.loadInspections();
     }
 
     render() {

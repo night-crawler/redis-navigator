@@ -18,9 +18,8 @@ const render = () => {
         <Provider store={ store }>
             <ConnectedRouter history={ history }>
                 <DefaultLayout
-                    rpcEndpointUrl='http://127.0.0.1:8000/rpc'
-                    statusUrl='http://127.0.0.1:8000/rpc/status'
-                    inspectionsUrl='http://127.0.0.1:8000/rpc/inspect'
+                    endpointsUrl='/endpoints'
+                    baseUrl='http://127.0.0.1:8000'
                 />
 
             </ConnectedRouter>
