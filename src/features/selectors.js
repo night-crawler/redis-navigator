@@ -67,9 +67,21 @@ export const hasLoaded = createSelector(redisNavigator, redisNavigator => redisN
 
 
 /**
+ * state.redisNavigator.isLoading
+ */
+export const isLoading = createSelector(redisNavigator, redisNavigator => redisNavigator.isLoading);
+
+
+/**
  * state.redisNavigator.hasLoaded.inspections
  */
 export const hasLoadedInspections = createSelector(hasLoaded, hasLoaded => hasLoaded.inspections);
+
+
+/**
+ * state.redisNavigator.isLoading.inspections
+ */
+export const isLoadingInspections = createSelector(isLoading, isLoading => isLoading.inspections);
 
 
 /**
@@ -79,9 +91,23 @@ export const hasLoadedInstances = createSelector(hasLoaded, hasLoaded => hasLoad
 
 
 /**
+ * state.redisNavigator.isLoading.instances
+ */
+export const isLoadingInstances = createSelector(isLoading, isLoading => isLoading.instances);
+
+
+
+/**
  * state.redisNavigator.hasLoaded.endpoints
  */
 export const hasLoadedEndpoints = createSelector(hasLoaded, hasLoaded => hasLoaded.endpoints);
+
+
+/**
+ * state.redisNavigator.isLoading.endpoints
+ */
+export const isLoadingEndpoints = createSelector(isLoading, isLoading => isLoading.endpoints);
+
 
 
 export const isReady = createSelector(
@@ -132,15 +158,6 @@ export const routeInstanceData = createSelector(
  * state.redisNavigator.instancesData[:instanceName].info
  */
 export const routeInstanceInfo = createSelector(routeInstanceData, routeInstanceData => routeInstanceData.info || {});
-
-
-/**
- * state.redisNavigator.instancesData[:instanceName].info.dbsize.result
- */
-export const routeInstanceDbSize = createSelector(
-    routeInstanceInfo,
-    routeInstanceInfo => get(routeInstanceInfo, 'dbsize.result', false)
-);
 
 
 /**
@@ -224,4 +241,25 @@ export const routeInstanceSearchUrl = createSelector(
 export const routeKeys = createSelector(
     [keys, routeInstanceName],
     (keys, routeInstanceName) => keys[routeInstanceName] || {}
+);
+
+
+export const shouldFetchEndpoints = createSelector(
+    [hasLoadedEndpoints, isLoadingEndpoints, urls],
+    (hasLoadedEndpoints, isLoadingEndpoints, urls) =>
+        urls.endpoints && !hasLoadedEndpoints && !isLoadingEndpoints
+);
+
+
+export const shouldFetchInstances = createSelector(
+    [hasLoadedInstances, isLoadingInstances, hasLoadedEndpoints],
+    (hasLoadedInstances, isLoadingInstances, hasLoadedEndpoints) =>
+        hasLoadedEndpoints && !hasLoadedInstances && !isLoadingInstances
+);
+
+
+export const shouldFetchInspections = createSelector(
+    [hasLoadedInspections, isLoadingInspections, hasLoadedEndpoints],
+    (hasLoadedInspections, isLoadingInspections, hasLoadedEndpoints) =>
+        hasLoadedEndpoints && !hasLoadedInspections && !isLoadingInspections
 );

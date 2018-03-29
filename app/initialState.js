@@ -11,6 +11,12 @@ export default {
             endpoints: false,
         },
 
+        isLoading: {
+            inspections: false,
+            instances: false,
+            endpoints: false,
+        },
+
         urls: {
             base: '',
             endpoints: null,

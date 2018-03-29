@@ -187,33 +187,36 @@ const activeInstanceName = (state = '', action) => {
 };
 
 
-const hasLoaded = (state = {}, action) => produce(state, draft => {
-    switch (action.type) {
-        case FETCH_INSPECTIONS_START:
-            draft.inspections = false;
-            break;
+const hasLoaded = (state = {}, action) => {
+    const updateState = {
+        [FETCH_INSPECTIONS_START]: { inspections: false },
+        [FETCH_INSPECTIONS_SUCCESS]: { inspections: true },
+        [FETCH_INSTANCES_START]: { instances: false },
+        [FETCH_INSTANCES_SUCCESS]: { instances: true },
+        [FETCH_ENDPOINTS_START]: { endpoints: false },
+        [FETCH_ENDPOINTS_SUCCESS]: { endpoints: true },
+    }[action.type];
 
-        case FETCH_INSPECTIONS_SUCCESS:
-            draft.inspections = true;
-            break;
+    return updateState !== undefined
+        ? { ...state, ...updateState }
+        : state;
+};
 
-        case FETCH_INSTANCES_START:
-            draft.instances = false;
-            break;
 
-        case FETCH_INSTANCES_SUCCESS:
-            draft.instances = true;
-            break;
+const isLoading = (state = {}, action) => {
+    const updateState = {
+        [FETCH_INSPECTIONS_START]: { inspections: true },
+        [FETCH_INSPECTIONS_SUCCESS]: { inspections: false },
+        [FETCH_INSTANCES_START]: { instances: true },
+        [FETCH_INSTANCES_SUCCESS]: { instances: false },
+        [FETCH_ENDPOINTS_START]: { endpoints: true },
+        [FETCH_ENDPOINTS_SUCCESS]: { endpoints: false },
+    }[action.type];
 
-        case FETCH_ENDPOINTS_START:
-            draft.endpoints = false;
-            break;
-
-        case FETCH_ENDPOINTS_SUCCESS:
-            draft.endpoints = true;
-            break;
-    }
-});
+    return updateState !== undefined
+        ? { ...state, ...updateState }
+        : state;
+};
 
 
 const inspections = (state = {}, action) => {
@@ -304,6 +307,7 @@ export default combineReducers({
     instancesData,
     activeInstanceName,
     hasLoaded,
+    isLoading,
     inspections,
     urls,
     progress,

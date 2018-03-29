@@ -18,9 +18,7 @@ import {
     urls,
 
     isReady,
-    hasLoadedEndpoints,
-    hasLoadedInspections,
-    hasLoadedInstances,
+    shouldFetchEndpoints, shouldFetchInspections, shouldFetchInstances,
 } from '../selectors';
 
 
@@ -28,28 +26,16 @@ function mapDispatchToProps(dispatch, ownProps) {
     return {
         dispatch,
         actions: {
-            initStoreWithUrls: urls => dispatch(initStoreWithUrls(urls)),
+            initStoreWithUrls: (baseUrl, endpointsUrl) => dispatch(initStoreWithUrls({
+                base: baseUrl,
+                endpoints: endpointsUrl
+            })),
+            fetchEndpoints: url => dispatch(fetchEndpoints(url)),
+            fetchInstances: url => dispatch(fetchInstances(url)),
+            fetchInspections: url => dispatch(fetchInspections(url)),
+
             setActiveInstance: name => dispatch(setActiveInstance(name)),
         }
-    };
-}
-
-function mergeProps(stateProps, dispatchProps, ownProps) {
-    const { urls } = stateProps;
-    const { dispatch } = dispatchProps;
-
-    return {
-        ...ownProps,
-        ...stateProps,
-        ...dispatchProps,
-        actions: {
-            ...dispatchProps.actions,
-
-            fetchEndpoints: () => dispatch(fetchEndpoints(urls.endpoints)),
-            fetchInstances: () => dispatch(fetchInstances(urls.status)),
-            fetchInspections: () => dispatch(fetchInspections(urls.inspections)),
-        },
-        dispatch: undefined,
     };
 }
 
@@ -62,12 +48,8 @@ export default withRouter(connect(
         activeInstance,
 
         isReady,
-        hasLoadedEndpoints,
-        hasLoadedInspections,
-        hasLoadedInstances,
-
+        shouldFetchEndpoints, shouldFetchInspections, shouldFetchInstances,
         urls,
     }),
     mapDispatchToProps,
-    mergeProps
 )(DefaultLayout));

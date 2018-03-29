@@ -17,12 +17,13 @@ import NotificationSystem from '../../NotificationSystem';
 export default class DefaultLayout extends React.Component {
     static propTypes = {
         actions: PropTypes.shape({
-            fetchEndpoints: PropTypes.func,
-            fetchInstances: PropTypes.func,
+            initStoreWithUrls: PropTypes.func,
+
+            initializeUrls: PropTypes.func,
             setActiveInstance: PropTypes.func,
+            fetchInstances: PropTypes.func,
             fetchInspections: PropTypes.func,
             fetchInfo: PropTypes.func,
-            initStoreWithUrls: PropTypes.func,
         }),
         instances: PropTypes.array,
         inspections: PropTypes.object,
@@ -45,29 +46,23 @@ export default class DefaultLayout extends React.Component {
         this.log('initialized', props);
     }
 
-    handleInitStoreWithUrls = () => {
-        const { endpointsUrl, baseUrl, actions } = this.props;
-        actions.initStoreWithUrls({ endpoints: endpointsUrl, base: baseUrl });
-    };
-
     componentDidMount() {
-        this.handleInitStoreWithUrls();
+        const { endpointsUrl, baseUrl, actions } = this.props;
+        actions.initStoreWithUrls(baseUrl, endpointsUrl);
     }
 
     componentWillReceiveProps(newProps) {
-        const { instances, inspections, activeInstanceName, urls, hasLoadedEndpoints, actions } = newProps;
+        const {
+            instances, activeInstanceName, urls, actions,
+            shouldFetchEndpoints, shouldFetchInspections, shouldFetchInstances,
+        } = newProps;
 
         if (!isEmpty(instances) && !activeInstanceName)
             actions.setActiveInstance(instances[0].name);
 
-        if (!hasLoadedEndpoints && urls.endpoints)
-            actions.fetchEndpoints();
-
-        if (hasLoadedEndpoints && isEmpty(instances))
-            actions.fetchInstances();
-
-        if (hasLoadedEndpoints && isEmpty(inspections))
-            actions.fetchInspections();
+        shouldFetchEndpoints && actions.fetchEndpoints(urls.endpoints);
+        shouldFetchInstances && actions.fetchInstances(urls.status);
+        shouldFetchInspections && actions.fetchInspections(urls.inspections);
     }
 
     render() {
