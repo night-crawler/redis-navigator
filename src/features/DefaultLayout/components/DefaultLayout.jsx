@@ -39,6 +39,8 @@ export default class DefaultLayout extends React.Component {
         baseUrl: PropTypes.string,
     };
 
+    state = {};
+
     constructor(props) {
         super(props);
         debug.enable('*');
@@ -51,7 +53,7 @@ export default class DefaultLayout extends React.Component {
         actions.initStoreWithUrls(baseUrl, endpointsUrl);
     }
 
-    componentWillReceiveProps(newProps) {
+    static getDerivedStateFromProps(newProps) {
         const {
             instances, activeInstanceName, urls, actions,
             shouldFetchEndpoints, shouldFetchInspections, shouldFetchInstances,
@@ -63,6 +65,8 @@ export default class DefaultLayout extends React.Component {
         shouldFetchEndpoints && actions.fetchEndpoints(urls.endpoints);
         shouldFetchInstances && actions.fetchInstances(urls.status);
         shouldFetchInspections && actions.fetchInspections(urls.inspections);
+
+        return null;
     }
 
     render() {

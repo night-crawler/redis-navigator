@@ -21,19 +21,20 @@ export default class MethodParamsEditor extends React.Component {
         const { params } = this.props;
         this.state = {
             params,
-            textParams: this.dump(params),
+            textParams: yaml.dump(params),
             error: false,
         };
     }
 
-    componentWillReceiveProps(newProps) {
+    static getDerivedStateFromProps(newProps, prevState) {
         const { params: newParams } = newProps;
-        const { params: oldParams } = this.state;
+        const { params: prevParams } = prevState;
 
         // death from above
-        if (!isEqual(newParams, oldParams)) {
-            this.setState({ textParams: this.dump(newParams), params: newParams });
+        if (!isEqual(newParams, prevParams)) {
+            return { textParams: yaml.dump(newParams), params: newParams };
         }
+        return null;
     }
 
     render() {
@@ -66,13 +67,10 @@ export default class MethodParamsEditor extends React.Component {
         );
     }
 
-    dump = obj => yaml.dump(obj);
-    load = rawStr => yaml.load(rawStr);
-
     handleOnChange = (value) => {
         const { onChange } = this.props;
         try {
-            const newParams = this.load(value);
+            const newParams = yaml.load(value);
             this.setState(
                 { error: false, params: newParams },
                 () => onChange(newParams)  // no race conditions

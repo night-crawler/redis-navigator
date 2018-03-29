@@ -25,6 +25,7 @@ export default class Dashboard extends React.Component {
         debug.enable('*');
         this.log = debug('Dashboard');
         this.log('initialized', props);
+        this.state = {};
     }
 
     componentDidMount() {
@@ -33,14 +34,18 @@ export default class Dashboard extends React.Component {
             this.props.actions.fetchInfo(routeInstanceName);
     }
 
-    componentWillReceiveProps(newProps) {
-        const { routeInstanceName: oldRouteInstanceName } = this.props;
-        // new
-        const { routeInstanceInfo, routeInstanceName } = newProps;
+    static getDerivedStateFromProps(nextProps, prevState) {
+        const { actions } = nextProps;
 
-        if (isEmpty(routeInstanceInfo) && routeInstanceName !== oldRouteInstanceName)
-            this.props.actions.fetchInfo(routeInstanceName);
+        const { routeInstanceName } = nextProps;
+        const { routeInstanceName: prevRouteInstanceName } = prevState;
 
+        if (routeInstanceName !== prevRouteInstanceName) {
+            actions.fetchInfo(routeInstanceName);
+            return { routeInstanceName };
+        }
+
+        return null;
     }
 
     render() {

@@ -50,6 +50,8 @@ export default class MethodCallEditor extends React.Component {
         execute: 'ctrl+enter',
     };
 
+    state = {};
+
     constructor(props) {
         super(props);
         debug.enable('*');
@@ -69,15 +71,14 @@ export default class MethodCallEditor extends React.Component {
         );
     }
 
-    componentWillReceiveProps(newProps) {
-        const { onMethodParamsChange } = this.props;
-
-        const { methodName, methodParams, inspections } = newProps;
+    static getDerivedStateFromProps(newProps) {
+        const { methodName, methodParams, inspections, onMethodParamsChange } = newProps;
         const methodProps = inspections[methodName];
 
         if (methodProps && methodName && !methodParams) {
             onMethodParamsChange(parametersToJson(methodProps.parameters));
         }
+        return null;
     }
 
     isSuccess() {
