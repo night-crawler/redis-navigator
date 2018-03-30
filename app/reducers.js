@@ -1,9 +1,6 @@
-/**
- * Combine all reducers in this file and export the combined reducers.
- */
-
 import { LOCATION_CHANGE } from 'react-router-redux';
 import { combineReducers } from 'redux';
+import { internationalizationReducer } from '../src/features/Internationalization/reducer';
 import redisNavigator from '../src/reducer';
 import { reducer as notifications } from 'react-notification-system-redux';
 
@@ -33,9 +30,8 @@ export default function createReducer(injectedReducers) {
     return combineReducers({
         notifications,
         redisNavigator,
-
+        internationalization: internationalizationReducer,
         route: routeReducer,
-
         ...injectedReducers,
     });
 }

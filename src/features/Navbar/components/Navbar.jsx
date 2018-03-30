@@ -6,6 +6,8 @@ import { Container, Dropdown, Icon, Label, Menu, Progress } from 'semantic-ui-re
 import DropdownRedisItem from './DropdownRedisItem';
 import TopNailedFullWidthContainer from './TopNailedFullWidthContainer';
 import { Timeouts } from '../../../timers';
+import { FormattedMessage } from 'react-intl';
+import messages from '../messages';
 
 
 Navbar.propTypes = {
@@ -14,6 +16,9 @@ Navbar.propTypes = {
         setActiveInstance: PropTypes.func.isRequired,
         toggleProgressBarVisible: PropTypes.func.isRequired,
     }).isRequired,
+    urls: PropTypes.shape({
+        status: PropTypes.string,
+    }),
     activeInstanceName: PropTypes.string,
     instances: PropTypes.array.isRequired,
     progressPercent: PropTypes.number,
@@ -23,6 +28,7 @@ export default function Navbar(props) {
     const {
         instances = {},
         activeInstanceName,
+        urls,
         actions,
         progressPercent,
         progressIsVisible,
@@ -63,9 +69,9 @@ export default function Navbar(props) {
 
                 <Dropdown item={ true } trigger={ ddInstanceText }>
                     <Dropdown.Menu>
-                        <Dropdown.Item onClick={ actions.fetchInstances }>
+                        <Dropdown.Item onClick={ () => actions.fetchInstances(urls.status) }>
                             <Icon name='refresh' />
-                            Refresh
+                            <FormattedMessage { ...messages.refresh } />
                         </Dropdown.Item>
 
                         { !_.isEmpty(instances) && <Dropdown.Divider /> }

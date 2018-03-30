@@ -1,4 +1,4 @@
-import { every, filter, find, get } from 'lodash';
+import { every, filter, find } from 'lodash';
 import { createSelector } from 'reselect';
 
 

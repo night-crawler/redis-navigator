@@ -1,3 +1,5 @@
+import { activeLocale } from '../src/features/Internationalization/selectors';
+
 export default {
     redisNavigator: {
         instances: [],
@@ -34,4 +36,14 @@ export default {
         keys: {},
     },
     notifications: [],
+    internationalization: {
+        activeLocale: 'en',
+        data: {
+            ru: {
+                messages: {
+                    'features.Navbar.refresh': 'Обновить'
+                }
+            },
+        },
+    },
 };

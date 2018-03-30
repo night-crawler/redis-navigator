@@ -16,24 +16,8 @@ function mapDispatchToProps(dispatch) {
         actions: {
             setActiveInstance: name => dispatch(setActiveInstance(name)),
             toggleProgressBarVisible: isVisible => dispatch(toggleProgressBarVisible(isVisible)),
+            fetchInstances: (statusUrl) => dispatch(fetchInstances(statusUrl)),
         }
-    };
-}
-
-
-function mergeProps(stateProps, dispatchProps, ownProps) {
-    const { urls: { statusUrl } } = stateProps;
-    const { dispatch } = dispatchProps;
-
-    return {
-        ...ownProps,
-        ...stateProps,
-        ...dispatchProps,
-        actions: {
-            ...dispatchProps.actions,
-            fetchInstances: () => dispatch(fetchInstances(statusUrl)),
-        },
-        dispatch: undefined,
     };
 }
 
@@ -47,5 +31,4 @@ export default connect(
         progressPercent,
     }),
     mapDispatchToProps,
-    mergeProps
 )(Navbar);
