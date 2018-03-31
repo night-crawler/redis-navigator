@@ -33,36 +33,3 @@ exports[`<TextareaSpoiler> should render shown TextareaSpoiler 1`] = `
   />
 </div>
 `;
-
-exports[`TextareaSpoiler should render hidden TextareaSpoiler 1`] = `
-<div
-  className="show-hidden"
-  onClick={[Function]}
->
-  <FormattedMessage
-    defaultMessage="Show"
-    id="features/Common/components/TextareaSpoiler/Show"
-    values={Object {}}
-  />
-</div>
-`;
-
-exports[`TextareaSpoiler should render shown TextareaSpoiler 1`] = `
-<div>
-  <div
-    className="hide-shown"
-    onClick={[Function]}
-  >
-    <FormattedMessage
-      defaultMessage="Hide"
-      id="features/Common/components/TextareaSpoiler/Hide"
-      values={Object {}}
-    />
-  </div>
-  <styled.textarea
-    readOnly={true}
-    rows={6}
-    value="result"
-  />
-</div>
-`;
