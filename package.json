@@ -37,6 +37,7 @@
   },
   "homepage": "https://github.com/night-crawler/redis-navigator#readme",
   "dependencies": {
+    "babel-plugin-react-intl": "^2.4.0",
     "codemirror": "^5.35.0",
     "collections": "^5.1.2",
     "es6-error": "^4.1.1",
@@ -56,6 +57,7 @@
     "react-helmet": "^5.2.0",
     "react-hotkeys": "^0.10.0",
     "react-intl": "^2.4.0",
+    "react-intl-po": "^2.2.0",
     "react-json-view": "^1.16.1",
     "react-notification-system": "^0.2.17",
     "react-notification-system-redux": "^1.2.0",

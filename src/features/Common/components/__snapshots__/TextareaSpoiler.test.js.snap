@@ -1,11 +1,49 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<TextareaSpoiler> should render hidden TextareaSpoiler 1`] = `
+<div
+  className="show-hidden"
+  onClick={[Function]}
+>
+  <FormattedMessage
+    defaultMessage="Show"
+    id="features/Common/components/TextareaSpoiler/Show"
+    values={Object {}}
+  />
+</div>
+`;
+
+exports[`<TextareaSpoiler> should render shown TextareaSpoiler 1`] = `
+<div>
+  <div
+    className="hide-shown"
+    onClick={[Function]}
+  >
+    <FormattedMessage
+      defaultMessage="Hide"
+      id="features/Common/components/TextareaSpoiler/Hide"
+      values={Object {}}
+    />
+  </div>
+  <styled.textarea
+    className="response-data"
+    readOnly={true}
+    rows={6}
+    value="result"
+  />
+</div>
+`;
+
 exports[`TextareaSpoiler should render hidden TextareaSpoiler 1`] = `
 <div
   className="show-hidden"
   onClick={[Function]}
 >
-  Show
+  <FormattedMessage
+    defaultMessage="Show"
+    id="features/Common/components/TextareaSpoiler/Show"
+    values={Object {}}
+  />
 </div>
 `;
 
@@ -15,7 +53,11 @@ exports[`TextareaSpoiler should render shown TextareaSpoiler 1`] = `
     className="hide-shown"
     onClick={[Function]}
   >
-    Hide
+    <FormattedMessage
+      defaultMessage="Hide"
+      id="features/Common/components/TextareaSpoiler/Hide"
+      values={Object {}}
+    />
   </div>
   <styled.textarea
     readOnly={true}

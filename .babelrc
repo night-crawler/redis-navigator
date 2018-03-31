@@ -21,6 +21,9 @@
     ["babel-plugin-root-import", {
       "rootPathPrefix": "~",
       "rootPathSuffix": "src"
+    }],
+    ["react-intl", {
+      "messagesDir": "./build/messages/"
     }]
   ]
 }

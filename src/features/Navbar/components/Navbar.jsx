@@ -10,6 +10,9 @@ import { FormattedMessage } from 'react-intl';
 import messages from '../messages';
 
 
+const MsgRefresh = <FormattedMessage { ...messages.refresh } />;
+
+
 Navbar.propTypes = {
     actions: PropTypes.shape({
         fetchInstances: PropTypes.func.isRequired,
@@ -71,7 +74,7 @@ export default function Navbar(props) {
                     <Dropdown.Menu>
                         <Dropdown.Item onClick={ () => actions.fetchInstances(urls.status) }>
                             <Icon name='refresh' />
-                            <FormattedMessage { ...messages.refresh } />
+                            { MsgRefresh }
                         </Dropdown.Item>
 
                         { !_.isEmpty(instances) && <Dropdown.Divider /> }
