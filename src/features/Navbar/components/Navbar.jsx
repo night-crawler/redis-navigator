@@ -6,11 +6,7 @@ import { Container, Dropdown, Icon, Label, Menu, Progress } from 'semantic-ui-re
 import DropdownRedisItem from './DropdownRedisItem';
 import TopNailedFullWidthContainer from './TopNailedFullWidthContainer';
 import { Timeouts } from '../../../timers';
-import { FormattedMessage } from 'react-intl';
-import messages from '../messages';
-
-
-const MsgRefresh = <FormattedMessage { ...messages.refresh } />;
+import { FormattedMessage as Tr } from 'react-intl';
 
 
 Navbar.propTypes = {
@@ -74,7 +70,7 @@ export default function Navbar(props) {
                     <Dropdown.Menu>
                         <Dropdown.Item onClick={ () => actions.fetchInstances(urls.status) }>
                             <Icon name='refresh' />
-                            { MsgRefresh }
+                            <Tr defaultMessage='Refresh' />
                         </Dropdown.Item>
 
                         { !_.isEmpty(instances) && <Dropdown.Divider /> }

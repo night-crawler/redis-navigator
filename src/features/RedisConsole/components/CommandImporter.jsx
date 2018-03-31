@@ -2,7 +2,7 @@ import 'codemirror/addon/edit/matchbrackets';
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/mode/javascript/javascript';
 import 'codemirror/mode/yaml/yaml';
-
+import { FormattedMessage as Tr } from 'react-intl';
 import yaml from 'js-yaml';
 
 import PropTypes from 'prop-types';
@@ -49,7 +49,8 @@ export default class CommandImporter extends React.Component {
                         <Button
                             basic={ true } fluid={ true } disabled={ !isValid } color='green'
                             onClick={ () => onImport(value) }>
-                            <Icon name='checkmark' />Import
+                            <Icon name='checkmark' />
+                            <Tr defaultMessage='Import' />
                         </Button>
 
                     </Grid.Column>

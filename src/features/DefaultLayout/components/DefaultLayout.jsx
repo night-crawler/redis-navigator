@@ -13,12 +13,10 @@ import AppWrapper from './AppWrapper';
 import AppContentWrapper from './AppContentWrapper';
 import NotificationSystem from '../../NotificationSystem';
 
-
-import { FormattedMessage } from 'react-intl';
-import messages from '../messages';
+import { FormattedMessage as Tr } from 'react-intl';
 
 
-const MsgLoadingRedisInstances = <FormattedMessage { ...messages.loadingRedisInstances } />;
+const MsgLoadingRedisInstances = <Tr defaultMessage='Loading Redis instances' />;
 
 
 export default class DefaultLayout extends React.Component {

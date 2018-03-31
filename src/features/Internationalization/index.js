@@ -10,3 +10,11 @@ export default connect(
         activeLocale,
     }),
 )(Internationalization);
+
+
+export {
+    updateIntl,
+    switchLocale,
+    UPDATE_INTL_DATA,
+    SWITCH_INTL_LOCALE,
+} from './actions';

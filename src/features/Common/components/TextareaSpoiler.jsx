@@ -1,13 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+
+import { FormattedMessage as Tr } from 'react-intl';
 import styled from 'styled-components';
-
-import { FormattedMessage } from 'react-intl';
-import messages from '../messages';
-
-
-const MsgShow = <FormattedMessage { ...messages.show } />;
-const MsgHide = <FormattedMessage { ...messages.hide } />;
 
 
 export const Textarea = styled.textarea`
@@ -36,15 +31,20 @@ export default class TextareaSpoiler extends React.Component {
         const { result } = this.props;
         const { isShown } = this.state;
 
-        if (!isShown) {
-            return <div onClick={ this.handleShow } className='show-hidden'>{ MsgShow }</div>;
-        }
-
-        return (
-            <div>
-                <div onClick={ this.handleHide } className='hide-shown'>{ MsgHide }</div>
-                <Textarea className='response-data' rows={ 6 } value={ result } readOnly={ true } />
-            </div>
-        );
+        return isShown
+            ? (
+                <div>
+                    <div onClick={ this.handleHide } className='hide-shown'>
+                        <Tr defaultMessage='Hide' />
+                    </div>
+                    <Textarea className='response-data' rows={ 6 } value={ result } readOnly={ true } />
+                </div>
+            )
+            : (
+                <div onClick={ this.handleShow } className='show-hidden'>
+                    <Tr defaultMessage='Show' />
+                </div>
+            );
     }
+
 }

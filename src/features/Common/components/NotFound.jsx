@@ -2,17 +2,14 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Header, Icon, Segment } from 'semantic-ui-react';
 
-import { FormattedMessage } from 'react-intl';
-import messages from '../messages';
-
-const MsgNotFound = <FormattedMessage { ...messages.notFound } />;
+import { FormattedMessage as Tr } from 'react-intl';
 
 
 NotFound.propTypes = {
-    message: PropTypes.string
+    message: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
 };
 export default function NotFound(props) {
-    const { message = MsgNotFound } = props;
+    const { message = <Tr defaultMessage='Not found' /> } = props;
 
     return (
         <Segment>

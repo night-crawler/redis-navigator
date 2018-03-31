@@ -3,10 +3,7 @@ import React from 'react';
 import { Dimmer, Loader } from 'semantic-ui-react';
 import styled from 'styled-components';
 
-import { FormattedMessage } from 'react-intl';
-import messages from '../messages';
-
-const MsgLoading = <FormattedMessage { ...messages.loading } />;
+import { FormattedMessage as Tr } from 'react-intl';
 
 
 const FullPage = styled.div`
@@ -15,10 +12,10 @@ const FullPage = styled.div`
 
 
 FullPageDimmer.propTypes = {
-    message: PropTypes.string,
+    message: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
 };
 
-export default function FullPageDimmer({ message = MsgLoading }) {
+export default function FullPageDimmer({ message = <Tr defaultMessage='Loading' /> }) {
     return (
         <FullPage>
             <Dimmer active={ true }>

@@ -1,3 +1,4 @@
+import { RPCMethodNameError } from './errors/rpc';
 import {
     csrfSafeMethod,
     getApiMiddlewareOptions,
@@ -10,7 +11,7 @@ import {
     splitKey,
     findFirstDelimiter,
     addToSMTree,
-    dumpSMTree,
+    dumpSMTree, makeAbsoluteUrl, extractLanguageCode,
 } from './utils';
 
 
@@ -118,4 +119,18 @@ describe('utils', () => {
         expect(dumpSMTree(tree)).toEqual(expected);
     });
 
+
+    it('makeAbsoluteUrl', () => {
+        expect(
+            makeAbsoluteUrl('http://test.test/', '/some-url')
+        ).toEqual('http://test.test/some-url');
+    });
+
+
+    it('extractLanguageCode', () => {
+        expect(extractLanguageCode('en_US')).toEqual('en');
+
+        const wrongArgs = () => extractLanguageCode(2);
+        expect(wrongArgs).toThrow(Error);
+    });
 });

@@ -10,6 +10,7 @@ import { saveFile } from '../../../utils';
 import DropdownRpcMethodItem from './DropdownRpcMethodItem';
 import CommandImporter from './CommandImporter';
 import MethodCallEditor from './MethodCallEditor';
+import { FormattedMessage as Tr } from 'react-intl';
 
 
 const ConsoleCommandType = PropTypes.shape({
@@ -75,7 +76,6 @@ export default class RedisConsole extends React.Component {
 
     render() {
         this.log('render');
-        const shouldShowButtonCaptions = true;
         const { inspections, routeInstanceImportDialogIsVisible } = this.props;
 
         return (
@@ -88,27 +88,27 @@ export default class RedisConsole extends React.Component {
                     <Button.Group widths='5' attached='bottom'>
                         <Button basic={ true } color='grey' onClick={ this.handleAppendCallEditorClicked }>
                             <Icon name='add' />
-                            { shouldShowButtonCaptions && 'Append' }
+                            <Tr defaultMessage='Append' />
                         </Button>
 
                         <Button basic={ true } color='grey' onClick={ this.handleExportClicked }>
                             <Icon name='external' />
-                            { shouldShowButtonCaptions && 'Export' }
+                            <Tr defaultMessage='Export' />
                         </Button>
 
                         <Button basic={ true } color='grey' onClick={ this.handleImportClicked }>
                             <Icon name='download' />
-                            { shouldShowButtonCaptions && 'Import' }
+                            <Tr defaultMessage='Import' />
                         </Button>
 
                         <Button basic={ true } color='red' onClick={ this.handleClearCallEditorsClicked }>
                             <Icon name='trash outline' />
-                            { shouldShowButtonCaptions && 'Clear' }
+                            <Tr defaultMessage='Clear' />
                         </Button>
 
                         <Button basic={ true } color='green' onClick={ this.handleExecuteAllClicked }>
                             <Icon name='lightning' />
-                            { shouldShowButtonCaptions && 'Execute' }
+                            <Tr defaultMessage='Execute' />
                         </Button>
                     </Button.Group>
 

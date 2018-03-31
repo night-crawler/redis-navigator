@@ -22,8 +22,11 @@
       "rootPathPrefix": "~",
       "rootPathSuffix": "src"
     }],
-    ["react-intl", {
-      "messagesDir": "./build/messages/"
-    }]
+
+    ["react-intl-auto", {
+      "removePrefix": "src/",
+      "filebase": false
+      }
+    ]
   ]
 }

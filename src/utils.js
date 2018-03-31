@@ -284,3 +284,11 @@ export function dumpSMTree(tree) {
 export function makeAbsoluteUrl(baseUrl, endpointUrl) {
     return `${trimEnd(baseUrl, '/')}/${trimStart(endpointUrl, '/')}`;
 }
+
+
+export function extractLanguageCode(languageTag) {
+    if (!isString(languageTag) || !languageTag)
+        throw new Error(`Wrong IETF-like language tag: ${languageTag}`);
+
+    return languageTag.toLowerCase().replace('_', '-').split('-')[0];
+}
