@@ -38,12 +38,6 @@ export default {
     notifications: [],
     internationalization: {
         activeLocale: 'en',
-        data: {
-            ru: {
-                messages: {
-                    'features.Navbar.refresh': 'Обновить'
-                }
-            },
-        },
+        data: {},
     },
 };

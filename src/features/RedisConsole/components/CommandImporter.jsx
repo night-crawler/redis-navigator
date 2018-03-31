@@ -13,6 +13,8 @@ import { isJson, isYaml } from '../../../utils';
 import { checkCommandsValid } from '../utils';
 import ImportingCommandListPreview from './ImportingCommandListPreview';
 
+import messages from '../messages';
+
 
 export default class CommandImporter extends React.Component {
     static propTypes = {
@@ -50,7 +52,7 @@ export default class CommandImporter extends React.Component {
                             basic={ true } fluid={ true } disabled={ !isValid } color='green'
                             onClick={ () => onImport(value) }>
                             <Icon name='checkmark' />
-                            <Tr defaultMessage='Import' />
+                            <Tr { ...messages.import } />
                         </Button>
 
                     </Grid.Column>

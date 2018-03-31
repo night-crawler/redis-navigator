@@ -7,6 +7,7 @@ import DropdownRedisItem from './DropdownRedisItem';
 import TopNailedFullWidthContainer from './TopNailedFullWidthContainer';
 import { Timeouts } from '../../../timers';
 import { FormattedMessage as Tr } from 'react-intl';
+import messages from '../messages';
 
 
 Navbar.propTypes = {
@@ -70,7 +71,7 @@ export default function Navbar(props) {
                     <Dropdown.Menu>
                         <Dropdown.Item onClick={ () => actions.fetchInstances(urls.status) }>
                             <Icon name='refresh' />
-                            <Tr defaultMessage='Refresh' />
+                            <Tr { ...messages.refresh } />
                         </Dropdown.Item>
 
                         { !_.isEmpty(instances) && <Dropdown.Divider /> }

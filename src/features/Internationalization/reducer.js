@@ -17,7 +17,7 @@ export function internationalizationReducer(state = {}, action) {
         case SWITCH_INTL_LOCALE:
             return {
                 ...state,
-                locale: payload,
+                activeLocale: payload,
             };
 
         default:

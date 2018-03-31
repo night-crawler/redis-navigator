@@ -7,6 +7,7 @@ import { HotKeys } from 'react-hotkeys';
 import { Button, Icon, Segment } from 'semantic-ui-react';
 import { COLORS } from 'semantic-ui-react/dist/es/lib/SUI';
 import { saveFile } from '../../../utils';
+import messages from '../messages';
 import DropdownRpcMethodItem from './DropdownRpcMethodItem';
 import CommandImporter from './CommandImporter';
 import MethodCallEditor from './MethodCallEditor';
@@ -88,27 +89,27 @@ export default class RedisConsole extends React.Component {
                     <Button.Group widths='5' attached='bottom'>
                         <Button basic={ true } color='grey' onClick={ this.handleAppendCallEditorClicked }>
                             <Icon name='add' />
-                            <Tr defaultMessage='Append' />
+                            <Tr { ...messages.append } />
                         </Button>
 
                         <Button basic={ true } color='grey' onClick={ this.handleExportClicked }>
                             <Icon name='external' />
-                            <Tr defaultMessage='Export' />
+                            <Tr { ...messages.export } />
                         </Button>
 
                         <Button basic={ true } color='grey' onClick={ this.handleImportClicked }>
                             <Icon name='download' />
-                            <Tr defaultMessage='Import' />
+                            <Tr { ...messages.import } />
                         </Button>
 
                         <Button basic={ true } color='red' onClick={ this.handleClearCallEditorsClicked }>
                             <Icon name='trash outline' />
-                            <Tr defaultMessage='Clear' />
+                            <Tr { ...messages.clear } />
                         </Button>
 
                         <Button basic={ true } color='green' onClick={ this.handleExecuteAllClicked }>
                             <Icon name='lightning' />
-                            <Tr defaultMessage='Execute' />
+                            <Tr { ...messages.execute } />
                         </Button>
                     </Button.Group>
 
