@@ -4,6 +4,8 @@ import React from 'react';
 import { FormattedMessage as Tr } from 'react-intl';
 import styled from 'styled-components';
 
+import messages from '../messages';
+
 
 export const Textarea = styled.textarea`
     width: 100%;
@@ -35,14 +37,14 @@ export default class TextareaSpoiler extends React.Component {
             ? (
                 <div>
                     <div onClick={ this.handleHide } className='hide-shown'>
-                        <Tr defaultMessage='Hide' />
+                        <Tr { ...messages.hide } />
                     </div>
                     <Textarea className='response-data' rows={ 6 } value={ result } readOnly={ true } />
                 </div>
             )
             : (
                 <div onClick={ this.handleShow } className='show-hidden'>
-                    <Tr defaultMessage='Show' />
+                    <Tr { ...messages.show } />
                 </div>
             );
     }

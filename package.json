@@ -8,7 +8,7 @@
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "start": "parcel ./app/index.html",
-    "extract-messages": "extract-messages -l=en,ru -o app/translations -d en --flat false 'src/**/!(*.test).js'"
+    "extract-messages": "extract-messages -l=en,ru -o app/translations -d en --flat true 'src/**/!(*.test).js'"
   },
   "jest": {
     "setupFiles": [
