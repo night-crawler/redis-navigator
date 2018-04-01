@@ -9,11 +9,12 @@ import MethodParametersList from './MethodParametersList';
 import MethodParamsEditor from './MethodParamsEditor';
 import RpcResponse from './RpcResponse';
 import messages from '../messages';
-import { FormattedMessage as Tr } from 'react-intl';
+import { injectIntl, intlShape } from 'react-intl';
 
 
-export default class MethodCallEditor extends React.Component {
+class MethodCallEditor extends React.Component {
     static propTypes = {
+        intl: intlShape,
         inspections: PropTypes.object.isRequired,
         ddMethodsOptions: PropTypes.arrayOf(PropTypes.shape({
             key: PropTypes.string.isRequired,
@@ -187,10 +188,10 @@ export default class MethodCallEditor extends React.Component {
     }
 
     renderMethodDropdown() {
-        const { ddMethodsOptions } = this.props;
+        const { ddMethodsOptions, intl } = this.props;
         return <Dropdown
             options={ ddMethodsOptions }
-            placeholder={ <Tr { ...messages.findCommand } /> }
+            placeholder={ intl.formatMessage({ ...messages.findCommand }) }
             search={ true }
             fluid={ true }
             selection={ true }
@@ -200,3 +201,5 @@ export default class MethodCallEditor extends React.Component {
     }
 
 }
+
+export default injectIntl(MethodCallEditor);
