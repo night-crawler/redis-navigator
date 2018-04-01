@@ -35,8 +35,8 @@ export default function Navbar(props) {
     } = props;
 
     const ddInstanceText = activeInstanceName
-        ? <span>Instance: <Label size='mini'>{ activeInstanceName }</Label></span>
-        : <span>Instances</span>;
+        ? <span><Tr { ...messages.instance } />: <Label size='mini'>{ activeInstanceName }</Label></span>
+        : <span><Tr { ...messages.instances } /></span>;
 
     progressIsVisible && progressPercent >= 99.0 && Timeouts.add({
         name: 'Navbar.toggleProgressBarVisible:false',

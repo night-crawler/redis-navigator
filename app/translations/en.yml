@@ -25,6 +25,8 @@ features.Dashboard.messages.server: Server
 features.Dashboard.messages.stats: Stats
 features.Dashboard.messages.usPerCall: μs / call
 features.DefaultLayout.messages.loadingRedisInstances: Loading Redis instances
+features.Navbar.messages.instance: Instance
+features.Navbar.messages.instances: Instances
 features.Navbar.messages.refresh: Refresh
 features.RedisConsole.messages.append: Append
 features.RedisConsole.messages.clear: Clear
