@@ -7,7 +7,7 @@ exports[`<TextareaSpoiler> should render hidden TextareaSpoiler 1`] = `
 >
   <FormattedMessage
     defaultMessage="Show"
-    id="features/Common/components/TextareaSpoiler/Show"
+    id="features.Common.messages.show"
     values={Object {}}
   />
 </div>
@@ -21,7 +21,7 @@ exports[`<TextareaSpoiler> should render shown TextareaSpoiler 1`] = `
   >
     <FormattedMessage
       defaultMessage="Hide"
-      id="features/Common/components/TextareaSpoiler/Hide"
+      id="features.Common.messages.hide"
       values={Object {}}
     />
   </div>
