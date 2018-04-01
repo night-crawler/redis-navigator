@@ -14,7 +14,7 @@ import { injectIntl, intlShape } from 'react-intl';
 
 class MethodCallEditor extends React.Component {
     static propTypes = {
-        intl: intlShape,
+        intl: intlShape.isRequired,
         inspections: PropTypes.object.isRequired,
         ddMethodsOptions: PropTypes.arrayOf(PropTypes.shape({
             key: PropTypes.string.isRequired,
