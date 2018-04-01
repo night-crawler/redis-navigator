@@ -1,6 +1,9 @@
 import createHistory from 'history/createBrowserHistory';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { addLocaleData } from 'react-intl';
+import enLocaleData from 'react-intl/locale-data/en';
+import ruLocaleData from 'react-intl/locale-data/ru';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'react-router-redux';
 import 'semantic-ui-css/semantic.min.css';
@@ -9,7 +12,6 @@ import InternationalizationProvider, { switchLocale, updateIntl } from '../src/f
 import { extractLanguageCode } from '../src/utils';
 import configureStore from './configureStore';
 import initialState from './initialState';
-
 import enMessages from './translations/en.yml';
 import ruMessages from './translations/ru.yml';
 
@@ -20,6 +22,10 @@ const MOUNT_NODE = document.getElementById('root');
 
 
 const render = () => {
+    // console.log(enLocaleData);
+    addLocaleData(enLocaleData);
+    addLocaleData(ruLocaleData);
+
     store.dispatch(updateIntl({
         locale: 'en',
         messages: enMessages,

@@ -1,0 +1,12 @@
+features.Common.messages.hide: Hide
+features.Common.messages.loading: Loading
+features.Common.messages.notFound: Not found
+features.Common.messages.show: Show
+features.DefaultLayout.messages.loadingRedisInstances: Loading Redis instances
+features.Navbar.messages.refresh: Refresh
+features.RedisConsole.messages.append: Append
+features.RedisConsole.messages.clear: Clear
+features.RedisConsole.messages.execute: Execute
+features.RedisConsole.messages.export: Export
+features.RedisConsole.messages.findCommand: Find Command
+features.RedisConsole.messages.import: Import

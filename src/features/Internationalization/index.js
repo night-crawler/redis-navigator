@@ -9,6 +9,9 @@ export default connect(
         activeLocaleData,
         activeLocale,
     }),
+    null,
+    null,
+    { pure: false }
 )(Internationalization);
 
 

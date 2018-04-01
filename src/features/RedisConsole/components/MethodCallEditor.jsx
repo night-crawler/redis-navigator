@@ -8,6 +8,8 @@ import { parametersToJson, reprMethodDoc } from '../utils';
 import MethodParametersList from './MethodParametersList';
 import MethodParamsEditor from './MethodParamsEditor';
 import RpcResponse from './RpcResponse';
+import messages from '../messages';
+import { FormattedMessage as Tr } from 'react-intl';
 
 
 export default class MethodCallEditor extends React.Component {
@@ -188,7 +190,7 @@ export default class MethodCallEditor extends React.Component {
         const { ddMethodsOptions } = this.props;
         return <Dropdown
             options={ ddMethodsOptions }
-            placeholder='Find command'
+            placeholder={ <Tr { ...messages.findCommand } /> }
             search={ true }
             fluid={ true }
             selection={ true }

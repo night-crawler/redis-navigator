@@ -6,4 +6,5 @@ export default defineMessages({
     append: 'Append',
     clear: 'Clear',
     execute: 'Execute',
+    findCommand: 'Find Command'
 });

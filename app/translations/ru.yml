@@ -1,0 +1,12 @@
+features.Common.messages.hide: Скрыть
+features.Common.messages.loading: Загрузка
+features.Common.messages.notFound: Не найдено
+features.Common.messages.show: Показать
+features.DefaultLayout.messages.loadingRedisInstances: Загрузка Redis объектов
+features.Navbar.messages.refresh: Обновить
+features.RedisConsole.messages.append: Добавить
+features.RedisConsole.messages.clear: Очистить
+features.RedisConsole.messages.execute: Выполнить
+features.RedisConsole.messages.export: Экспортировать
+features.RedisConsole.messages.findCommand: Найти команду'
+features.RedisConsole.messages.import: Импортировать

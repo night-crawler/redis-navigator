@@ -103,7 +103,7 @@ export default class RedisConsole extends React.Component {
                         </Button>
 
                         <Button basic={ true } color='red' onClick={ this.handleClearCallEditorsClicked }>
-                            <Icon name='trash outline' />
+                            <Icon name='trash' />
                             <Tr { ...messages.clear } />
                         </Button>
 

@@ -14,9 +14,7 @@ import AppContentWrapper from './AppContentWrapper';
 import NotificationSystem from '../../NotificationSystem';
 
 import { FormattedMessage as Tr } from 'react-intl';
-
-
-const MsgLoadingRedisInstances = <Tr defaultMessage='Loading Redis instances' />;
+import messages from '../messages';
 
 
 export default class DefaultLayout extends React.Component {
@@ -77,7 +75,7 @@ export default class DefaultLayout extends React.Component {
     render() {
         const { isReady } = this.props;
         if (!isReady)
-            return <FullPageDimmer message={ MsgLoadingRedisInstances } />;
+            return <FullPageDimmer message={ <Tr { ...messages.loadingRedisInstances } /> } />;
 
         return (
             <AppWrapper className='redis-navigator-app'>
