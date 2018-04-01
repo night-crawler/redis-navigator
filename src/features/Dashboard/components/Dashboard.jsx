@@ -9,6 +9,9 @@ import RedisClientsCard from './RedisClientsCard';
 import RedisCommandsStatsCard from './RedisCommandStatsCard';
 import RedisKeySpaceCard from './RedisKeySpaceCard';
 
+import { FormattedMessage as Tr } from 'react-intl';
+import messages from '../messages';
+
 
 export default class Dashboard extends React.Component {
     static propTypes = {
@@ -40,30 +43,25 @@ export default class Dashboard extends React.Component {
         const { routeInstanceName } = nextProps;
         const { routeInstanceName: prevRouteInstanceName } = prevState;
 
-        if (routeInstanceName !== prevRouteInstanceName) {
+        // routeInstanceName changed from one non empty to another one
+        if (prevRouteInstanceName && prevRouteInstanceName && routeInstanceName !== prevRouteInstanceName)
             actions.fetchInfo(routeInstanceName);
-            return { routeInstanceName };
-        }
 
-        return null;
+        return { routeInstanceName };
     }
 
     render() {
         const { routeInstanceInfo, routeInstanceName } = this.props;
         if (isEmpty(routeInstanceInfo))
-            return <Dimmer active={ true }><Loader size='massive'>Loading { routeInstanceName } info</Loader></Dimmer>;
+            return (
+                <Dimmer active={ true }>
+                    <Loader size='massive'>
+                        <Tr { ...messages.loadingRedisInstanceInfo } values={ { routeInstanceName } } />
+                    </Loader>
+                </Dimmer>
+            );
 
         const { clients, config, dbsize, name, sections } = routeInstanceInfo;
-        const dumbSections = [
-            'server',
-            'clients',
-            'memory',
-            'persistence',
-            'stats',
-            'replication',
-            'cpu',
-            'cluster',
-        ];
 
         return (
             <Segment.Group>
@@ -74,20 +72,20 @@ export default class Dashboard extends React.Component {
                 <Segment>
                     <Header as='h2'>
                         <Icon name='settings' />
-                        <Header.Content>Configuration</Header.Content>
+                        <Header.Content><Tr { ...messages.configuration } /></Header.Content>
                     </Header>
 
                     <Card.Group itemsPerRow={ 3 } doubling={ true } stackable={ true }>
                         <DefinitionsCard
-                            header='Configuration' description='CONFIG GET'
+                            header={ <Tr { ...messages.configuration } /> }
                             definitions={ config.result }
                         />
 
                         <DefinitionsCard
-                            header='Miscellaneous' description='db, connection'
+                            header={ <Tr { ...messages.miscellaneous } /> }
                             definitions={ {
-                                dbsize: _.has(dbsize, 'error') ? 'error' : dbsize.result,
-                                name: _.has(name, 'error') ? 'error' : name.result || '-',
+                                dbsize: dbsize.result,
+                                name: name.result || '-',
                             } }
                         />
                     </Card.Group>
@@ -96,22 +94,41 @@ export default class Dashboard extends React.Component {
                 <Segment>
                     <Header as='h2'>
                         <Icon name='info' />
-                        <Header.Content>Information</Header.Content>
+                        <Header.Content><Tr { ...messages.information } /></Header.Content>
                     </Header>
 
                     <Card.Group itemsPerRow={ 3 } doubling={ true } stackable={ true }>
-                        {
-
-                            Object.entries(sections.result).map(([sectionName, sectionOptions], i) => {
-                                if (dumbSections.indexOf(sectionName) >= 0) {
-                                    return <DefinitionsCard
-                                        key={ i }
-                                        header={ _.capitalize(sectionName) }
-                                        definitions={ sectionOptions }
-                                    />;
-                                }
-                            })
-                        }
+                        <DefinitionsCard header={ <Tr { ...messages.server } /> }
+                            definitions={ sections.result.server }
+                        />
+                        <DefinitionsCard
+                            header={ <Tr { ...messages.clients } /> }
+                            definitions={ sections.result.clients }
+                        />
+                        <DefinitionsCard
+                            header={ <Tr { ...messages.memory } /> }
+                            definitions={ sections.result.memory }
+                        />
+                        <DefinitionsCard
+                            header={ <Tr { ...messages.persistence } /> }
+                            definitions={ sections.result.persistence }
+                        />
+                        <DefinitionsCard
+                            header={ <Tr { ...messages.stats } /> }
+                            definitions={ sections.result.stats }
+                        />
+                        <DefinitionsCard
+                            header={ <Tr { ...messages.replication } /> }
+                            definitions={ sections.result.replication }
+                        />
+                        <DefinitionsCard
+                            header={ <Tr { ...messages.cpu } /> }
+                            definitions={ sections.result.cpu }
+                        />
+                        <DefinitionsCard
+                            header={ <Tr { ...messages.cluster } /> }
+                            definitions={ sections.result.cluster }
+                        />
 
                         <RedisCommandsStatsCard stats={ sections.result.commandstats } />
                         <RedisKeySpaceCard keyspace={ sections.result.keyspace } />

@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { RedisRpc } from '../actions';
-import Dashboard from './components';
+import { Dashboard } from './components';
 import { createStructuredSelector } from 'reselect';
 import {
     routeInstanceName,

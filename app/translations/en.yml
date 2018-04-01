@@ -2,6 +2,28 @@ features.Common.messages.hide: Hide
 features.Common.messages.loading: Loading
 features.Common.messages.notFound: Not found
 features.Common.messages.show: Show
+features.Dashboard.messages.avgTTL: Avg TTL
+features.Dashboard.messages.calls: Calls
+features.Dashboard.messages.clients: Clients
+features.Dashboard.messages.cluster: Cluster
+features.Dashboard.messages.command: Command
+features.Dashboard.messages.commandStats: Command stats
+features.Dashboard.messages.configuration: Configuration
+features.Dashboard.messages.cpu: Cpu
+features.Dashboard.messages.db: DB
+features.Dashboard.messages.expires: Expires
+features.Dashboard.messages.filterOptions: Filter options...
+features.Dashboard.messages.information: Information
+features.Dashboard.messages.keySpace: Key Space
+features.Dashboard.messages.keys: Keys
+features.Dashboard.messages.loadingRedisInstanceInfo: 'Loading {routeInstanceName} info'
+features.Dashboard.messages.memory: Memory
+features.Dashboard.messages.miscellaneous: Miscellaneous
+features.Dashboard.messages.persistence: Persistence
+features.Dashboard.messages.replication: Replication
+features.Dashboard.messages.server: Server
+features.Dashboard.messages.stats: Stats
+features.Dashboard.messages.usPerCall: μs / call
 features.DefaultLayout.messages.loadingRedisInstances: Loading Redis instances
 features.Navbar.messages.refresh: Refresh
 features.RedisConsole.messages.append: Append

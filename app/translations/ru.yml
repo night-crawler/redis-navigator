@@ -2,11 +2,33 @@ features.Common.messages.hide: Скрыть
 features.Common.messages.loading: Загрузка
 features.Common.messages.notFound: Не найдено
 features.Common.messages.show: Показать
+features.Dashboard.messages.avgTTL: Ср. TTL
+features.Dashboard.messages.calls: Вызовов
+features.Dashboard.messages.clients: Клиенты
+features.Dashboard.messages.cluster: Кластер
+features.Dashboard.messages.command: Команда
+features.Dashboard.messages.commandStats: Статистика по командам
+features.Dashboard.messages.configuration: Настройки
+features.Dashboard.messages.cpu: ЦП
+features.Dashboard.messages.db: БД
+features.Dashboard.messages.expires: Истекает
+features.Dashboard.messages.filterOptions: Отфильтровать
+features.Dashboard.messages.information: Информация
+features.Dashboard.messages.keySpace: Пространство ключей
+features.Dashboard.messages.keys: Ключи
+features.Dashboard.messages.loadingRedisInstanceInfo: 'Загрузка информации {routeInstanceName}'
+features.Dashboard.messages.memory: Память
+features.Dashboard.messages.miscellaneous: Разное
+features.Dashboard.messages.persistence: Persistence
+features.Dashboard.messages.replication: Репликация
+features.Dashboard.messages.server: Сервер
+features.Dashboard.messages.stats: Статистика
+features.Dashboard.messages.usPerCall: μs / вызов
 features.DefaultLayout.messages.loadingRedisInstances: Загрузка Redis объектов
 features.Navbar.messages.refresh: Обновить
 features.RedisConsole.messages.append: Добавить
 features.RedisConsole.messages.clear: Очистить
 features.RedisConsole.messages.execute: Выполнить
 features.RedisConsole.messages.export: Экспортировать
-features.RedisConsole.messages.findCommand: Найти команду'
+features.RedisConsole.messages.findCommand: Найти команду
 features.RedisConsole.messages.import: Импортировать

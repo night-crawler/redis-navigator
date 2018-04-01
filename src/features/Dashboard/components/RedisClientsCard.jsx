@@ -3,6 +3,9 @@ import React from 'react';
 import { Card, Table, Popup, Label } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 
+import { FormattedMessage as Tr } from 'react-intl';
+import messages from '../messages';
+
 
 const FIELD_NAMES = [
     'id',
@@ -157,7 +160,7 @@ export default class RedisClientsCard extends React.Component {
         return (
             <Card fluid={ true }>
                 <Card.Content>
-                    <Card.Header content='Clients' />
+                    <Card.Header content={ <Tr { ...messages.clients } /> } />
 
                     <Table celled={ true } compact='very' unstackable={ true } size='small' textAlign='center'>
                         <ClientHeader />

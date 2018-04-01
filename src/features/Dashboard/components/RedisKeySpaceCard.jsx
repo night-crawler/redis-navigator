@@ -3,6 +3,10 @@ import React from 'react';
 import { Table } from 'semantic-ui-react';
 import DefinitionsCard from './DefinitionsCard';
 
+import { FormattedMessage as Tr } from 'react-intl';
+import messages from '../messages';
+
+
 Header.propTypes = {
     textAlign: PropTypes.string,
 };
@@ -10,10 +14,10 @@ function Header({ textAlign='right' }) {
     return (
         <Table.Header>
             <Table.Row>
-                <Table.HeaderCell textAlign={ textAlign } content='DB' />
-                <Table.HeaderCell content='Keys' />
-                <Table.HeaderCell content='Expires' />
-                <Table.HeaderCell content='Avg TTL' />
+                <Table.HeaderCell textAlign={ textAlign } content={ <Tr { ...messages.db } /> } />
+                <Table.HeaderCell content={ <Tr { ...messages.keys } /> } />
+                <Table.HeaderCell content={ <Tr { ...messages.expires } /> } />
+                <Table.HeaderCell content={ <Tr { ...messages.avgTTL } /> } />
             </Table.Row>
         </Table.Header>
     );
@@ -49,7 +53,7 @@ RedisKeySpaceCard.propTypes = {
 export default function RedisKeySpaceCard(props) {
     const { keyspace } = props;
     return <DefinitionsCard
-        header='Keyspace'
+        header={ <Tr { ...messages.keySpace } /> }
         headerComponent={ Header }
         rowComponent={ StatsRow }
         definitions={ keyspace }

@@ -3,12 +3,15 @@ import React from 'react';
 import { Button, Card, Input } from 'semantic-ui-react';
 import ResponsiveDefinitionTable from './ResponsiveDefinitionTable';
 import PropTypes from 'prop-types';
+import { injectIntl, intlShape } from 'react-intl';
+import messages from '../messages';
 
 
-export default class DefinitionsCard extends React.Component {
+class DefinitionsCard extends React.Component {
     static propTypes = {
+        intl: intlShape.isRequired,
         definitions: PropTypes.object,
-        header: PropTypes.string,
+        header: PropTypes.oneOfType([PropTypes.string, PropTypes.element, PropTypes.func]),
         description: PropTypes.string,
         rowComponent: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
         headerComponent: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
@@ -40,7 +43,7 @@ export default class DefinitionsCard extends React.Component {
     };
 
     render() {
-        const { header, description } = this.props;
+        const { header, description, intl } = this.props;
         return (
             <Card>
                 <Card.Content>
@@ -56,7 +59,7 @@ export default class DefinitionsCard extends React.Component {
                             onChange={ this.handleFilterChange }
                             label={ <Button basic={ true } icon='remove' onClick={ this.handleClearFilter } /> }
                             labelPosition='right'
-                            placeholder='Filter options...'
+                            placeholder={ intl.formatMessage({ ...messages.filterOptions }) }
                         />
 
                         <ResponsiveDefinitionTable
@@ -72,3 +75,5 @@ export default class DefinitionsCard extends React.Component {
     }
 
 }
+
+export default injectIntl(DefinitionsCard);

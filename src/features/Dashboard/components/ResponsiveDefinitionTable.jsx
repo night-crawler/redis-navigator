@@ -54,9 +54,7 @@ export default class ResponsiveDefinitionTable extends React.Component {
                 onUpdate={ this.handleOnUpdate }
             >
                 <Table basic='very' celled={ true } compact='very' definition={ true } size='small'>
-                    {
-                        HeaderComponent ? <HeaderComponent textAlign={ textAlign } /> : null
-                    }
+                    { HeaderComponent && <HeaderComponent textAlign={ textAlign } /> }
 
                     <Table.Body>
                         {

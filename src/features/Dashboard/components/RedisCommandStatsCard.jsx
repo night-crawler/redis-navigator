@@ -2,16 +2,18 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Table } from 'semantic-ui-react';
 import DefinitionsCard from './DefinitionsCard';
+import { FormattedMessage as Tr } from 'react-intl';
+import messages from '../messages';
 
 
 function StatsHeader() {
     return (
         <Table.Header>
             <Table.Row>
-                <Table.HeaderCell textAlign='right' content='Command' />
-                <Table.HeaderCell content='Calls' />
+                <Table.HeaderCell textAlign='right' content={ <Tr { ...messages.command } /> } />
+                <Table.HeaderCell content={ <Tr { ...messages.calls } /> } />
                 <Table.HeaderCell content='μs' />
-                <Table.HeaderCell content='μs / call' />
+                <Table.HeaderCell content={ <Tr { ...messages.usPerCall } /> } />
             </Table.Row>
         </Table.Header>
     );
@@ -48,7 +50,7 @@ RedisCommandsStatsCard.propTypes = {
 export default function RedisCommandsStatsCard(props) {
     const { stats } = props;
     return <DefinitionsCard
-        header='Command stats'
+        header={ <Tr { ...messages.commandStats } /> }
         headerComponent={ StatsHeader }
         rowComponent={ StatsRow }
         definitions={ stats }
