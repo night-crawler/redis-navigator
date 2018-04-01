@@ -1,13 +1,13 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { FormattedMessage as Tr } from 'react-intl';
 import { Link } from 'react-router-dom';
 import { Container, Dropdown, Icon, Label, Menu, Progress } from 'semantic-ui-react';
+import { Timeouts } from '../../../timers';
+import messages from '../messages';
 import DropdownRedisItem from './DropdownRedisItem';
 import TopNailedFullWidthContainer from './TopNailedFullWidthContainer';
-import { Timeouts } from '../../../timers';
-import { FormattedMessage as Tr } from 'react-intl';
-import messages from '../messages';
 
 
 Navbar.propTypes = {
@@ -18,6 +18,12 @@ Navbar.propTypes = {
     }).isRequired,
     urls: PropTypes.shape({
         status: PropTypes.string,
+    }),
+    location: PropTypes.shape({
+        pathname: PropTypes.string,
+        search: PropTypes.string,
+        hash: PropTypes.string,
+        key: PropTypes.string,
     }),
     activeInstanceName: PropTypes.string,
     instances: PropTypes.array.isRequired,
@@ -32,6 +38,7 @@ export default function Navbar(props) {
         actions,
         progressPercent,
         progressIsVisible,
+        location,
     } = props;
 
     const ddInstanceText = activeInstanceName
@@ -54,16 +61,25 @@ export default function Navbar(props) {
             }
 
             <Container>
-                <Menu.Item as={ Link } header={ true } to={ `/${activeInstanceName}` }>
+                <Menu.Item
+                    header={ true } active={ location.pathname === `/${activeInstanceName}` }
+                    as={ Link } to={ `/${activeInstanceName}` }
+                >
                     <Icon name='map' />
                     Redis Navigator
                 </Menu.Item>
 
-                <Menu.Item as={ Link } header={ true } to={ `/${activeInstanceName}/dashboard` }>
+                <Menu.Item
+                    header={ true } active={ location.pathname === `/${activeInstanceName}/dashboard` }
+                    as={ Link } to={ `/${activeInstanceName}/dashboard` }
+                >
                     <Icon name='dashboard' />
                 </Menu.Item>
 
-                <Menu.Item as={ Link } header={ true } to={ `/${activeInstanceName}/console` }>
+                <Menu.Item
+                    header={ true } active={ location.pathname === `/${activeInstanceName}/console` }
+                    as={ Link } to={ `/${activeInstanceName}/console` }
+                >
                     <Icon name='terminal' />
                 </Menu.Item>
 

@@ -7,6 +7,7 @@ import {
     urls,
     progressIsVisible,
     progressPercent,
+    location,
 } from '../selectors';
 import { Navbar } from './components';
 
@@ -29,6 +30,7 @@ export default connect(
         urls,
         progressIsVisible,
         progressPercent,
+        location
     }),
     mapDispatchToProps,
 )(Navbar);

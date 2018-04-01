@@ -3,7 +3,14 @@ import { createSelector } from 'reselect';
 
 
 export const redisNavigator = state => state.redisNavigator;
+export const route = state => state.route;
 export const props = (state, props) => props;
+
+
+/**
+ * state.route.location
+ */
+export const location = createSelector(route, route => route.location || {});
 
 
 /**
