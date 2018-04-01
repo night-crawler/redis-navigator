@@ -124,7 +124,7 @@ describe('RpcActionCreator', () => {
         expect(response).toBeTruthy();
         expect(response[RSAA]).toBeTruthy();
         expect(response[RSAA].body).toEqual(JSON.stringify(expectedBody));
-        expect(_(response[RSAA].types).map('type').value()).toEqual([
+        expect(_.map(response[RSAA].types, 'type')).toEqual([
             RPC_EXECUTE_START, RPC_EXECUTE_SUCCESS, RPC_EXECUTE_FAIL
         ]);
 
@@ -158,7 +158,7 @@ describe('RpcActionCreator', () => {
         expect(response).toBeTruthy();
         expect(response[RSAA]).toBeTruthy();
         expect(response[RSAA].body).toEqual(JSON.stringify(expectedBody));
-        expect(_(response[RSAA].types).map('type').value()).toEqual([
+        expect(_.map(response[RSAA].types, 'type')).toEqual([
             RPC_BATCH_START, RPC_BATCH_SUCCESS, RPC_BATCH_FAIL
         ]);
     });
@@ -179,10 +179,10 @@ describe('RpcActionCreator', () => {
                 .indexOf('new.get')
         ).toBeTruthy();
 
-        expect(
-            _(redisRpc
+        expect(_.map(
+            redisRpc
                 .action([1, 2, 3])
-                .execute('get', { 'key': 1 })[RSAA].types).map('type').value()
+                .execute('get', { 'key': 1 })[RSAA].types, 'type')
         ).toEqual([1, 2, 3]);
     });
 

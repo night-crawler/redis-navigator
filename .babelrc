@@ -22,7 +22,7 @@
       "rootPathPrefix": "~",
       "rootPathSuffix": "src"
     }],
-
+    "lodash",
     ["react-intl-auto", {
       "removePrefix": "src/",
       "filebase": true

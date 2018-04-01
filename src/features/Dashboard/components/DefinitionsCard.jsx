@@ -36,10 +36,11 @@ class DefinitionsCard extends React.Component {
         const { definitions } = this.props;
         const { filter } = this.state;
 
-        return _(definitions)
-            .pickBy((optValue, optKey) =>
-                _.lowerCase(optKey).indexOf(_.lowerCase(filter)) >= 0)
-            .value();
+        return _.pickBy(
+            definitions,
+            (optValue, optKey) =>
+                _.lowerCase(optKey).indexOf(_.lowerCase(filter)) >= 0
+        );
     };
 
     render() {
