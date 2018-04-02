@@ -1,5 +1,6 @@
 import { every, filter, find } from 'lodash';
 import { createSelector } from 'reselect';
+import { deserializeQuery } from 'utils';
 
 
 export const redisNavigator = state => state.redisNavigator;
@@ -24,7 +25,7 @@ export const locationSearch = createSelector(location, location => location.sear
  */
 export const locationSearchParams = createSelector(
     locationSearch,
-    locationSearch => { console.log('suka', locationSearch); return new URLSearchParams(locationSearch); }
+    locationSearch => deserializeQuery(locationSearch)
 );
 
 

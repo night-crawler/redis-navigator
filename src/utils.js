@@ -1,3 +1,4 @@
+import 'url-search-params-polyfill';
 import { SortedMap } from 'collections/sorted-map';
 import fileType from 'file-type';
 import checkIsBase64 from 'is-base64';
@@ -14,7 +15,8 @@ import {
     startsWith,
     trimEnd,
     trimStart,
-    zip
+    zip,
+    pickBy,
 } from 'lodash';
 
 
@@ -291,4 +293,69 @@ export function extractLanguageCode(languageTag) {
         throw new Error(`Wrong IETF-like language tag: ${languageTag}`);
 
     return languageTag.toLowerCase().replace('_', '-').split('-')[0];
+}
+
+
+export function castStringToPrimitive(rawStr) {
+    if (!isString(rawStr))
+        throw new Error(`'queryString must be a string, but got ${typeof rawStr}: ${rawStr}`);
+
+    if (rawStr.length >= 'true'.length && rawStr.length <= 'false'.length) {
+        const lc = rawStr.toLowerCase();
+        if (lc === 'true')
+            return true;
+        if (lc === 'false')
+            return false;
+    }
+
+    const _int = parseInt(rawStr, 10);
+    if(!isNaN(_int) && `${_int}` === rawStr) {
+        return _int;
+    }
+
+    const _float = parseFloat(rawStr);
+    if(!isNaN(_float)) {
+        return _float;
+    }
+
+    return rawStr;
+}
+
+
+export function serializeQuery(queryObject, defaults = {}) {
+    if (!isPlainObject(queryObject))
+        throw new Error(`'queryObject must be an object, but got ${typeof queryObject}: ${queryObject}`);
+
+    if (!isPlainObject(defaults))
+        throw new Error(`defaults must be an object, but got ${typeof defaults}: ${defaults}`);
+
+    const nonDefaults = pickBy(queryObject, (val, key) => defaults[key] !== val);
+    return new URLSearchParams(nonDefaults).toString();
+}
+
+
+export function deserializeQuery(queryString, defaults = {}) {
+    if (!isString(queryString))
+        throw new Error(`'queryString must be a string, but got ${typeof queryString}: ${queryString}`);
+
+    if (!isPlainObject(defaults))
+        throw new Error(`defaults must be an object, but got ${typeof defaults}: ${defaults}`);
+
+    const queryObject = {};
+    const parsed = new URLSearchParams(queryString);
+
+    for (let [ param, value ] of parsed) {
+        value = castStringToPrimitive(value);
+        const existingValue = queryObject[param];
+
+        if (existingValue === undefined) {
+            queryObject[param] = value;
+        } else {
+            isArray(existingValue)
+                ? queryObject[param].push(value)
+                : queryObject[param] = [ queryObject[param], value];
+        }
+    }
+
+    return {...defaults, ...queryObject};
 }

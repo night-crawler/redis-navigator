@@ -1,4 +1,3 @@
-import { RPCMethodNameError } from './errors/rpc';
 import {
     csrfSafeMethod,
     getApiMiddlewareOptions,
@@ -12,6 +11,7 @@ import {
     findFirstDelimiter,
     addToSMTree,
     dumpSMTree, makeAbsoluteUrl, extractLanguageCode,
+    serializeQuery, deserializeQuery, castStringToPrimitive,
 } from './utils';
 
 
@@ -132,5 +132,38 @@ describe('utils', () => {
 
         const wrongArgs = () => extractLanguageCode(2);
         expect(wrongArgs).toThrow(Error);
+    });
+
+    it('serializeQuery', () => {
+        const queryObject = { pattern: '*', sortKeys: true, scanCount: 123, ttlSeconds: 666 };
+
+        const wrongQueryObject = () => serializeQuery(2);
+        expect(wrongQueryObject).toThrow(Error);
+
+        const wrongDefaults = () => serializeQuery({}, 2);
+        expect(wrongDefaults).toThrow(Error);
+
+        expect(serializeQuery(queryObject, {})).toEqual('pattern=*&sortKeys=true&scanCount=123&ttlSeconds=666');
+        expect(serializeQuery(queryObject, queryObject)).toEqual('');
+    });
+
+    it('deserializeQuery', () => {
+        const query = 'pattern=*&sortKeys=true&scanCount=123&ttlSeconds=666&ttlSeconds=661';
+        expect(deserializeQuery(query)).toEqual({
+            pattern: '*',
+            sortKeys: true,
+            scanCount: 123,
+            ttlSeconds: [666, 661]
+        });
+    });
+
+    it('castStringToPrimitive', () => {
+        const wrongArgs = () => castStringToPrimitive({});
+        expect(wrongArgs).toThrow(Error);
+
+        expect(castStringToPrimitive('1')).toEqual(1);
+        expect(castStringToPrimitive('faLSe')).toEqual(false);
+        expect(castStringToPrimitive('TRUE')).toEqual(true);
+        expect(castStringToPrimitive('1.1')).toEqual(1.1);
     });
 });

@@ -1,8 +1,9 @@
+import debug from 'debug';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Segment, Grid, Input, Button } from 'semantic-ui-react';
+import { injectIntl, intlShape } from 'react-intl';
+import { Button, Grid, Input, Segment } from 'semantic-ui-react';
 import { Timeouts } from '../../../timers';
-import { FormattedMessage as Tr, injectIntl, intlShape } from 'react-intl';
 import messages from '../messages';
 
 
@@ -17,8 +18,15 @@ class KeyViewer extends React.Component {
         routeKeys: PropTypes.object,
     };
 
+    constructor(props) {
+        super(props);
+        debug.enable('*');
+        this.log = debug('KeyViewer');
+        this.log('initialized', props);
+    }
+
     render() {
-        const { intl } = this.props;
+        const { intl, locationSearchParams } = this.props;
 
         return (
             <Grid>
@@ -28,7 +36,7 @@ class KeyViewer extends React.Component {
                             <Button icon='sort alphabet ascending' />
                         </Button.Group>
                         <Input
-                            // value={ this.state.filter }
+                            defaultValue={ locationSearchParams.pattern }
                             icon='search'
                             iconPosition='left'
                             fluid={ true }
@@ -47,14 +55,17 @@ class KeyViewer extends React.Component {
     }
 
     componentDidMount() {
-        this.props.actions.searchKeys({ pattern: 'bla' });
+        const { locationSearchParams } = this.props;
+        this.props.actions.searchKeys(locationSearchParams);
     }
 
     handleFilterKeysChange = (e, { value }) => {
-        console.log(this.props.locationSearchParams);
+        const { locationSearchParams } = this.props;
+        const newParams = { ...locationSearchParams, pattern: value };
+
         Timeouts.add({
             name: 'KeyViewer.search',
-            callback: () => this.props.actions.searchKeys({ pattern: 'bla' + value }),
+            callback: () => this.props.actions.searchKeys(newParams),
             timeout: 300
         });
     }

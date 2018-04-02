@@ -69,7 +69,8 @@
     "reselect": "^3.0.1",
     "semantic-ui-css": "^2.2.14",
     "semantic-ui-react": "^0.78.2",
-    "styled-components": "^3.1.6"
+    "styled-components": "^3.1.6",
+    "url-search-params-polyfill": "^3.0.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
