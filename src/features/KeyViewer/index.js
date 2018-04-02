@@ -3,6 +3,7 @@ import { makeAbsoluteUrl, serializeQuery } from 'utils';
 import { DEFAULT_SEARCH_KEYS_PARAMS } from 'constants';
 import { RedisRpc, searchKeys } from '../actions';
 import { push } from 'react-router-redux';
+import { pickBy } from 'lodash';
 import { KeyViewer } from './components';
 import { createStructuredSelector } from 'reselect';
 import {
@@ -39,22 +40,20 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
         ...stateProps,
         ...dispatchProps,
         actions: {
-            searchKeys: ({ scanCount, pattern, sortKeys, ttlSeconds }) => {
+            searchKeys: ({ pattern, scanCount, sortKeys, ttlSeconds }) => {
                 const searchParams = {
                     ...DEFAULT_SEARCH_KEYS_PARAMS,
-                    pattern, sortKeys, scanCount, ttlSeconds,
+                    ...pickBy({ pattern, sortKeys, scanCount, ttlSeconds }, (val) => val)
                 };
 
                 dispatch(push({
                     search: serializeQuery(searchParams, DEFAULT_SEARCH_KEYS_PARAMS)
                 }));
 
-                console.log(searchParams);
-
-                // return dispatch(searchKeys({
-                //     url: makeAbsoluteUrl(urls.base, routeInstanceSearchUrl),
-                //     ...searchParams
-                // }));
+                return dispatch(searchKeys({
+                    url: makeAbsoluteUrl(urls.base, routeInstanceSearchUrl),
+                    ...searchParams
+                }));
             }
         },
         dispatch: undefined,
