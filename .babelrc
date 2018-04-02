@@ -16,6 +16,13 @@
     "flow"
   ],
   "plugins": [
+    ["module-resolver", {
+      "root": ["./src"],
+      "alias": {
+        "test": "./test",
+        "underscore": "lodash"
+      }
+    }],
     "transform-class-properties",
     "transform-react-jsx-source",
     ["babel-plugin-root-import", {

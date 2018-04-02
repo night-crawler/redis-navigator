@@ -1,5 +1,5 @@
 import { RSAA } from 'redux-api-middleware';
-import { getApiMiddlewareOptions } from '../../utils';
+import { getApiMiddlewareOptions } from 'utils';
 
 
 export const SEARCH_KEYS_START = 'redisNavigator/keys/search/start';

@@ -1,4 +1,4 @@
-import { uuid4 } from '../../../utils';
+import { uuid4 } from 'utils';
 
 export const APPEND_CALL_EDITOR = 'redisNavigator/ui/console/appendCallEditor';
 

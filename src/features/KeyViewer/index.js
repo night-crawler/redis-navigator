@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { makeAbsoluteUrl } from '../../utils';
+import { makeAbsoluteUrl } from 'utils';
 import { RedisRpc, searchKeys } from '../actions';
 import { push } from 'react-router-redux';
 import { KeyViewer } from './components';
