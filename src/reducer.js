@@ -4,6 +4,7 @@ import {
     SET_ACTIVE_INSTANCE,
     FETCH_ENDPOINTS_START, FETCH_ENDPOINTS_SUCCESS,
     FETCH_INSPECTIONS_START, FETCH_INSPECTIONS_SUCCESS,
+    SEARCH_KEYS_START, SEARCH_KEYS_SUCCESS,
     REDIS_RPC_FETCH_INFO_SUCCESS,
     FETCH_INSTANCES_START, FETCH_INSTANCES_SUCCESS,
     RPC_BATCH_START, RPC_BATCH_SUCCESS,
@@ -290,14 +291,14 @@ const progress = (state = {}, action) => {
 };
 
 
-const keys = (state = {}, action) => produce(state, draft => {
-    const { payload, meta } = action;
-
-    const draftRedis = meta ? draft[meta.path] : null;
-    const redis = meta ? state[meta.path] : null;
+const keySearch = (state = {}, action) => produce(state, draft => {
+    const { payload } = action;
 
     switch (action.type) {
-
+        case SEARCH_KEYS_SUCCESS:
+            draft[payload.pattern] = payload;
+            draft[`keys:${payload.pattern}`] = [];
+            break;
     }
 });
 
@@ -311,5 +312,5 @@ export default combineReducers({
     inspections,
     urls,
     progress,
-    keys,
+    keySearch,
 });

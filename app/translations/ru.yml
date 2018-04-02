@@ -25,6 +25,7 @@ features.Dashboard.messages.server: Сервер
 features.Dashboard.messages.stats: Статистика
 features.Dashboard.messages.usPerCall: μs / вызов
 features.DefaultLayout.messages.loadingRedisInstances: Загрузка Redis объектов
+features.KeyViewer.messages.filterKeys: Найти ключи...
 features.Navbar.messages.instance: Подключение
 features.Navbar.messages.instances: Подключения
 features.Navbar.messages.refresh: Обновить

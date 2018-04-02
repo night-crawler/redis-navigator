@@ -14,6 +14,21 @@ export const location = createSelector(route, route => route.location || {});
 
 
 /**
+ * state.route.location.search
+ */
+export const locationSearch = createSelector(location, location => location.search || '');
+
+
+/**
+ * URLSearchParams(state.route.location.search)
+ */
+export const locationSearchParams = createSelector(
+    locationSearch,
+    locationSearch => { console.log('suka', locationSearch); return new URLSearchParams(locationSearch); }
+);
+
+
+/**
  * state.redisNavigator.urls
  */
 export const urls = createSelector(redisNavigator, redisNavigator => redisNavigator.urls || {});
