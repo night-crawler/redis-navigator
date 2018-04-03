@@ -32,27 +32,32 @@ class KeyViewer extends React.Component {
 
     render() {
         const { intl, locationSearchParams } = this.props;
+        const filterActionButtonGroup = (
+            <Button.Group>
+                <Button
+                    color={ locationSearchParams.sortKeys ? 'green' : undefined }
+                    icon='sort alphabet ascending'
+                    onClick={ this.handleToggleSortKeysClicked }
+                />
+                <Button
+                    icon='remove'
+                    onClick={ this.handleClearFilterKeysClicked }
+                />;
+            </Button.Group>
+        );
 
         return (
             <Grid>
                 <Grid.Column width={ 5 }>
                     <Segment>
-                        <Button.Group>
-                            <Button
-                                color={ locationSearchParams.sortKeys ? 'green' : undefined }
-                                icon='sort alphabet ascending'
-                                onClick={ this.handleToggleSortKeysClicked }
-                                active={ locationSearchParams.sortKeys }
-                            />
-                        </Button.Group>
+
                         <Input
                             defaultValue={ locationSearchParams.pattern }
                             icon='search'
                             iconPosition='left'
                             fluid={ true }
                             onChange={ this.handleFilterKeysChange }
-                            label={ <Button basic={ true } icon='remove' /> }
-                            labelPosition='right'
+                            action={ filterActionButtonGroup }
                             placeholder={ intl.formatMessage({ ...messages.filterKeys }) }
                         />
 
@@ -65,9 +70,17 @@ class KeyViewer extends React.Component {
     }
 
     componentDidMount() {
-        const { locationSearchParams } = this.props;
-        this.props.actions.searchKeys(locationSearchParams);
+        const { locationSearchParams, actions } = this.props;
+        actions.searchKeys(locationSearchParams);
     }
+
+    handleClearFilterKeysClicked = () => {
+        const { locationSearchParams, actions } = this.props;
+        actions.searchKeys({
+            ...locationSearchParams,
+            pattern: '*'
+        });
+    };
 
     handleToggleSortKeysClicked = () => {
         const { locationSearchParams, actions } = this.props;

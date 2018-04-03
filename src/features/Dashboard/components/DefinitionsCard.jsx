@@ -58,8 +58,7 @@ class DefinitionsCard extends React.Component {
                             iconPosition='left'
                             fluid={ true }
                             onChange={ this.handleFilterChange }
-                            label={ <Button basic={ true } icon='remove' onClick={ this.handleClearFilter } /> }
-                            labelPosition='right'
+                            action={ <Button basic={ true } icon='remove' onClick={ this.handleClearFilter } /> }
                             placeholder={ intl.formatMessage({ ...messages.filterOptions }) }
                         />
 
