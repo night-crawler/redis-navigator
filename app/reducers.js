@@ -1,7 +1,7 @@
 import { LOCATION_CHANGE } from 'react-router-redux';
 import { combineReducers } from 'redux';
-import { internationalizationReducer } from '../src/features/Internationalization/reducer';
-import redisNavigator from '../src/reducer';
+import { internationalizationReducer } from 'features/Internationalization/reducer';
+import redisNavigator from 'reducer';
 import { reducer as notifications } from 'react-notification-system-redux';
 
 

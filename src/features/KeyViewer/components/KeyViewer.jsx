@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { injectIntl, intlShape } from 'react-intl';
 import { Button, Grid, Input, Segment } from 'semantic-ui-react';
-import { Timeouts } from '../../../timers';
+import { Timeouts } from 'timers';
 import messages from '../messages';
 
 
@@ -13,7 +13,12 @@ class KeyViewer extends React.Component {
         actions: PropTypes.shape({
             searchKeys: PropTypes.func,
         }),
-        locationSearchParams: PropTypes.object,
+        locationSearchParams: PropTypes.shape({
+            pattern: PropTypes.string,
+            sortKeys: PropTypes.bool,
+            scanCount: PropTypes.number,
+            ttlSeconds: PropTypes.number
+        }),
         routeInstanceSearchUrl: PropTypes.string,
         routeKeys: PropTypes.object,
     };
@@ -33,7 +38,12 @@ class KeyViewer extends React.Component {
                 <Grid.Column width={ 5 }>
                     <Segment>
                         <Button.Group>
-                            <Button icon='sort alphabet ascending' />
+                            <Button
+                                color={ locationSearchParams.sortKeys ? 'green' : undefined }
+                                icon='sort alphabet ascending'
+                                onClick={ this.handleToggleSortKeysClicked }
+                                active={ locationSearchParams.sortKeys }
+                            />
                         </Button.Group>
                         <Input
                             defaultValue={ locationSearchParams.pattern }
@@ -59,13 +69,21 @@ class KeyViewer extends React.Component {
         this.props.actions.searchKeys(locationSearchParams);
     }
 
+    handleToggleSortKeysClicked = () => {
+        const { locationSearchParams, actions } = this.props;
+        actions.searchKeys({
+            ...locationSearchParams,
+            sortKeys: !locationSearchParams.sortKeys
+        });
+    };
+
     handleFilterKeysChange = (e, { value }) => {
-        const { locationSearchParams } = this.props;
+        const { locationSearchParams, actions } = this.props;
         const newParams = { ...locationSearchParams, pattern: value };
 
         Timeouts.add({
             name: 'KeyViewer.search',
-            callback: () => this.props.actions.searchKeys(newParams),
+            callback: () => actions.searchKeys(newParams),
             timeout: 300
         });
     }

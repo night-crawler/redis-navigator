@@ -6,7 +6,7 @@ import { Helmet } from 'react-helmet';
 import { HotKeys } from 'react-hotkeys';
 import { Button, Icon, Segment } from 'semantic-ui-react';
 import { COLORS } from 'semantic-ui-react/dist/es/lib/SUI';
-import { saveFile } from '../../../utils';
+import { saveFile } from 'utils';
 import messages from '../messages';
 import DropdownRpcMethodItem from './DropdownRpcMethodItem';
 import CommandImporter from './CommandImporter';

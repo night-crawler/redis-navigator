@@ -1,18 +1,13 @@
-import { connect } from 'react-redux';
-import { makeAbsoluteUrl, serializeQuery } from 'utils';
 import { DEFAULT_SEARCH_KEYS_PARAMS } from 'constants';
-import { RedisRpc, searchKeys } from '../actions';
-import { push } from 'react-router-redux';
+import { RedisRpc, searchKeys } from 'features/actions';
+import { locationSearchParamsWithDefaults } from 'features/KeyViewer/selectors';
+import { routeInstanceName, routeInstanceSearchUrl, routeKeys, urls, } from 'features/selectors';
 import { pickBy } from 'lodash';
-import { KeyViewer } from './components';
+import { connect } from 'react-redux';
+import { push } from 'react-router-redux';
 import { createStructuredSelector } from 'reselect';
-import {
-    routeInstanceName,
-    routeInstanceSearchUrl,
-    routeKeys,
-    urls,
-    locationSearchParams,
-} from '../selectors';
+import { makeAbsoluteUrl, serializeQuery } from 'utils';
+import { KeyViewer } from './components';
 
 
 function mapDispatchToProps(dispatch) {
@@ -43,7 +38,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
             searchKeys: ({ pattern, scanCount, sortKeys, ttlSeconds }) => {
                 const searchParams = {
                     ...DEFAULT_SEARCH_KEYS_PARAMS,
-                    ...pickBy({ pattern, sortKeys, scanCount, ttlSeconds }, (val) => val)
+                    ...pickBy({ pattern, sortKeys, scanCount, ttlSeconds }, (val) => val !== undefined)
                 };
 
                 dispatch(push({
@@ -67,7 +62,7 @@ export default connect(
         routeInstanceSearchUrl,
         routeKeys,
         urls,
-        locationSearchParams,
+        locationSearchParams: locationSearchParamsWithDefaults,
     }),
     mapDispatchToProps,
     mergeProps

@@ -1,5 +1,3 @@
-import { activeLocale } from '../src/features/Internationalization/selectors';
-
 export default {
     redisNavigator: {
         instances: [],
