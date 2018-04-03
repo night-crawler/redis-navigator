@@ -1,6 +1,6 @@
 import { DEFAULT_SEARCH_KEYS_PARAMS } from 'constants';
 import { RedisRpc, searchKeys } from 'features/actions';
-import { locationSearchParamsWithDefaults } from 'features/KeyViewer/selectors';
+import { locationSearchParamsWithDefaults, searchDataSlices, searchInfo } from './selectors';
 import { routeInstanceName, routeInstanceSearchUrl, routeKeys, urls, } from 'features/selectors';
 import { pickBy } from 'lodash';
 import { connect } from 'react-redux';
@@ -8,6 +8,7 @@ import { push } from 'react-router-redux';
 import { createStructuredSelector } from 'reselect';
 import { makeAbsoluteUrl, serializeQuery } from 'utils';
 import { KeyViewer } from './components';
+import { fetchKeysPage } from 'features/actions';
 
 
 function mapDispatchToProps(dispatch) {
@@ -45,12 +46,18 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
                     search: serializeQuery(searchParams, DEFAULT_SEARCH_KEYS_PARAMS)
                 }));
 
-                return dispatch(searchKeys({
+                const searchInfoPromise = dispatch(searchKeys({
                     url: makeAbsoluteUrl(urls.base, routeInstanceSearchUrl),
                     ...searchParams
                 }));
+
+                searchInfoPromise.then(data => {
+                    const url = makeAbsoluteUrl(urls.base, data.payload.endpoints.get_page);
+                    dispatch(fetchKeysPage(`${url}?per_page=2`));
+                });
             }
         },
+
         dispatch: undefined,
     };
 }
@@ -62,6 +69,8 @@ export default connect(
         routeInstanceSearchUrl,
         routeKeys,
         urls,
+        searchDataSlices,
+        searchInfo,
         locationSearchParams: locationSearchParamsWithDefaults,
     }),
     mapDispatchToProps,

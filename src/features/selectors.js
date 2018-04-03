@@ -66,6 +66,13 @@ export const keys = createSelector(redisNavigator, redisNavigator => redisNaviga
 
 
 /**
+ * state.redisNavigator.keySearch
+ */
+export const keySearch = createSelector(redisNavigator, redisNavigator => redisNavigator.keySearch || {});
+
+
+
+/**
  * state.redisNavigator.progress
  */
 export const progress = createSelector(redisNavigator, redisNavigator => redisNavigator.progress || {});
@@ -93,6 +100,18 @@ export const hasLoaded = createSelector(redisNavigator, redisNavigator => redisN
  * state.redisNavigator.isFetching
  */
 export const isLoading = createSelector(redisNavigator, redisNavigator => redisNavigator.isFetching);
+
+
+/**
+ * state.redisNavigator.hasFetched.inspections
+ */
+export const hasLoadedSearchKeys = createSelector(hasLoaded, hasLoaded => hasLoaded.searchKeys);
+
+
+/**
+ * state.redisNavigator.isFetching.inspections
+ */
+export const isLoadingSearchKeys = createSelector(isLoading, isLoading => isLoading.searchKeys);
 
 
 /**

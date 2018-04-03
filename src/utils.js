@@ -353,7 +353,7 @@ export function deserializeQuery(queryString, defaults = {}) {
         } else {
             isArray(existingValue)
                 ? queryObject[param].push(value)
-                : queryObject[param] = [ queryObject[param], value];
+                : queryObject[param] = [queryObject[param], value];
         }
     }
 

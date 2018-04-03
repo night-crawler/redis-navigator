@@ -5,6 +5,7 @@ import { injectIntl, intlShape } from 'react-intl';
 import { Button, Grid, Input, Segment } from 'semantic-ui-react';
 import { Timeouts } from 'timers';
 import messages from '../messages';
+import { InfiniteLoader, List } from 'react-virtualized';
 
 
 class KeyViewer extends React.Component {
@@ -21,6 +22,10 @@ class KeyViewer extends React.Component {
         }),
         routeInstanceSearchUrl: PropTypes.string,
         routeKeys: PropTypes.object,
+
+        // todo
+        searchDataSlices: PropTypes.any,
+        searchInfo: PropTypes.any,
     };
 
     constructor(props) {
@@ -30,8 +35,33 @@ class KeyViewer extends React.Component {
         this.log('initialized', props);
     }
 
+    isRowLoaded = ({ index }) => {  // index == 100500
+        const { searchDataSlices, searchInfo } = this.props;
+        if (!searchInfo || searchInfo.paginationCursor === undefined)
+            return false;
+        const { per_page } = searchInfo.paginationCursor;
+
+        const pageNumberForIndex = parseInt(index / per_page, 10);
+        if (searchDataSlices[pageNumberForIndex] !== undefined)
+            console.log('QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ');
+
+        console.log('suka! pageNumberForIndex', pageNumberForIndex, searchDataSlices);
+
+        return searchDataSlices[pageNumberForIndex] !== undefined;
+    };
+    loadMoreRows = ({ startIndex, stopIndex }) => {
+        console.log('loadMoreRows', startIndex, stopIndex);
+    };
+    renderRow = ({ index, key, style }) => {
+
+    };
+
     render() {
-        const { intl, locationSearchParams } = this.props;
+        const { intl, locationSearchParams,
+            searchDataSlices, searchInfo
+        } = this.props;
+        console.log(searchInfo, searchDataSlices);
+
         const filterActionButtonGroup = (
             <Button.Group>
                 <Button
@@ -49,7 +79,7 @@ class KeyViewer extends React.Component {
         return (
             <Grid>
                 <Grid.Column width={ 5 }>
-                    <Segment>
+                    <div>
 
                         <Input
                             defaultValue={ locationSearchParams.pattern }
@@ -62,7 +92,39 @@ class KeyViewer extends React.Component {
                         />
 
                         { this.props.routeInstanceSearchUrl }
-                    </Segment>
+
+
+                        <InfiniteLoader
+                            ref={ self => {
+                                this.InfiniteLoader = self;
+                            } }
+
+                            isRowLoaded={ this.isRowLoaded }
+                            loadMoreRows={ this.loadMoreRows }
+                            rowCount={ 500 }
+                        >
+                            { ({ onRowsRendered, registerChild }) => (
+
+                                <List
+                                    ref={ self => {
+                                        this.List = self;
+                                        registerChild(self);
+                                    } }
+
+                                    onRowsRendered={ onRowsRendered }
+                                    rowRenderer={ this.renderRow }
+
+                                    height={ 500 }
+                                    width={ 500 }
+
+                                    rowHeight={ 50 }
+                                    rowCount={ 500 }
+                                />
+
+                            )}
+                        </InfiniteLoader>
+
+                    </div>
                 </Grid.Column>
             </Grid>
 

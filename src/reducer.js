@@ -10,6 +10,7 @@ import {
     RPC_BATCH_START, RPC_BATCH_SUCCESS,
     INIT_STORE_WITH_URLS,
     TOGGLE_PROGRESS_BAR_VISIBLE,
+    FETCH_KEYS_PAGE_START, FETCH_KEYS_PAGE_SUCCESS, FETCH_KEYS_PAGE_FAIL
 } from './features/actions';
 import { isArray, fromPairs, pick, findIndex, isBoolean } from 'lodash';
 
@@ -192,10 +193,15 @@ const hasFetched = (state = {}, action) => {
     const updateState = {
         [FETCH_INSPECTIONS_START]: { inspections: false },
         [FETCH_INSPECTIONS_SUCCESS]: { inspections: true },
+
         [FETCH_INSTANCES_START]: { instances: false },
         [FETCH_INSTANCES_SUCCESS]: { instances: true },
+
         [FETCH_ENDPOINTS_START]: { endpoints: false },
         [FETCH_ENDPOINTS_SUCCESS]: { endpoints: true },
+
+        [SEARCH_KEYS_START]: { searchKeys: false },
+        [SEARCH_KEYS_SUCCESS]: { searchKeys: true },
     }[action.type];
 
     return updateState !== undefined
@@ -208,10 +214,15 @@ const isFetching = (state = {}, action) => {
     const updateState = {
         [FETCH_INSPECTIONS_START]: { inspections: true },
         [FETCH_INSPECTIONS_SUCCESS]: { inspections: false },
+
         [FETCH_INSTANCES_START]: { instances: true },
         [FETCH_INSTANCES_SUCCESS]: { instances: false },
+
         [FETCH_ENDPOINTS_START]: { endpoints: true },
         [FETCH_ENDPOINTS_SUCCESS]: { endpoints: false },
+
+        [SEARCH_KEYS_START]: { searchKeys: true },
+        [SEARCH_KEYS_SUCCESS]: { searchKeys: false },
     }[action.type];
 
     return updateState !== undefined
@@ -297,7 +308,15 @@ const keySearch = (state = {}, action) => produce(state, draft => {
     switch (action.type) {
         case SEARCH_KEYS_SUCCESS:
             draft[payload.pattern] = payload;
-            draft[`keys:${payload.pattern}`] = [];
+            draft[`keys:${payload.pattern}`] = {};
+            break;
+
+        case FETCH_KEYS_PAGE_SUCCESS:
+            draft[payload.pattern].paginationCursor = pick(
+                payload,
+                [ 'pattern', 'next', 'previous', 'num_pages', 'page_number' ]
+            );
+            draft[`keys:${payload.pattern}`][payload.page_number] = payload.results;
             break;
     }
 });
