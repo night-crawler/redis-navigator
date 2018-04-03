@@ -93,67 +93,67 @@ export const progressIsVisible = createSelector(progress, progress => progress.i
 /**
  * state.redisNavigator.hasFetched
  */
-export const hasLoaded = createSelector(redisNavigator, redisNavigator => redisNavigator.hasFetched);
+export const hasFetched = createSelector(redisNavigator, redisNavigator => redisNavigator.hasFetched);
 
 
 /**
  * state.redisNavigator.isFetching
  */
-export const isLoading = createSelector(redisNavigator, redisNavigator => redisNavigator.isFetching);
+export const isFetching = createSelector(redisNavigator, redisNavigator => redisNavigator.isFetching);
 
 
 /**
  * state.redisNavigator.hasFetched.inspections
  */
-export const hasLoadedSearchKeys = createSelector(hasLoaded, hasLoaded => hasLoaded.searchKeys);
+export const hasFetchedSearchKeys = createSelector(hasFetched, hasFetched => hasFetched.searchKeys);
 
 
 /**
  * state.redisNavigator.isFetching.inspections
  */
-export const isLoadingSearchKeys = createSelector(isLoading, isLoading => isLoading.searchKeys);
+export const isFetchingSearchKeys = createSelector(isFetching, isFetching => isFetching.searchKeys);
 
 
 /**
  * state.redisNavigator.hasFetched.inspections
  */
-export const hasLoadedInspections = createSelector(hasLoaded, hasLoaded => hasLoaded.inspections);
+export const hasFetchedInspections = createSelector(hasFetched, hasFetched => hasFetched.inspections);
 
 
 /**
  * state.redisNavigator.isFetching.inspections
  */
-export const isLoadingInspections = createSelector(isLoading, isLoading => isLoading.inspections);
+export const isFetchingInspections = createSelector(isFetching, isFetching => isFetching.inspections);
 
 
 /**
  * state.redisNavigator.hasFetched.instances
  */
-export const hasLoadedInstances = createSelector(hasLoaded, hasLoaded => hasLoaded.instances);
+export const hasFetchedInstances = createSelector(hasFetched, hasFetched => hasFetched.instances);
 
 
 /**
  * state.redisNavigator.isFetching.instances
  */
-export const isLoadingInstances = createSelector(isLoading, isLoading => isLoading.instances);
+export const isFetchingInstances = createSelector(isFetching, isFetching => isFetching.instances);
 
 
 
 /**
  * state.redisNavigator.hasFetched.endpoints
  */
-export const hasLoadedEndpoints = createSelector(hasLoaded, hasLoaded => hasLoaded.endpoints);
+export const hasFetchedEndpoints = createSelector(hasFetched, hasFetched => hasFetched.endpoints);
 
 
 /**
  * state.redisNavigator.isFetching.endpoints
  */
-export const isLoadingEndpoints = createSelector(isLoading, isLoading => isLoading.endpoints);
+export const isFetchingEndpoints = createSelector(isFetching, isFetching => isFetching.endpoints);
 
 
 
 export const isReady = createSelector(
-    [hasLoadedInspections, hasLoadedInstances, hasLoadedEndpoints],
+    [hasFetchedInspections, hasFetchedInstances, hasFetchedEndpoints],
     (...flags) => every(flags)
 );
 
@@ -287,21 +287,21 @@ export const routeKeys = createSelector(
 
 
 export const shouldFetchEndpoints = createSelector(
-    [hasLoadedEndpoints, isLoadingEndpoints, urls],
-    (hasLoadedEndpoints, isLoadingEndpoints, urls) =>
-        urls.endpoints && !hasLoadedEndpoints && !isLoadingEndpoints
+    [hasFetchedEndpoints, isFetchingEndpoints, urls],
+    (hasFetchedEndpoints, isFetchingEndpoints, urls) =>
+        urls.endpoints && !hasFetchedEndpoints && !isFetchingEndpoints
 );
 
 
 export const shouldFetchInstances = createSelector(
-    [hasLoadedInstances, isLoadingInstances, hasLoadedEndpoints],
-    (hasLoadedInstances, isLoadingInstances, hasLoadedEndpoints) =>
-        hasLoadedEndpoints && !hasLoadedInstances && !isLoadingInstances
+    [hasFetchedInstances, isFetchingInstances, hasFetchedEndpoints],
+    (hasFetchedInstances, isFetchingInstances, hasFetchedEndpoints) =>
+        hasFetchedEndpoints && !hasFetchedInstances && !isFetchingInstances
 );
 
 
 export const shouldFetchInspections = createSelector(
-    [hasLoadedInspections, isLoadingInspections, hasLoadedEndpoints],
-    (hasLoadedInspections, isLoadingInspections, hasLoadedEndpoints) =>
-        hasLoadedEndpoints && !hasLoadedInspections && !isLoadingInspections
+    [hasFetchedInspections, isFetchingInspections, hasFetchedEndpoints],
+    (hasFetchedInspections, isFetchingInspections, hasFetchedEndpoints) =>
+        hasFetchedEndpoints && !hasFetchedInspections && !isFetchingInspections
 );

@@ -1,20 +1,20 @@
 import debug from 'debug';
+import { FullPageDimmer, NotFound } from 'features/Common/components';
+import Dashboard from 'features/Dashboard';
+import KeyViewer from 'features/KeyViewer';
+import Navbar from 'features/Navbar/index';
+import NotificationSystem from 'features/NotificationSystem';
+import RedisConsole from 'features/RedisConsole';
 import { isEmpty } from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { Route, Switch } from 'react-router-dom';
-import Navbar from 'features/Navbar/index';
-import Dashboard from 'features/Dashboard';
-import RedisConsole from 'features/RedisConsole';
-import KeyViewer from 'features/KeyViewer';
-import { FullPageDimmer, NotFound } from 'features/Common/components';
-import AppWrapper from './AppWrapper';
-import AppContentWrapper from './AppContentWrapper';
-import NotificationSystem from 'features/NotificationSystem';
 
 import { FormattedMessage as Tr } from 'react-intl';
+import { Route, Switch } from 'react-router-dom';
 import messages from '../messages';
+import AppContentWrapper from './AppContentWrapper';
+import AppWrapper from './AppWrapper';
 
 
 export default class DefaultLayout extends React.Component {
@@ -34,9 +34,9 @@ export default class DefaultLayout extends React.Component {
         activeInstanceName: PropTypes.string,
 
         isReady: PropTypes.bool,
-        hasLoadedEndpoints: PropTypes.bool,
-        hasLoadedInspections: PropTypes.bool,
-        hasLoadedInstances: PropTypes.bool,
+        shouldFetchEndpoints: PropTypes.bool,
+        shouldFetchInspections: PropTypes.bool,
+        shouldFetchInstances: PropTypes.bool,
 
         endpointsUrl: PropTypes.string.isRequired,
         baseUrl: PropTypes.string,
@@ -93,7 +93,6 @@ export default class DefaultLayout extends React.Component {
                         { /*<Route exact path='/' component={ HomePage } />*/ }
                         <Route path='/:instanceName/dashboard' component={ Dashboard } />
                         <Route path='/:instanceName/console' component={ RedisConsole } />
-                        {/*<Route path='/:instanceName/keys/:pattern' component={ KeyViewer } />*/}
                         <Route path='/:instanceName' component={ KeyViewer } />
                         <Route path='' component={ NotFound } />
                     </Switch>
