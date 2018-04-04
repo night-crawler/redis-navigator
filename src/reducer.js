@@ -312,10 +312,6 @@ const keySearch = (state = {}, action) => produce(state, draft => {
             break;
 
         case FETCH_KEYS_PAGE_SUCCESS:
-            draft[payload.pattern].paginationCursor = pick(
-                payload,
-                [ 'pattern', 'next', 'previous', 'num_pages', 'page_number' ]
-            );
             draft[`keys:${payload.pattern}`][payload.page_number] = payload.results;
             break;
     }

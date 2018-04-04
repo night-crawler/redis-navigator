@@ -305,3 +305,10 @@ export const shouldFetchInspections = createSelector(
     (hasFetchedInspections, isFetchingInspections, hasFetchedEndpoints) =>
         hasFetchedEndpoints && !hasFetchedInspections && !isFetchingInspections
 );
+
+
+export const shouldFetchSearchKeys = createSelector(
+    [hasFetchedSearchKeys, isFetchingSearchKeys],
+    (hasFetchedSearchKeys, isFetchingSearchKeys) =>
+        !hasFetchedSearchKeys && !isFetchingSearchKeys
+);

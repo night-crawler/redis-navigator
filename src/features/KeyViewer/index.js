@@ -1,14 +1,27 @@
 import { DEFAULT_SEARCH_KEYS_PARAMS } from 'constants';
-import { RedisRpc, searchKeys } from 'features/actions';
-import { locationSearchParamsWithDefaults, searchDataSlices, searchInfo } from './selectors';
-import { routeInstanceName, routeInstanceSearchUrl, routeKeys, urls, } from 'features/selectors';
-import { pickBy } from 'lodash';
+import { fetchKeysPage, RedisRpc, searchKeys } from 'features/actions';
+import {
+    hasFetchedSearchKeys,
+    routeInstanceName,
+    routeInstanceSearchUrl,
+    routeKeys,
+    shouldFetchSearchKeys,
+    urls
+} from 'features/selectors';
+import { pickBy, trimEnd } from 'lodash';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 import { createStructuredSelector } from 'reselect';
 import { makeAbsoluteUrl, serializeQuery } from 'utils';
 import { KeyViewer } from './components';
-import { fetchKeysPage } from 'features/actions';
+import {
+    locationSearchParamsWithDefaults,
+    searchPagesMap,
+    searchEndpoints,
+    searchFirstPageUrl,
+    searchInfo,
+    searchNumPages
+} from './selectors';
 
 
 function mapDispatchToProps(dispatch) {
@@ -20,7 +33,8 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     const {
         urls,
         routeInstanceSearchUrl,
-        routeInstanceName
+        routeInstanceName,
+        searchFirstPageUrl,
     } = stateProps;
 
     const { dispatch } = dispatchProps;
@@ -46,15 +60,16 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
                     search: serializeQuery(searchParams, DEFAULT_SEARCH_KEYS_PARAMS)
                 }));
 
-                const searchInfoPromise = dispatch(searchKeys({
+                return dispatch(searchKeys({
                     url: makeAbsoluteUrl(urls.base, routeInstanceSearchUrl),
                     ...searchParams
                 }));
+            },
+            fetchKeysPage: (pageNum) => {
+                const pageUrlPrefix = trimEnd(searchFirstPageUrl).split('/').slice(0, -1).join('/');
+                const pageUrl = `${pageUrlPrefix}/${pageNum}`;
 
-                searchInfoPromise.then(data => {
-                    const url = makeAbsoluteUrl(urls.base, data.payload.endpoints.get_page);
-                    dispatch(fetchKeysPage(`${url}?per_page=2`));
-                });
+                return dispatch(fetchKeysPage(pageUrl, DEFAULT_SEARCH_KEYS_PARAMS.perPage));
             }
         },
 
@@ -69,8 +84,13 @@ export default connect(
         routeInstanceSearchUrl,
         routeKeys,
         urls,
-        searchDataSlices,
+        searchPagesMap,
+        searchEndpoints,
         searchInfo,
+        searchNumPages,
+        searchFirstPageUrl,
+        shouldFetchSearchKeys,
+        hasFetchedSearchKeys,
         locationSearchParams: locationSearchParamsWithDefaults,
     }),
     mapDispatchToProps,

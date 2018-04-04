@@ -6,9 +6,9 @@ export const FETCH_KEYS_PAGE_START = 'redisNavigator/fetch/keys-page/start';
 export const FETCH_KEYS_PAGE_FAIL = 'redisNavigator/fetch/keys-page/fail';
 export const FETCH_KEYS_PAGE_SUCCESS ='redisNavigator/fetch/keys-page/success';
 
-export const fetchKeysPage = url => ({
+export const fetchKeysPage = (url, perPage) => ({
     [RSAA]: {
-        endpoint: url,
+        endpoint: `${url}?per_page=${perPage}`,
         method: 'GET',
         types: [
             FETCH_KEYS_PAGE_START,

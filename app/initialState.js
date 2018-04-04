@@ -9,12 +9,14 @@ export default {
             inspections: false,
             instances: false,
             endpoints: false,
+            searchKeys: false,
         },
 
         isFetching: {
             inspections: false,
             instances: false,
             endpoints: false,
+            searchKeys: false,
         },
 
         urls: {

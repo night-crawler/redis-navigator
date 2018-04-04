@@ -1,11 +1,12 @@
 import debug from 'debug';
+import { searchPagesMap } from 'features/KeyViewer/selectors';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { injectIntl, intlShape } from 'react-intl';
-import { Button, Grid, Input, Segment } from 'semantic-ui-react';
+import { InfiniteLoader, List } from 'react-virtualized';
+import { Button, Grid, Input } from 'semantic-ui-react';
 import { Timeouts } from 'timers';
 import messages from '../messages';
-import { InfiniteLoader, List } from 'react-virtualized';
 
 
 class KeyViewer extends React.Component {
@@ -24,8 +25,11 @@ class KeyViewer extends React.Component {
         routeKeys: PropTypes.object,
 
         // todo
-        searchDataSlices: PropTypes.any,
+        searchPagesMap: PropTypes.object,
         searchInfo: PropTypes.any,
+        searchNumPages: PropTypes.number,
+
+        hasFetchedSearchKeys: PropTypes.bool,
     };
 
     constructor(props) {
@@ -35,32 +39,9 @@ class KeyViewer extends React.Component {
         this.log('initialized', props);
     }
 
-    isRowLoaded = ({ index }) => {  // index == 100500
-        const { searchDataSlices, searchInfo } = this.props;
-        if (!searchInfo || searchInfo.paginationCursor === undefined)
-            return false;
-        const { per_page } = searchInfo.paginationCursor;
-
-        const pageNumberForIndex = parseInt(index / per_page, 10);
-        if (searchDataSlices[pageNumberForIndex] !== undefined)
-            console.log('QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ');
-
-        console.log('suka! pageNumberForIndex', pageNumberForIndex, searchDataSlices);
-
-        return searchDataSlices[pageNumberForIndex] !== undefined;
-    };
-    loadMoreRows = ({ startIndex, stopIndex }) => {
-        console.log('loadMoreRows', startIndex, stopIndex);
-    };
-    renderRow = ({ index, key, style }) => {
-
-    };
-
     render() {
-        const { intl, locationSearchParams,
-            searchDataSlices, searchInfo
-        } = this.props;
-        console.log(searchInfo, searchDataSlices);
+        const { intl, locationSearchParams, hasFetchedSearchKeys } = this.props;
+
 
         const filterActionButtonGroup = (
             <Button.Group>
@@ -93,36 +74,7 @@ class KeyViewer extends React.Component {
 
                         { this.props.routeInstanceSearchUrl }
 
-
-                        <InfiniteLoader
-                            ref={ self => {
-                                this.InfiniteLoader = self;
-                            } }
-
-                            isRowLoaded={ this.isRowLoaded }
-                            loadMoreRows={ this.loadMoreRows }
-                            rowCount={ 500 }
-                        >
-                            { ({ onRowsRendered, registerChild }) => (
-
-                                <List
-                                    ref={ self => {
-                                        this.List = self;
-                                        registerChild(self);
-                                    } }
-
-                                    onRowsRendered={ onRowsRendered }
-                                    rowRenderer={ this.renderRow }
-
-                                    height={ 500 }
-                                    width={ 500 }
-
-                                    rowHeight={ 50 }
-                                    rowCount={ 500 }
-                                />
-
-                            )}
-                        </InfiniteLoader>
+                        { hasFetchedSearchKeys && this.renderLoader() }
 
                     </div>
                 </Grid.Column>
@@ -130,6 +82,84 @@ class KeyViewer extends React.Component {
 
         );
     }
+
+    renderLoader = () => {
+        return (
+            <InfiniteLoader
+                ref={ self => {
+                    this.InfiniteLoader = self;
+                } }
+
+                isRowLoaded={ this.isRowLoaded }
+                loadMoreRows={ this.loadMoreRows }
+                rowCount={ 500 }
+            >
+                { ({ onRowsRendered, registerChild }) => (
+
+                    <List
+                        ref={ self => {
+                            this.List = self;
+                            registerChild(self);
+                        } }
+
+                        onRowsRendered={ onRowsRendered }
+                        rowRenderer={ this.renderRow }
+
+                        height={ 500 }
+                        width={ 500 }
+
+                        rowHeight={ 50 }
+                        rowCount={ 500 }
+                    />
+
+                )}
+            </InfiniteLoader>
+        );
+    };
+
+    isRowLoaded = ({ index }) => {
+        const { locationSearchParams, searchPagesMap } = this.props;
+        const { perPage } = locationSearchParams;
+
+        const pageNumberForIndex = Math.ceil((index + 1) / perPage) || 1;
+        this.log(
+            'isRowLoaded',
+            searchPagesMap[pageNumberForIndex] !== undefined,
+            'pageNumberForIndex', pageNumberForIndex
+        );
+        return searchPagesMap[pageNumberForIndex] !== undefined;
+    };
+
+    loadMoreRows = ({ startIndex, stopIndex }) => {
+        const { locationSearchParams, actions } = this.props;
+        const { perPage } = locationSearchParams;
+
+        const startPage = Math.ceil((startIndex + 1) / perPage) || 1;
+        const stopPage = Math.ceil((stopIndex + 1) / perPage) || 1;
+
+        const promises = [];
+        for (let page = startPage; page <= stopPage; page++) {
+            promises.push(actions.fetchKeysPage(page));
+        }
+        return Promise.all(promises);
+    };
+
+    renderRow = ({ index, key, style }) => {
+        const { locationSearchParams, searchPagesMap } = this.props;
+        const { perPage } = locationSearchParams;
+        const pageNumberForIndex = Math.ceil((index + 1) / perPage) || 1;
+        const offset = index % perPage;
+
+        // const page = searchPagesMap[pageNumberForIndex];
+        // if (!page) {
+        //     console.log('MRAZ');
+        // }
+        // const item = page && page[offset];
+
+        const item = searchPagesMap[pageNumberForIndex][offset];
+
+        console.log(`INDEX: ${index}, page: ${pageNumberForIndex}, offset: ${offset}, item: ${item}`);
+    };
 
     componentDidMount() {
         const { locationSearchParams, actions } = this.props;
