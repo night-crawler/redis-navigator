@@ -8,6 +8,7 @@
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "start": "parcel ./app/index.html",
+    "build": "parcel build ./app/index.js --out-dir ./lib",
     "extract-messages": "extract-messages -l=en,ru -o app/translations -d en --flat true --format yaml 'src/**/!(*.test).js'"
   },
   "jest": {
