@@ -3,5 +3,5 @@ export const DEFAULT_SEARCH_KEYS_PARAMS = {
     pattern: '*',
     sortKeys: true,
     ttlSeconds: 5 * 60,
-    perPage: 4,
+    perPage: 50000,
 };

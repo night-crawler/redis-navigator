@@ -1,10 +1,9 @@
 import debug from 'debug';
-import { searchPagesMap } from 'features/KeyViewer/selectors';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { injectIntl, intlShape } from 'react-intl';
-import { InfiniteLoader, List } from 'react-virtualized';
-import { Button, Grid, Input } from 'semantic-ui-react';
+import { AutoSizer, InfiniteLoader, List } from 'react-virtualized';
+import { Button, Grid, Input, Header, List as SUIList, Icon } from 'semantic-ui-react';
 import { Timeouts } from 'timers';
 import messages from '../messages';
 
@@ -39,9 +38,18 @@ class KeyViewer extends React.Component {
         this.log('initialized', props);
     }
 
-    render() {
-        const { intl, locationSearchParams, hasFetchedSearchKeys } = this.props;
+    componentDidUpdate() {
+        // if (this.props.orderBy !== orderBy) {
+        //     // noinspection JSUnresolvedFunction
+        //     this.InfiniteLoader.resetLoadMoreRowsCache(true);
+        //     // noinspection JSUnresolvedFunction
+        //     this.List.scrollToPosition(0);
+        // }
+    }
 
+
+    render() {
+        const { intl, locationSearchParams, hasFetchedSearchKeys, searchInfo } = this.props;
 
         const filterActionButtonGroup = (
             <Button.Group>
@@ -56,27 +64,26 @@ class KeyViewer extends React.Component {
                 />;
             </Button.Group>
         );
-
+        /**/
         return (
-            <Grid>
-                <Grid.Column width={ 5 }>
-                    <div>
-
-                        <Input
-                            defaultValue={ locationSearchParams.pattern }
-                            icon='search'
-                            iconPosition='left'
-                            fluid={ true }
-                            onChange={ this.handleFilterKeysChange }
-                            action={ filterActionButtonGroup }
-                            placeholder={ intl.formatMessage({ ...messages.filterKeys }) }
-                        />
-
-                        { this.props.routeInstanceSearchUrl }
-
-                        { hasFetchedSearchKeys && this.renderLoader() }
-
+            <Grid style={ { height: 'calc(100vh - 45px)', margin: 0, padding: 0 } }>
+                <Grid.Column width={ 5 } style={ { display: 'flex', alignItems: 'stretch', flexDirection: 'column', margin: 0, padding: 0 } }>
+                    <Input
+                        defaultValue={ locationSearchParams.pattern }
+                        icon='search'
+                        iconPosition='left'
+                        fluid={ true }
+                        onChange={ this.handleFilterKeysChange }
+                        action={ filterActionButtonGroup }
+                        placeholder={ intl.formatMessage({ ...messages.filterKeys }) }
+                    />
+                    <div style={ { flex: '1 1 auto' } }>
+                        { hasFetchedSearchKeys && searchInfo.count ? this.renderLoader() : false }
                     </div>
+                </Grid.Column>
+
+                <Grid.Column width={ 11 }>
+                    <Header as={ 'h1' }>wip</Header>
                 </Grid.Column>
             </Grid>
 
@@ -84,6 +91,8 @@ class KeyViewer extends React.Component {
     }
 
     renderLoader = () => {
+        const { searchInfo: { count } } = this.props;
+
         return (
             <InfiniteLoader
                 ref={ self => {
@@ -92,26 +101,31 @@ class KeyViewer extends React.Component {
 
                 isRowLoaded={ this.isRowLoaded }
                 loadMoreRows={ this.loadMoreRows }
-                rowCount={ 500 }
+                rowCount={ count }
             >
                 { ({ onRowsRendered, registerChild }) => (
 
-                    <List
-                        ref={ self => {
-                            this.List = self;
-                            registerChild(self);
-                        } }
+                    <AutoSizer>
+                        { ({ height, width }) => (
 
-                        onRowsRendered={ onRowsRendered }
-                        rowRenderer={ this.renderRow }
+                            <SUIList as={ List }
+                                ref={ self => {
+                                    this.List = self;
+                                    registerChild(self);
+                                } }
 
-                        height={ 500 }
-                        width={ 500 }
+                                onRowsRendered={ onRowsRendered }
+                                rowRenderer={ this.renderRow }
 
-                        rowHeight={ 50 }
-                        rowCount={ 500 }
-                    />
+                                height={ height }
+                                width={ width }
 
+                                rowHeight={ 50 }
+                                rowCount={ count }
+                            />
+
+                        ) }
+                    </AutoSizer>
                 )}
             </InfiniteLoader>
         );
@@ -144,21 +158,27 @@ class KeyViewer extends React.Component {
         return Promise.all(promises);
     };
 
+    renderNotLoadedRow = ({ index, key, style }) => {
+        return <div style={ style }>-</div>;
+    };
     renderRow = ({ index, key, style }) => {
+        if (!this.isRowLoaded({ index }))
+            return this.renderNotLoadedRow({ index, key, style });
+
         const { locationSearchParams, searchPagesMap } = this.props;
         const { perPage } = locationSearchParams;
         const pageNumberForIndex = Math.ceil((index + 1) / perPage) || 1;
         const offset = index % perPage;
 
-        // const page = searchPagesMap[pageNumberForIndex];
-        // if (!page) {
-        //     console.log('MRAZ');
-        // }
-        // const item = page && page[offset];
-
         const item = searchPagesMap[pageNumberForIndex][offset];
-
         console.log(`INDEX: ${index}, page: ${pageNumberForIndex}, offset: ${offset}, item: ${item}`);
+
+        return (
+            <div style={ { display: 'flex', alignItems: 'stretch', flexDirection: 'row', ...style } }>
+                <Icon name='mail' />
+                <div>{ item }</div>
+            </div>
+        );
     };
 
     componentDidMount() {

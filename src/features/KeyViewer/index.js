@@ -6,7 +6,8 @@ import {
     routeInstanceSearchUrl,
     routeKeys,
     shouldFetchSearchKeys,
-    urls
+    urls,
+    isFetchingSearchKeys,
 } from 'features/selectors';
 import { pickBy, trimEnd } from 'lodash';
 import { connect } from 'react-redux';
@@ -91,6 +92,7 @@ export default connect(
         searchFirstPageUrl,
         shouldFetchSearchKeys,
         hasFetchedSearchKeys,
+        isFetchingSearchKeys,
         locationSearchParams: locationSearchParamsWithDefaults,
     }),
     mapDispatchToProps,
