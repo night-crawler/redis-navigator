@@ -53,7 +53,6 @@ class KeyViewer extends React.Component {
         // }
     }
 
-
     render() {
         const { intl, locationSearchParams, hasFetchedSearchKeys, searchInfo } = this.props;
 
@@ -158,20 +157,15 @@ class KeyViewer extends React.Component {
         const { perPage } = locationSearchParams;
         const pageHelper = new PageHelper(undefined, perPage);
 
-        const promises = Promise.all(
-            pageHelper
-                .getPageRange(startIndex, stopIndex)
-                .map(pageNumber => actions.fetchKeysPage(pageNumber, perPage))
-        );
-
-        return new Promise(
-            (resolve, reject) => promises.then(
-                data => resolve(
-                    actions.fetchKeyTypes(flatten(map(data, 'payload.results')))
-                ),
-                error => reject(error)
+        return Promise
+            .all(
+                pageHelper
+                    .getPageRange(startIndex, stopIndex)
+                    .map(pageNumber => actions.fetchKeysPage(pageNumber, perPage))
             )
-        );
+            .then(data =>
+                actions.fetchKeyTypes(flatten(map(data, 'payload.results')))
+            );
     };
 
     renderNotLoadedRow = ({ index, key, style }) => {

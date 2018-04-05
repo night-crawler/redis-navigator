@@ -8,3 +8,9 @@
 .redis-navigator.key-row:hover {
     background: aliceblue;
 }
+
+/* the more comprehensive condition, the better aiming of style */
+div[class^='ReactVirtualized']:focus {
+    outline: 0 !important;
+    border: none !important;
+}
