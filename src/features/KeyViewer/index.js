@@ -1,13 +1,14 @@
 import { DEFAULT_SEARCH_KEYS_PARAMS } from 'constants';
 import { fetchKeysPage, RedisRpc, searchKeys } from 'features/actions';
+import { setActiveKey } from './actions';
 import {
     hasFetchedSearchKeys,
+    isFetchingSearchKeys,
     routeInstanceName,
     routeInstanceSearchUrl,
     routeKeys,
     shouldFetchSearchKeys,
     urls,
-    isFetchingSearchKeys,
 } from 'features/selectors';
 import { pickBy, trimEnd } from 'lodash';
 import { connect } from 'react-redux';
@@ -16,12 +17,13 @@ import { createStructuredSelector } from 'reselect';
 import { makeAbsoluteUrl, serializeQuery } from 'utils';
 import { KeyViewer } from './components';
 import {
+    keyTypes,
     locationSearchParamsWithDefaults,
-    searchPagesMap,
     searchEndpoints,
     searchFirstPageUrl,
     searchInfo,
-    searchNumPages
+    searchNumPages,
+    searchPagesMap,
 } from './selectors';
 
 
@@ -66,12 +68,14 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
                     ...searchParams
                 }));
             },
-            fetchKeysPage: (pageNum) => {
+            fetchKeysPage: (pageNum, perPage) => {
                 const pageUrlPrefix = trimEnd(searchFirstPageUrl).split('/').slice(0, -1).join('/');
                 const pageUrl = `${pageUrlPrefix}/${pageNum}`;
 
-                return dispatch(fetchKeysPage(pageUrl, DEFAULT_SEARCH_KEYS_PARAMS.perPage));
-            }
+                return dispatch(fetchKeysPage(pageUrl, perPage));
+            },
+            fetchKeyTypes: rpc.fetchKeyTypes,
+            setActiveKey: (key) => dispatch(setActiveKey(key)),
         },
 
         dispatch: undefined,
@@ -94,6 +98,7 @@ export default connect(
         hasFetchedSearchKeys,
         isFetchingSearchKeys,
         locationSearchParams: locationSearchParamsWithDefaults,
+        keyTypes,
     }),
     mapDispatchToProps,
     mergeProps

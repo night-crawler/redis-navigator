@@ -1,4 +1,3 @@
-import 'url-search-params-polyfill';
 import { SortedMap } from 'collections/sorted-map';
 import fileType from 'file-type';
 import checkIsBase64 from 'is-base64';
@@ -11,13 +10,17 @@ import {
     isPlainObject,
     isString,
     minBy,
+    pick,
+    pickBy,
+    range,
     some,
     startsWith,
+    toPairs,
     trimEnd,
     trimStart,
     zip,
-    pickBy,
 } from 'lodash';
+import 'url-search-params-polyfill';
 
 
 export function csrfSafeMethod(method) {
@@ -97,7 +100,7 @@ export function isValidYaml(rawStr) {
 }
 
 
-export function isJson(rawStr, checks = [isPlainObject, isArray]) {
+export function isJson(rawStr, checks = [ isPlainObject, isArray ]) {
     const isValid = isValidJson(rawStr);
     if (!isValid)
         return false;
@@ -111,7 +114,7 @@ export function isJson(rawStr, checks = [isPlainObject, isArray]) {
 }
 
 
-export function isYaml(rawStr, checks = [isPlainObject]) {
+export function isYaml(rawStr, checks = [ isPlainObject ]) {
     if (!isValidYaml(rawStr))
         return false;
 
@@ -158,7 +161,7 @@ export function convertStringToBinary(rawStr) {
 
     const arr = new Uint8Array(new ArrayBuffer(rawStr.length));
     for (let i = 0; i < rawStr.length; i++) {
-        arr[i] = rawStr.charCodeAt(i);
+        arr[ i ] = rawStr.charCodeAt(i);
     }
     return arr;
 }
@@ -189,7 +192,7 @@ export function isValidNumber(value) {
 
 export function saveFile(filename, data, content_type = 'application/json') {
     const a = window.document.createElement('a');
-    a.href = window.URL.createObjectURL(new Blob([data], { type: content_type }));
+    a.href = window.URL.createObjectURL(new Blob([ data ], { type: content_type }));
     a.download = filename;
     document.body.appendChild(a);
     a.click();
@@ -197,23 +200,23 @@ export function saveFile(filename, data, content_type = 'application/json') {
 }
 
 
-export function findFirstDelimiter(rawStrKey, delimiters = ['::', ':', '/']) {
+export function findFirstDelimiter(rawStrKey, delimiters = [ '::', ':', '/' ]) {
     const delimiterIndexMap = zip(
         delimiters,
         delimiters.map(d => rawStrKey.indexOf(d))
-    ).filter(([, index]) => index >= 0);
+    ).filter(([ , index ]) => index >= 0);
 
     if (!delimiterIndexMap.length)
         return null;
 
     return minBy(
         delimiterIndexMap,
-        ([, index]) => index
-    )[0];
+        ([ , index ]) => index
+    )[ 0 ];
 }
 
 
-export function splitKey(rawStrKey, delimiters = ['::', ':', '/']) {
+export function splitKey(rawStrKey, delimiters = [ '::', ':', '/' ]) {
     if (!rawStrKey)
         return [];
     if (!isString(rawStrKey))
@@ -221,7 +224,7 @@ export function splitKey(rawStrKey, delimiters = ['::', ':', '/']) {
 
     const delimiter = findFirstDelimiter(rawStrKey, delimiters);
     if (delimiter === null)
-        return [rawStrKey];
+        return [ rawStrKey ];
 
     return rawStrKey.split(delimiter);
 }
@@ -248,7 +251,7 @@ export function splitKey(rawStrKey, delimiters = ['::', ':', '/']) {
         }
     }
  */
-export function addToSMTree(rootObject, path, value, delimiters = ['::', ':', '/']) {
+export function addToSMTree(rootObject, path, value, delimiters = [ '::', ':', '/' ]) {
     const
         pathParts = splitKey(path, delimiters),
         delimiter = findFirstDelimiter(path, delimiters);
@@ -276,7 +279,7 @@ export function dumpSMTree(tree) {
     // newObject.keyMap = newObject.keyMap.keys().map(key => dumpSMTree())
     newObject.keyMap = fromPairs(
         tree.keyMap.entries().map(
-            ([keyName, inner]) => [keyName, dumpSMTree(inner)]
+            ([ keyName, inner ]) => [ keyName, dumpSMTree(inner) ]
         )
     );
     return newObject;
@@ -292,7 +295,7 @@ export function extractLanguageCode(languageTag) {
     if (!isString(languageTag) || !languageTag)
         throw new Error(`Wrong IETF-like language tag: ${languageTag}`);
 
-    return languageTag.toLowerCase().replace('_', '-').split('-')[0];
+    return languageTag.toLowerCase().replace('_', '-').split('-')[ 0 ];
 }
 
 
@@ -309,12 +312,12 @@ export function castStringToPrimitive(rawStr) {
     }
 
     const _int = parseInt(rawStr, 10);
-    if(!isNaN(_int) && `${_int}` === rawStr) {
+    if (!isNaN(_int) && `${_int}` === rawStr) {
         return _int;
     }
 
     const _float = parseFloat(rawStr);
-    if(!isNaN(_float)) {
+    if (!isNaN(_float)) {
         return _float;
     }
 
@@ -329,7 +332,7 @@ export function serializeQuery(queryObject, defaults = {}) {
     if (!isPlainObject(defaults))
         throw new Error(`defaults must be an object, but got ${typeof defaults}: ${defaults}`);
 
-    const nonDefaults = pickBy(queryObject, (val, key) => defaults[key] !== val);
+    const nonDefaults = pickBy(queryObject, (val, key) => defaults[ key ] !== val);
     return new URLSearchParams(nonDefaults).toString();
 }
 
@@ -346,16 +349,175 @@ export function deserializeQuery(queryString, defaults = {}) {
 
     for (let [ param, value ] of parsed) {
         value = castStringToPrimitive(value);
-        const existingValue = queryObject[param];
+        const existingValue = queryObject[ param ];
 
         if (existingValue === undefined) {
-            queryObject[param] = value;
+            queryObject[ param ] = value;
         } else {
             isArray(existingValue)
-                ? queryObject[param].push(value)
-                : queryObject[param] = [queryObject[param], value];
+                ? queryObject[ param ].push(value)
+                : queryObject[ param ] = [ queryObject[ param ], value ];
         }
     }
 
-    return {...defaults, ...queryObject};
+    return { ...defaults, ...queryObject };
+}
+
+
+export class PageHelper {
+    constructor(slices = [], pageSize) {
+        if (+pageSize !== pageSize)
+            throw new Error(`pageSize must me a number but got ${typeof pageSize}: ${pageSize}`);
+
+        if (isArray(slices)) {
+            this.slicesType = 'array';
+        } else if (isPlainObject(slices)) {
+            this.slicesType = 'object';
+        } else {
+            this.slicesType = null;
+        }
+
+        if (this.slicesType === null)
+            throw new Error(`Slices expected an array || object but got ${typeof slices}: ${slices}`);
+
+        this.pageSize = pageSize;
+        this.slices = slices;
+    }
+
+    getPageNumber(index) {
+        if (+index !== index)
+            throw new Error(`Index must me a number but got ${typeof index}: ${index}`);
+        return Math.ceil(( index + 1 ) / this.pageSize) || 1;
+    }
+
+    /**
+     * [ ..., [1, 2, 3], [1, 2, 3], ... ]
+     * { 1: [1, 2, 3], ... }
+     */
+    getSubItem(index) {
+        const
+            pageNumber = this.getPageNumber(index) - ( this.slicesType === 'array' ? 1 : 0 ),
+            offset = index % this.pageSize,
+            page = this.getPage(pageNumber);
+
+        if (page.length < offset)
+            throw new Error(`Page ${pageNumber} has only ${pageNumber.length} elements, but ${offset} requested`);
+
+        return page[ offset ];
+    }
+
+    isRowLoaded(index) {
+        try {
+            this.getSubItem(index);
+            return true;
+        } catch (e) {
+            return false;
+        }
+    }
+
+    getPage(pageNumber) {
+        const page = this.slices[ pageNumber ];
+
+        if (!isArray(page))
+            throw new Error(`Expected an array at ${pageNumber} but got ${typeof page}: ${page}`);
+        if (page.length > this.pageSize)
+            throw new Error(`Page ${pageNumber} has length ${page.length} but it must be less then ${this.pageSize}`);
+
+        return page;
+    }
+
+    getPageRange(startIndex, stopIndex) {
+        return range(
+            this.getPageNumber(startIndex),
+            this.getPageNumber(stopIndex) + 1
+        );
+    }
+
+    getSubSlice(startIndex, stopIndex) {
+        const
+            startPageNumber = this.getPageNumber(startIndex) - ( this.slicesType === 'array' ? 1 : 0 ),
+            stopPageNumber = this.getPageNumber(stopIndex) - ( this.slicesType === 'array' ? 1 : 0 ),
+            startOffset = startIndex % this.pageSize,
+            stopOffset = stopIndex % this.pageSize;
+
+        if (startPageNumber === stopPageNumber) {
+            return this.slices[ startPageNumber ].slice(startOffset, stopOffset + 1);
+        }
+
+        const
+            firstPage = this.getPage(startPageNumber),
+            lastPage = this.getPage(stopPageNumber);
+
+        const items = [];
+        items.push(...firstPage.slice(startOffset));
+
+        for (let pageNumber = startPageNumber + 1; pageNumber <= stopPageNumber - 1; pageNumber++) {
+            const page = this.getPage(pageNumber);
+            items.push(...page);
+        }
+
+        items.push(...lastPage.slice(0, stopOffset + 1));
+
+        return items;
+    }
+}
+
+
+export function mapRpcRequestsById(rpcRequest) {
+    const requests = isArray(rpcRequest) ? rpcRequest : [ rpcRequest ];
+    return fromPairs(
+        requests.map(
+            request => [
+                request.id,
+                pick(request, [ 'method', 'params' ])
+            ]
+        )
+    );
+}
+
+
+export function mapRpcResponsesById(rpcResponse) {
+    const responses = isArray(rpcResponse) ? rpcResponse : [ rpcResponse ];
+    return fromPairs(
+        responses.map(
+            response => [
+                response.id,
+                pick(response, [ 'result', 'error' ])
+            ]
+        )
+    );
+}
+
+
+export function prepareServerInfo(rpcRequest, rpcResponse) {
+    const requestsByIdMap = mapRpcRequestsById(rpcRequest);
+    const pairs = toPairs(mapRpcResponsesById(rpcResponse))
+        .map(([ id, response ]) => {
+            const methodName = requestsByIdMap[ id ].method.split('.').pop();
+
+            switch (methodName) {
+                case 'config_get':
+                    return [ 'config', response ];
+                case 'info':
+                    return [ 'sections', response ];
+                case 'client_list':
+                    return [ 'clients', response ];
+                case 'dbsize':
+                    return [ 'dbsize', response ];
+                case 'client_getname':
+                    return [ 'name', response ];
+            }
+        });
+    return fromPairs(pairs);
+}
+
+
+export function prepareKeyTypesMap(rpcRequest, rpcResponse) {
+    const requestMap = mapRpcRequestsById(rpcRequest);
+    const responseMap = mapRpcResponsesById(rpcResponse);
+
+    const pairs = toPairs(requestMap).map(([ id, request ]) =>
+        [ request.params.key, responseMap[ id ].result ]
+    );
+    return fromPairs(pairs);
 }

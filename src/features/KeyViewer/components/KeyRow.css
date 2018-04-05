@@ -1,0 +1,10 @@
+.redis-navigator.key-row {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.redis-navigator.key-row:hover {
+    background: aliceblue;
+}

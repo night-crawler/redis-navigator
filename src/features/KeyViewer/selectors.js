@@ -64,3 +64,9 @@ export const searchPagesMap = createSelector(
     (keySearch, locationSearchParamsWithDefaults) =>
         keySearch[`keys:${locationSearchParamsWithDefaults.pattern}`]
 );
+
+
+/**
+ * state.redisNavigator.keySearch.types
+ */
+export const keyTypes = createSelector(keySearch, keySearch => keySearch.types || {});

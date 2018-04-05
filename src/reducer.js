@@ -1,46 +1,34 @@
-import { combineReducers } from 'redux';
+import { keySearch } from 'features/KeyViewer/reducer';
 import produce from 'immer';
+import { findIndex, fromPairs, isArray, isBoolean } from 'lodash';
+import { combineReducers } from 'redux';
+import { makeAbsoluteUrl, mapRpcRequestsById, mapRpcResponsesById, prepareServerInfo } from 'utils';
 import {
-    SET_ACTIVE_INSTANCE,
-    FETCH_ENDPOINTS_START, FETCH_ENDPOINTS_SUCCESS,
-    FETCH_INSPECTIONS_START, FETCH_INSPECTIONS_SUCCESS,
-    SEARCH_KEYS_START, SEARCH_KEYS_SUCCESS,
-    REDIS_RPC_FETCH_INFO_SUCCESS,
-    FETCH_INSTANCES_START, FETCH_INSTANCES_SUCCESS,
-    RPC_BATCH_START, RPC_BATCH_SUCCESS,
+    FETCH_ENDPOINTS_START,
+    FETCH_ENDPOINTS_SUCCESS,
+    FETCH_INSPECTIONS_START,
+    FETCH_INSPECTIONS_SUCCESS,
+    FETCH_INSTANCES_START,
+    FETCH_INSTANCES_SUCCESS,
     INIT_STORE_WITH_URLS,
+    REDIS_RPC_FETCH_INFO_SUCCESS,
+    RPC_BATCH_START,
+    RPC_BATCH_SUCCESS,
+    SEARCH_KEYS_START,
+    SEARCH_KEYS_SUCCESS,
+    SET_ACTIVE_INSTANCE,
     TOGGLE_PROGRESS_BAR_VISIBLE,
-    FETCH_KEYS_PAGE_START, FETCH_KEYS_PAGE_SUCCESS, FETCH_KEYS_PAGE_FAIL
 } from './features/actions';
-import { isArray, fromPairs, pick, findIndex, isBoolean } from 'lodash';
 
 import {
     APPEND_CALL_EDITOR,
-    REMOVE_CALL_EDITOR,
+    BIND_CALL_EDITOR_TO_ID,
     CHANGE_CALL_EDITOR_METHOD_NAME,
     CHANGE_CALL_EDITOR_METHOD_PARAMS,
     CLEAR_CALL_EDITORS,
-    BIND_CALL_EDITOR_TO_ID,
+    REMOVE_CALL_EDITOR,
     TOGGLE_IMPORT_DIALOG_VISIBLE,
 } from './features/RedisConsole/actions';
-import { makeAbsoluteUrl } from './utils';
-
-
-function mapRpcRequestsById(rpcRequest) {
-    const requests = isArray(rpcRequest) ? rpcRequest : [rpcRequest];
-    return fromPairs(
-        requests.map(request => [request.id, pick(request, ['method', 'params'])])
-    );
-}
-
-
-function mapRpcResponsesById(rpcResponse) {
-    const responses = isArray(rpcResponse) ? rpcResponse : [rpcResponse];
-    return fromPairs(
-        responses.map(response => [response.id, pick(response, ['result', 'error'])])
-    );
-}
-
 
 /*
 * instancesData = {
@@ -51,30 +39,6 @@ function mapRpcResponsesById(rpcResponse) {
 *   }
 * }
 * */
-
-
-function registerInfo(requests, rpcResponse) {
-    const requestsByIdMap = mapRpcRequestsById(requests);
-    const pairs = Object.entries(mapRpcResponsesById(rpcResponse))
-        .map(([ id, response ]) => {
-            const methodName = requestsByIdMap[id].method.split('.').pop();
-
-            switch (methodName) {
-                case 'config_get':
-                    return ['config', response];
-                case 'info':
-                    return ['sections', response];
-                case 'client_list':
-                    return ['clients', response];
-                case 'dbsize':
-                    return ['dbsize', response];
-                case 'client_getname':
-                    return ['name', response];
-            }
-        });
-    return fromPairs(pairs);
-}
-
 
 const instances = (state = [], action) => {
     switch (action.type) {
@@ -90,8 +54,8 @@ const instances = (state = [], action) => {
 const instancesData = (state = {}, action) => produce(state, draft => {
     const { payload, meta } = action;
 
-    const draftRedis = meta ? draft[meta.path] : null;
-    const redis = meta ? state[meta.path] : null;
+    const draftRedis = meta ? draft[ meta.path ] : null;
+    const redis = meta ? state[ meta.path ] : null;
 
     // index of call editor's actions
     const cmdIndex = redis && payload && payload.key
@@ -101,8 +65,8 @@ const instancesData = (state = {}, action) => produce(state, draft => {
     switch (action.type) {
         case FETCH_INSTANCES_SUCCESS:
             payload.forEach(({ name }) => {
-                if (!state[name])
-                    draft[name] = {
+                if (!state[ name ])
+                    draft[ name ] = {
                         requests: {},
                         responses: {},
                         info: {},
@@ -114,7 +78,7 @@ const instancesData = (state = {}, action) => produce(state, draft => {
 
         case RPC_BATCH_START:
             draftRedis.requests = {
-                ...state[meta.path].requests,
+                ...state[ meta.path ].requests,
                 ...mapRpcRequestsById(meta.request)
             };
             break;
@@ -127,7 +91,7 @@ const instancesData = (state = {}, action) => produce(state, draft => {
             break;
 
         case REDIS_RPC_FETCH_INFO_SUCCESS:
-            draftRedis.info = registerInfo(meta.request, payload);
+            draftRedis.info = prepareServerInfo(meta.request, payload);
             break;
 
         case APPEND_CALL_EDITOR:
@@ -140,18 +104,18 @@ const instancesData = (state = {}, action) => produce(state, draft => {
 
         case CHANGE_CALL_EDITOR_METHOD_NAME:
             draftRedis
-                .consoleCommands[cmdIndex]
+                .consoleCommands[ cmdIndex ]
                 .methodName = payload.methodName;
             draftRedis
-                .consoleCommands[cmdIndex]
+                .consoleCommands[ cmdIndex ]
                 .dirty = true;
             break;
 
         case CHANGE_CALL_EDITOR_METHOD_PARAMS:
             draftRedis
-                .consoleCommands[cmdIndex]
+                .consoleCommands[ cmdIndex ]
                 .methodParams = payload.methodParams;
-            draftRedis.consoleCommands[cmdIndex].dirty = true;
+            draftRedis.consoleCommands[ cmdIndex ].dirty = true;
             break;
 
         case CLEAR_CALL_EDITORS:
@@ -161,10 +125,10 @@ const instancesData = (state = {}, action) => produce(state, draft => {
 
         case BIND_CALL_EDITOR_TO_ID:
             draftRedis
-                .consoleCommands[cmdIndex]
-                .response = redis.responses[payload.requestId];
+                .consoleCommands[ cmdIndex ]
+                .response = redis.responses[ payload.requestId ];
             draftRedis
-                .consoleCommands[cmdIndex]
+                .consoleCommands[ cmdIndex ]
                 .dirty = false;
             break;
 
@@ -191,18 +155,18 @@ const activeInstanceName = (state = '', action) => {
 
 const hasFetched = (state = {}, action) => {
     const updateState = {
-        [FETCH_INSPECTIONS_START]: { inspections: false },
-        [FETCH_INSPECTIONS_SUCCESS]: { inspections: true },
+        [ FETCH_INSPECTIONS_START ]: { inspections: false },
+        [ FETCH_INSPECTIONS_SUCCESS ]: { inspections: true },
 
-        [FETCH_INSTANCES_START]: { instances: false },
-        [FETCH_INSTANCES_SUCCESS]: { instances: true },
+        [ FETCH_INSTANCES_START ]: { instances: false },
+        [ FETCH_INSTANCES_SUCCESS ]: { instances: true },
 
-        [FETCH_ENDPOINTS_START]: { endpoints: false },
-        [FETCH_ENDPOINTS_SUCCESS]: { endpoints: true },
+        [ FETCH_ENDPOINTS_START ]: { endpoints: false },
+        [ FETCH_ENDPOINTS_SUCCESS ]: { endpoints: true },
 
-        [SEARCH_KEYS_START]: { searchKeys: false },
-        [SEARCH_KEYS_SUCCESS]: { searchKeys: true },
-    }[action.type];
+        [ SEARCH_KEYS_START ]: { searchKeys: false },
+        [ SEARCH_KEYS_SUCCESS ]: { searchKeys: true },
+    }[ action.type ];
 
     return updateState !== undefined
         ? { ...state, ...updateState }
@@ -212,18 +176,18 @@ const hasFetched = (state = {}, action) => {
 
 const isFetching = (state = {}, action) => {
     const updateState = {
-        [FETCH_INSPECTIONS_START]: { inspections: true },
-        [FETCH_INSPECTIONS_SUCCESS]: { inspections: false },
+        [ FETCH_INSPECTIONS_START ]: { inspections: true },
+        [ FETCH_INSPECTIONS_SUCCESS ]: { inspections: false },
 
-        [FETCH_INSTANCES_START]: { instances: true },
-        [FETCH_INSTANCES_SUCCESS]: { instances: false },
+        [ FETCH_INSTANCES_START ]: { instances: true },
+        [ FETCH_INSTANCES_SUCCESS ]: { instances: false },
 
-        [FETCH_ENDPOINTS_START]: { endpoints: true },
-        [FETCH_ENDPOINTS_SUCCESS]: { endpoints: false },
+        [ FETCH_ENDPOINTS_START ]: { endpoints: true },
+        [ FETCH_ENDPOINTS_SUCCESS ]: { endpoints: false },
 
-        [SEARCH_KEYS_START]: { searchKeys: true },
-        [SEARCH_KEYS_SUCCESS]: { searchKeys: false },
-    }[action.type];
+        [ SEARCH_KEYS_START ]: { searchKeys: true },
+        [ SEARCH_KEYS_SUCCESS ]: { searchKeys: false },
+    }[ action.type ];
 
     return updateState !== undefined
         ? { ...state, ...updateState }
@@ -300,22 +264,6 @@ const progress = (state = {}, action) => {
             return state;
     }
 };
-
-
-const keySearch = (state = {}, action) => produce(state, draft => {
-    const { payload } = action;
-
-    switch (action.type) {
-        case SEARCH_KEYS_SUCCESS:
-            draft[payload.pattern] = payload;
-            draft[`keys:${payload.pattern}`] = {};
-            break;
-
-        case FETCH_KEYS_PAGE_SUCCESS:
-            draft[`keys:${payload.pattern}`][payload.page_number] = payload.results;
-            break;
-    }
-});
 
 
 export default combineReducers({

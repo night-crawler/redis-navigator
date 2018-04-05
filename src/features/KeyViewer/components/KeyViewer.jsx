@@ -1,11 +1,15 @@
 import debug from 'debug';
+import KeyRow from './KeyRow';
+import { flatten, map } from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { injectIntl, intlShape } from 'react-intl';
 import { AutoSizer, InfiniteLoader, List } from 'react-virtualized';
-import { Button, Grid, Input, Header, List as SUIList, Icon } from 'semantic-ui-react';
+import { Button, Grid, Header, Input, Segment } from 'semantic-ui-react';
 import { Timeouts } from 'timers';
+import { PageHelper } from 'utils';
 import messages from '../messages';
+
 
 
 class KeyViewer extends React.Component {
@@ -13,6 +17,8 @@ class KeyViewer extends React.Component {
         intl: intlShape.isRequired,
         actions: PropTypes.shape({
             searchKeys: PropTypes.func,
+            fetchKeyTypes: PropTypes.func,
+            setActiveKey: PropTypes.func,
         }),
         locationSearchParams: PropTypes.shape({
             pattern: PropTypes.string,
@@ -22,10 +28,10 @@ class KeyViewer extends React.Component {
         }),
         routeInstanceSearchUrl: PropTypes.string,
         routeKeys: PropTypes.object,
+        keyTypes: PropTypes.object,
 
-        // todo
         searchPagesMap: PropTypes.object,
-        searchInfo: PropTypes.any,
+        searchInfo: PropTypes.object,
         searchNumPages: PropTypes.number,
 
         hasFetchedSearchKeys: PropTypes.bool,
@@ -64,28 +70,37 @@ class KeyViewer extends React.Component {
                 />;
             </Button.Group>
         );
-        /**/
-        return (
-            <Grid style={ { height: 'calc(100vh - 45px)', margin: 0, padding: 0 } }>
-                <Grid.Column width={ 5 } style={ { display: 'flex', alignItems: 'stretch', flexDirection: 'column', margin: 0, padding: 0 } }>
-                    <Input
-                        defaultValue={ locationSearchParams.pattern }
-                        icon='search'
-                        iconPosition='left'
-                        fluid={ true }
-                        onChange={ this.handleFilterKeysChange }
-                        action={ filterActionButtonGroup }
-                        placeholder={ intl.formatMessage({ ...messages.filterKeys }) }
-                    />
-                    <div style={ { flex: '1 1 auto' } }>
-                        { hasFetchedSearchKeys && searchInfo.count ? this.renderLoader() : false }
-                    </div>
-                </Grid.Column>
 
-                <Grid.Column width={ 11 }>
-                    <Header as={ 'h1' }>wip</Header>
-                </Grid.Column>
-            </Grid>
+        return (
+
+            <Segment>
+                <Grid style={ { height: 'calc(100vh - 75px)', margin: 0, padding: 0 } }>
+                    <Grid.Column width={ 5 } style={ {
+                        display: 'flex',
+                        alignItems: 'stretch',
+                        flexDirection: 'column',
+                        margin: 0,
+                        padding: 0
+                    } }>
+                        <Input
+                            defaultValue={ locationSearchParams.pattern }
+                            icon='search'
+                            iconPosition='left'
+                            fluid={ true }
+                            onChange={ this.handleFilterKeysChange }
+                            action={ filterActionButtonGroup }
+                            placeholder={ intl.formatMessage({ ...messages.filterKeys }) }
+                        />
+                        <div style={ { flex: '1 1 auto' } }>
+                            { hasFetchedSearchKeys && searchInfo.count ? this.renderLoader() : false }
+                        </div>
+                    </Grid.Column>
+
+                    <Grid.Column width={ 11 }>
+                        <Header as={ 'h1' }>wip</Header>
+                    </Grid.Column>
+                </Grid>
+            </Segment>
 
         );
     }
@@ -108,7 +123,7 @@ class KeyViewer extends React.Component {
                     <AutoSizer>
                         { ({ height, width }) => (
 
-                            <SUIList as={ List }
+                            <List
                                 ref={ self => {
                                     this.List = self;
                                     registerChild(self);
@@ -120,13 +135,13 @@ class KeyViewer extends React.Component {
                                 height={ height }
                                 width={ width }
 
-                                rowHeight={ 50 }
+                                rowHeight={ 25 }
                                 rowCount={ count }
                             />
 
                         ) }
                     </AutoSizer>
-                )}
+                ) }
             </InfiniteLoader>
         );
     };
@@ -135,50 +150,56 @@ class KeyViewer extends React.Component {
         const { locationSearchParams, searchPagesMap } = this.props;
         const { perPage } = locationSearchParams;
 
-        const pageNumberForIndex = Math.ceil((index + 1) / perPage) || 1;
-        this.log(
-            'isRowLoaded',
-            searchPagesMap[pageNumberForIndex] !== undefined,
-            'pageNumberForIndex', pageNumberForIndex
-        );
-        return searchPagesMap[pageNumberForIndex] !== undefined;
+        return new PageHelper(searchPagesMap, perPage).isRowLoaded(index);
     };
 
     loadMoreRows = ({ startIndex, stopIndex }) => {
         const { locationSearchParams, actions } = this.props;
         const { perPage } = locationSearchParams;
+        const pageHelper = new PageHelper(undefined, perPage);
 
-        const startPage = Math.ceil((startIndex + 1) / perPage) || 1;
-        const stopPage = Math.ceil((stopIndex + 1) / perPage) || 1;
+        const promises = Promise.all(
+            pageHelper
+                .getPageRange(startIndex, stopIndex)
+                .map(pageNumber => actions.fetchKeysPage(pageNumber, perPage))
+        );
 
-        const promises = [];
-        for (let page = startPage; page <= stopPage; page++) {
-            promises.push(actions.fetchKeysPage(page));
-        }
-        return Promise.all(promises);
+        return new Promise(
+            (resolve, reject) => promises.then(
+                data => resolve(
+                    actions.fetchKeyTypes(flatten(map(data, 'payload.results')))
+                ),
+                error => reject(error)
+            )
+        );
     };
 
     renderNotLoadedRow = ({ index, key, style }) => {
-        return <div style={ style }>-</div>;
+        return <div style={ style } key={ key }>-</div>;
     };
+
     renderRow = ({ index, key, style }) => {
         if (!this.isRowLoaded({ index }))
             return this.renderNotLoadedRow({ index, key, style });
 
-        const { locationSearchParams, searchPagesMap } = this.props;
+        const { locationSearchParams, searchPagesMap, keyTypes } = this.props;
         const { perPage } = locationSearchParams;
-        const pageNumberForIndex = Math.ceil((index + 1) / perPage) || 1;
-        const offset = index % perPage;
 
-        const item = searchPagesMap[pageNumberForIndex][offset];
-        console.log(`INDEX: ${index}, page: ${pageNumberForIndex}, offset: ${offset}, item: ${item}`);
+        const item = new PageHelper(searchPagesMap, perPage).getSubItem(index);
+        const keyType = keyTypes[item];
 
-        return (
-            <div style={ { display: 'flex', alignItems: 'stretch', flexDirection: 'row', ...style } }>
-                <Icon name='mail' />
-                <div>{ item }</div>
-            </div>
-        );
+        if (keyType === undefined)
+            this.log(`Key type is undefined for ${item}`);
+
+        // this.log(`INDEX: ${index}, page: ${pageNumberForIndex}, offset: ${offset}, item: ${item}`);
+
+        return <KeyRow
+            onClick={ this.handleKeyClicked }
+            item={ item }
+            keyType={ keyType }
+            style={ style }
+            key={ key }
+        />;
     };
 
     componentDidMount() {
@@ -192,6 +213,10 @@ class KeyViewer extends React.Component {
             ...locationSearchParams,
             pattern: '*'
         });
+    };
+
+    handleKeyClicked = key => {
+        console.log(key);
     };
 
     handleToggleSortKeysClicked = () => {
