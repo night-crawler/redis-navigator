@@ -4,7 +4,7 @@ import React from 'react';
 import { FormattedMessage as Tr } from 'react-intl';
 import { Link } from 'react-router-dom';
 import { Container, Dropdown, Icon, Label, Menu, Progress } from 'semantic-ui-react';
-import { Timeouts } from 'timers';
+import { Timeouts } from 'utils/timers';
 import messages from '../messages';
 import DropdownRedisItem from './DropdownRedisItem';
 import TopNailedFullWidthContainer from './TopNailedFullWidthContainer';

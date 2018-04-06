@@ -2,7 +2,7 @@ import debug from 'debug';
 import { FullPageDimmer, NotFound } from 'features/Common/components';
 import Dashboard from 'features/Dashboard';
 import KeyViewer from 'features/KeyViewer';
-import Navbar from 'features/Navbar/index';
+import Navbar from 'features/Navbar';
 import NotificationSystem from 'features/NotificationSystem';
 import RedisConsole from 'features/RedisConsole';
 import { isEmpty } from 'lodash';

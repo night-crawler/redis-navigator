@@ -6,7 +6,7 @@ import React from 'react';
 import { injectIntl, intlShape } from 'react-intl';
 import { AutoSizer, InfiniteLoader, List } from 'react-virtualized';
 import { Button, Grid, Header, Input, Segment } from 'semantic-ui-react';
-import { Timeouts } from 'timers';
+import { Timeouts } from 'utils/timers';
 import { PageHelper } from 'utils';
 import messages from '../messages';
 
