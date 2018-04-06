@@ -1,5 +1,6 @@
 import debug from 'debug';
 import InfiniteKeyList from 'features/KeyViewer/components/InfiniteKeyList';
+import KeyEditor from 'features/KeyViewer/components/KeyEditor';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { injectIntl, intlShape } from 'react-intl';
@@ -43,7 +44,16 @@ class KeyViewer extends React.Component {
     }
 
     render() {
-        const { intl, locationSearchParams, hasFetchedSearchKeys, searchInfo, activeKey } = this.props;
+        const {
+            intl,
+            locationSearchParams,
+            hasFetchedSearchKeys,
+            searchInfo,
+            activeKey,
+            keyTypes,
+            actions,
+            searchPagesMap
+        } = this.props;
 
         const filterActionButtonGroup = (
             <Button.Group>
@@ -81,22 +91,29 @@ class KeyViewer extends React.Component {
                         />
                         <div style={ { flex: '1 1 auto' } }>
                             {
-                                hasFetchedSearchKeys && searchInfo.count
-                                    ? <InfiniteKeyList
+                                hasFetchedSearchKeys && searchInfo.count &&
+                                    <InfiniteKeyList
                                         activeKey={ activeKey }
                                         count={ searchInfo.count }
-                                        keyTypes={ this.props.keyTypes }
-                                        perPage={ this.props.locationSearchParams.perPage }
-                                        searchPagesMap={ this.props.searchPagesMap }
-                                        fetchKeyRangeWithTypes={ this.props.actions.fetchKeyRangeWithTypes }
+                                        keyTypes={ keyTypes }
+                                        perPage={ locationSearchParams.perPage }
+                                        searchPagesMap={ searchPagesMap }
+                                        fetchKeyRangeWithTypes={ actions.fetchKeyRangeWithTypes }
                                         onKeyClick={ this.handleKeyClicked }
-                                    /> : false
+                                    />
                             }
                         </div>
                     </Grid.Column>
 
-                    <Grid.Column width={ 11 }>
-                        <Header as={ 'h1' }>wip</Header>
+                    <Grid.Column width={ 11 } style={ { paddingTop: 0, paddingRight: 0 } }>
+                        {
+                            activeKey && keyTypes[activeKey] &&
+                                <KeyEditor
+                                    keyType={ keyTypes[activeKey] }
+                                    activeKey={ activeKey }
+                                />
+                        }
+
                     </Grid.Column>
                 </Grid>
             </Segment>

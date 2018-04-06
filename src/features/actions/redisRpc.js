@@ -24,6 +24,19 @@ const REDIS_RPC_FETCH_KEY_TYPES = [
 ];
 
 
+
+export const REDIS_RPC_FETCH_KEY_DATA_START = 'redisNavigator/rpc/batch/execute/fetch-key-types/start';
+export const REDIS_RPC_FETCH_KEY_DATA_SUCCESS = 'redisNavigator/rpc/batch/execute/fetch-key-types/success';
+export const REDIS_RPC_FETCH_KEY_DATA_FAIL = 'redisNavigator/rpc/batch/execute/fetch-key-types/fail';
+
+
+const REDIS_RPC_FETCH_KEY_DATA = [
+    REDIS_RPC_FETCH_KEY_DATA_START,
+    REDIS_RPC_FETCH_KEY_DATA_SUCCESS,
+    REDIS_RPC_FETCH_KEY_DATA_FAIL,
+];
+
+
 export class RedisRpc {
     constructor({
         dispatch,
@@ -62,6 +75,20 @@ export class RedisRpc {
 
         return this.dispatch(actionBundle);
     };
+    
+    fetchKeyData = (key, type) => {
+
+
+
+        const actionBundle = this.rpcActionCreator
+            .action(REDIS_RPC_FETCH_KEY_DATA)
+            .batchExecute(
+                ['']
+            );
+
+
+        return this.dispatch(actionBundle);
+    }
 }
 
 
