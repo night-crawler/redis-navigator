@@ -1,4 +1,15 @@
 {
+  "env": {
+    "production": {
+      "plugins": [
+        "transform-react-remove-prop-types",
+        ["transform-react-constant-elements", {
+          "allowMutablePropsOnTags": ["FormattedMessage"]
+        }],
+        "transform-react-inline-elements"
+      ]
+    }
+  },
   "presets": [
     [
       "env",
@@ -6,7 +17,7 @@
         "targets": {
           "browsers": [
             "last 2 versions",
-            "safari >= 7"
+            "safari >= 10"
           ]
         }
       }

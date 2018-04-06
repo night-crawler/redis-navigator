@@ -1,6 +1,6 @@
 import { DEFAULT_SEARCH_KEYS_PARAMS } from 'constants';
 import { locationSearchParams, keySearch, urls } from 'features/selectors';
-import { pickBy, toPairs, fromPairs } from 'lodash';
+import { pickBy, toPairs, fromPairs, trimEnd } from 'lodash';
 import { makeAbsoluteUrl } from 'utils';
 import { createSelector } from 'reselect';
 
@@ -44,6 +44,12 @@ export const searchEndpoints = createSelector(
  */
 export const searchFirstPageUrl = createSelector(
     searchEndpoints, searchEndpoints => searchEndpoints.get_page
+);
+
+
+export const searchPageUrlPrefix = createSelector(
+    searchFirstPageUrl, searchFirstPageUrl =>
+        trimEnd(searchFirstPageUrl).split('/').slice(0, -1).join('/')
 );
 
 

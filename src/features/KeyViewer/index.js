@@ -10,21 +10,21 @@ import {
     shouldFetchSearchKeys,
     urls,
 } from 'features/selectors';
-import { pickBy, trimEnd } from 'lodash';
+import { flatten, map, pickBy } from 'lodash';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 import { createStructuredSelector } from 'reselect';
-import { makeAbsoluteUrl, serializeQuery } from 'utils';
+import { makeAbsoluteUrl, PageHelper, serializeQuery } from 'utils';
 import { KeyViewer } from './components';
 import {
     keyTypes,
     locationSearchParamsWithDefaults,
     searchEndpoints,
-    searchFirstPageUrl,
+    searchPageUrlPrefix,
     searchInfo,
-    searchNumPages,
     searchPagesMap,
 } from './selectors';
+
 
 
 function mapDispatchToProps(dispatch) {
@@ -37,7 +37,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
         urls,
         routeInstanceSearchUrl,
         routeInstanceName,
-        searchFirstPageUrl,
+        searchPageUrlPrefix,
     } = stateProps;
 
     const { dispatch } = dispatchProps;
@@ -68,14 +68,22 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
                     ...searchParams
                 }));
             },
-            fetchKeysPage: (pageNum, perPage) => {
-                const pageUrlPrefix = trimEnd(searchFirstPageUrl).split('/').slice(0, -1).join('/');
-                const pageUrl = `${pageUrlPrefix}/${pageNum}`;
 
-                return dispatch(fetchKeysPage(pageUrl, perPage));
-            },
-            fetchKeyTypes: rpc.fetchKeyTypes,
             setActiveKey: (key) => dispatch(setActiveKey(key)),
+
+            fetchKeyRangeWithTypes: ({ startIndex, stopIndex, perPage }) => {
+                const pageHelper = new PageHelper(undefined, perPage);
+
+                return Promise
+                    .all(
+                        pageHelper
+                            .getPageRange(startIndex, stopIndex)
+                            .map(pageNum => dispatch(fetchKeysPage(searchPageUrlPrefix, pageNum, perPage)))
+                    )
+                    .then(data =>
+                        rpc.fetchKeyTypes(flatten(map(data, 'payload.results')))
+                    );
+            }
         },
 
         dispatch: undefined,
@@ -92,8 +100,7 @@ export default connect(
         searchPagesMap,
         searchEndpoints,
         searchInfo,
-        searchNumPages,
-        searchFirstPageUrl,
+        searchPageUrlPrefix,
         shouldFetchSearchKeys,
         hasFetchedSearchKeys,
         isFetchingSearchKeys,
