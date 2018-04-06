@@ -1,8 +1,8 @@
-import { LOCATION_CHANGE } from 'react-router-redux';
-import { combineReducers } from 'redux';
 import { internationalizationReducer } from 'features/Internationalization/reducer';
-import redisNavigator from 'reducer';
 import { reducer as notifications } from 'react-notification-system-redux';
+import { LOCATION_CHANGE } from 'react-router-redux';
+import redisNavigator from 'reducers';
+import { combineReducers } from 'redux';
 
 
 // Initial routing state
@@ -26,7 +26,7 @@ function routeReducer(state = routeInitialState, action) {
 /**
  * Creates the main reducer with the dynamically injected ones
  */
-export default function createReducer(injectedReducers) {
+export default function createRootReducer(injectedReducers) {
     return combineReducers({
         notifications,
         redisNavigator,

@@ -3,7 +3,7 @@ import { applyMiddleware, compose, createStore } from 'redux';
 import { apiMiddleware } from 'redux-api-middleware';
 import createLogger from 'redux-logger';
 import thunkMiddleware from 'redux-thunk';
-import createReducer from './reducers';
+import createRootReducer from './rootReducer';
 
 
 export default function configureStore(initialState = {}, history) {
@@ -28,7 +28,7 @@ export default function configureStore(initialState = {}, history) {
             : compose;
 
     const store = createStore(
-        createReducer(),
+        createRootReducer(),
         initialState,
         composeEnhancers(...enhancers)
     );
@@ -38,7 +38,7 @@ export default function configureStore(initialState = {}, history) {
     // Make reducers hot reloadable, see http://mxs.is/googmo
     if (module.hot) {
         module.hot.accept('./reducers', () => {
-            store.replaceReducer(createReducer(store.injectedReducers));
+            store.replaceReducer(createRootReducer(store.injectedReducers));
         });
     }
 
