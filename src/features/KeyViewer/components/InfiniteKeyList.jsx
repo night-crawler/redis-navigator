@@ -14,6 +14,7 @@ export default class InfiniteKeyList extends React.Component {
         keyTypes: PropTypes.object.isRequired,
         onKeyClick: PropTypes.func,
         fetchKeyRangeWithTypes: PropTypes.func.isRequired,
+        activeKey: PropTypes.string,
     };
 
     constructor(props) {
@@ -65,13 +66,11 @@ export default class InfiniteKeyList extends React.Component {
         );
     }
 
-    componentDidUpdate() {
-        // if (this.props.orderBy !== orderBy) {
-        //     // noinspection JSUnresolvedFunction
-        //     this.InfiniteLoader.resetLoadMoreRowsCache(true);
-        //     // noinspection JSUnresolvedFunction
-        //     this.List.scrollToPosition(0);
-        // }
+    componentDidUpdate({ activeKey }) {
+        if (activeKey !== this.props.activeKey)
+            this.List.forceUpdateGrid();
+
+        // this.InfiniteLoader.resetLoadMoreRowsCache(true);
     }
 
     isRowLoaded = ({ index }) => {
@@ -93,7 +92,7 @@ export default class InfiniteKeyList extends React.Component {
         if (!this.isRowLoaded({ index }))
             return this.renderNotLoadedRow({ index, key, style });
 
-        const { perPage, searchPagesMap, keyTypes } = this.props;
+        const { perPage, searchPagesMap, keyTypes, activeKey, onKeyClick } = this.props;
 
         const item = new PageHelper(searchPagesMap, perPage).getSubItem(index);
         const keyType = keyTypes[ item ];
@@ -101,14 +100,15 @@ export default class InfiniteKeyList extends React.Component {
         if (keyType === undefined)
             this.log(`Key type is undefined for ${item}`);
 
-        // this.log(`INDEX: ${index}, page: ${pageNumberForIndex}, offset: ${offset}, item: ${item}`);
+        // this.log(`renderRow, INDEX: ${index}, item: ${item}, activeKey: ${activeKey} ${activeKey === item}`);
 
         return <KeyRow
-            onClick={ () => this.props.onKeyClick(item) }
+            onClick={ () => onKeyClick(item) }
             item={ item }
             keyType={ keyType }
             style={ style }
             key={ key }
+            isActive={ activeKey === item }
         />;
     };
 }

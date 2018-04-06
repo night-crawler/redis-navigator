@@ -33,7 +33,9 @@ export default {
             count: 1,
         },
 
-        keySearch: {},
+        keySearch: {
+            activeKey: '',
+        },
     },
     notifications: [],
     internationalization: {

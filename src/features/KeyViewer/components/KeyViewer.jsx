@@ -13,8 +13,8 @@ class KeyViewer extends React.Component {
     static propTypes = {
         intl: intlShape.isRequired,
         actions: PropTypes.shape({
-            searchKeys: PropTypes.func,
-            setActiveKey: PropTypes.func,
+            searchKeys: PropTypes.func.isRequired,
+            setActiveKey: PropTypes.func.isRequired,
             fetchKeyRangeWithTypes: PropTypes.func.isRequired,
         }),
         locationSearchParams: PropTypes.shape({
@@ -24,6 +24,7 @@ class KeyViewer extends React.Component {
             ttlSeconds: PropTypes.number,
             perPage: PropTypes.number,
         }),
+        activeKey: PropTypes.string,
         routeInstanceSearchUrl: PropTypes.string,
         routeKeys: PropTypes.object,
         keyTypes: PropTypes.object,
@@ -42,7 +43,7 @@ class KeyViewer extends React.Component {
     }
 
     render() {
-        const { intl, locationSearchParams, hasFetchedSearchKeys, searchInfo } = this.props;
+        const { intl, locationSearchParams, hasFetchedSearchKeys, searchInfo, activeKey } = this.props;
 
         const filterActionButtonGroup = (
             <Button.Group>
@@ -82,6 +83,7 @@ class KeyViewer extends React.Component {
                             {
                                 hasFetchedSearchKeys && searchInfo.count
                                     ? <InfiniteKeyList
+                                        activeKey={ activeKey }
                                         count={ searchInfo.count }
                                         keyTypes={ this.props.keyTypes }
                                         perPage={ this.props.locationSearchParams.perPage }
@@ -116,7 +118,8 @@ class KeyViewer extends React.Component {
     };
 
     handleKeyClicked = key => {
-        console.log(key);
+        const { actions } = this.props;
+        actions.setActiveKey(key);
     };
 
     handleToggleSortKeysClicked = () => {

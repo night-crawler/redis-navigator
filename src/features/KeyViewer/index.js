@@ -23,6 +23,7 @@ import {
     searchPageUrlPrefix,
     searchInfo,
     searchPagesMap,
+    activeKey,
 } from './selectors';
 
 
@@ -93,6 +94,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
 
 export default connect(
     createStructuredSelector({
+        activeKey,
         routeInstanceName,
         routeInstanceSearchUrl,
         routeKeys,

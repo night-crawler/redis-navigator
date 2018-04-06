@@ -4,6 +4,13 @@ import { pickBy, toPairs, fromPairs, trimEnd } from 'lodash';
 import { makeAbsoluteUrl } from 'utils';
 import { createSelector } from 'reselect';
 
+
+/**
+ * state.redisNavigator.keySearch.activeKey
+ */
+export const activeKey = createSelector(keySearch, keySearch => keySearch.activeKey || '');
+
+
 /**
  * { pattern, sortKeys, scanCount, ttlSeconds }
  * URLSearchParams(state.route.location.search) + defaults
