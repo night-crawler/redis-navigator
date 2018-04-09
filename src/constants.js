@@ -1,31 +1,34 @@
+export const MAX_CONTENT_AUTOLOAD_SIZE = 10 * 1024;
+
+
 export const DEFAULT_SEARCH_KEYS_PARAMS = {
     scanCount: 5000,
     pattern: '*',
     sortKeys: true,
     ttlSeconds: 5 * 60,
-    perPage: 5,
+    perPage: 500,
 };
 
 
-export const REDIS_TYPE_ICON_MAP = {
+export const REDIS_KEY_TYPE_ICON_MAP = {
     list: {
         name: 'list layout',
-        color: 'yellow',
+        color: 'green',
     },
     set: {
-        name: 'usb',
+        name: 'align left',
         color: 'brown',
     },
     zset: {
-        name: 'ordered list',
+        name: 'sort content ascending',
         color: 'orange',
     },
     hash: {
-        name: 'sitemap',
+        name: 'hashtag', // 'sitemap',
         color: 'violet',
     },
     string: {
-        name: 'ellipsis horizontal',
+        name: 'quote right',
         color: 'blue',
     },
     none: {
@@ -33,3 +36,4 @@ export const REDIS_TYPE_ICON_MAP = {
         color: 'pink'
     },
 };
+

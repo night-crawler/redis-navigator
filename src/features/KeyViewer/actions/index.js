@@ -1,4 +1,4 @@
 export {
-    SET_ACTIVE_KEY,
-    setActiveKey,
-} from './setActiveKey';
+    SET_SELECTED_KEY,
+    setSelectedKey,
+} from './setSelectedKey';

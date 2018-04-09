@@ -1,9 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`FullPageDimmer should render FullPageDimmer 1`] = `
-<styled.div>
+<div
+  style={
+    Object {
+      "height": "100%",
+    }
+  }
+>
   <Dimmer
     active={true}
+    inverted={true}
   >
     <Loader
       size="massive"
@@ -11,5 +18,5 @@ exports[`FullPageDimmer should render FullPageDimmer 1`] = `
       lol
     </Loader>
   </Dimmer>
-</styled.div>
+</div>
 `;

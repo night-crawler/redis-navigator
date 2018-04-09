@@ -1,27 +1,29 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Dimmer, Loader } from 'semantic-ui-react';
-import styled from 'styled-components';
 
 import { FormattedMessage as Tr } from 'react-intl';
+import { Dimmer, Loader } from 'semantic-ui-react';
 import messages from '../messages';
 
 
-const FullPage = styled.div`
-    height: 100vh;
-`;
-
-
 FullPageDimmer.propTypes = {
-    message: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
+    message: PropTypes.oneOfType([ PropTypes.string, PropTypes.element ]),
+    inverted: PropTypes.bool,
 };
 
-export default function FullPageDimmer({ message = <Tr { ...messages.loading } /> }) {
+FullPageDimmer.defaultProps = {
+    message: <Tr { ...messages.loading } />,
+    inverted: true,
+};
+
+export default function FullPageDimmer(props) {
+    const { inverted, message, ...rest } = props;
+
     return (
-        <FullPage>
-            <Dimmer active={ true }>
+        <div style={ { height: '100%' } }>
+            <Dimmer active={ true } inverted={ inverted } { ...rest }>
                 <Loader size='massive'>{ message }</Loader>
             </Dimmer>
-        </FullPage>
+        </div>
     );
 }

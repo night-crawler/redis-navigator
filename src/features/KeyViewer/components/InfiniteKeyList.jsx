@@ -14,7 +14,7 @@ export default class InfiniteKeyList extends React.Component {
         keyTypes: PropTypes.object.isRequired,
         onKeyClick: PropTypes.func,
         fetchKeyRangeWithTypes: PropTypes.func.isRequired,
-        activeKey: PropTypes.string,
+        selectedKey: PropTypes.string,
     };
 
     constructor(props) {
@@ -66,8 +66,8 @@ export default class InfiniteKeyList extends React.Component {
         );
     }
 
-    componentDidUpdate({ activeKey }) {
-        if (activeKey !== this.props.activeKey)
+    componentDidUpdate({ selectedKey }) {
+        if (selectedKey !== this.props.selectedKey)
             this.List.forceUpdateGrid();
 
         // this.InfiniteLoader.resetLoadMoreRowsCache(true);
@@ -92,7 +92,7 @@ export default class InfiniteKeyList extends React.Component {
         if (!this.isRowLoaded({ index }))
             return this.renderNotLoadedRow({ index, key, style });
 
-        const { perPage, searchPagesMap, keyTypes, activeKey, onKeyClick } = this.props;
+        const { perPage, searchPagesMap, keyTypes, selectedKey, onKeyClick } = this.props;
 
         const item = new PageHelper(searchPagesMap, perPage).getSubItem(index);
         const keyType = keyTypes[ item ];
@@ -100,7 +100,7 @@ export default class InfiniteKeyList extends React.Component {
         if (keyType === undefined)
             this.log(`Key type is undefined for ${item}`);
 
-        // this.log(`renderRow, INDEX: ${index}, item: ${item}, activeKey: ${activeKey} ${activeKey === item}`);
+        // this.log(`renderRow, INDEX: ${index}, item: ${item}, selectedKey: ${selectedKey} ${selectedKey === item}`);
 
         return <KeyRow
             onClick={ () => onKeyClick(item) }
@@ -108,7 +108,7 @@ export default class InfiniteKeyList extends React.Component {
             keyType={ keyType }
             style={ style }
             key={ key }
-            isActive={ activeKey === item }
+            isActive={ selectedKey === item }
         />;
     };
 }

@@ -1,6 +1,6 @@
 import { DEFAULT_SEARCH_KEYS_PARAMS } from 'constants';
 import { fetchKeysPage, RedisRpc, searchKeys } from 'features/actions';
-import { setActiveKey } from './actions';
+import { setSelectedKey } from './actions';
 import {
     hasFetchedSearchKeys,
     isFetchingSearchKeys,
@@ -23,7 +23,9 @@ import {
     searchPageUrlPrefix,
     searchInfo,
     searchPagesMap,
-    activeKey,
+    selectedKey,
+    keyInfo,
+    keyData,
 } from './selectors';
 
 
@@ -70,7 +72,10 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
                 }));
             },
 
-            setActiveKey: (key) => dispatch(setActiveKey(key)),
+            setSelectedKey: (key) => dispatch(setSelectedKey(key)),
+
+            fetchKeyInfo: rpc.fetchKeyInfo,
+            fetchKeyData: rpc.fetchKeyData,
 
             fetchKeyRangeWithTypes: ({ startIndex, stopIndex, perPage }) => {
                 const pageHelper = new PageHelper(undefined, perPage);
@@ -94,7 +99,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
 
 export default connect(
     createStructuredSelector({
-        activeKey,
+        selectedKey,
         routeInstanceName,
         routeInstanceSearchUrl,
         routeKeys,
@@ -108,6 +113,8 @@ export default connect(
         isFetchingSearchKeys,
         locationSearchParams: locationSearchParamsWithDefaults,
         keyTypes,
+        keyInfo,
+        keyData,
     }),
     mapDispatchToProps,
     mergeProps

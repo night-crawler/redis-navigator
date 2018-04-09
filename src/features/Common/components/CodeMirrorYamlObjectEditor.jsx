@@ -1,17 +1,17 @@
 import 'codemirror/addon/edit/matchbrackets';
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/mode/yaml/yaml';
-import './MethodParamsEditor.css';
 import yaml from 'js-yaml';
+import { isEqual } from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { UnControlled as CodeMirror } from 'react-codemirror2';
-import { isEqual } from 'lodash';
+import './CodeMirrorYamlObjectEditor.css';
 
 
-export default class MethodParamsEditor extends React.Component {
+export default class CodeMirrorYamlObjectEditor extends React.Component {
     static propTypes = {
-        params: PropTypes.object.isRequired,
+        params: PropTypes.oneOfType([PropTypes.object, PropTypes.array]).isRequired,
         onChange: PropTypes.func.isRequired,
     };
 
@@ -31,9 +31,9 @@ export default class MethodParamsEditor extends React.Component {
         const { params: prevParams } = prevState;
 
         // death from above
-        if (!isEqual(newParams, prevParams)) {
+        if (!isEqual(newParams, prevParams))
             return { textParams: yaml.dump(newParams), params: newParams };
-        }
+
         return null;
     }
 

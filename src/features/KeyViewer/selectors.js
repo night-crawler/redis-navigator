@@ -6,9 +6,9 @@ import { createSelector } from 'reselect';
 
 
 /**
- * state.redisNavigator.keySearch.activeKey
+ * state.redisNavigator.keySearch.selectedKey
  */
-export const activeKey = createSelector(keySearch, keySearch => keySearch.activeKey || '');
+export const selectedKey = createSelector(keySearch, keySearch => keySearch.selectedKey || '');
 
 
 /**
@@ -83,3 +83,15 @@ export const searchPagesMap = createSelector(
  * state.redisNavigator.keySearch.types
  */
 export const keyTypes = createSelector(keySearch, keySearch => keySearch.types || {});
+
+
+/**
+ * state.redisNavigator.keySearch.info
+ */
+export const keyInfo = createSelector(keySearch, keySearch => keySearch.info || {});
+
+
+/**
+ * state.redisNavigator.keySearch.data
+ */
+export const keyData = createSelector(keySearch, keySearch => keySearch.data || {});

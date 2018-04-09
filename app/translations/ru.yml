@@ -25,7 +25,15 @@ features.Dashboard.messages.server: Сервер
 features.Dashboard.messages.stats: Статистика
 features.Dashboard.messages.usPerCall: μs / вызов
 features.DefaultLayout.messages.loadingRedisInstances: Загрузка Redis объектов
+features.KeyViewer.messages.encoding: Кодирование
+features.KeyViewer.messages.fetchKeyData: Загрузить данные ключа
 features.KeyViewer.messages.filterKeys: Найти ключи...
+features.KeyViewer.messages.idletime: Время простоя
+features.KeyViewer.messages.memoryUsage: Использование памяти
+features.KeyViewer.messages.pttl: 'TTL, мс'
+features.KeyViewer.messages.refcount: Ссылок
+features.KeyViewer.messages.selectAKey: Выберите ключ
+features.KeyViewer.messages.ttl: TTL
 features.Navbar.messages.instance: Подключение
 features.Navbar.messages.instances: Подключения
 features.Navbar.messages.refresh: Обновить

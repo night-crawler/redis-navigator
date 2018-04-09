@@ -1,13 +1,13 @@
+import { MAX_CONTENT_AUTOLOAD_SIZE } from 'constants';
 import debug from 'debug';
-import InfiniteKeyList from 'features/KeyViewer/components/InfiniteKeyList';
-import KeyEditor from 'features/KeyViewer/components/KeyEditor';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { injectIntl, intlShape } from 'react-intl';
-import { Button, Grid, Header, Input, Segment } from 'semantic-ui-react';
+import { Button, Grid, Input, Segment } from 'semantic-ui-react';
 import { Timeouts } from 'utils/timers';
 import messages from '../messages';
-
+import InfiniteKeyList from './InfiniteKeyList';
+import KeyEditor from './KeyEditor';
 
 
 class KeyViewer extends React.Component {
@@ -15,8 +15,10 @@ class KeyViewer extends React.Component {
         intl: intlShape.isRequired,
         actions: PropTypes.shape({
             searchKeys: PropTypes.func.isRequired,
-            setActiveKey: PropTypes.func.isRequired,
+            setSelectedKey: PropTypes.func.isRequired,
             fetchKeyRangeWithTypes: PropTypes.func.isRequired,
+            fetchKeyInfo: PropTypes.func.isRequired,
+            fetchKeyData: PropTypes.func.isRequired,
         }),
         locationSearchParams: PropTypes.shape({
             pattern: PropTypes.string,
@@ -25,13 +27,18 @@ class KeyViewer extends React.Component {
             ttlSeconds: PropTypes.number,
             perPage: PropTypes.number,
         }),
-        activeKey: PropTypes.string,
+
         routeInstanceSearchUrl: PropTypes.string,
+
+        selectedKey: PropTypes.string,
+
         routeKeys: PropTypes.object,
         keyTypes: PropTypes.object,
 
         searchPagesMap: PropTypes.object,
         searchInfo: PropTypes.object,
+        keyInfo: PropTypes.object,
+        keyData: PropTypes.object,
 
         hasFetchedSearchKeys: PropTypes.bool,
     };
@@ -43,17 +50,27 @@ class KeyViewer extends React.Component {
         this.log('initialized', props);
     }
 
+    state = {};
+
     render() {
         const {
             intl,
             locationSearchParams,
             hasFetchedSearchKeys,
             searchInfo,
-            activeKey,
+            selectedKey,
             keyTypes,
             actions,
-            searchPagesMap
+            searchPagesMap,
+            keyInfo,
+            keyData,
         } = this.props;
+
+        const
+            selectedKeyType = keyTypes[ selectedKey ],
+            selectedKeyData = keyData[ selectedKey ],
+            selectedKeyInfo = keyInfo[ selectedKey ];
+
 
         const filterActionButtonGroup = (
             <Button.Group>
@@ -92,28 +109,27 @@ class KeyViewer extends React.Component {
                         <div style={ { flex: '1 1 auto' } }>
                             {
                                 hasFetchedSearchKeys && searchInfo.count &&
-                                    <InfiniteKeyList
-                                        activeKey={ activeKey }
-                                        count={ searchInfo.count }
-                                        keyTypes={ keyTypes }
-                                        perPage={ locationSearchParams.perPage }
-                                        searchPagesMap={ searchPagesMap }
-                                        fetchKeyRangeWithTypes={ actions.fetchKeyRangeWithTypes }
-                                        onKeyClick={ this.handleKeyClicked }
-                                    />
+                                <InfiniteKeyList
+                                    selectedKey={ selectedKey }
+                                    count={ searchInfo.count }
+                                    keyTypes={ keyTypes }
+                                    perPage={ locationSearchParams.perPage }
+                                    searchPagesMap={ searchPagesMap }
+                                    fetchKeyRangeWithTypes={ actions.fetchKeyRangeWithTypes }
+                                    onKeyClick={ this.handleKeyClicked }
+                                />
                             }
                         </div>
                     </Grid.Column>
 
                     <Grid.Column width={ 11 } style={ { paddingTop: 0, paddingRight: 0 } }>
-                        {
-                            activeKey && keyTypes[activeKey] &&
-                                <KeyEditor
-                                    keyType={ keyTypes[activeKey] }
-                                    activeKey={ activeKey }
-                                />
-                        }
-
+                        <KeyEditor
+                            type={ selectedKeyType }
+                            info={ selectedKeyInfo }
+                            data={ selectedKeyData }
+                            selectedKey={ selectedKey }
+                            onFetchKeyDataClick={ this.handleFetchKeyDataClicked }
+                        />
                     </Grid.Column>
                 </Grid>
             </Segment>
@@ -126,6 +142,28 @@ class KeyViewer extends React.Component {
         actions.searchKeys(locationSearchParams);
     }
 
+    static getDerivedStateFromProps(nextProps) {
+        const { selectedKey, keyTypes, keyInfo, keyData, actions } = nextProps;
+        const
+            type = keyTypes[ selectedKey ],
+            data = keyData[ selectedKey ],
+            info = keyInfo[ selectedKey ];
+
+
+        if (selectedKey && !info)
+            actions.fetchKeyInfo(selectedKey);
+
+        if (info && type && !data && info.memory_usage <= MAX_CONTENT_AUTOLOAD_SIZE)
+            actions.fetchKeyData(selectedKey, type);
+
+        return null;
+    }
+
+    handleFetchKeyDataClicked = (key, type) => {
+        const { actions } = this.props;
+        actions.fetchKeyData(key, type);
+    };
+
     handleClearFilterKeysClicked = () => {
         const { locationSearchParams, actions } = this.props;
         actions.searchKeys({
@@ -136,7 +174,8 @@ class KeyViewer extends React.Component {
 
     handleKeyClicked = key => {
         const { actions } = this.props;
-        actions.setActiveKey(key);
+        actions.setSelectedKey(key);
+        actions.fetchKeyInfo(key);
     };
 
     handleToggleSortKeysClicked = () => {

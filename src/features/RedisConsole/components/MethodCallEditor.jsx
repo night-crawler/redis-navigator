@@ -6,7 +6,7 @@ import { HotKeys } from 'react-hotkeys';
 import { Button, Dropdown, Grid, Header, Label, Segment } from 'semantic-ui-react';
 import { parametersToJson, reprMethodDoc } from '../utils';
 import MethodParametersList from './MethodParametersList';
-import MethodParamsEditor from './MethodParamsEditor';
+import CodeMirrorYamlObjectEditor from '../../Common/components/CodeMirrorYamlObjectEditor';
 import RpcResponse from './RpcResponse';
 import messages from '../messages';
 import { injectIntl, intlShape } from 'react-intl';
@@ -141,7 +141,7 @@ class MethodCallEditor extends React.Component {
 
                     <Grid stackable={ true }>
                         <Grid.Column width={ 6 }>
-                            <MethodParamsEditor params={ methodParams } onChange={ this.handleJsonChanged } />
+                            <CodeMirrorYamlObjectEditor params={ methodParams } onChange={ this.handleJsonChanged } />
                         </Grid.Column>
                         {
                             response && (

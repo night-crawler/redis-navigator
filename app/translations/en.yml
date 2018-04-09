@@ -25,7 +25,15 @@ features.Dashboard.messages.server: Server
 features.Dashboard.messages.stats: Stats
 features.Dashboard.messages.usPerCall: μs / call
 features.DefaultLayout.messages.loadingRedisInstances: Loading Redis instances
+features.KeyViewer.messages.encoding: Encoding
+features.KeyViewer.messages.fetchKeyData: Fetch key data
 features.KeyViewer.messages.filterKeys: Filter keys...
+features.KeyViewer.messages.idletime: Idle time
+features.KeyViewer.messages.memoryUsage: Memory usage
+features.KeyViewer.messages.pttl: pTTL
+features.KeyViewer.messages.refcount: Refcount
+features.KeyViewer.messages.selectAKey: Select a key
+features.KeyViewer.messages.ttl: TTL
 features.Navbar.messages.instance: Instance
 features.Navbar.messages.instances: Instances
 features.Navbar.messages.refresh: Refresh

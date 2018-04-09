@@ -34,7 +34,7 @@ export default {
         },
 
         keySearch: {
-            activeKey: '',
+            selectedKey: '',
         },
     },
     notifications: [],

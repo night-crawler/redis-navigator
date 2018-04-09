@@ -14,7 +14,9 @@ export {
     prepareKeyTypesMap,
     prepareServerInfo,
     mapRpcResponsesById,
-    mapRpcRequestsById
+    mapRpcRequestsById,
+    mergeRpcRequestResponse,
+    prepareKeyInfo,
 } from './rpc';
 
 export {

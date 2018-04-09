@@ -1,5 +1,7 @@
 import { fromPairs, isArray, pick, toPairs } from 'lodash';
 
+
+
 export function mapRpcRequestsById(rpcRequest) {
     const requests = isArray(rpcRequest) ? rpcRequest : [ rpcRequest ];
     return fromPairs(
@@ -26,38 +28,57 @@ export function mapRpcResponsesById(rpcResponse) {
 }
 
 
+export function mergeRpcRequestResponse(rpcRequest, rpcResponse) {
+    const requestMap = mapRpcRequestsById(rpcRequest);
+    const responseMap = mapRpcResponsesById(rpcResponse);
+
+    return toPairs(requestMap).map(([ id, request ]) => {
+        return {
+            id: +id,
+            methodName: request.method.split('.').pop(),
+            ...request,
+            ...responseMap[id],
+        };
+    });
+
+}
 
 
 export function prepareServerInfo(rpcRequest, rpcResponse) {
-    const requestsByIdMap = mapRpcRequestsById(rpcRequest);
-    const pairs = toPairs(mapRpcResponsesById(rpcResponse))
-        .map(([ id, response ]) => {
-            const methodName = requestsByIdMap[ id ].method.split('.').pop();
-
-            switch (methodName) {
-                case 'config_get':
-                    return [ 'config', response ];
-                case 'info':
-                    return [ 'sections', response ];
-                case 'client_list':
-                    return [ 'clients', response ];
-                case 'dbsize':
-                    return [ 'dbsize', response ];
-                case 'client_getname':
-                    return [ 'name', response ];
-            }
-        });
-    return fromPairs(pairs);
+    return fromPairs(mergeRpcRequestResponse(rpcRequest, rpcResponse).map(({ methodName, result, error }) => {
+        switch (methodName) {
+            case 'config_get':
+                return [ 'config', { result, error } ];
+            case 'info':
+                return [ 'sections', { result, error } ];
+            case 'client_list':
+                return [ 'clients', { result, error } ];
+            case 'dbsize':
+                return [ 'dbsize', { result, error } ];
+            case 'client_getname':
+                return [ 'name', { result, error } ];
+        }
+    }));
 }
 
 
 export function prepareKeyTypesMap(rpcRequest, rpcResponse) {
-    const requestMap = mapRpcRequestsById(rpcRequest);
-    const responseMap = mapRpcResponsesById(rpcResponse);
-
-    const pairs = toPairs(requestMap).map(([ id, request ]) =>
-        [ request.params.key, responseMap[ id ].result ]
+    return fromPairs(
+        mergeRpcRequestResponse(rpcRequest, rpcResponse)
+            .map(({ params: { key }, result }) => [ key, result ])
     );
-    return fromPairs(pairs);
 }
 
+
+export function prepareKeyInfo(rpcRequest, rpcResponse) {
+    let keyName = null;
+
+    const infoMap = fromPairs(mergeRpcRequestResponse(rpcRequest, rpcResponse)
+        .map(({ methodName, params: { key }, result }) => {
+            keyName = key;
+            return [ methodName, result ];
+        })
+    );
+
+    return { [keyName]: infoMap };
+}
