@@ -13,28 +13,23 @@ export default class CodeMirrorYamlObjectEditor extends React.Component {
     static propTypes = {
         params: PropTypes.oneOfType([PropTypes.object, PropTypes.array]).isRequired,
         onChange: PropTypes.func.isRequired,
+        flowLevel: PropTypes.number,
+    };
+
+    static defaultProps = {
+        flowLevel: 1
     };
 
     constructor(props) {
         super(props);
 
-        const { params } = this.props;
+        const { params, flowLevel } = this.props;
+
         this.state = {
             params,
-            textParams: yaml.dump(params),
+            textParams: yaml.dump(params, { flowLevel }),
             error: false,
         };
-    }
-
-    static getDerivedStateFromProps(newProps, prevState) {
-        const { params: newParams } = newProps;
-        const { params: prevParams } = prevState;
-
-        // death from above
-        if (!isEqual(newParams, prevParams))
-            return { textParams: yaml.dump(newParams), params: newParams };
-
-        return null;
     }
 
     render() {
@@ -48,7 +43,8 @@ export default class CodeMirrorYamlObjectEditor extends React.Component {
                         mode: 'yaml',
                         matchBrackets: true,
                         autoCloseBrackets: true,
-                        lineNumbers: true
+                        lineNumbers: true,
+                        lineWrapping: true,
                     } }
                     autoScroll={ false }
                     autoFocus={ true }
@@ -65,6 +61,20 @@ export default class CodeMirrorYamlObjectEditor extends React.Component {
 
             </div>
         );
+    }
+
+    static getDerivedStateFromProps(newProps, prevState) {
+        const { params: newParams, flowLevel } = newProps;
+        const { params: prevParams } = prevState;
+
+        // death from above
+        if (!isEqual(newParams, prevParams))
+            return {
+                textParams: yaml.dump(newParams, { flowLevel }),
+                params: newParams
+            };
+
+        return null;
     }
 
     handleOnChange = (value) => {

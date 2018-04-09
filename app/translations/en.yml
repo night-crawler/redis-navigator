@@ -32,6 +32,7 @@ features.KeyViewer.messages.idletime: Idle time
 features.KeyViewer.messages.memoryUsage: Memory usage
 features.KeyViewer.messages.pttl: pTTL
 features.KeyViewer.messages.refcount: Refcount
+features.KeyViewer.messages.save: Save
 features.KeyViewer.messages.selectAKey: Select a key
 features.KeyViewer.messages.ttl: TTL
 features.Navbar.messages.instance: Instance

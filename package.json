@@ -39,7 +39,7 @@
   },
   "homepage": "https://github.com/night-crawler/redis-navigator#readme",
   "dependencies": {
-    "codemirror": "^5.35.0",
+    "codemirror": "^5.36.0",
     "collections": "^5.1.2",
     "es6-error": "^4.1.1",
     "eslint-plugin-flowtype": "^2.46.1",

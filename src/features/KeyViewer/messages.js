@@ -10,4 +10,5 @@ export default defineMessages({
     encoding: 'Encoding',
     selectAKey: 'Select a key',
     fetchKeyData: 'Fetch key data',
+    save: 'Save',
 });

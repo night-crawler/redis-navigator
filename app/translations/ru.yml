@@ -32,6 +32,7 @@ features.KeyViewer.messages.idletime: Время простоя
 features.KeyViewer.messages.memoryUsage: Использование памяти
 features.KeyViewer.messages.pttl: 'TTL, мс'
 features.KeyViewer.messages.refcount: Ссылок
+features.KeyViewer.messages.save: Сохранить
 features.KeyViewer.messages.selectAKey: Выберите ключ
 features.KeyViewer.messages.ttl: TTL
 features.Navbar.messages.instance: Подключение

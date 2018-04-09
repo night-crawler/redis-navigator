@@ -124,6 +124,7 @@ class KeyViewer extends React.Component {
 
                     <Grid.Column width={ 11 } style={ { paddingTop: 0, paddingRight: 0 } }>
                         <KeyEditor
+                            key={ selectedKey }
                             type={ selectedKeyType }
                             info={ selectedKeyInfo }
                             data={ selectedKeyData }
@@ -143,12 +144,11 @@ class KeyViewer extends React.Component {
     }
 
     static getDerivedStateFromProps(nextProps) {
-        const { selectedKey, keyTypes, keyInfo, keyData, actions } = nextProps;
         const
+            { selectedKey, keyTypes, keyInfo, keyData, actions } = nextProps,
             type = keyTypes[ selectedKey ],
             data = keyData[ selectedKey ],
             info = keyInfo[ selectedKey ];
-
 
         if (selectedKey && !info)
             actions.fetchKeyInfo(selectedKey);
