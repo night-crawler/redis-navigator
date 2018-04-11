@@ -1,9 +1,12 @@
-import { isArray, isEmpty, compact } from 'lodash';
-import { RSAA } from 'redux-api-middleware';
 import {
-    RPCBatchArgumentsError, RPCMethodNameError, RPCEndpointError, RPCBadActionTypesError,
-    RPCEmptyRequestError
+    RPCBadActionTypesError,
+    RPCBatchArgumentsError,
+    RPCEmptyRequestError,
+    RPCEndpointError,
+    RPCMethodNameError
 } from 'errors/rpc';
+import { compact, isArray, isEmpty } from 'lodash';
+import { RSAA } from 'redux-api-middleware';
 import { getApiMiddlewareOptions, jsonRequestHeaders } from 'utils';
 
 
@@ -41,7 +44,6 @@ function validateRpcBatchCallArguments(pairs) {
         validateRpcSingleCallArguments(...pair);
     });
 }
-
 
 
 // eslint-disable-next-line
@@ -104,7 +106,7 @@ export class RSAARpcActionCreator {
             },
         }));
         return {
-            [RSAA]: {
+            [ RSAA ]: {
                 endpoint: this.endpoint,
                 method: 'POST',
                 body: JSON.stringify(rpcSingleRequest),
@@ -126,7 +128,7 @@ export class RSAARpcActionCreator {
             },
         }));
         return {
-            [RSAA]: {
+            [ RSAA ]: {
                 endpoint: this.endpoint,
                 method: 'POST',
                 body: JSON.stringify(rpcBatchRequest),
@@ -136,6 +138,7 @@ export class RSAARpcActionCreator {
         };
     }
 }
+
 
 export class RpcActionCreator {
     constructor({
@@ -181,12 +184,12 @@ export class RpcActionCreator {
         });
     }
 
-    path = (rawPath) => this.ctx({path: rawPath});
+    path = (rawPath) => this.ctx({ path: rawPath });
     action = (executeActionTypes, batchExecuteActionTypes) =>
-        this.ctx({executeActionTypes, batchExecuteActionTypes});
+        this.ctx({ executeActionTypes, batchExecuteActionTypes });
 
     execute(method, params) {
-        const methodFullPath = [...this.methodPathParts, method].join('.');
+        const methodFullPath = [ ...this.methodPathParts, method ].join('.');
         const rpcCallData = this.requestBuilder.mkSingle(methodFullPath, params);
         return this.rsaaActionCreator.mkExecute(
             this.methodPathParts.join('.'),
@@ -197,8 +200,8 @@ export class RpcActionCreator {
     batchExecute(...pairs) {
         validateRpcBatchCallArguments(pairs);
         const _pairs = pairs.map(([ method, params ]) => {
-            const methodFullPath = [...this.methodPathParts, method].join('.');
-            return [methodFullPath, params];
+            const methodFullPath = [ ...this.methodPathParts, method ].join('.');
+            return [ methodFullPath, params ];
         });
         const rpcRequest = this.requestBuilder.mkBatch(..._pairs);
         return this.rsaaActionCreator.mkBatchExecute(
