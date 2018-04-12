@@ -1,4 +1,4 @@
-import { keyDiff, keyDiffSet, keyDiffString, keyDiffList, keyDiffZSet, keyDiffHash } from './keyDiff';
+import { keyDiff, keyDiffHash, keyDiffList, keyDiffSet, keyDiffString, keyDiffZSet } from './keyDiff';
 
 
 describe('keyDiff', () => {
@@ -9,15 +9,15 @@ describe('keyDiff', () => {
         const invalidType = () => keyDiff('a', '');
         expect(invalidType).toThrowError();
 
-        const invalidEqualData = () => keyDiff('a', 'list', [1, 2], [1, 2]);
+        const invalidEqualData = () => keyDiff('a', 'list', [ 1, 2 ], [ 1, 2 ]);
         expect(invalidEqualData).toThrowError();
     });
 
     it('should handle list', () => {
-        expect(keyDiff('a', 'list', [1, 2, 3], [2, 3, 4], 1000)).toEqual([
+        expect(keyDiff('a', 'list', [ 1, 2, 3 ], [ 2, 3, 4 ], 1000)).toEqual([
             [ 'multi_exec' ],
             [ 'delete', { key: 'a' } ],
-            [ 'rpush', { key: 'a', values: [2, 3, 4] } ],
+            [ 'rpush', { key: 'a', values: [ 2, 3, 4 ] } ],
             [ 'pexpire', { key: 'a', timeout: 1000 } ]
         ]);
     });
@@ -77,7 +77,7 @@ describe('keyDiffZSet', () => {
 
 
 describe('keyDiffHash', () => {
-    it('should bla', () => {
+    it('should perform object diff', () => {
         const prevData = {
             a: 1,
             b: 2,

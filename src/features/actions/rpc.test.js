@@ -12,7 +12,13 @@ import {
     RSAARpcActionCreator,
 } from '.';
 
-import { RPCBatchArgumentsError, RPCEmptyRequestError, RPCEndpointError, RPCMethodNameError } from 'errors/rpc';
+import {
+    RPCBadActionTypesError,
+    RPCBatchArgumentsError,
+    RPCEmptyRequestError,
+    RPCEndpointError,
+    RPCMethodNameError
+} from 'errors/rpc';
 
 
 describe('RpcRequestBuilder', () => {
@@ -79,6 +85,14 @@ describe('RpcRequestBuilder', () => {
 describe('RSAARpcActionCreator', () => {
     const ac = new RSAARpcActionCreator();
     const rb = new RpcRequestBuilder();
+
+    it('should handle wrong args', () => {
+        const wrongArgsExecuteActionTypes = () => new RSAARpcActionCreator('/rpc', [1, 2], [1, 2]);
+        expect(wrongArgsExecuteActionTypes).toThrow(RPCBadActionTypesError);
+
+        const wrongArgsBatchExecuteActionTypes = () => new RSAARpcActionCreator('/rpc', [1, 2, 3], [1, 2]);
+        expect(wrongArgsBatchExecuteActionTypes).toThrow(RPCBadActionTypesError);
+    });
 
     it('can accept single rpc request objects', () => {
         const res = ac.mkExecute('path', rb.mkSingle('get', { key: 'trash' }));
@@ -184,6 +198,13 @@ describe('RpcActionCreator', () => {
                 .action([1, 2, 3])
                 .execute('get', { 'key': 1 })[RSAA].types, 'type')
         ).toEqual([1, 2, 3]);
+
+        const wrongArgs = () => redisRpc.ctx({
+            rsaaActionCreator: new RSAARpcActionCreator(),
+            executeActionTypes: [1, 2, 3],
+        });
+
+        expect(wrongArgs).toThrow();
     });
 
     it('can handle context with custom action creators', () => {
