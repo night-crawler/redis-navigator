@@ -1,4 +1,10 @@
-import { mapRpcRequestsById, mapRpcResponsesById, mergeRpcRequestResponse, prepareKeyInfo } from './rpc';
+import {
+    mapRpcRequestsById,
+    mapRpcResponsesById,
+    mergeRpcRequestResponse,
+    prepareKeyInfo,
+    prepareUpdateKeyData
+} from './rpc';
 
 
 describe('rpc utils', function () {
@@ -31,7 +37,7 @@ describe('rpc utils', function () {
 
         const batchPayload = [
             { id: 1, jsonrpc: '2.0', result: 'string' },
-            { id: 2, jsonrpc: '2.0', result: 'string'}
+            { id: 2, jsonrpc: '2.0', result: 'string' }
         ];
 
         expect(mapRpcResponsesById(batchPayload)).toEqual({
@@ -100,6 +106,46 @@ describe('rpc utils', function () {
                 }
         });
 
+    });
+
+    it('should prepareUpdateKeyData', () => {
+        const request = [
+            {
+                id: 133,
+                jsonrpc: '2.0',
+                method: 'redis_0.multi_exec',
+                params: []
+            },
+            {
+                id: 134,
+                jsonrpc: '2.0',
+                method: 'redis_0.set',
+                params: {
+                    key: 'qwe',
+                    value: '12356e3444'
+                }
+            }
+        ];
+
+        const response = [
+            {
+                id: 134,
+                jsonrpc: '2.0',
+                result: true
+            }
+        ];
+
+        expect(prepareUpdateKeyData(request, response)).toEqual({
+            results: [ { methodName: 'set', result: true } ],
+            hasErrors: false
+        });
+
+        response[0].error = 1;
+        response[0].result = undefined;
+        expect(prepareUpdateKeyData(request, response)).toEqual({
+            results: [ { methodName: 'set', error: 1 } ],
+            hasErrors: true
+        });
     });
 
 });

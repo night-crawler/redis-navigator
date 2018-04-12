@@ -3,10 +3,12 @@ import {
     REDIS_RPC_FETCH_KEY_DATA_SUCCESS,
     REDIS_RPC_FETCH_KEY_INFO_SUCCESS,
     REDIS_RPC_FETCH_KEY_TYPES_SUCCESS,
+    REDIS_RPC_UPDATE_KEY_DATA_SUCCESS,
     SEARCH_KEYS_SUCCESS,
 } from 'features/actions';
 import produce from 'immer';
 import { prepareKeyInfo, prepareKeyTypesMap } from 'utils';
+import { prepareUpdateKeyData } from 'utils/rpc';
 import { SET_SELECTED_KEY } from './actions';
 
 
@@ -20,6 +22,7 @@ export const keyViewer = (state = {}, action) => produce(state, draft => {
             draft.types = {};
             draft.info = {};
             draft.data = {};
+            draft.updateResultsMap = {};
             break;
 
         case FETCH_KEYS_PAGE_SUCCESS:
@@ -37,12 +40,17 @@ export const keyViewer = (state = {}, action) => produce(state, draft => {
         case REDIS_RPC_FETCH_KEY_INFO_SUCCESS:
             draft.info = {
                 ...state.info,
-                ...prepareKeyInfo(meta.request, payload)
+                [meta.key]: prepareKeyInfo(meta.request, payload)
             };
+            draft.updateResultsMap[meta.key] = undefined;
             break;
 
         case REDIS_RPC_FETCH_KEY_DATA_SUCCESS:
             draft.data[ meta.request.params.key ] = payload.result;
+            break;
+
+        case REDIS_RPC_UPDATE_KEY_DATA_SUCCESS:
+            draft.updateResultsMap[meta.key] = prepareUpdateKeyData(meta.request, payload);
             break;
     }
 });

@@ -36,9 +36,9 @@ describe('keyDiffList', () => {
 
 describe('keyDiffString', () => {
     it('should just replace a key', () => {
-        expect(keyDiffString('a', '1', '2')).toEqual(
+        expect(keyDiffString('a', '1', '2')).toEqual([
             [ 'set', { key: 'a', value: '2' } ]
-        );
+        ]);
     });
 });
 
@@ -46,8 +46,20 @@ describe('keyDiffString', () => {
 describe('keyDiffSet', () => {
     it('should generate srem && sadd', () => {
         expect(keyDiffSet('a', [ 1, 2 ], [ '1', 2, 3 ])).toEqual([
-            [ 'srem', { members: [ 1 ] } ],
-            [ 'sadd', { members: [ '1', 3 ] } ],
+            [ 'srem', { key: 'a', members: [ 1 ] } ],
+            [ 'sadd', { key: 'a', members: [ '1', 3 ] } ],
+        ]);
+    });
+
+    it('should not add `srem` if no items deleted', () => {
+        expect(keyDiffSet('a', [ 2 ], [ '1', 2, 3 ])).toEqual([
+            [ 'sadd', { key: 'a', members: [ '1', 3 ] } ],
+        ]);
+    });
+
+    it('should not add `sadd` if no items added', () => {
+        expect(keyDiffSet('a', [ 2, 3 ], [ 2 ])).toEqual([
+            [ 'srem', { key: 'a', members: [ 3 ] } ],
         ]);
     });
 });
@@ -70,7 +82,7 @@ describe('keyDiffZSet', () => {
 
         expect(keyDiffZSet('a', prevData, nextData)).toEqual([
             [ 'zrem', { key: 'a', members: [ 'zero' ] } ],
-            [ 'zadd', { key: 'a', pairs: [ 'Dr. Rockzo', 3, '000', 0 ] } ]
+            [ 'zadd', { key: 'a', pairs: [ 0, '000', 3, 'Dr. Rockzo' ] } ]
         ]);
     });
 });

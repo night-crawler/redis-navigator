@@ -32,53 +32,63 @@ export function mergeRpcRequestResponse(rpcRequest, rpcResponse) {
     const requestMap = mapRpcRequestsById(rpcRequest);
     const responseMap = mapRpcResponsesById(rpcResponse);
 
-    return toPairs(requestMap).map(([ id, request ]) => {
-        return {
+    return toPairs(requestMap).map(
+        ([ id, request ]) => ({
             id: +id,
             methodName: request.method.split('.').pop(),
             ...request,
             ...responseMap[id],
-        };
-    });
-
+        })
+    );
 }
 
 
 export function prepareServerInfo(rpcRequest, rpcResponse) {
-    return fromPairs(mergeRpcRequestResponse(rpcRequest, rpcResponse).map(({ methodName, result, error }) => {
-        switch (methodName) {
-            case 'config_get':
-                return [ 'config', { result, error } ];
-            case 'info':
-                return [ 'sections', { result, error } ];
-            case 'client_list':
-                return [ 'clients', { result, error } ];
-            case 'dbsize':
-                return [ 'dbsize', { result, error } ];
-            case 'client_getname':
-                return [ 'name', { result, error } ];
+    return fromPairs(mergeRpcRequestResponse(rpcRequest, rpcResponse).map(
+        ({ methodName, result, error }) => {
+            switch (methodName) {
+                case 'config_get':
+                    return [ 'config', { result, error } ];
+                case 'info':
+                    return [ 'sections', { result, error } ];
+                case 'client_list':
+                    return [ 'clients', { result, error } ];
+                case 'dbsize':
+                    return [ 'dbsize', { result, error } ];
+                case 'client_getname':
+                    return [ 'name', { result, error } ];
+            }
         }
-    }));
+    ));
 }
 
 
 export function prepareKeyTypesMap(rpcRequest, rpcResponse) {
     return fromPairs(
-        mergeRpcRequestResponse(rpcRequest, rpcResponse)
-            .map(({ params: { key }, result }) => [ key, result ])
+        mergeRpcRequestResponse(rpcRequest, rpcResponse).map(
+            ({ params: { key }, result }) =>
+                [ key, result ]
+        )
     );
 }
 
 
 export function prepareKeyInfo(rpcRequest, rpcResponse) {
-    let keyName = null;
-
-    const infoMap = fromPairs(mergeRpcRequestResponse(rpcRequest, rpcResponse)
-        .map(({ methodName, params: { key }, result }) => {
-            keyName = key;
-            return [ methodName, result ];
-        })
+    return fromPairs(
+        mergeRpcRequestResponse(rpcRequest, rpcResponse).map(
+            ({ methodName, result }) =>
+                [ methodName, result ]
+        )
     );
+}
 
-    return { [keyName]: infoMap };
+
+export function prepareUpdateKeyData(rpcRequest, rpcResponse) {
+    const results = mergeRpcRequestResponse(rpcRequest, rpcResponse)
+        .filter(bundle => bundle.methodName !== 'multi_exec')
+        .map(
+            ({ id, method, params, ...rest }) => rest
+        );
+    const hasErrors = !!results.filter(bundle => bundle.error !== undefined).length;
+    return { results, hasErrors};
 }

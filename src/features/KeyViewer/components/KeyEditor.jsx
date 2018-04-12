@@ -1,16 +1,16 @@
 import { REDIS_KEY_TYPE_ICON_MAP } from 'constants';
 import debug from 'debug';
 import CodeMirrorTextEditor from 'features/Common/components/CodeMirrorTextEditor';
-import FullPageDimmer from 'features/Common/components/FullPageDimmer';
 import CodeMirrorYamlObjectEditor from 'features/Common/components/CodeMirrorYamlObjectEditor';
-import { isEmpty } from 'lodash';
+import FullPageDimmer from 'features/Common/components/FullPageDimmer';
+import { isEmpty, isEqual } from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { HotKeys } from 'react-hotkeys';
 import { FormattedMessage as Tr } from 'react-intl';
-import { Button, Header, Segment, Icon } from 'semantic-ui-react';
+import { Button, Header, Icon, Segment } from 'semantic-ui-react';
 import messages from '../messages';
 import KeyInfo from './KeyInfo';
-import { isEqual } from 'lodash';
 
 
 export default class KeyEditor extends React.Component {
@@ -27,6 +27,7 @@ export default class KeyEditor extends React.Component {
         }),
         data: PropTypes.any,
         onFetchKeyDataClick: PropTypes.func,
+        onSaveKeyDataClick: PropTypes.func,
     };
 
     constructor(props) {
@@ -35,10 +36,19 @@ export default class KeyEditor extends React.Component {
         this.log = debug('KeyEditor');
         this.log('initialized', props);
 
-        this.state = {
-            dirtyData: undefined,
+        this.keyMapHandlers = {
+            save: this.handleSaveClicked,
         };
     }
+
+    state = {
+        dirtyData: undefined,
+    };
+
+    keyMap = {
+        save: 'ctrl+enter',
+    };
+
 
     static getDerivedStateFromProps(nextProps, prevState) {
         const { data: nextData } = nextProps;
@@ -62,31 +72,33 @@ export default class KeyEditor extends React.Component {
         if (isEmpty(info))
             return <FullPageDimmer />;
 
-        const iconName = ( REDIS_KEY_TYPE_ICON_MAP[ type ] || { name: 'spinner' } ).name;
+        const iconName = (REDIS_KEY_TYPE_ICON_MAP[ type ] || { name: 'spinner' }).name;
 
         return (
-            <Segment basic={ true }>
-                <Header as='h2'>
-                    <Icon name={ iconName } />
-                    { `[${type}] ${selectedKey}` }
-                </Header>
-                <KeyInfo { ...info } />
+            <HotKeys keyMap={ this.keyMap } handlers={ this.keyMapHandlers } focused={ true }>
+                <Segment basic={ true }>
+                    <Header as='h2'>
+                        <Icon name={ iconName } />
+                        { `[${type}] ${selectedKey}` }
+                    </Header>
+                    <KeyInfo { ...info } />
 
-                <Button fluid={ true } onClick={ this.handleFetchKeyDataClicked }>
-                    <Icon name='refresh' />
-                    <Tr { ...messages.fetchKeyData } />
-                </Button>
+                    <Button fluid={ true } onClick={ this.handleFetchKeyDataClicked }>
+                        <Icon name='refresh' />
+                        <Tr { ...messages.fetchKeyData } />
+                    </Button>
 
-                { this.renderEditor() }
+                    { this.renderEditor() }
 
-                <Button
-                    disabled={ isEqual(data, dirtyData) } fluid={ true } primary={ true }
-                    onClick={ this.handleSaveClicked }
-                >
-                    <Icon name='save' />
-                    <Tr { ...messages.save } />
-                </Button>
-            </Segment>
+                    <Button
+                        disabled={ isEqual(data, dirtyData) } fluid={ true } primary={ true }
+                        onClick={ this.handleSaveClicked }
+                    >
+                        <Icon name='save' />
+                        <Tr { ...messages.save } />
+                    </Button>
+                </Segment>
+            </HotKeys>
         );
     }
 
@@ -99,7 +111,7 @@ export default class KeyEditor extends React.Component {
         if (!type || !data)
             return false;
 
-        switch(type.toLowerCase()) {
+        switch (type.toLowerCase()) {
             case 'list':
             case 'set':
             case 'zset':
@@ -120,10 +132,21 @@ export default class KeyEditor extends React.Component {
 
     handleEditorChange = (nextValue) => {
         this.setState({ dirtyData: nextValue });
-        console.log(nextValue);
     };
 
     handleSaveClicked = () => {
+        const { onSaveKeyDataClick, selectedKey, info, type, data } = this.props;
+        const { dirtyData } = this.state;
 
+        if (isEqual(data, dirtyData))
+            return false;
+
+        onSaveKeyDataClick(
+            selectedKey,
+            type,
+            data,
+            dirtyData,
+            info.pttl
+        );
     };
 }

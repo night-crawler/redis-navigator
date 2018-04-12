@@ -1,4 +1,6 @@
-import { RpcActionCreator, RpcRequestBuilder } from './rpc';
+import { RSAA } from 'redux-api-middleware';
+import { keyDiff } from 'utils/keyDiff';
+import { RpcActionCreator } from './rpc';
 import { isString } from 'lodash';
 
 
@@ -47,6 +49,26 @@ const REDIS_RPC_FETCH_KEY_DATA = [
     REDIS_RPC_FETCH_KEY_DATA_SUCCESS,
     REDIS_RPC_FETCH_KEY_DATA_FAIL,
 ];
+
+
+export const REDIS_RPC_UPDATE_KEY_DATA_START = 'redisNavigator/rpc/batch/execute/update-key-data/start';
+export const REDIS_RPC_UPDATE_KEY_DATA_SUCCESS = 'redisNavigator/rpc/batch/execute/update-key-data/success';
+export const REDIS_RPC_UPDATE_KEY_DATA_FAIL = 'redisNavigator/rpc/batch/execute/update-key-data/fail';
+
+
+const REDIS_RPC_UPDATE_KEY_DATA = [
+    REDIS_RPC_UPDATE_KEY_DATA_START,
+    REDIS_RPC_UPDATE_KEY_DATA_SUCCESS,
+    REDIS_RPC_UPDATE_KEY_DATA_FAIL,
+];
+
+
+function patchTypes(actionBundle, patchWith) {
+    actionBundle[RSAA].types.forEach(
+        type => type.meta = { ...type.meta, ...patchWith }
+    );
+    return actionBundle;
+}
 
 
 export class RedisRpc {
@@ -99,7 +121,7 @@ export class RedisRpc {
                 [ 'object_encoding', { key } ],
                 [ 'object_idletime', { key } ],
             );
-
+        patchTypes(actionBundle, { key });
         return this.dispatch(actionBundle);
     };
 
@@ -107,7 +129,17 @@ export class RedisRpc {
         const actionBundle = this.rpcActionCreator
             .action(REDIS_RPC_FETCH_KEY_DATA)
             .execute(...this._produceGetAllCommand(key, type));
-
+        patchTypes(actionBundle, { key });
+        return this.dispatch(actionBundle);
+    };
+    
+    updateKeyData = (key, type, prevData, nextData, pexpire) => {
+        const actionBundle = this.rpcActionCreator
+            .action(undefined, REDIS_RPC_UPDATE_KEY_DATA)
+            .batchExecute(...keyDiff(
+                key, type, prevData, nextData, pexpire
+            ));
+        patchTypes(actionBundle, { key });
         return this.dispatch(actionBundle);
     };
 

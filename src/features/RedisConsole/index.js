@@ -50,12 +50,8 @@ function mapDispatchToProps(dispatch) {
                 dispatch(toggleImportDialogVisible(redisInstance, isVisible)),
         },
         notifications: {
-            nothingToExecute: () => dispatch(warning({
-                title: 'Nothing to execute here',
-                message: 'Change something and try again',
-                position: 'tr',
-                autoDismiss: 2,
-            })),
+            warning: ({ title, message, position='tr', autoDismiss=2 }) =>
+                dispatch(warning({ title, message, position, autoDismiss })),
         }
     };
 }

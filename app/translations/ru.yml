@@ -27,20 +27,29 @@ features.Dashboard.messages.usPerCall: μs / вызов
 features.DefaultLayout.messages.loadingRedisInstances: Загрузка Redis объектов
 features.KeyViewer.messages.encoding: Кодирование
 features.KeyViewer.messages.fetchKeyData: Загрузить данные ключа
+features.KeyViewer.messages.fewKeysFound: 'Найдено {keyCount} ключа'
 features.KeyViewer.messages.filterKeys: Найти ключи...
 features.KeyViewer.messages.idletime: Время простоя
 features.KeyViewer.messages.memoryUsage: Использование памяти
+features.KeyViewer.messages.oneKeyFound: 'Найден {keyCount} ключ'
+features.KeyViewer.messages.otherKeysFound: 'Найдено {keyCount} ключей'
 features.KeyViewer.messages.pttl: 'TTL, мс'
 features.KeyViewer.messages.refcount: Ссылок
 features.KeyViewer.messages.save: Сохранить
+features.KeyViewer.messages.saveError: При сохранении возникли ошибки
+features.KeyViewer.messages.saveSuccess: Сохранено успешно
 features.KeyViewer.messages.selectAKey: Выберите ключ
+features.KeyViewer.messages.someKeysFound: 'Найдено {keyCount} ключей'
 features.KeyViewer.messages.ttl: TTL
+features.KeyViewer.messages.zeroKeysFound: 'Найдено {keyCount} ключей'
 features.Navbar.messages.instance: Подключение
 features.Navbar.messages.instances: Подключения
 features.Navbar.messages.refresh: Обновить
 features.RedisConsole.messages.append: Добавить
+features.RedisConsole.messages.changeSomething: 'Измените что-нибудь и попробуйте ещё раз'
 features.RedisConsole.messages.clear: Очистить
 features.RedisConsole.messages.execute: Выполнить
 features.RedisConsole.messages.export: Экспортировать
 features.RedisConsole.messages.findCommand: Найти команду
 features.RedisConsole.messages.import: Импортировать
+features.RedisConsole.messages.nothingToExecute: 'Нечего выполнять'

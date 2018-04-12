@@ -27,20 +27,29 @@ features.Dashboard.messages.usPerCall: μs / call
 features.DefaultLayout.messages.loadingRedisInstances: Loading Redis instances
 features.KeyViewer.messages.encoding: Encoding
 features.KeyViewer.messages.fetchKeyData: Fetch key data
+features.KeyViewer.messages.fewKeysFound: '{keyCount} keys found'
 features.KeyViewer.messages.filterKeys: Filter keys...
 features.KeyViewer.messages.idletime: Idle time
 features.KeyViewer.messages.memoryUsage: Memory usage
+features.KeyViewer.messages.oneKeyFound: '${keyCount} key found'
+features.KeyViewer.messages.otherKeysFound: '{keyCount} keys found'
 features.KeyViewer.messages.pttl: pTTL
 features.KeyViewer.messages.refcount: Refcount
 features.KeyViewer.messages.save: Save
+features.KeyViewer.messages.saveError: There were some errors
+features.KeyViewer.messages.saveSuccess: Everything have been saved successfully
 features.KeyViewer.messages.selectAKey: Select a key
+features.KeyViewer.messages.someKeysFound: '{keyCount} keys found'
 features.KeyViewer.messages.ttl: TTL
+features.KeyViewer.messages.zeroKeysFound: '${keyCount} keys found'
 features.Navbar.messages.instance: Instance
 features.Navbar.messages.instances: Instances
 features.Navbar.messages.refresh: Refresh
 features.RedisConsole.messages.append: Append
+features.RedisConsole.messages.changeSomething: Change something and try again
 features.RedisConsole.messages.clear: Clear
 features.RedisConsole.messages.execute: Execute
 features.RedisConsole.messages.export: Export
 features.RedisConsole.messages.findCommand: Find Command
 features.RedisConsole.messages.import: Import
+features.RedisConsole.messages.nothingToExecute: Nothing to execute here

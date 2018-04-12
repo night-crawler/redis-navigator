@@ -35,6 +35,14 @@ describe('RedisRpc actions', () => {
         expect(dispatch).toHaveBeenCalled();
     });
 
+    it('should updateKeyData', () => {
+        const dispatch = jest.fn(action => action);
+        const rpc = new RedisRpc({ endpoint: '/test', dispatch, instanceName: 'instance' });
+        rpc.updateKeyData('a', 'list', [1, 2], [2, 3], 1000);
+
+        expect(dispatch).toHaveBeenCalled();
+    });
+
     it('should fetchKeyTypes', () => {
         const dispatch = jest.fn(action => action);
         const rpc = new RedisRpc({ endpoint: '/test', dispatch, instanceName: 'instance' });

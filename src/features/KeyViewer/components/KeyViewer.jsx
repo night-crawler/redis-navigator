@@ -8,6 +8,8 @@ import { Timeouts } from 'utils/timers';
 import messages from '../messages';
 import InfiniteKeyList from './InfiniteKeyList';
 import KeyEditor from './KeyEditor';
+import KeyUpdateResults from './KeyUpdateResults';
+import PluralFoundKeys from './PluralFoundKeys';
 
 
 class KeyViewer extends React.Component {
@@ -19,6 +21,7 @@ class KeyViewer extends React.Component {
             fetchKeyRangeWithTypes: PropTypes.func.isRequired,
             fetchKeyInfo: PropTypes.func.isRequired,
             fetchKeyData: PropTypes.func.isRequired,
+            updateKeyData: PropTypes.func.isRequired,
         }),
         locationSearchParams: PropTypes.shape({
             pattern: PropTypes.string,
@@ -27,10 +30,19 @@ class KeyViewer extends React.Component {
             ttlSeconds: PropTypes.number,
             perPage: PropTypes.number,
         }),
+        notifications: PropTypes.shape({
+            error: PropTypes.func,
+            success: PropTypes.func,
+            warning: PropTypes.func,
+        }),
 
         routeInstanceSearchUrl: PropTypes.string,
 
         selectedKey: PropTypes.string,
+        selectedKeyType: PropTypes.string,
+        selectedKeyData: PropTypes.any,
+        selectedKeyInfo: PropTypes.object,
+        selectedKeyUpdateResults: PropTypes.object,
 
         routeKeys: PropTypes.object,
         keyTypes: PropTypes.object,
@@ -52,6 +64,7 @@ class KeyViewer extends React.Component {
 
     state = {};
 
+
     render() {
         const {
             intl,
@@ -62,15 +75,11 @@ class KeyViewer extends React.Component {
             keyTypes,
             actions,
             searchPagesMap,
-            keyInfo,
-            keyData,
+            selectedKeyType,
+            selectedKeyData,
+            selectedKeyInfo,
+            selectedKeyUpdateResults,
         } = this.props;
-
-        const
-            selectedKeyType = keyTypes[ selectedKey ],
-            selectedKeyData = keyData[ selectedKey ],
-            selectedKeyInfo = keyInfo[ selectedKey ];
-
 
         const filterActionButtonGroup = (
             <Button.Group>
@@ -108,7 +117,7 @@ class KeyViewer extends React.Component {
                         />
                         <div style={ { flex: '1 1 auto' } }>
                             {
-                                hasFetchedSearchKeys && searchInfo.count &&
+                                hasFetchedSearchKeys && !!searchInfo.count &&
                                 <InfiniteKeyList
                                     selectedKey={ selectedKey }
                                     count={ searchInfo.count }
@@ -119,6 +128,7 @@ class KeyViewer extends React.Component {
                                     onKeyClick={ this.handleKeyClicked }
                                 />
                             }
+                            <PluralFoundKeys keyCount={ searchInfo.count } />
                         </div>
                     </Grid.Column>
 
@@ -130,7 +140,11 @@ class KeyViewer extends React.Component {
                             data={ selectedKeyData }
                             selectedKey={ selectedKey }
                             onFetchKeyDataClick={ this.handleFetchKeyDataClicked }
+                            onSaveKeyDataClick={ this.handleSaveKeyDataClick }
                         />
+
+                        <KeyUpdateResults { ...selectedKeyUpdateResults } />
+
                     </Grid.Column>
                 </Grid>
             </Segment>
@@ -144,18 +158,25 @@ class KeyViewer extends React.Component {
     }
 
     static getDerivedStateFromProps(nextProps) {
-        const
-            { selectedKey, keyTypes, keyInfo, keyData, actions } = nextProps,
-            type = keyTypes[ selectedKey ],
-            data = keyData[ selectedKey ],
-            info = keyInfo[ selectedKey ];
+        const {
+            selectedKey,
+            selectedKeyType: type,
+            selectedKeyData: data,
+            selectedKeyInfo: info,
+            selectedKeyUpdateResults: updateResults,
+            actions,
+            notifications,
+        } = nextProps;
 
-        if (selectedKey && !info)
-            actions.fetchKeyInfo(selectedKey);
+        // if (selectedKey && !info)
+        //     actions.fetchKeyInfo(selectedKey);
 
         if (info && type && !data && info.memory_usage <= MAX_CONTENT_AUTOLOAD_SIZE)
             actions.fetchKeyData(selectedKey, type);
 
+        if (updateResults && updateResults.hasErrors === false) {
+            notifications.success({ title: 'bla', message: 'lol' });
+        }
         return null;
     }
 
@@ -195,8 +216,13 @@ class KeyViewer extends React.Component {
             callback: () => actions.searchKeys(newParams),
             timeout: 300
         });
-    }
+    };
 
+    handleSaveKeyDataClick = (key, type, prevData, nextData, pexpire) => {
+        const { actions } = this.props;
+        actions.updateKeyData(key, type, prevData, nextData, pexpire);
+    }
 }
+
 
 export default injectIntl(KeyViewer);

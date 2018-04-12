@@ -66,38 +66,6 @@ class MethodCallEditor extends React.Component {
         };
     }
 
-    shouldComponentUpdate(nextProps) {
-        // don't worry about changed on*-signatures, since all of them are bound to uuid
-        return !isEqual(
-            pickBy(nextProps, val => !isFunction(val)),
-            pickBy(this.props, val => !isFunction(val)),
-        );
-    }
-
-    static getDerivedStateFromProps(newProps) {
-        const { methodName, methodParams, inspections, onMethodParamsChange } = newProps;
-        const methodProps = inspections[methodName];
-
-        if (methodProps && methodName && !methodParams) {
-            onMethodParamsChange(parametersToJson(methodProps.parameters));
-        }
-        return null;
-    }
-
-    isSuccess() {
-        const { response } = this.props;
-        if (!response)
-            return false;
-
-        if (response.result !== undefined)
-            return true;
-
-        if (response.error !== undefined)
-            return false;
-
-        return false;
-    }
-
     render() {
         this.log('render');
         const {
@@ -156,6 +124,38 @@ class MethodCallEditor extends React.Component {
                 </Segment>
             </HotKeys>
         );
+    }
+
+    shouldComponentUpdate(nextProps) {
+        // don't worry about changed on*-signatures, since all of them are bound to uuid
+        return !isEqual(
+            pickBy(nextProps, val => !isFunction(val)),
+            pickBy(this.props, val => !isFunction(val)),
+        );
+    }
+
+    static getDerivedStateFromProps(newProps) {
+        const { methodName, methodParams, inspections, onMethodParamsChange } = newProps;
+        const methodProps = inspections[methodName];
+
+        if (methodProps && methodName && !methodParams) {
+            onMethodParamsChange(parametersToJson(methodProps.parameters));
+        }
+        return null;
+    }
+
+    isSuccess() {
+        const { response } = this.props;
+        if (!response)
+            return false;
+
+        if (response.result !== undefined)
+            return true;
+
+        if (response.error !== undefined)
+            return false;
+
+        return false;
     }
 
     handleMethodNameChanged = (e, { value }) => {

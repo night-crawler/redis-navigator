@@ -1,5 +1,6 @@
 import { DEFAULT_SEARCH_KEYS_PARAMS } from 'constants';
 import { fetchKeysPage, RedisRpc, searchKeys } from 'features/actions';
+import { warning, error, success } from 'react-notification-system-redux';
 import { setSelectedKey } from './actions';
 import {
     hasFetchedSearchKeys,
@@ -26,6 +27,10 @@ import {
     selectedKey,
     keyInfo,
     keyData,
+    selectedKeyType,
+    selectedKeyData,
+    selectedKeyInfo,
+    selectedKeyUpdateResults,
 } from './selectors';
 
 
@@ -76,6 +81,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
 
             fetchKeyInfo: rpc.fetchKeyInfo,
             fetchKeyData: rpc.fetchKeyData,
+            updateKeyData: rpc.updateKeyData,
 
             fetchKeyRangeWithTypes: ({ startIndex, stopIndex, perPage }) => {
                 const pageHelper = new PageHelper(undefined, perPage);
@@ -89,9 +95,16 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
                     .then(data =>
                         rpc.fetchKeyTypes(flatten(map(data, 'payload.results')))
                     );
-            }
+            },
         },
-
+        notifications: {
+            warning: ({ title, message, position='tr', autoDismiss=2 }) =>
+                dispatch(warning({ title, message, position, autoDismiss })),
+            error: ({ title, message, position='tr', autoDismiss=2 }) =>
+                dispatch(error({ title, message, position, autoDismiss })),
+            success: ({ title, message, position='tr', autoDismiss=2 }) =>
+                dispatch(success({ title, message, position, autoDismiss })),
+        },
         dispatch: undefined,
     };
 }
@@ -115,6 +128,10 @@ export default connect(
         keyTypes,
         keyInfo,
         keyData,
+        selectedKeyType,
+        selectedKeyData,
+        selectedKeyInfo,
+        selectedKeyUpdateResults,
     }),
     mapDispatchToProps,
     mergeProps

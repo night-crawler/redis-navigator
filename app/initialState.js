@@ -35,6 +35,10 @@ export default {
 
         keyViewer: {
             selectedKey: '',
+            types: {},
+            info: {},
+            data: {},
+            updateResultsMap: {},
         },
     },
     notifications: [],

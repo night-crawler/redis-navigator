@@ -4,14 +4,14 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import { HotKeys } from 'react-hotkeys';
+import { FormattedMessage as Tr } from 'react-intl';
 import { Button, Icon, Segment } from 'semantic-ui-react';
 import { COLORS } from 'semantic-ui-react/dist/es/lib/SUI';
 import { saveFile } from 'utils';
 import messages from '../messages';
-import DropdownRpcMethodItem from './DropdownRpcMethodItem';
 import CommandImporter from './CommandImporter';
+import DropdownRpcMethodItem from './DropdownRpcMethodItem';
 import MethodCallEditor from './MethodCallEditor';
-import { FormattedMessage as Tr } from 'react-intl';
 
 
 const ConsoleCommandType = PropTypes.shape({
@@ -44,7 +44,7 @@ export default class RedisConsole extends React.Component {
         }).isRequired,
 
         notifications: PropTypes.shape({
-            nothingToExecute: PropTypes.func,
+            warning: PropTypes.func,
         }),
     };
 
@@ -61,12 +61,12 @@ export default class RedisConsole extends React.Component {
         this.log = debug('RedisConsole');
         this.log('initialized', props);
 
-        this.ddMethodsOptions = Object.entries(inspections).map(([fName, fOptions]) => ( {
+        this.ddMethodsOptions = Object.entries(inspections).map(([ fName, fOptions ]) => ({
             key: fName,
             text: fName,
             value: fName,
             content: <DropdownRpcMethodItem { ...fOptions } name={ fName } />
-        } ));
+        }));
 
         this.keyMapHandlers = {
             executeAll: this.handleExecuteAllClicked,
@@ -174,10 +174,10 @@ export default class RedisConsole extends React.Component {
 
     handleImport = (commands) => {
         const { actions, routeInstanceName } = this.props;
-        commands.forEach((command, i)=> {
+        commands.forEach((command, i) => {
             actions.appendCallEditor({
                 instanceName: routeInstanceName,
-                color: COLORS[i % COLORS.length],
+                color: COLORS[ i % COLORS.length ],
                 ...command
             });
         });
@@ -187,7 +187,7 @@ export default class RedisConsole extends React.Component {
     handleCallEditorRetryClicked = (key) => {
         const { routeConsoleCommands } = this.props;
         const cmd = find(routeConsoleCommands, { key });
-        this.handleBatchExecute([cmd]);
+        this.handleBatchExecute([ cmd ]);
     };
 
     handleClearCallEditorsClicked = () => {
@@ -199,12 +199,12 @@ export default class RedisConsole extends React.Component {
 
     handleBatchExecute(commands) {
         const { routeInstanceName, actions } = this.props;
-        const cmdPairBundles = commands.map(cmd => [cmd.methodName, cmd.methodParams]);
+        const cmdPairBundles = commands.map(cmd => [ cmd.methodName, cmd.methodParams ]);
 
         actions.batchExecute(...cmdPairBundles)
             .then(data =>
                 zip(map(commands, 'key'), map(data.meta.request, 'id'))
-                    .forEach(([key, id]) =>
+                    .forEach(([ key, id ]) =>
                         actions.bindCallEditorToId(routeInstanceName, key, id))
             );
     }
@@ -214,10 +214,13 @@ export default class RedisConsole extends React.Component {
                 routeConsoleCommandsToExecute: commands,
                 notifications,
             } = this.props,
-            cmdPairBundles = commands.map(cmd => [cmd.methodName, cmd.methodParams]);
+            cmdPairBundles = commands.map(cmd => [ cmd.methodName, cmd.methodParams ]);
 
         if (isEmpty(cmdPairBundles))
-            return notifications.nothingToExecute();
+            return notifications.warning({
+                title: <Tr { ...messages.nothingToExecute } />,
+                message: <Tr { ...messages.changeSomething } />,
+            });
 
         this.handleBatchExecute(commands);
     };
@@ -226,7 +229,7 @@ export default class RedisConsole extends React.Component {
         const { routeInstanceName, actions, routeConsoleCommands } = this.props;
         actions.appendCallEditor({
             instanceName: routeInstanceName,
-            color: COLORS[routeConsoleCommands.length % COLORS.length],
+            color: COLORS[ routeConsoleCommands.length % COLORS.length ],
         });
     }
 

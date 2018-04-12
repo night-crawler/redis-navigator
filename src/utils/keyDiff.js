@@ -1,4 +1,4 @@
-import { difference, differenceWith, flatten, isEqual, reverse, isString } from 'lodash';
+import { difference, differenceWith, flatten, isEqual, isEmpty, reverse, isString } from 'lodash';
 
 
 const DIFF_FN_MAP = {
@@ -27,7 +27,7 @@ export function keyDiff(key, type, prevData, nextData, pexpire) {
         ...fn(key, prevData, nextData),
     ];
 
-    if (pexpire !== undefined)
+    if (+pexpire > 0)
         rpcCommands.push([ 'pexpire', { key, timeout: pexpire } ]);
 
     return rpcCommands;
@@ -35,19 +35,26 @@ export function keyDiff(key, type, prevData, nextData, pexpire) {
 
 
 export function keyDiffString(key, prevData, nextData) {
-    return [ 'set', { key, value: nextData } ];
+    return [
+        [ 'set', { key, value: nextData } ]
+    ];
 }
 
 
 export function keyDiffSet(key, prevData, nextData) {
     const
         removedMembers = difference(prevData, nextData),
-        addedMembers = difference(nextData, prevData);
+        addedMembers = difference(nextData, prevData),
+        batch = [];
 
-    return [
-        [ 'srem', { members: removedMembers } ],
-        [ 'sadd', { members: addedMembers } ],
-    ];
+    !isEmpty(removedMembers) && batch.push(
+        [ 'srem', { key, members: removedMembers } ]
+    );
+    !isEmpty(addedMembers) && batch.push(
+        [ 'sadd', { key, members: addedMembers } ]
+    );
+
+    return batch;
 }
 
 
@@ -63,18 +70,25 @@ export function keyDiffList(key, prevData, nextData) {
 export function keyDiffZSet(key, prevData, nextData) {
     const
         removedPairs = differenceWith(prevData, nextData, isEqual),
-        addedPairs = differenceWith(nextData, prevData, isEqual);
+        addedPairs = differenceWith(nextData, prevData, isEqual),
+        batch = [];
 
-    return [
-        [ 'zrem', { key, members: removedPairs.map(([ value, ]) => value) } ],
-        [ 'zadd', { key, pairs: flatten(reverse(addedPairs)) } ],
-    ];
+    !isEmpty(removedPairs) && batch.push(
+        [ 'zrem', { key, members: removedPairs.map(([ value, ]) => value) } ]
+    );
+    !isEmpty(addedPairs) && batch.push(
+        [ 'zadd', { key, pairs: flatten(addedPairs.map(pair => reverse(pair))) } ]
+    );
+
+    return batch;
 }
 
 
 export function keyDiffHash(key, prevData, nextData) {
-    const deleteFields = [];
-    const updateFields = {};
+    const
+        deleteFields = [],
+        updateFields = {},
+        batch = [];
 
     for (let [ field, value ] of Object.entries(prevData)) {
         if (nextData[field] === undefined) {
@@ -90,8 +104,13 @@ export function keyDiffHash(key, prevData, nextData) {
         }
     }
 
-    return [
-        [ 'hdel', { key, fields: deleteFields } ],
+    !isEmpty(deleteFields) && batch.push(
+        [ 'hdel', { key, fields: deleteFields } ]
+    );
+
+    !isEmpty(updateFields) && batch.push(
         [ 'hmset_dict', { key, kwargs: updateFields } ]
-    ];
+    );
+
+    return batch;
 }
