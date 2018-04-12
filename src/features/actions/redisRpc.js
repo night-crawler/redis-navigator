@@ -134,13 +134,3 @@ export class RedisRpc {
         }
     }
 }
-
-
-export function createRedisRpcCreator(dispatch) {
-    const requestBuilder = new RpcRequestBuilder();
-
-    return (endpoint) => {
-        const rpcActionCreator = new RpcActionCreator({ endpoint, requestBuilder });
-        return new RedisRpc({ dispatch, rpcActionCreator });
-    };
-}

@@ -1,10 +1,16 @@
-import { FETCH_KEYS_PAGE_SUCCESS, REDIS_RPC_FETCH_KEY_TYPES_SUCCESS, SEARCH_KEYS_SUCCESS, REDIS_RPC_FETCH_KEY_INFO_SUCCESS, REDIS_RPC_FETCH_KEY_DATA_START, REDIS_RPC_FETCH_KEY_DATA_SUCCESS, REDIS_RPC_FETCH_KEY_DATA_FAIL, } from 'features/actions';
+import {
+    FETCH_KEYS_PAGE_SUCCESS,
+    REDIS_RPC_FETCH_KEY_DATA_SUCCESS,
+    REDIS_RPC_FETCH_KEY_INFO_SUCCESS,
+    REDIS_RPC_FETCH_KEY_TYPES_SUCCESS,
+    SEARCH_KEYS_SUCCESS,
+} from 'features/actions';
 import produce from 'immer';
-import { prepareKeyTypesMap, prepareKeyInfo } from 'utils';
+import { prepareKeyInfo, prepareKeyTypesMap } from 'utils';
 import { SET_SELECTED_KEY } from './actions';
 
 
-export const keySearch = (state = {}, action) => produce(state, draft => {
+export const keyViewer = (state = {}, action) => produce(state, draft => {
     const { payload, meta } = action;
 
     switch (action.type) {

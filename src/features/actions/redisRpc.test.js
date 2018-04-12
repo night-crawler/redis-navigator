@@ -2,7 +2,7 @@ import { RedisRpc } from '.';
 
 
 describe('RedisRpc actions', () => {
-    it('can load info', () => {
+    it('should load info', () => {
         const dispatch = jest.fn(action => action);
         const rpc = new RedisRpc({ endpoint: '/test', dispatch });
 
@@ -10,7 +10,7 @@ describe('RedisRpc actions', () => {
         expect(dispatch).toHaveBeenCalled();
     });
 
-    it('can batch execute', () => {
+    it('should batch execute', () => {
         const dispatch = jest.fn(action => action);
         const rpc = new RedisRpc({ endpoint: '/test', dispatch, instanceName: 'instance' });
 
@@ -19,7 +19,7 @@ describe('RedisRpc actions', () => {
         expect(dispatch).toHaveBeenCalled();
     });
 
-    it('fetchKeyInfo', () => {
+    it('should fetchKeyInfo', () => {
         const dispatch = jest.fn(action => action);
         const rpc = new RedisRpc({ endpoint: '/test', dispatch, instanceName: 'instance' });
         rpc.fetchKeyInfo();
@@ -27,7 +27,7 @@ describe('RedisRpc actions', () => {
         expect(dispatch).toHaveBeenCalled();
     });
 
-    it('fetchKeyData', () => {
+    it('should fetchKeyData', () => {
         const dispatch = jest.fn(action => action);
         const rpc = new RedisRpc({ endpoint: '/test', dispatch, instanceName: 'instance' });
         rpc.fetchKeyData('a', 'list');
@@ -35,13 +35,24 @@ describe('RedisRpc actions', () => {
         expect(dispatch).toHaveBeenCalled();
     });
 
-    it('_produceGetAllCommand', () => {
+    it('should fetchKeyTypes', () => {
+        const dispatch = jest.fn(action => action);
+        const rpc = new RedisRpc({ endpoint: '/test', dispatch, instanceName: 'instance' });
+        rpc.fetchKeyTypes(['a', 'b']);
+
+        expect(dispatch).toHaveBeenCalled();
+    });
+
+    it('should _produceGetAllCommand', () => {
         const rpc = new RedisRpc();
 
         const wrongKey = () => rpc._produceGetAllCommand(1);
         expect(wrongKey).toThrow(Error);
 
-        const wrongType = () => rpc._produceGetAllCommand('a', 1);
+        const wrongTypeType = () => rpc._produceGetAllCommand('a', 1);
+        expect(wrongTypeType).toThrow(Error);
+
+        const wrongType = () => rpc._produceGetAllCommand('a', 'qwe');
         expect(wrongType).toThrow(Error);
 
         expect(rpc._produceGetAllCommand('a', 'LIST')).toEqual(

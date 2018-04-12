@@ -33,7 +33,7 @@ export default {
             count: 1,
         },
 
-        keySearch: {
+        keyViewer: {
             selectedKey: '',
         },
     },

@@ -66,9 +66,9 @@ export const keys = createSelector(redisNavigator, redisNavigator => redisNaviga
 
 
 /**
- * state.redisNavigator.keySearch
+ * state.redisNavigator.keyViewer
  */
-export const keySearch = createSelector(redisNavigator, redisNavigator => redisNavigator.keySearch || {});
+export const keyViewer = createSelector(redisNavigator, redisNavigator => redisNavigator.keyViewer || {});
 
 
 

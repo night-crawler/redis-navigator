@@ -1,4 +1,4 @@
-import { keySearch } from 'features/KeyViewer/reducer';
+import { keyViewer } from 'features/KeyViewer/reducer';
 import { combineReducers } from 'redux';
 import { activeInstanceName } from './activeInstanceName';
 import { hasFetched, isFetching } from './fetching';
@@ -18,7 +18,7 @@ export const redisNavigator = combineReducers({
     inspections,
     urls,
     progress,
-    keySearch,
+    keyViewer,
 });
 
 export default redisNavigator;
