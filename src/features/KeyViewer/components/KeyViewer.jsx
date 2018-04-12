@@ -60,10 +60,11 @@ class KeyViewer extends React.Component {
         debug.enable('*');
         this.log = debug('KeyViewer');
         this.log('initialized', props);
+
+        const { selectedKey } = props;
+
+        this.state = {};
     }
-
-    state = {};
-
 
     render() {
         const {
@@ -78,7 +79,6 @@ class KeyViewer extends React.Component {
             selectedKeyType,
             selectedKeyData,
             selectedKeyInfo,
-            selectedKeyUpdateResults,
         } = this.props;
 
         const filterActionButtonGroup = (
@@ -142,9 +142,6 @@ class KeyViewer extends React.Component {
                             onFetchKeyDataClick={ this.handleFetchKeyDataClicked }
                             onSaveKeyDataClick={ this.handleSaveKeyDataClick }
                         />
-
-                        <KeyUpdateResults { ...selectedKeyUpdateResults } />
-
                     </Grid.Column>
                 </Grid>
             </Segment>
@@ -174,8 +171,11 @@ class KeyViewer extends React.Component {
         if (info && type && !data && info.memory_usage <= MAX_CONTENT_AUTOLOAD_SIZE)
             actions.fetchKeyData(selectedKey, type);
 
-        if (updateResults && updateResults.hasErrors === false) {
-            notifications.success({ title: 'bla', message: 'lol' });
+        if (updateResults) {
+            if (updateResults.hasErrors === false)
+                notifications.success({ message: <KeyUpdateResults { ...updateResults } /> });
+            if (updateResults.hasErrors === true)
+                notifications.error({ message: <KeyUpdateResults { ...updateResults } />, autoDismiss: false });
         }
         return null;
     }

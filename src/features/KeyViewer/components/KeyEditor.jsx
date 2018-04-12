@@ -40,25 +40,14 @@ export default class KeyEditor extends React.Component {
         this.keyMapHandlers = {
             save: this.handleSaveClicked,
         };
-    }
 
-    state = {
-        dirtyData: undefined,
-    };
+        this.state = {
+            dirtyData: undefined,
+        };
 
-    keyMap = {
-        save: 'ctrl+enter',
-    };
-
-
-    static getDerivedStateFromProps(nextProps, prevState) {
-        const { data: nextData } = nextProps;
-        const { data: prevData } = prevState;
-
-        if (!isEqual(nextData, prevData)) {
-            return { dirtyData: nextData };
-        }
-        return null;
+        this.keyMap = {
+            save: 'ctrl+enter',
+        };
     }
 
     render() {
@@ -122,6 +111,16 @@ export default class KeyEditor extends React.Component {
             default:
                 throw new Error(`Unknown type: ${type}`);
         }
+    }
+
+    static getDerivedStateFromProps(nextProps, prevState) {
+        const { data: nextData } = nextProps;
+        const { data: prevData } = prevState;
+
+        if (!isEqual(nextData, prevData)) {
+            return { dirtyData: nextData };
+        }
+        return null;
     }
 
     handleFetchKeyDataClicked = () => {

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Message, Icon } from 'semantic-ui-react';
+import { Icon } from 'semantic-ui-react';
 import { FormattedMessage as Tr } from 'react-intl';
 import yaml from 'js-yaml';
 import messages from '../messages';
@@ -24,11 +24,11 @@ function KeyUpdateResults(props) {
         : <Tr { ...messages.saveSuccess } />;
 
     return (
-        <Message className='KeyUpdateResults' error={ hasErrors } info={ !hasErrors }>
+        <div className='KeyUpdateResults'>
             <Icon name={ iconName } />
             { message }
             <pre>{ data }</pre>
-        </Message>
+        </div>
     );
 }
 
