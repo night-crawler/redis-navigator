@@ -115,6 +115,7 @@ class KeyViewer extends React.Component {
                             action={ filterActionButtonGroup }
                             placeholder={ intl.formatMessage({ ...messages.filterKeys }) }
                         />
+                        <PluralFoundKeys keyCount={ searchInfo.count } />
                         <div style={ { flex: '1 1 auto' } }>
                             {
                                 hasFetchedSearchKeys && !!searchInfo.count &&
@@ -128,7 +129,6 @@ class KeyViewer extends React.Component {
                                     onKeyClick={ this.handleKeyClicked }
                                 />
                             }
-                            <PluralFoundKeys keyCount={ searchInfo.count } />
                         </div>
                     </Grid.Column>
 

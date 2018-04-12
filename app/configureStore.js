@@ -10,7 +10,7 @@ export default function configureStore(initialState = {}, history) {
     const middlewares = [
         apiMiddleware,
         thunkMiddleware,
-        createLogger,
+        // createLogger,
         routerMiddleware(history),
     ];
 

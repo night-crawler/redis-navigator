@@ -47,6 +47,7 @@ export const keyViewer = (state = {}, action) => produce(state, draft => {
 
         case REDIS_RPC_FETCH_KEY_DATA_SUCCESS:
             draft.data[ meta.request.params.key ] = payload.result;
+            draft.updateResultsMap[meta.key] = undefined;
             break;
 
         case REDIS_RPC_UPDATE_KEY_DATA_SUCCESS:

@@ -8,6 +8,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { HotKeys } from 'react-hotkeys';
 import { FormattedMessage as Tr } from 'react-intl';
+import { AutoSizer } from 'react-virtualized';
 import { Button, Header, Icon, Segment } from 'semantic-ui-react';
 import messages from '../messages';
 import KeyInfo from './KeyInfo';
@@ -75,30 +76,28 @@ export default class KeyEditor extends React.Component {
         const iconName = (REDIS_KEY_TYPE_ICON_MAP[ type ] || { name: 'spinner' }).name;
 
         return (
-            <HotKeys keyMap={ this.keyMap } handlers={ this.keyMapHandlers } focused={ true }>
-                <Segment basic={ true }>
-                    <Header as='h2'>
-                        <Icon name={ iconName } />
-                        { `[${type}] ${selectedKey}` }
-                    </Header>
-                    <KeyInfo { ...info } />
+            <Segment as={ HotKeys } basic={ true } keyMap={ this.keyMap } handlers={ this.keyMapHandlers } focused={ true }>
+                <Header as='h2'>
+                    <Icon name={ iconName } />
+                    { `[${type}] ${selectedKey}` }
+                </Header>
+                <KeyInfo { ...info } />
 
-                    <Button fluid={ true } onClick={ this.handleFetchKeyDataClicked }>
-                        <Icon name='refresh' />
-                        <Tr { ...messages.fetchKeyData } />
-                    </Button>
+                <Button fluid={ true } onClick={ this.handleFetchKeyDataClicked }>
+                    <Icon name='refresh' />
+                    <Tr { ...messages.fetchKeyData } />
+                </Button>
 
-                    { this.renderEditor() }
+                { this.renderEditor() }
 
-                    <Button
-                        disabled={ isEqual(data, dirtyData) } fluid={ true } primary={ true }
-                        onClick={ this.handleSaveClicked }
-                    >
-                        <Icon name='save' />
-                        <Tr { ...messages.save } />
-                    </Button>
-                </Segment>
-            </HotKeys>
+                <Button
+                    disabled={ isEqual(data, dirtyData) } fluid={ true } primary={ true }
+                    onClick={ this.handleSaveClicked }
+                >
+                    <Icon name='save' />
+                    <Tr { ...messages.save } />
+                </Button>
+            </Segment>
         );
     }
 

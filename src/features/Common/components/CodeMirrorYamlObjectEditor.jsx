@@ -6,18 +6,19 @@ import { isEqual } from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { UnControlled as CodeMirror } from 'react-codemirror2';
-import './CodeMirrorYamlObjectEditor.css';
+import Measure from 'react-measure';
+import './FixCodeMirrorStyles.css';
 
 
 export default class CodeMirrorYamlObjectEditor extends React.Component {
     static propTypes = {
-        params: PropTypes.oneOfType([PropTypes.object, PropTypes.array]).isRequired,
+        params: PropTypes.oneOfType([ PropTypes.object, PropTypes.array ]).isRequired,
         onChange: PropTypes.func.isRequired,
         flowLevel: PropTypes.number,
     };
 
     static defaultProps = {
-        flowLevel: 1
+        flowLevel: 1,
     };
 
     constructor(props) {
@@ -33,33 +34,46 @@ export default class CodeMirrorYamlObjectEditor extends React.Component {
     }
 
     render() {
-        const { error, textParams } = this.state;
+        const { error, textParams, height } = this.state;
 
         return (
-            <div>
-                <CodeMirror
-                    options={ {
-                        viewportMargin: Infinity,
-                        mode: 'yaml',
-                        matchBrackets: true,
-                        autoCloseBrackets: true,
-                        lineNumbers: true,
-                        lineWrapping: true,
-                    } }
-                    autoScroll={ false }
-                    autoFocus={ true }
-                    value={ textParams }
-                    onChange={ (editor, data, value) => {
-                        this.handleOnChange(value);
-                    } }
-                />
 
-                { error
-                    ? <pre>{ error.message }</pre>
-                    : false
+            <Measure
+                bounds={ true }
+                onResize={
+                    (contentRect) => {
+                        const { top } = contentRect.bounds;
+                        const { offsetHeight } = document.body;
+                        this.setState({ height: offsetHeight - top - 50 });
+                    }
                 }
+            >
+                { ({ measureRef }) =>
+                    <div ref={ measureRef } style={ { height } }>
+                        <CodeMirror
+                            options={ {
+                                mode: 'yaml',
+                                matchBrackets: true,
+                                autoCloseBrackets: true,
+                                lineNumbers: true,
+                                lineWrapping: true,
+                                height: this.state.height
+                            } }
+                            autoScroll={ false }
+                            autoFocus={ true }
+                            value={ textParams }
+                            onChange={ (editor, data, value) => {
+                                this.handleOnChange(value);
+                            } }
+                        />
 
-            </div>
+                        { error
+                            ? <pre>{ error.message }</pre>
+                            : false
+                        }
+                    </div>
+                }
+            </Measure>
         );
     }
 
