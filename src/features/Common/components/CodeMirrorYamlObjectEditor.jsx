@@ -15,6 +15,7 @@ export default class CodeMirrorYamlObjectEditor extends React.Component {
         params: PropTypes.oneOfType([ PropTypes.object, PropTypes.array ]).isRequired,
         onChange: PropTypes.func.isRequired,
         flowLevel: PropTypes.number,
+        constantHeight: PropTypes.number,
     };
 
     static defaultProps = {
@@ -30,11 +31,15 @@ export default class CodeMirrorYamlObjectEditor extends React.Component {
             params,
             textParams: yaml.dump(params, { flowLevel }),
             error: false,
+            height: 300,
         };
     }
 
     render() {
-        const { error, textParams, height } = this.state;
+        const { error, textParams, height: measuredHeight } = this.state;
+        const { constantHeight } = this.props;
+
+        const height = constantHeight !== undefined ? constantHeight : measuredHeight;
 
         return (
 

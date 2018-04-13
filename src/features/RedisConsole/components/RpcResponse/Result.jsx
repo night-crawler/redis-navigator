@@ -19,7 +19,7 @@ export function StringCard(props) {
 
     let innerResult = false, type = '';
 
-    if (isBase64(result, { paddingRequired: true })) {
+    if (isBase64(result, 4)) {
         innerResult = atob(result);
         type = 'base64';
     } else if (isValidNumber(result)) {

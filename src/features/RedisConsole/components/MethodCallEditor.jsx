@@ -5,7 +5,7 @@ import React from 'react';
 import { HotKeys } from 'react-hotkeys';
 import { injectIntl, intlShape } from 'react-intl';
 import { Button, Dropdown, Grid, Header, Label, Segment } from 'semantic-ui-react';
-import CodeMirrorYamlObjectEditor from '../../Common/components/CodeMirrorYamlObjectEditor';
+import { CodeMirrorYamlObjectEditor } from 'features/Common/components';
 import messages from '../messages';
 import { parametersToJson, reprMethodDoc } from '../utils';
 import MethodParametersList from './MethodParametersList';
@@ -111,7 +111,11 @@ class MethodCallEditor extends React.Component {
 
                 <Grid stackable={ true }>
                     <Grid.Column width={ 6 }>
-                        <CodeMirrorYamlObjectEditor params={ methodParams } onChange={ this.handleJsonChanged } />
+                        <CodeMirrorYamlObjectEditor
+                            params={ methodParams }
+                            onChange={ this.handleJsonChanged }
+                            constantHeight='1'
+                        />
                     </Grid.Column>
                     {
                         response &&

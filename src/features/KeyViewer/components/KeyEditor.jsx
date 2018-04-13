@@ -1,14 +1,13 @@
 import { REDIS_KEY_TYPE_ICON_MAP } from 'constants';
 import debug from 'debug';
-import CodeMirrorTextEditor from 'features/Common/components/CodeMirrorTextEditor';
-import CodeMirrorYamlObjectEditor from 'features/Common/components/CodeMirrorYamlObjectEditor';
+import { CodeMirrorTextEditor } from 'features/Common/components';
+import { CodeMirrorYamlObjectEditor } from 'features/Common/components';
 import FullPageDimmer from 'features/Common/components/FullPageDimmer';
 import { isEmpty, isEqual } from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { HotKeys } from 'react-hotkeys';
 import { FormattedMessage as Tr } from 'react-intl';
-import { AutoSizer } from 'react-virtualized';
 import { Button, Header, Icon, Segment } from 'semantic-ui-react';
 import messages from '../messages';
 import KeyInfo from './KeyInfo';
