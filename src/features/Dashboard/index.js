@@ -1,13 +1,15 @@
 import { connect } from 'react-redux';
-import { RedisRpc } from '../actions';
-import { Dashboard } from './components';
 import { createStructuredSelector } from 'reselect';
+
+import { RedisRpc } from '../actions';
 import {
     routeInstanceName,
     routeInstanceInfo,
     routeInstanceDataExists,
     urls,
 } from '../selectors';
+
+import { Dashboard } from './components';
 
 
 function mapDispatchToProps(dispatch) {

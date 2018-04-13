@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+
 import { cleanMethodDoc } from '../utils';
+
 import MethodParametersList from './MethodParametersList';
 
 

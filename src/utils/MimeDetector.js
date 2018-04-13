@@ -1,5 +1,6 @@
 import fileType from 'file-type';
 import { isEmpty, startsWith } from 'lodash';
+
 import { convertStringToBinary } from './strings';
 
 

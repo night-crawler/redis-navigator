@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+
 import { Internationalization } from './components';
 import { activeLocale, activeLocaleData } from './selectors';
 

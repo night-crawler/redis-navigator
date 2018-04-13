@@ -1,15 +1,19 @@
 import { MAX_CONTENT_AUTOLOAD_SIZE } from 'constants';
+
 import debug from 'debug';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { injectIntl, intlShape } from 'react-intl';
 import { Button, Grid, Input, Segment } from 'semantic-ui-react';
-import { Timeouts } from 'utils/timers';
+
 import messages from '../messages';
+
 import InfiniteKeyList from './InfiniteKeyList';
 import KeyEditor from './KeyEditor';
 import KeyUpdateResults from './KeyUpdateResults';
 import PluralFoundKeys from './PluralFoundKeys';
+
+import { Timeouts } from 'utils/timers';
 
 
 class KeyViewer extends React.Component {
@@ -60,8 +64,6 @@ class KeyViewer extends React.Component {
         debug.enable('*');
         this.log = debug('KeyViewer');
         this.log('initialized', props);
-
-        const { selectedKey } = props;
 
         this.state = {};
     }

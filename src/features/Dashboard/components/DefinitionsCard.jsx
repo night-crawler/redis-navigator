@@ -1,10 +1,12 @@
-import _ from 'lodash';
+import { lowerCase, pickBy } from 'lodash';
 import React from 'react';
 import { Button, Card, Input } from 'semantic-ui-react';
-import ResponsiveDefinitionTable from './ResponsiveDefinitionTable';
 import PropTypes from 'prop-types';
 import { injectIntl, intlShape } from 'react-intl';
+
 import messages from '../messages';
+
+import ResponsiveDefinitionTable from './ResponsiveDefinitionTable';
 
 
 class DefinitionsCard extends React.Component {
@@ -36,15 +38,15 @@ class DefinitionsCard extends React.Component {
         const { definitions } = this.props;
         const { filter } = this.state;
 
-        return _.pickBy(
+        return pickBy(
             definitions,
             (optValue, optKey) =>
-                _.lowerCase(optKey).indexOf(_.lowerCase(filter)) >= 0
+                lowerCase(optKey).indexOf(lowerCase(filter)) >= 0
         );
     };
 
     render() {
-        const { header, description, intl } = this.props;
+        const { header, description, intl, rowComponent, headerComponent } = this.props;
         return (
             <Card>
                 <Card.Content>
@@ -64,8 +66,8 @@ class DefinitionsCard extends React.Component {
 
                         <ResponsiveDefinitionTable
                             definitions={ this.filterDefinitions() }
-                            rowComponent={ this.props.rowComponent }
-                            headerComponent={ this.props.headerComponent }
+                            rowComponent={ rowComponent }
+                            headerComponent={ headerComponent }
                         />
                     </Card.Description>
 

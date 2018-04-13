@@ -86,7 +86,7 @@ export function prepareKeyInfo(rpcRequest, rpcResponse) {
 export function prepareUpdateKeyData(rpcRequest, rpcResponse) {
     const results = mergeRpcRequestResponse(rpcRequest, rpcResponse)
         .filter(bundle => bundle.methodName !== 'multi_exec')
-        .map(
+        .map(// eslint-disable-next-line
             ({ id, method, params, ...rest }) => rest
         );
     const hasErrors = !!results.filter(bundle => bundle.error !== undefined).length;

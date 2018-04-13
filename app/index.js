@@ -6,14 +6,16 @@ import enLocaleData from 'react-intl/locale-data/en';
 import ruLocaleData from 'react-intl/locale-data/ru';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'react-router-redux';
+
 import 'semantic-ui-css/semantic.min.css';
-import DefaultLayout from 'features/DefaultLayout';
-import InternationalizationProvider, { switchLocale, updateIntl } from 'features/Internationalization';
-import { extractLanguageCode } from 'utils';
 import configureStore from './configureStore';
 import initialState from './initialState';
 import enMessages from './translations/en.yml';
 import ruMessages from './translations/ru.yml';
+
+import { extractLanguageCode } from 'utils';
+import InternationalizationProvider, { switchLocale, updateIntl } from 'features/Internationalization';
+import DefaultLayout from 'features/DefaultLayout';
 
 
 const history = createHistory();

@@ -1,3 +1,7 @@
+import produce from 'immer';
+
+import { SET_SELECTED_KEY } from './actions';
+
 import {
     FETCH_KEYS_PAGE_SUCCESS,
     REDIS_RPC_FETCH_KEY_DATA_SUCCESS,
@@ -6,10 +10,9 @@ import {
     REDIS_RPC_UPDATE_KEY_DATA_SUCCESS,
     SEARCH_KEYS_SUCCESS,
 } from 'features/actions';
-import produce from 'immer';
 import { prepareKeyInfo, prepareKeyTypesMap } from 'utils';
 import { prepareUpdateKeyData } from 'utils/rpc';
-import { SET_SELECTED_KEY } from './actions';
+
 
 
 export const keyViewer = (state = {}, action) => produce(state, draft => {

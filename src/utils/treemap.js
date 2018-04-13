@@ -1,5 +1,6 @@
 import { SortedMap } from 'collections/sorted-map';
 import { fromPairs } from 'lodash';
+
 import { findFirstDelimiter, splitKey } from './strings';
 
 /**

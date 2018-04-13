@@ -1,5 +1,7 @@
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import { createStructuredSelector } from 'reselect';
+
 import {
     setActiveInstance,
     fetchInspections,
@@ -7,8 +9,6 @@ import {
     initStoreWithUrls,
     fetchEndpoints,
 } from '../actions';
-import { createStructuredSelector } from 'reselect';
-import DefaultLayout from './components';
 import {
     instances,
     activeInstanceName,
@@ -21,8 +21,11 @@ import {
     shouldFetchEndpoints, shouldFetchInspections, shouldFetchInstances,
 } from '../selectors';
 
+import DefaultLayout from './components';
 
-function mapDispatchToProps(dispatch, ownProps) {
+
+
+function mapDispatchToProps(dispatch) {
     return {
         dispatch,
         actions: {

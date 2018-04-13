@@ -1,6 +1,6 @@
-/* eslint-disable react/react-in-jsx-scope,no-undef */
-import Error from './Error';
 import ReactJson from 'react-json-view';
+
+import Error from './Error';
 
 
 describe('Error', () => {
@@ -19,6 +19,4 @@ describe('Error', () => {
         const wrapper = shallow(<Error error={ { data: '123' } } />);
         expect(wrapper.find(ReactJson)).toHaveLength(0);
     });
-
-
 });

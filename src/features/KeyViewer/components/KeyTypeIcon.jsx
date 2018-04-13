@@ -1,7 +1,8 @@
+import { REDIS_KEY_TYPE_ICON_MAP } from 'constants';
+
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Icon, Popup } from 'semantic-ui-react';
-import { REDIS_KEY_TYPE_ICON_MAP } from 'constants';
 
 
 KeyTypeIcon.propTypes = {

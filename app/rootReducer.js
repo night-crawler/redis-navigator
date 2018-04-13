@@ -1,8 +1,9 @@
-import { internationalizationReducer } from 'features/Internationalization/reducer';
 import { reducer as notifications } from 'react-notification-system-redux';
 import { LOCATION_CHANGE } from 'react-router-redux';
-import redisNavigator from 'reducers';
 import { combineReducers } from 'redux';
+
+import redisNavigator from 'reducers';
+import { internationalizationReducer } from 'features/Internationalization/reducer';
 
 
 // Initial routing state

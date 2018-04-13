@@ -1,7 +1,9 @@
 import { DEFAULT_SEARCH_KEYS_PARAMS } from 'constants';
-import { keyViewer, locationSearchParams, urls } from 'features/selectors';
+
 import { fromPairs, pickBy, toPairs, trimEnd } from 'lodash';
 import { createSelector } from 'reselect';
+
+import { keyViewer, locationSearchParams, urls } from 'features/selectors';
 import { makeAbsoluteUrl } from 'utils';
 
 

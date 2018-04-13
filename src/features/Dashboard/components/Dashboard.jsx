@@ -1,16 +1,18 @@
 import debug from 'debug';
-import _, { isEmpty } from 'lodash';
+import { isEmpty } from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import { Card, Dimmer, Header, Icon, Loader, Segment } from 'semantic-ui-react';
+import { FormattedMessage as Tr } from 'react-intl';
+
+import messages from '../messages';
+
 import DefinitionsCard from './DefinitionsCard';
 import RedisClientsCard from './RedisClientsCard';
 import RedisCommandsStatsCard from './RedisCommandStatsCard';
 import RedisKeySpaceCard from './RedisKeySpaceCard';
 
-import { FormattedMessage as Tr } from 'react-intl';
-import messages from '../messages';
 
 
 export default class Dashboard extends React.Component {
@@ -32,7 +34,7 @@ export default class Dashboard extends React.Component {
     }
 
     componentDidMount() {
-        const { routeInstanceName, routeInstanceInfo, routeInstanceDataExists } = this.props;
+        const { routeInstanceName, routeInstanceInfo } = this.props;
         if (isEmpty(routeInstanceInfo))
             this.props.actions.fetchInfo(routeInstanceName);
     }

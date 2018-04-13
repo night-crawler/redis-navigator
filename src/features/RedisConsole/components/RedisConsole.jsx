@@ -7,11 +7,14 @@ import { HotKeys } from 'react-hotkeys';
 import { FormattedMessage as Tr } from 'react-intl';
 import { Button, Icon, Segment } from 'semantic-ui-react';
 import { COLORS } from 'semantic-ui-react/dist/es/lib/SUI';
-import { saveFile } from 'utils';
+
 import messages from '../messages';
+
 import CommandImporter from './CommandImporter';
 import DropdownRpcMethodItem from './DropdownRpcMethodItem';
 import MethodCallEditor from './MethodCallEditor';
+
+import { saveFile } from 'utils';
 
 
 const ConsoleCommandType = PropTypes.shape({

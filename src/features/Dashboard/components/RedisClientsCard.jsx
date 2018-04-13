@@ -2,8 +2,8 @@ import _ from 'lodash';
 import React from 'react';
 import { Card, Table, Popup, Label } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
-
 import { FormattedMessage as Tr } from 'react-intl';
+
 import messages from '../messages';
 
 

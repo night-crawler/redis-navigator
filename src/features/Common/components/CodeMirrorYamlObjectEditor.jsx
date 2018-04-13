@@ -15,7 +15,7 @@ export default class CodeMirrorYamlObjectEditor extends React.Component {
         params: PropTypes.oneOfType([ PropTypes.object, PropTypes.array ]).isRequired,
         onChange: PropTypes.func.isRequired,
         flowLevel: PropTypes.number,
-        constantHeight: PropTypes.number,
+        constantHeight: PropTypes.oneOfType([ PropTypes.number, PropTypes.string ]),
     };
 
     static defaultProps = {

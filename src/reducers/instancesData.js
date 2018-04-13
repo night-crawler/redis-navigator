@@ -1,3 +1,6 @@
+import produce from 'immer/dist/immer';
+import { findIndex, isBoolean } from 'lodash';
+
 import {
     FETCH_INSTANCES_SUCCESS,
     REDIS_RPC_FETCH_INFO_SUCCESS,
@@ -10,8 +13,6 @@ import {
     REMOVE_CALL_EDITOR,
     TOGGLE_IMPORT_DIALOG_VISIBLE
 } from 'features/RedisConsole/actions';
-import produce from 'immer/dist/immer';
-import { findIndex, isBoolean } from 'lodash';
 import { mapRpcRequestsById, mapRpcResponsesById, prepareServerInfo } from 'utils';
 
 

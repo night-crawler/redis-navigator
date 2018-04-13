@@ -1,20 +1,22 @@
 import debug from 'debug';
-import { FullPageDimmer, NotFound } from 'features/Common/components';
-import Dashboard from 'features/Dashboard';
-import KeyViewer from 'features/KeyViewer';
-import Navbar from 'features/Navbar';
-import NotificationSystem from 'features/NotificationSystem';
-import RedisConsole from 'features/RedisConsole';
 import { isEmpty } from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Helmet } from 'react-helmet';
-
 import { FormattedMessage as Tr } from 'react-intl';
 import { Route, Switch } from 'react-router-dom';
+
 import messages from '../messages';
+
 import AppContentWrapper from './AppContentWrapper';
 import AppWrapper from './AppWrapper';
+
+import RedisConsole from 'features/RedisConsole';
+import NotificationSystem from 'features/NotificationSystem';
+import Navbar from 'features/Navbar';
+import KeyViewer from 'features/KeyViewer';
+import Dashboard from 'features/Dashboard';
+import { FullPageDimmer, NotFound } from 'features/Common/components';
 
 
 export default class DefaultLayout extends React.Component {

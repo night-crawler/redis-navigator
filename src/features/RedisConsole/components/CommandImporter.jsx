@@ -4,16 +4,17 @@ import 'codemirror/mode/javascript/javascript';
 import 'codemirror/mode/yaml/yaml';
 import { FormattedMessage as Tr } from 'react-intl';
 import yaml from 'js-yaml';
-
 import PropTypes from 'prop-types';
 import React from 'react';
 import { UnControlled as CodeMirror } from 'react-codemirror2';
 import { Button, Grid, Header, Icon, Segment } from 'semantic-ui-react';
-import { isJson, isYaml } from 'utils';
+
 import { checkCommandsValid } from '../utils';
+import messages from '../messages';
+
 import ImportingCommandListPreview from './ImportingCommandListPreview';
 
-import messages from '../messages';
+import { isJson, isYaml } from 'utils';
 
 
 export default class CommandImporter extends React.Component {

@@ -2,12 +2,14 @@ import { isArray, isBoolean, isPlainObject, isString } from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Card, Header, Segment } from 'semantic-ui-react';
-import { isJson, MimeDetector, isBase64, isValidNumber, isYaml } from 'utils';
-import { TextareaSpoiler } from 'features/Common/components';
+
 import BooleanCard from './BooleanCard';
 import ImageCard from './ImageCard';
 import ObjectCard from './ObjectCard';
 import ObjectTreeViewWidget from './ObjectTreeViewWidget';
+
+import { TextareaSpoiler } from 'features/Common/components';
+import { isJson, MimeDetector, isBase64, isValidNumber, isYaml } from 'utils';
 
 
 

@@ -1,6 +1,7 @@
+import { isArray, isBoolean } from 'lodash';
+
 import { RPC_BATCH_START, TOGGLE_PROGRESS_BAR_VISIBLE } from 'features/actions';
 import { BIND_CALL_EDITOR_TO_ID } from 'features/RedisConsole/actions';
-import { isArray, isBoolean } from 'lodash';
 
 
 export const progress = (state = {}, action) => {

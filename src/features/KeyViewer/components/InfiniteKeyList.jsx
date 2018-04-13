@@ -2,8 +2,10 @@ import debug from 'debug';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { AutoSizer, InfiniteLoader, List } from 'react-virtualized';
-import { PageHelper } from 'utils';
+
 import KeyRow from './KeyRow';
+
+import { PageHelper } from 'utils';
 
 
 export default class InfiniteKeyList extends React.Component {
@@ -84,6 +86,7 @@ export default class InfiniteKeyList extends React.Component {
         return fetchKeyRangeWithTypes({ startIndex, stopIndex, perPage });
     };
 
+    // eslint-disable-next-line no-unused-vars
     renderNotLoadedRow = ({ index, key, style }) => {
         return <div style={ style } key={ key }>-</div>;
     };

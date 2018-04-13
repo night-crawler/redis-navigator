@@ -1,5 +1,6 @@
 import { compact, isArray, isEmpty } from 'lodash';
 import { RSAA } from 'redux-api-middleware';
+
 import { getApiMiddlewareOptions, jsonRequestHeaders } from 'utils';
 import {
     RPCBadActionTypesError,

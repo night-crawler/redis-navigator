@@ -67,7 +67,7 @@ export default class CodeMirrorTextEditor extends React.Component {
         return null;
     }
 
-    shouldComponentUpdate(nextProps, nextState) {
+    shouldComponentUpdate(nextProps) {
         const { text: newText } = nextProps;
         const { text: prevText } = this.state;
 

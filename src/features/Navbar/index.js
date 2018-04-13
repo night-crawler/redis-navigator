@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+
 import { fetchInstances, setActiveInstance, toggleProgressBarVisible } from '../actions';
 import {
     activeInstanceName,
@@ -9,6 +10,7 @@ import {
     progressPercent,
     location,
 } from '../selectors';
+
 import { Navbar } from './components';
 
 

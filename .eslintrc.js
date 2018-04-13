@@ -1,6 +1,7 @@
 module.exports = {
     'globals': {
         'process': true,
+        'shallow': true,
     },
     'env': {
         'browser': true,
@@ -44,6 +45,7 @@ module.exports = {
         // 'flowtype',
     ],
     'rules': {
+        'react/react-in-jsx-scope': 'off',
         'react/jsx-pascal-case': [2, { 'allowAllCaps': true, 'ignore': [] }],
         'react/jsx-curly-spacing': [2, { 'when': 'always', 'allowMultiline': true }],
         'react/jsx-boolean-value': [2, 'always'],
@@ -55,7 +57,7 @@ module.exports = {
         }],
         'react/jsx-closing-tag-location': 1,
         'react/jsx-space-before-closing': 1,
-        'react/no-set-state': 1,
+        'react/no-set-state': 0,
         'react/prefer-es6-class': [2, 'always'],
 
         // react native
@@ -86,7 +88,8 @@ module.exports = {
         ],
 
         'import/order': ['error', {
-            'groups': ['builtin', 'external', 'index', 'parent', 'sibling', 'internal']
+            'groups': ['builtin', 'external', 'index', 'parent', 'sibling', 'internal'],
+            'newlines-between': 'always'
         }],
 
         'prettier/prettier': 'error',

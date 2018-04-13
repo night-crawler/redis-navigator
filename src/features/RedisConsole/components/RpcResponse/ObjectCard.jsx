@@ -2,10 +2,11 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Card, Button } from 'semantic-ui-react';
 import { upperFirst } from 'lodash';
+import yaml from 'js-yaml';
+
 import EditorWidgetJson from './EditorWidgetJson';
 import ObjectTreeViewWidget from './ObjectTreeViewWidget';
 import EditorWidgetYaml from './EditorWidgetYaml';
-import yaml from 'js-yaml';
 
 
 export default class ObjectCard extends React.Component {

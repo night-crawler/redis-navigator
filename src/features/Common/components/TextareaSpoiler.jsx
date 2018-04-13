@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-
 import { FormattedMessage as Tr } from 'react-intl';
 import styled from 'styled-components';
 

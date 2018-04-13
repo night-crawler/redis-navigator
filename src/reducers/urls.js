@@ -1,5 +1,6 @@
-import { FETCH_ENDPOINTS_SUCCESS, INIT_STORE_WITH_URLS } from 'features/actions';
 import { fromPairs } from 'lodash';
+
+import { FETCH_ENDPOINTS_SUCCESS, INIT_STORE_WITH_URLS } from 'features/actions';
 import { makeAbsoluteUrl } from 'utils';
 
 

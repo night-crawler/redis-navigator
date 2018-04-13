@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { FormattedMessage as Tr, FormattedPlural } from 'react-intl';
+
 import messages from '../messages';
 
 

@@ -1,10 +1,11 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Table } from 'semantic-ui-react';
-import DefinitionsCard from './DefinitionsCard';
-
 import { FormattedMessage as Tr } from 'react-intl';
+
 import messages from '../messages';
+
+import DefinitionsCard from './DefinitionsCard';
 
 
 Header.propTypes = {

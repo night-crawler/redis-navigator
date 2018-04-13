@@ -1,6 +1,5 @@
-import { configure, mount, render, shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-
+import { configure, mount, render, shallow } from 'enzyme';
 import 'raf/polyfill';
 import React from 'react';
 import { IntlProvider, intlShape } from 'react-intl';

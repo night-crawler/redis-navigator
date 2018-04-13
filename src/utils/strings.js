@@ -68,7 +68,7 @@ export function extractLanguageCode(languageTag) {
 
 
 export function uuid4() {
-    var uuid = '', ii;
+    let uuid = '', ii;
     for (ii = 0; ii < 32; ii += 1) {
         switch (ii) {
             case 8:
