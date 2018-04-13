@@ -3,13 +3,13 @@ import { isEqual, isFunction, pickBy } from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { HotKeys } from 'react-hotkeys';
+import { injectIntl, intlShape } from 'react-intl';
 import { Button, Dropdown, Grid, Header, Label, Segment } from 'semantic-ui-react';
+import CodeMirrorYamlObjectEditor from '../../Common/components/CodeMirrorYamlObjectEditor';
+import messages from '../messages';
 import { parametersToJson, reprMethodDoc } from '../utils';
 import MethodParametersList from './MethodParametersList';
-import CodeMirrorYamlObjectEditor from '../../Common/components/CodeMirrorYamlObjectEditor';
 import RpcResponse from './RpcResponse';
-import messages from '../messages';
-import { injectIntl, intlShape } from 'react-intl';
 
 
 class MethodCallEditor extends React.Component {
@@ -77,52 +77,52 @@ class MethodCallEditor extends React.Component {
         if (!methodName)
             return this.renderMethodSelector();
 
-        const methodProps = inspections[methodName];
+        const methodProps = inspections[ methodName ];
 
         if (!methodParams)
             return false;
 
         return (
-            <HotKeys keyMap={ this.keyMap } handlers={ this.keyMapHandlers } focused={ true }>
-                <Segment basic={ true } color={ color }>
-                    <Header as='h2' color={ this.isSuccess() && !dirty ? 'green' : undefined }>
-                        <Header.Content>
-                            <Button
-                                basic={ true } color='orange' icon='remove' size='huge'
-                                onClick={ onRemove }
-                            />
-                        </Header.Content>
-                        <Header.Content>
-                            { instanceName }.{ methodName }
-                            { <MethodParametersList parameters={ methodProps.parameters } /> }
-                            <Button
-                                as={ Label } icon='repeat' color='orange'
-                                basic={ true } circular={ true }
-                                onClick={ onRetry }
-                            />
-                        </Header.Content>
-                        <Header.Subheader>
-                            { reprMethodDoc(methodProps.doc) }
-                        </Header.Subheader>
+            <Segment
+                className='MethodCallEditor' basic={ true } color={ color }
+                as={ HotKeys } keyMap={ this.keyMap } handlers={ this.keyMapHandlers } focused={ true }
+            >
+                <Header as='h2' color={ this.isSuccess() && !dirty ? 'green' : undefined }>
+                    <Header.Content>
+                        <Button
+                            basic={ true } color='orange' icon='remove' size='huge'
+                            onClick={ onRemove }
+                        />
+                    </Header.Content>
+                    <Header.Content>
+                        { instanceName }.{ methodName }
+                        { <MethodParametersList parameters={ methodProps.parameters } /> }
+                        <Button
+                            as={ Label } icon='repeat' color='orange'
+                            basic={ true } circular={ true }
+                            onClick={ onRetry }
+                        />
+                    </Header.Content>
+                    <Header.Subheader>
+                        { reprMethodDoc(methodProps.doc) }
+                    </Header.Subheader>
 
-                    </Header>
+                </Header>
 
-                    <Grid stackable={ true }>
-                        <Grid.Column width={ 6 }>
-                            <CodeMirrorYamlObjectEditor params={ methodParams } onChange={ this.handleJsonChanged } />
+                <Grid stackable={ true }>
+                    <Grid.Column width={ 6 }>
+                        <CodeMirrorYamlObjectEditor params={ methodParams } onChange={ this.handleJsonChanged } />
+                    </Grid.Column>
+                    {
+                        response &&
+                        <Grid.Column width={ 10 }>
+                            <RpcResponse response={ response } />
                         </Grid.Column>
-                        {
-                            response && (
-                                <Grid.Column width={ 10 }>
-                                    <RpcResponse response={ response } />
-                                </Grid.Column>
-                            )
-                        }
-                    </Grid>
+                    }
+                </Grid>
 
 
-                </Segment>
-            </HotKeys>
+            </Segment>
         );
     }
 
@@ -136,7 +136,7 @@ class MethodCallEditor extends React.Component {
 
     static getDerivedStateFromProps(newProps) {
         const { methodName, methodParams, inspections, onMethodParamsChange } = newProps;
-        const methodProps = inspections[methodName];
+        const methodProps = inspections[ methodName ];
 
         if (methodProps && methodName && !methodParams) {
             onMethodParamsChange(parametersToJson(methodProps.parameters));
@@ -201,5 +201,6 @@ class MethodCallEditor extends React.Component {
     }
 
 }
+
 
 export default injectIntl(MethodCallEditor);

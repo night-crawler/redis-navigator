@@ -39,7 +39,7 @@ export default class CommandImporter extends React.Component {
         const { onImport } = this.props;
 
         return (
-            <Segment>
+            <Segment className='CommandImporter'>
                 <Header as='h2'>
                     Import commands { !isValid && '(invalid)' } { isValid && `[${value.length}]` }
                 </Header>

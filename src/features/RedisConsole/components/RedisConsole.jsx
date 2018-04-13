@@ -80,49 +80,49 @@ export default class RedisConsole extends React.Component {
         const { inspections, routeInstanceImportDialogIsVisible } = this.props;
 
         return (
-            <HotKeys keyMap={ this.keyMap } handlers={ this.keyMapHandlers } focused={ true }>
-                <Segment.Group>
-                    <Helmet><title>RPC Console</title></Helmet>
+            <Segment.Group
+                className='RedisConsole'
+                as={ HotKeys } keyMap={ this.keyMap } handlers={ this.keyMapHandlers } focused={ true }
+            >
+                <Helmet><title>RPC Console</title></Helmet>
 
-                    { this.renderEditors() }
+                { this.renderEditors() }
 
-                    <Button.Group widths='5' attached='bottom'>
-                        <Button basic={ true } color='grey' onClick={ this.handleAppendCallEditorClicked }>
-                            <Icon name='add' />
-                            <Tr { ...messages.append } />
-                        </Button>
+                <Button.Group widths='5' attached='bottom'>
+                    <Button basic={ true } color='grey' onClick={ this.handleAppendCallEditorClicked }>
+                        <Icon name='add' />
+                        <Tr { ...messages.append } />
+                    </Button>
 
-                        <Button basic={ true } color='grey' onClick={ this.handleExportClicked }>
-                            <Icon name='external' />
-                            <Tr { ...messages.export } />
-                        </Button>
+                    <Button basic={ true } color='grey' onClick={ this.handleExportClicked }>
+                        <Icon name='external' />
+                        <Tr { ...messages.export } />
+                    </Button>
 
-                        <Button basic={ true } color='grey' onClick={ this.handleImportClicked }>
-                            <Icon name='download' />
-                            <Tr { ...messages.import } />
-                        </Button>
+                    <Button basic={ true } color='grey' onClick={ this.handleImportClicked }>
+                        <Icon name='download' />
+                        <Tr { ...messages.import } />
+                    </Button>
 
-                        <Button basic={ true } color='red' onClick={ this.handleClearCallEditorsClicked }>
-                            <Icon name='trash' />
-                            <Tr { ...messages.clear } />
-                        </Button>
+                    <Button basic={ true } color='red' onClick={ this.handleClearCallEditorsClicked }>
+                        <Icon name='trash' />
+                        <Tr { ...messages.clear } />
+                    </Button>
 
-                        <Button basic={ true } color='green' onClick={ this.handleExecuteAllClicked }>
-                            <Icon name='lightning' />
-                            <Tr { ...messages.execute } />
-                        </Button>
-                    </Button.Group>
+                    <Button basic={ true } color='green' onClick={ this.handleExecuteAllClicked }>
+                        <Icon name='lightning' />
+                        <Tr { ...messages.execute } />
+                    </Button>
+                </Button.Group>
 
-                    {
-                        routeInstanceImportDialogIsVisible &&
-                        <Segment attached='top'>
-                            <CommandImporter inspections={ inspections } onImport={ this.handleImport } />
-                        </Segment>
-                    }
+                {
+                    routeInstanceImportDialogIsVisible &&
+                    <Segment attached='top'>
+                        <CommandImporter inspections={ inspections } onImport={ this.handleImport } />
+                    </Segment>
+                }
 
-
-                </Segment.Group>
-            </HotKeys>
+            </Segment.Group>
         );
     }
 

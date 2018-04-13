@@ -11,14 +11,15 @@ const parameterType = {
 
 
 MethodParameter.propTypes = parameterType;
+
 export function MethodParameter(props) {
     const { name, kind, default: default_, type } = props;
     const color = kind === 'KEYWORD_ONLY' ? 'red' : '';
     const varPositional = kind === 'VAR_POSITIONAL' ? '*' : '';
     const varKeyword = kind === 'VAR_KEYWORD' ? '**' : '';
-    const hasDefault = default_ || ( typeof default_ === 'number' );
+    const hasDefault = default_ || (typeof default_ === 'number');
     return (
-        <span className={ `ui basic ${color} label` } title={ kind }>
+        <span className={ `ui basic ${color} label MethodParameter` } title={ kind }>
             { varPositional || varKeyword }{ name }{ type && `:${type}` }
             { hasDefault && `=${default_}` }
         </span>

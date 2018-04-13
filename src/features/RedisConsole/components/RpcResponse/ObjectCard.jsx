@@ -32,7 +32,7 @@ export default class ObjectCard extends React.Component {
         const { mode } = this.props;
 
         return (
-            <Card fluid={ true }>
+            <Card className='ObjectCard' fluid={ true }>
                 <Card.Content>
                     <Card.Header>
                         { upperFirst(mode) }
@@ -86,5 +86,4 @@ export default class ObjectCard extends React.Component {
     handleSetWidget = widget => this.setState({ widget });
     handleSetObjectWidget = () => this.handleSetWidget('object');
     handleSetEditorWidget = () => this.handleSetWidget('editor');
-
 }

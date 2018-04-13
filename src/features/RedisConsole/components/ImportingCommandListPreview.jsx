@@ -14,7 +14,7 @@ export default function ImportingCommandListPreview(props) {
     const { commands } = props;
 
     return (
-        <List selection={ true } verticalAlign='middle'>
+        <List className='ImportingCommandListPreview' selection={ true } verticalAlign='middle'>
             {
                 commands.map(({ methodName, methodParams }, i) =>
                     <List.Item key={ i }>

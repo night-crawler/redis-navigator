@@ -19,7 +19,7 @@ DropdownRpcMethodItem.propTypes = {
 export default function DropdownRpcMethodItem(props) {
     const { name, return_type, doc, parameters } = props;
     return (
-        <div className='ui mini buttons'>
+        <div className='ui mini buttons DropdownRpcMethodItem'>
             <div className='ui blue button'>{ name }</div>
 
             {

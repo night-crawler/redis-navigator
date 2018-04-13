@@ -1,6 +1,6 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { Image } from 'semantic-ui-react';
-import PropTypes from 'prop-types';
 
 
 ImageCard.propTypes = {
@@ -8,5 +8,5 @@ ImageCard.propTypes = {
 };
 export default function ImageCard(props) {
     const { dataUri } = props;
-    return <Image src={ dataUri } size='medium' />;
+    return <Image className='ImageCard' src={ dataUri } size='medium' />;
 }

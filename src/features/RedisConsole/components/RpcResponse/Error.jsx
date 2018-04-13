@@ -19,7 +19,7 @@ export default function RpcError(props) {
         : <div className='plain-error'>{ error.data }</div>;
 
     return (
-        <div>
+        <div className='RpcError'>
             <Header as='h4'>
                 <Header.Content>{ error.message }</Header.Content>
                 <Header.Subheader>Code: { error.code }</Header.Subheader>

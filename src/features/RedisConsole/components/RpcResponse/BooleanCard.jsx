@@ -1,6 +1,6 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { Card } from 'semantic-ui-react';
-import PropTypes from 'prop-types';
 
 
 BooleanCard.propTypes = {
@@ -8,5 +8,10 @@ BooleanCard.propTypes = {
 };
 export default function BooleanCard(props) {
     const { result } = props;
-    return <Card fluid={ true } header='Boolean' description={ `${result}` } />;
+    return <Card
+        className='BooleanCard'
+        fluid={ true }
+        header='Boolean'
+        description={ `${result}` }
+    />;
 }
