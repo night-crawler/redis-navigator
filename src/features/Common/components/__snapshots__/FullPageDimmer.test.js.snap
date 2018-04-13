@@ -2,6 +2,7 @@
 
 exports[`FullPageDimmer should render FullPageDimmer 1`] = `
 <div
+  className="FullPageDimmer"
   style={
     Object {
       "height": "100%",

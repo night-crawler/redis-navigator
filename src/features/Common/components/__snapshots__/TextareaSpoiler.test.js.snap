@@ -2,19 +2,25 @@
 
 exports[`<TextareaSpoiler> should render hidden TextareaSpoiler 1`] = `
 <div
-  className="show-hidden"
-  onClick={[Function]}
+  className="TextareaSpoiler"
 >
-  <FormattedMessage
-    defaultMessage="Show"
-    id="features.Common.messages.show"
-    values={Object {}}
-  />
+  <div
+    className="show-hidden"
+    onClick={[Function]}
+  >
+    <FormattedMessage
+      defaultMessage="Show"
+      id="features.Common.messages.show"
+      values={Object {}}
+    />
+  </div>
 </div>
 `;
 
 exports[`<TextareaSpoiler> should render shown TextareaSpoiler 1`] = `
-<div>
+<div
+  className="TextareaSpoiler"
+>
   <div
     className="hide-shown"
     onClick={[Function]}
