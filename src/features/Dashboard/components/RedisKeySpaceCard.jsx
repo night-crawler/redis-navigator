@@ -8,12 +8,12 @@ import messages from '../messages';
 import DefinitionsCard from './DefinitionsCard';
 
 
-Header.propTypes = {
+RedisKeySpaceHeader.propTypes = {
     textAlign: PropTypes.string,
 };
-function Header({ textAlign='right' }) {
+function RedisKeySpaceHeader({ textAlign='right' }) {
     return (
-        <Table.Header>
+        <Table.Header className='RedisKeySpaceHeader'>
             <Table.Row>
                 <Table.HeaderCell textAlign={ textAlign } content={ <Tr { ...messages.db } /> } />
                 <Table.HeaderCell content={ <Tr { ...messages.keys } /> } />
@@ -25,7 +25,7 @@ function Header({ textAlign='right' }) {
 }
 
 
-StatsRow.propTypes = {
+RedisKeySpaceRow.propTypes = {
     defName: PropTypes.string,
     defValue: PropTypes.shape({
         keys: PropTypes.string,
@@ -34,11 +34,11 @@ StatsRow.propTypes = {
     }),
     textAlign: PropTypes.string,
 };
-function StatsRow({ defName, defValue, textAlign }) {
+function RedisKeySpaceRow({ defName, defValue, textAlign }) {
     const { keys, expires, avg_ttl } = defValue;
 
     return (
-        <Table.Row>
+        <Table.Row className='RedisKeySpaceRow'>
             <Table.Cell textAlign={ textAlign } content={ defName } />
             <Table.Cell content={ keys } />
             <Table.Cell content={ expires } />
@@ -55,8 +55,8 @@ export default function RedisKeySpaceCard(props) {
     const { keyspace } = props;
     return <DefinitionsCard
         header={ <Tr { ...messages.keySpace } /> }
-        headerComponent={ Header }
-        rowComponent={ StatsRow }
+        headerComponent={ RedisKeySpaceHeader }
+        rowComponent={ RedisKeySpaceRow }
         definitions={ keyspace }
     />;
 }

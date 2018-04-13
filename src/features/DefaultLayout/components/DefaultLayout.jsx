@@ -53,34 +53,13 @@ export default class DefaultLayout extends React.Component {
         this.log('initialized', props);
     }
 
-    componentDidMount() {
-        const { endpointsUrl, baseUrl, actions } = this.props;
-        actions.initStoreWithUrls(baseUrl, endpointsUrl);
-    }
-
-    static getDerivedStateFromProps(newProps) {
-        const {
-            instances, activeInstanceName, urls, actions,
-            shouldFetchEndpoints, shouldFetchInspections, shouldFetchInstances,
-        } = newProps;
-
-        if (!isEmpty(instances) && !activeInstanceName)
-            actions.setActiveInstance(instances[0].name);
-
-        shouldFetchEndpoints && actions.fetchEndpoints(urls.endpoints);
-        shouldFetchInstances && actions.fetchInstances(urls.status);
-        shouldFetchInspections && actions.fetchInspections(urls.inspections);
-
-        return null;
-    }
-
     render() {
         const { isReady } = this.props;
         if (!isReady)
             return <FullPageDimmer message={ <Tr { ...messages.loadingRedisInstances } /> } />;
 
         return (
-            <AppWrapper className='redis-navigator-app'>
+            <AppWrapper className='redis-navigator-app DefaultLayout'>
                 <Helmet
                     titleTemplate='%s - Redis Navigator'
                     defaultTitle='Redis Navigator'
@@ -104,5 +83,26 @@ export default class DefaultLayout extends React.Component {
 
             </AppWrapper>
         );
+    }
+
+    componentDidMount() {
+        const { endpointsUrl, baseUrl, actions } = this.props;
+        actions.initStoreWithUrls(baseUrl, endpointsUrl);
+    }
+
+    static getDerivedStateFromProps(newProps) {
+        const {
+            instances, activeInstanceName, urls, actions,
+            shouldFetchEndpoints, shouldFetchInspections, shouldFetchInstances,
+        } = newProps;
+
+        if (!isEmpty(instances) && !activeInstanceName)
+            actions.setActiveInstance(instances[0].name);
+
+        shouldFetchEndpoints && actions.fetchEndpoints(urls.endpoints);
+        shouldFetchInstances && actions.fetchInstances(urls.status);
+        shouldFetchInspections && actions.fetchInspections(urls.inspections);
+
+        return null;
     }
 }

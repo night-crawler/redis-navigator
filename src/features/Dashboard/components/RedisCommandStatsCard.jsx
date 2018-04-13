@@ -10,7 +10,7 @@ import DefinitionsCard from './DefinitionsCard';
 
 function StatsHeader() {
     return (
-        <Table.Header>
+        <Table.Header className='StatsHeader'>
             <Table.Row>
                 <Table.HeaderCell textAlign='right' content={ <Tr { ...messages.command } /> } />
                 <Table.HeaderCell content={ <Tr { ...messages.calls } /> } />
@@ -36,7 +36,7 @@ function StatsRow({ defName, defValue, textAlign }) {
     const { calls, usec, usec_per_call } = defValue;
 
     return (
-        <Table.Row>
+        <Table.Row className='StatsRow'>
             <Table.Cell textAlign={ textAlign } content={ cmdName } />
             <Table.Cell content={ calls } />
             <Table.Cell content={ usec } />
@@ -52,6 +52,7 @@ RedisCommandsStatsCard.propTypes = {
 export default function RedisCommandsStatsCard(props) {
     const { stats } = props;
     return <DefinitionsCard
+        className='RedisCommandsStatsCard'
         header={ <Tr { ...messages.commandStats } /> }
         headerComponent={ StatsHeader }
         rowComponent={ StatsRow }

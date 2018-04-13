@@ -13,7 +13,7 @@ export default function NotFound(props) {
     const { message = <Tr { ...messages.notFound } /> } = props;
 
     return (
-        <Segment>
+        <Segment className='NotFound'>
             <Header as='h1' textAlign='center'>
                 <Icon.Group size='large'>
                     <Icon loading={ true } size='big' name='target' color='red' />
@@ -33,10 +33,7 @@ export default function NotFound(props) {
                 <Header.Content>
                     404. { message }
                 </Header.Content>
-
             </Header>
-
-
         </Segment>
     );
 }

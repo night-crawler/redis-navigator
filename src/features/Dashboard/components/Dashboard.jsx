@@ -66,7 +66,7 @@ export default class Dashboard extends React.Component {
         const { clients, config, dbsize, name, sections } = routeInstanceInfo;
 
         return (
-            <Segment.Group>
+            <Segment.Group className='Dashboard'>
                 <Helmet>
                     <title>{ `Dashboard: ${routeInstanceName}` }</title>
                 </Helmet>

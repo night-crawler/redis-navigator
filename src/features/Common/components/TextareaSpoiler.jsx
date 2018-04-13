@@ -5,6 +5,8 @@ import styled from 'styled-components';
 
 import messages from '../messages';
 
+import './TextareaSpoiler.css';
+
 
 export const Textarea = styled.textarea`
     width: 100%;
@@ -29,23 +31,32 @@ export default class TextareaSpoiler extends React.Component {
     handleHide = () => this.handleSetShown(false);
 
     render() {
-        const { result } = this.props;
         const { isShown } = this.state;
 
         return isShown
-            ? (
-                <div>
-                    <div onClick={ this.handleHide } className='hide-shown'>
-                        <Tr { ...messages.hide } />
-                    </div>
-                    <Textarea className='response-data' rows={ 6 } value={ result } readOnly={ true } />
+            ? this.renderData()
+            : this.renderShowDataButton();
+    }
+
+    renderData() {
+        const { result } = this.props;
+        return (
+            <div className='TextareaSpoiler'>
+                <div onClick={ this.handleHide } className='hide-shown'>
+                    <Tr { ...messages.hide } />
                 </div>
-            )
-            : (
+                <Textarea className='response-data' rows={ 6 } value={ result } readOnly={ true } />
+            </div>
+        );
+    }
+
+    renderShowDataButton() {
+        return (
+            <div className='TextareaSpoiler'>
                 <div onClick={ this.handleShow } className='show-hidden'>
                     <Tr { ...messages.show } />
                 </div>
-            );
+            </div>
+        );
     }
-
 }

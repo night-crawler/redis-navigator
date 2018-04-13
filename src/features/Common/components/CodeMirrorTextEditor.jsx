@@ -27,14 +27,15 @@ export default class CodeMirrorTextEditor extends React.Component {
         return (
             <Measure bounds={ true } onResize={ this.handleResize } key={ this.state.height }>
                 { ({ measureRef }) =>
-                    <div ref={ measureRef } style={ { height: this.state.height } }>
+                    <div ref={ measureRef } style={ { height: this.state.height } } className='CodeMirrorTextEditor'>
                         <CodeMirror
+                            className='CodeMirrorTextEditor-CodeMirror'
                             editorDidMount={ editor => this.CodeMirror = editor }
                             options={ {
                                 lineWrapping: true,
                                 matchBrackets: true,
                                 autoCloseBrackets: true,
-                                lineNumbers: true,
+                                height: this.state.height
                             } }
                             autoScroll={ false }
                             autoFocus={ true }

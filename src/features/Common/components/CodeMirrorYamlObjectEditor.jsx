@@ -45,8 +45,9 @@ export default class CodeMirrorYamlObjectEditor extends React.Component {
 
             <Measure bounds={ true } onResize={ this.handleResize }>
                 { ({ measureRef }) =>
-                    <div ref={ measureRef } style={ { height } }>
+                    <div ref={ measureRef } style={ { height } } className='CodeMirrorYamlObjectEditor'>
                         <CodeMirror
+                            className='CodeMirrorYamlObjectEditor-CodeMirror'
                             editorDidMount={ editor => this.CodeMirror = editor }
                             options={ {
                                 mode: 'yaml',

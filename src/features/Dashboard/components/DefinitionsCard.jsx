@@ -48,7 +48,7 @@ class DefinitionsCard extends React.Component {
     render() {
         const { header, description, intl, rowComponent, headerComponent } = this.props;
         return (
-            <Card>
+            <Card className='DefinitionsCard'>
                 <Card.Content>
                     <Card.Header content={ header } />
                     <Card.Meta content={ description } />

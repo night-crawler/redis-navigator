@@ -129,7 +129,7 @@ function ClientRow(props) {
 
 function ClientHeader() {
     return (
-        <Table.Header>
+        <Table.Header className='ClientHeader'>
             <Table.Row>
                 {
                     FIELD_NAMES.map((fieldName, i) =>
@@ -158,7 +158,7 @@ export default class RedisClientsCard extends React.Component {
         const { clients } = this.props;
 
         return (
-            <Card fluid={ true }>
+            <Card fluid={ true } className='RedisClientsCard'>
                 <Card.Content>
                     <Card.Header content={ <Tr { ...messages.clients } /> } />
 
