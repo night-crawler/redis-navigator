@@ -1,0 +1,10 @@
+{
+  "printWidth": 120,
+  "parser": "flow",
+  "singleQuote": true,
+  "tabWidth": 4,
+  "trailingComma": "all",
+  "bracketSpacing": true,
+  "arrowParens": "avoid",
+  "requirePragma": true
+}

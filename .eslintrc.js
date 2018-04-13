@@ -18,7 +18,7 @@ module.exports = {
         'plugin:react/recommended',
         'plugin:jest/recommended',
         'plugin:import/recommended',
-        // "plugin:flowtype/recommended",
+        // 'plugin:flowtype/recommended',
         // 'plugin:react-native/all'
     ],
     'settings': {
@@ -40,6 +40,7 @@ module.exports = {
         'react',
         // 'react-native',
         'jest',
+        'prettier',
         // 'flowtype',
     ],
     'rules': {
@@ -87,5 +88,7 @@ module.exports = {
         'import/order': ['error', {
             'groups': ['builtin', 'external', 'index', 'parent', 'sibling', 'internal']
         }],
+
+        'prettier/prettier': 'error',
     }
 };

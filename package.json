@@ -100,6 +100,7 @@
     "eslint-import-resolver-babel-module": "^4.0.0",
     "eslint-plugin-import": "^2.11.0",
     "eslint-plugin-jest": "^21.8.0",
+    "eslint-plugin-prettier": "^2.6.0",
     "eslint-plugin-react": "^7.6.1",
     "extract-react-intl-messages": "^0.8.2",
     "flow-bin": "^0.66.0",
@@ -108,6 +109,7 @@
     "jest-css-modules": "^1.1.0",
     "lodash": "^4.17.5",
     "parcel-bundler": "^1.5.1",
+    "prettier": "^1.12.0",
     "react-test-renderer": "^16.2.0",
     "redux-logger": "^3.0.6",
     "rewire": "^3.0.2"
