@@ -43,19 +43,11 @@ export default class CodeMirrorYamlObjectEditor extends React.Component {
 
         return (
 
-            <Measure
-                bounds={ true }
-                onResize={
-                    (contentRect) => {
-                        const { top } = contentRect.bounds;
-                        const { offsetHeight } = document.body;
-                        this.setState({ height: offsetHeight - top - 50 });
-                    }
-                }
-            >
+            <Measure bounds={ true } onResize={ this.handleResize }>
                 { ({ measureRef }) =>
                     <div ref={ measureRef } style={ { height } }>
                         <CodeMirror
+                            editorDidMount={ editor => this.CodeMirror = editor }
                             options={ {
                                 mode: 'yaml',
                                 matchBrackets: true,
@@ -95,6 +87,13 @@ export default class CodeMirrorYamlObjectEditor extends React.Component {
 
         return null;
     }
+
+    handleResize = contentRect => {
+        const { top } = contentRect.bounds;
+        const { offsetHeight } = document.body;
+        this.setState({ height: offsetHeight - top - 50 });
+        this.CodeMirror && this.CodeMirror.refresh();
+    };
 
     handleOnChange = (value) => {
         const { onChange } = this.props;

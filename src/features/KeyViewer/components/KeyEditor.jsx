@@ -93,10 +93,7 @@ export default class KeyEditor extends React.Component {
     }
 
     renderEditor() {
-        const
-            { type, data: propsData } = this.props,
-            { dirtyData } = this.state,
-            data = dirtyData || propsData;
+        const { type, data } = this.props;
 
         if (!type || !data)
             return false;

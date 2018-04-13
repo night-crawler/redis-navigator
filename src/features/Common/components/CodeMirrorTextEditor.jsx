@@ -25,19 +25,11 @@ export default class CodeMirrorTextEditor extends React.Component {
 
     render() {
         return (
-            <Measure
-                bounds={ true }
-                onResize={
-                    (contentRect) => {
-                        const { top } = contentRect.bounds;
-                        const { offsetHeight } = document.body;
-                        this.setState({ height: offsetHeight - top - 50 });
-                    }
-                }
-            >
+            <Measure bounds={ true } onResize={ this.handleResize } key={ this.state.height }>
                 { ({ measureRef }) =>
                     <div ref={ measureRef } style={ { height: this.state.height } }>
                         <CodeMirror
+                            editorDidMount={ editor => this.CodeMirror = editor }
                             options={ {
                                 lineWrapping: true,
                                 matchBrackets: true,
@@ -73,6 +65,15 @@ export default class CodeMirrorTextEditor extends React.Component {
 
         return newText !== prevText;
     }
+
+    handleResize = contentRect => {
+        const { top } = contentRect.bounds;
+        const { offsetHeight } = document.body;
+        this.setState({ height: offsetHeight - top - 50 });
+
+        this.forceUpdate();
+        this.CodeMirror && this.CodeMirror.refresh();
+    };
 
     handleOnChange = (value) => {
         const { onChange } = this.props;
