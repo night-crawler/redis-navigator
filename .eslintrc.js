@@ -17,9 +17,17 @@ module.exports = {
         'eslint:recommended',
         'plugin:react/recommended',
         'plugin:jest/recommended',
+        'plugin:import/recommended',
         // "plugin:flowtype/recommended",
         // 'plugin:react-native/all'
     ],
+    'settings': {
+        'import/resolver': {
+            node: { paths: [ 'src' ] },
+            'babel-module': {},
+            'extensions': [ '.js', '.jsx' ]
+        }
+    },
     'parser': 'babel-eslint',
     'parserOptions': {
         'ecmaFeatures': {
@@ -74,6 +82,10 @@ module.exports = {
         'semi': [
             'error',
             'always'
-        ]
+        ],
+
+        'import/order': ['error', {
+            'groups': ['builtin', 'external', 'index', 'parent', 'sibling', 'internal']
+        }],
     }
 };

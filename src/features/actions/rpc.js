@@ -1,3 +1,6 @@
+import { compact, isArray, isEmpty } from 'lodash';
+import { RSAA } from 'redux-api-middleware';
+import { getApiMiddlewareOptions, jsonRequestHeaders } from 'utils';
 import {
     RPCBadActionTypesError,
     RPCBatchArgumentsError,
@@ -5,9 +8,6 @@ import {
     RPCEndpointError,
     RPCMethodNameError
 } from 'errors/rpc';
-import { compact, isArray, isEmpty } from 'lodash';
-import { RSAA } from 'redux-api-middleware';
-import { getApiMiddlewareOptions, jsonRequestHeaders } from 'utils';
 
 
 export const RPC_EXECUTE_START = 'redisNavigator/rpc/execute/start';
