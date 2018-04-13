@@ -58,7 +58,12 @@ describe('Result', () => {
 
 describe('StringCard', () => {
     it('should render TextareaSpoiler for base64', () => {
-        const wrapper = shallow(<StringCard result='buck' />);
+        const wrapper = shallow(<StringCard result='buckbuck' />);
         expect(wrapper.find(TextareaSpoiler)).toHaveLength(1);
+    });
+
+    it('should not treat strings shorter 4 chars as b64', () => {
+        const wrapper = shallow(<StringCard result='buck' />);
+        expect(wrapper.find(TextareaSpoiler)).toHaveLength(0);
     });
 });

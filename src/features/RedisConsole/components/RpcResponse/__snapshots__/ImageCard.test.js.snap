@@ -3,6 +3,7 @@
 exports[`ImageCard should render ImageCard 1`] = `
 <Image
   as="img"
+  className="ImageCard"
   size="medium"
   src="1"
   ui={true}

@@ -95,15 +95,12 @@ describe('rpc utils', function () {
         ];
 
         expect(prepareKeyInfo(request, response)).toEqual({
-            a:
-                {
-                    memory_usage: 333,
-                    ttl: 278,
-                    pttl: 278269,
-                    object_refcount: 1,
-                    object_encoding: 'ziplist',
-                    object_idletime: 21
-                }
+            memory_usage: 333,
+            ttl: 278,
+            pttl: 278269,
+            object_refcount: 1,
+            object_encoding: 'ziplist',
+            object_idletime: 21
         });
 
     });
