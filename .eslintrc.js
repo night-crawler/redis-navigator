@@ -5,10 +5,6 @@ module.exports = {
     },
     'env': {
         'browser': true,
-        // 'node': true,
-        // https://github.com/standard/standard/issues/371
-        // https://github.com/standard/standard/issues/122
-        // 'mocha': true,  // otherwise it can't see `it`
         'jest/globals': true,
         'jest': true,
         'commonjs': true,
