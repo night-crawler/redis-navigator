@@ -1,18 +1,17 @@
 import { withInfo } from '@storybook/addon-info';
+import { boolean, text, withKnobs } from '@storybook/addon-knobs/react';
 import { setAddon, storiesOf } from '@storybook/react';
 import React from 'react';
 import JSXAddon from 'storybook-addon-jsx';
 import { host } from 'storybook-host';
-import { withKnobs, text, boolean } from '@storybook/addon-knobs/react';
 
 import { FullPageDimmer } from 'features/Common/components';
 
 
 setAddon(JSXAddon);
 
-
 // TODO: fix broken flex layout
-const stories = storiesOf('FullPageDimmer', module);
+const stories = storiesOf('Common|FullPageDimmer', module);
 stories.addDecorator((story, context) => withInfo('common info')(story)(context));
 stories.addDecorator(withKnobs);
 stories.addDecorator(host({
@@ -30,10 +29,12 @@ stories.addWithJSX(
         />
 );
 
+
 stories.addWithJSX(
     'inverted', () =>
         <FullPageDimmer inverted={ false } />
 );
+
 
 stories.addWithJSX(
     'with `message`',

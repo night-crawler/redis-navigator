@@ -1,7 +1,6 @@
 import { withConsole } from '@storybook/addon-console';
-import { setDefaults } from '@storybook/addon-info';
-// 4.0.1.alpha
-// import { configure as configureViewport } from '@storybook/addon-viewport';
+import { setDefaults as setInfoDefaults } from '@storybook/addon-info';
+import { setOptions } from '@storybook/addon-options';
 import { addDecorator, configure } from '@storybook/react';
 
 import { addLocaleData } from 'react-intl';
@@ -30,7 +29,7 @@ setIntlConfig({
     getMessages,
 });
 
-setDefaults({
+setInfoDefaults({
     header: false,
     inline: false,
     styles: {
@@ -39,6 +38,11 @@ setDefaults({
             zIndex: 0,
         },
     }
+});
+
+setOptions({
+    hierarchySeparator: /\/|\./,
+    hierarchyRootSeparator: /\|/,
 });
 
 addDecorator(withIntl);
