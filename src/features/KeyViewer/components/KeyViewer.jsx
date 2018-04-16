@@ -136,7 +136,6 @@ class KeyViewer extends React.Component {
 
                     <Grid.Column width={ 11 } style={ { paddingTop: 0, paddingRight: 0 } }>
                         <KeyEditor
-                            // key={ selectedKey }
                             type={ selectedKeyType }
                             info={ selectedKeyInfo }
                             data={ selectedKeyData }

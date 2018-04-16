@@ -39,23 +39,16 @@ export default class KeyEditor extends React.Component {
         this.log = debug('KeyEditor');
         this.log('initialized', props);
 
-        this.keyMapHandlers = {
-            save: this.handleSaveClicked,
-        };
+        this.keyMapHandlers = { save: this.handleSaveClicked };
+        this.keyMap = { save: 'ctrl+enter' };
 
-        this.state = {
-            dirtyData: undefined,
-        };
-
-        this.keyMap = {
-            save: 'ctrl+enter',
-        };
+        this.state = { dirtyData: undefined };
     }
 
     render() {
         const
-            { type, selectedKey, info, data } = this.props,
-            { dirtyData } = this.state;
+            { type, selectedKey, info } = this.props,
+            { editorError } = this.state;
 
 
         if (!selectedKey || !type)
@@ -82,11 +75,14 @@ export default class KeyEditor extends React.Component {
                 { this.renderEditor() }
 
                 <Button
-                    disabled={ isEqual(data, dirtyData) } fluid={ true } primary={ true }
+                    disabled={ !this.checkCanClickSave() } fluid={ true } primary={ true }
                     onClick={ this.handleSaveClicked }
                 >
                     <Icon name='save' />
-                    <Tr { ...messages.save } />
+                    { !editorError
+                        ? <Tr { ...messages.save } />
+                        : <Tr { ...messages.syntaxError } />
+                    }
                 </Button>
             </Segment>
         );
@@ -103,7 +99,11 @@ export default class KeyEditor extends React.Component {
             case 'set':
             case 'zset':
             case 'hash':
-                return <CodeMirrorYamlObjectEditor params={ data } onChange={ this.handleEditorChange } />;
+                return <CodeMirrorYamlObjectEditor
+                    params={ data }
+                    onChange={ this.handleEditorChange }
+                    onError={ this.handleEditorError }
+                />;
             case 'string':
                 return <CodeMirrorTextEditor text={ data } onChange={ this.handleEditorChange } />;
 
@@ -122,13 +122,30 @@ export default class KeyEditor extends React.Component {
         return null;
     }
 
+    checkCanClickSave = () => {
+        const
+            { data } = this.props,
+            { dirtyData, editorError } = this.state;
+
+        if (editorError)
+            return false;
+        if (isEqual(data, dirtyData))
+            return false;
+
+        return true;
+    };
+
     handleFetchKeyDataClicked = () => {
         const { type, selectedKey, onFetchKeyDataClick } = this.props;
         onFetchKeyDataClick(selectedKey, type);
     };
 
-    handleEditorChange = (nextValue) => {
-        this.setState({ dirtyData: nextValue });
+    handleEditorChange = nextValue => {
+        this.setState({ dirtyData: nextValue, editorError: false });
+    };
+
+    handleEditorError = message => {
+        this.setState({ editorError: message });
     };
 
     handleSaveClicked = () => {

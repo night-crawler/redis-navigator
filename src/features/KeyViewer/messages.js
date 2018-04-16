@@ -17,4 +17,5 @@ export default defineMessages({
     fewKeysFound: '{keyCount} keys found',
     saveError: 'There were some errors',
     saveSuccess: 'Everything have been saved successfully',
+    syntaxError: 'Syntax error',
 });

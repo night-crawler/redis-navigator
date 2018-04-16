@@ -14,12 +14,15 @@ export default class CodeMirrorYamlObjectEditor extends React.Component {
     static propTypes = {
         params: PropTypes.oneOfType([ PropTypes.object, PropTypes.array ]).isRequired,
         onChange: PropTypes.func.isRequired,
+        onError: PropTypes.func,
         flowLevel: PropTypes.number,
         constantHeight: PropTypes.oneOfType([ PropTypes.number, PropTypes.string ]),
     };
 
     static defaultProps = {
         flowLevel: 1,
+        onChange: () => {},
+        onError: () => {},
     };
 
     constructor(props) {
@@ -32,11 +35,12 @@ export default class CodeMirrorYamlObjectEditor extends React.Component {
             textParams: yaml.dump(params, { flowLevel }),
             error: false,
             height: 300,
+            errorHeight: 0,
         };
     }
 
     render() {
-        const { error, textParams, height: measuredHeight } = this.state;
+        const { textParams, height: measuredHeight } = this.state;
         const { constantHeight } = this.props;
 
         const height = constantHeight !== undefined ? constantHeight : measuredHeight;
@@ -64,11 +68,6 @@ export default class CodeMirrorYamlObjectEditor extends React.Component {
                                 this.handleOnChange(value);
                             } }
                         />
-
-                        { error
-                            ? <pre>{ error.message }</pre>
-                            : false
-                        }
                     </div>
                 }
             </Measure>
@@ -92,12 +91,12 @@ export default class CodeMirrorYamlObjectEditor extends React.Component {
     handleResize = contentRect => {
         const { top } = contentRect.bounds;
         const { offsetHeight } = document.body;
-        this.setState({ height: offsetHeight - top - 50 });
+        this.setState({ height: offsetHeight - top - 50 - this.state.errorHeight });
         this.CodeMirror && this.CodeMirror.refresh();
     };
 
     handleOnChange = (value) => {
-        const { onChange } = this.props;
+        const { onChange, onError } = this.props;
         try {
             const newParams = yaml.load(value);
             this.setState(
@@ -105,7 +104,10 @@ export default class CodeMirrorYamlObjectEditor extends React.Component {
                 () => onChange(newParams)  // no race conditions
             );
         } catch (e) {
-            this.setState({ error: e });
+            this.setState(
+                { error: e.message },
+                () => onError(e.message)
+            );
         }
     };
 }

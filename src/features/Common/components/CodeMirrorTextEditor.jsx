@@ -33,6 +33,7 @@ export default class CodeMirrorTextEditor extends React.Component {
                             editorDidMount={ editor => this.CodeMirror = editor }
                             options={ {
                                 lineWrapping: true,
+                                lineNumbers: true,
                                 matchBrackets: true,
                                 autoCloseBrackets: true,
                                 height: this.state.height
