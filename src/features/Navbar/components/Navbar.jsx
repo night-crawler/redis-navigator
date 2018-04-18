@@ -9,6 +9,7 @@ import messages from '../messages';
 
 import DropdownRedisItem from './DropdownRedisItem';
 import TopNailedFullWidthContainer from './TopNailedFullWidthContainer';
+import './Navbar.css';
 
 import { Timeouts } from 'utils/timers';
 
@@ -55,7 +56,7 @@ export default function Navbar(props) {
     });
 
     return (
-        <Menu fixed='top'>
+        <Menu className='Navbar' fixed='top'>
             {
                 progressIsVisible &&
                 <TopNailedFullWidthContainer>

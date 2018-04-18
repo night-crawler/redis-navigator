@@ -3,7 +3,7 @@ import React from 'react';
 import { Dropdown, Label } from 'semantic-ui-react';
 
 
-NavbarDropdownRedisItem.propTypes = {
+DropdownRedisItem.propTypes = {
     // is pool closed
     closed: PropTypes.bool,
     active: PropTypes.bool,
@@ -13,11 +13,11 @@ NavbarDropdownRedisItem.propTypes = {
     display_name: PropTypes.string,
     handleClick: PropTypes.func.isRequired,
 };
-export default function NavbarDropdownRedisItem(props) {
+export default function DropdownRedisItem(props) {
     const circleColor = props.closed === false ? 'green' : 'red';
 
     return (
-        <Dropdown.Item active={ props.active } onClick={ props.handleClick }>
+        <Dropdown.Item active={ props.active } onClick={ props.handleClick } className='DropdownRedisItem'>
             <Label circular={ true } size='mini' color={ circleColor }>
                 { props.freesize }/{ props.maxsize }
             </Label>
