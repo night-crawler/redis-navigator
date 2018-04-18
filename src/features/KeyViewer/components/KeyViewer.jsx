@@ -1,4 +1,4 @@
-import { MAX_CONTENT_AUTOLOAD_SIZE } from 'constants';
+import { KEY_VIEWER_SEARCH_TIMEOUT, MAX_CONTENT_AUTOLOAD_SIZE } from 'constants';
 
 import debug from 'debug';
 import PropTypes from 'prop-types';
@@ -25,7 +25,7 @@ class KeyViewer extends React.Component {
             fetchKeyRangeWithTypes: PropTypes.func.isRequired,
             fetchKeyInfo: PropTypes.func.isRequired,
             fetchKeyData: PropTypes.func.isRequired,
-            updateKeyData: PropTypes.func.isRequired,
+            updateKeyDataAndReload: PropTypes.func.isRequired,
         }),
         locationSearchParams: PropTypes.shape({
             pattern: PropTypes.string,
@@ -183,6 +183,7 @@ class KeyViewer extends React.Component {
 
     handleFetchKeyDataClicked = (key, type) => {
         const { actions } = this.props;
+        actions.fetchKeyInfo(key);
         actions.fetchKeyData(key, type);
     };
 
@@ -215,13 +216,13 @@ class KeyViewer extends React.Component {
         Timeouts.add({
             name: 'KeyViewer.search',
             callback: () => actions.searchKeys(newParams),
-            timeout: 300
+            timeout: KEY_VIEWER_SEARCH_TIMEOUT
         });
     };
 
     handleSaveKeyDataClick = (key, type, prevData, nextData, pexpire) => {
         const { actions } = this.props;
-        actions.updateKeyData(key, type, prevData, nextData, pexpire);
+        actions.updateKeyDataAndReload(key, type, prevData, nextData, pexpire);
     }
 }
 

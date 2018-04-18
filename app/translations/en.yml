@@ -40,6 +40,7 @@ features.KeyViewer.messages.saveError: There were some errors
 features.KeyViewer.messages.saveSuccess: Everything have been saved successfully
 features.KeyViewer.messages.selectAKey: Select a key
 features.KeyViewer.messages.someKeysFound: '{keyCount} keys found'
+features.KeyViewer.messages.syntaxError: Syntax error
 features.KeyViewer.messages.ttl: TTL
 features.KeyViewer.messages.zeroKeysFound: '${keyCount} keys found'
 features.Navbar.messages.instance: Instance

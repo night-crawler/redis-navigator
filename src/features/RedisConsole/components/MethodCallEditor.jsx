@@ -115,6 +115,7 @@ class MethodCallEditor extends React.Component {
                 <Grid stackable={ true }>
                     <Grid.Column width={ 6 }>
                         <CodeMirrorYamlObjectEditor
+                            showInlineError={ true }
                             params={ methodParams }
                             onChange={ this.handleJsonChanged }
                             constantHeight={ 'auto' }

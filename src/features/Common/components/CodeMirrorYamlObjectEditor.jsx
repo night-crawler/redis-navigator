@@ -17,10 +17,12 @@ export default class CodeMirrorYamlObjectEditor extends React.Component {
         onError: PropTypes.func,
         flowLevel: PropTypes.number,
         constantHeight: PropTypes.oneOfType([ PropTypes.number, PropTypes.string ]),
+        showInlineError: PropTypes.bool,
     };
 
     static defaultProps = {
         flowLevel: 1,
+        showInlineError: false,
         onChange: () => {},
         onError: () => {},
     };
@@ -40,8 +42,8 @@ export default class CodeMirrorYamlObjectEditor extends React.Component {
     }
 
     render() {
-        const { textParams, height: measuredHeight } = this.state;
-        const { constantHeight } = this.props;
+        const { textParams, height: measuredHeight, error } = this.state;
+        const { constantHeight, showInlineError } = this.props;
 
         const height = constantHeight !== undefined ? constantHeight : measuredHeight;
 
@@ -68,6 +70,8 @@ export default class CodeMirrorYamlObjectEditor extends React.Component {
                                 this.handleOnChange(value);
                             } }
                         />
+
+                        { showInlineError && !!error && <pre>{ error }</pre> }
                     </div>
                 }
             </Measure>
@@ -91,7 +95,7 @@ export default class CodeMirrorYamlObjectEditor extends React.Component {
     handleResize = contentRect => {
         const { top } = contentRect.bounds;
         const { offsetHeight } = document.body;
-        this.setState({ height: offsetHeight - top - 50 - this.state.errorHeight });
+        this.setState({ height: offsetHeight - top - 50 });
         this.CodeMirror && this.CodeMirror.refresh();
     };
 

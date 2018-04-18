@@ -37,3 +37,5 @@ export const REDIS_KEY_TYPE_ICON_MAP = {
     },
 };
 
+
+export const KEY_VIEWER_SEARCH_TIMEOUT = 300;

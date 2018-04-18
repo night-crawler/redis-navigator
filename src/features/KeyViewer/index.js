@@ -84,7 +84,14 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
 
             fetchKeyInfo: rpc.fetchKeyInfo,
             fetchKeyData: rpc.fetchKeyData,
-            updateKeyData: rpc.updateKeyData,
+
+            updateKeyDataAndReload: (key, type, prevData, nextData, pexpire) => {
+                const promise = rpc.updateKeyData(key, type, prevData, nextData, pexpire);
+                return promise.then(() => {
+                    rpc.fetchInfo(key);
+                    rpc.fetchKeyData(key, type);
+                });
+            },
 
             fetchKeyRangeWithTypes: ({ startIndex, stopIndex, perPage }) => {
                 const pageHelper = new PageHelper(undefined, perPage);
