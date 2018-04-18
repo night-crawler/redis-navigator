@@ -8,12 +8,14 @@ import { HotKeys } from 'react-hotkeys';
 import { FormattedMessage as Tr } from 'react-intl';
 import { Button, Header, Icon, Segment } from 'semantic-ui-react';
 
+import FullPageDimmer from 'features/Common/components/FullPageDimmer';
+import { CodeMirrorYamlObjectEditor, CodeMirrorTextEditor } from 'features/Common/components';
+
 import messages from '../messages';
 
 import KeyInfo from './KeyInfo';
+import './KeyEditor.css';
 
-import FullPageDimmer from 'features/Common/components/FullPageDimmer';
-import { CodeMirrorYamlObjectEditor, CodeMirrorTextEditor } from 'features/Common/components';
 
 
 export default class KeyEditor extends React.Component {
@@ -60,7 +62,11 @@ export default class KeyEditor extends React.Component {
         const iconName = (REDIS_KEY_TYPE_ICON_MAP[ type ] || { name: 'spinner' }).name;
 
         return (
-            <Segment as={ HotKeys } basic={ true } keyMap={ this.keyMap } handlers={ this.keyMapHandlers } focused={ true }>
+            <Segment
+                className='KeyEditor'
+                as={ HotKeys } keyMap={ this.keyMap } handlers={ this.keyMapHandlers } focused={ true }
+                basic={ true }
+            >
                 <Header as='h2'>
                     <Icon name={ iconName } />
                     { `[${type}] ${selectedKey}` }

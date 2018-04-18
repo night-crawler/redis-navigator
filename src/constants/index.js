@@ -39,3 +39,7 @@ export const REDIS_KEY_TYPE_ICON_MAP = {
 
 
 export const KEY_VIEWER_SEARCH_TIMEOUT = 300;
+
+export const NAVBAR_HEIGHT = 45;
+
+export const KEY_VIEWER_KEYS_MIN_WIDTH = 300;
