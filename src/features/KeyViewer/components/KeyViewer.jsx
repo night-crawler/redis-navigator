@@ -1,5 +1,5 @@
 import { KEY_VIEWER_SEARCH_TIMEOUT, MAX_CONTENT_AUTOLOAD_SIZE } from 'constants';
-
+import SplitPane from 'react-split-pane';
 import debug from 'debug';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -72,15 +72,7 @@ class KeyViewer extends React.Component {
         const {
             intl,
             locationSearchParams,
-            hasFetchedSearchKeys,
             searchInfo,
-            selectedKey,
-            keyTypes,
-            actions,
-            searchPagesMap,
-            selectedKeyType,
-            selectedKeyData,
-            selectedKeyInfo,
         } = this.props;
 
         const filterActionButtonGroup = (
@@ -99,56 +91,65 @@ class KeyViewer extends React.Component {
 
         return (
 
-            <Segment>
-                <Grid style={ { height: 'calc(100vh - 75px)', margin: 0, padding: 0 } }>
-                    <Grid.Column width={ 5 } style={ {
-                        display: 'flex',
-                        alignItems: 'stretch',
-                        flexDirection: 'column',
-                        margin: 0,
-                        padding: 0
-                    } }>
-                        <Input
-                            defaultValue={ locationSearchParams.pattern }
-                            icon='search'
-                            iconPosition='left'
-                            fluid={ true }
-                            onChange={ this.handleFilterKeysChange }
-                            action={ filterActionButtonGroup }
-                            placeholder={ intl.formatMessage({ ...messages.filterKeys }) }
-                        />
-                        <PluralFoundKeys keyCount={ searchInfo.count } />
-                        <div style={ { flex: '1 1 auto' } }>
-                            {
-                                hasFetchedSearchKeys && !!searchInfo.count &&
-                                <InfiniteKeyList
-                                    selectedKey={ selectedKey }
-                                    count={ searchInfo.count }
-                                    keyTypes={ keyTypes }
-                                    perPage={ locationSearchParams.perPage }
-                                    searchPagesMap={ searchPagesMap }
-                                    fetchKeyRangeWithTypes={ actions.fetchKeyRangeWithTypes }
-                                    onKeyClick={ this.handleKeyClicked }
-                                />
-                            }
-                        </div>
-                    </Grid.Column>
+            <SplitPane
 
-                    <Grid.Column width={ 11 } style={ { paddingTop: 0, paddingRight: 0 } }>
-                        <KeyEditor
-                            type={ selectedKeyType }
-                            info={ selectedKeyInfo }
-                            data={ selectedKeyData }
-                            selectedKey={ selectedKey }
-                            onFetchKeyDataClick={ this.handleFetchKeyDataClicked }
-                            onSaveKeyDataClick={ this.handleSaveKeyDataClick }
-                        />
-                    </Grid.Column>
-                </Grid>
-            </Segment>
-
+                split='vertical'
+                minSize={ 300 } defaultSize={ 300 }
+            >
+                <div style={ { height: 'calc(100vh - 150px)' } }>
+                    <Input
+                        defaultValue={ locationSearchParams.pattern }
+                        icon='search'
+                        iconPosition='left'
+                        fluid={ true }
+                        onChange={ this.handleFilterKeysChange }
+                        action={ filterActionButtonGroup }
+                        placeholder={ intl.formatMessage({ ...messages.filterKeys }) }
+                    />
+                    <PluralFoundKeys keyCount={ searchInfo.count } />
+                    { this.renderInfiniteKeyList() }
+                </div>
+                <div>
+                    { this.renderKeyEditor() }
+                </div>
+            </SplitPane>
         );
     }
+
+    renderInfiniteKeyList() {
+        const {
+            locationSearchParams,
+            hasFetchedSearchKeys,
+            searchInfo,
+            selectedKey,
+            keyTypes,
+            actions,
+            searchPagesMap,
+        } = this.props;
+
+        return hasFetchedSearchKeys && !!searchInfo.count &&
+            <InfiniteKeyList
+                selectedKey={ selectedKey }
+                count={ searchInfo.count }
+                keyTypes={ keyTypes }
+                perPage={ locationSearchParams.perPage }
+                searchPagesMap={ searchPagesMap }
+                fetchKeyRangeWithTypes={ actions.fetchKeyRangeWithTypes }
+                onKeyClick={ this.handleKeyClicked }
+            />;
+    }
+
+    renderKeyEditor() {
+        const { selectedKey, selectedKeyType, selectedKeyData, selectedKeyInfo } = this.props;
+        return <KeyEditor
+            type={ selectedKeyType }
+            info={ selectedKeyInfo }
+            data={ selectedKeyData }
+            selectedKey={ selectedKey }
+            onFetchKeyDataClick={ this.handleFetchKeyDataClicked }
+            onSaveKeyDataClick={ this.handleSaveKeyDataClick }
+        />;
+    };
 
     componentDidMount() {
         const { locationSearchParams, actions } = this.props;
