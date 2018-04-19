@@ -1,9 +1,9 @@
 import { RSAA } from 'redux-api-middleware';
 import { isString } from 'lodash';
 
-import { RpcActionCreator } from './rpc';
-
 import { keyDiff } from 'utils/keyDiff';
+
+import { RpcActionCreator } from './rpc';
 
 
 export const REDIS_RPC_FETCH_INFO_START = 'redisNavigator/rpc/batch/execute/fetch-info/start';

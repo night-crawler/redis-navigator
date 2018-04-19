@@ -9,12 +9,13 @@ import React from 'react';
 import { UnControlled as CodeMirror } from 'react-codemirror2';
 import { Button, Grid, Header, Icon, Segment } from 'semantic-ui-react';
 
+import { isJson, isYaml } from 'utils';
+
 import { checkCommandsValid } from '../utils';
 import messages from '../messages';
 
 import ImportingCommandListPreview from './ImportingCommandListPreview';
 
-import { isJson, isYaml } from 'utils';
 
 
 export default class CommandImporter extends React.Component {

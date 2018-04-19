@@ -21,9 +21,9 @@ export const hasFetched = (state = {}, action) => {
         [ SEARCH_KEYS_SUCCESS ]: { searchKeys: true },
     }[ action.type ];
 
-    return updateState !== undefined
-        ? { ...state, ...updateState }
-        : state;
+    return updateState === undefined
+        ? state
+        : { ...state, ...updateState };
 };
 
 
@@ -42,7 +42,7 @@ export const isFetching = (state = {}, action) => {
         [ SEARCH_KEYS_SUCCESS ]: { searchKeys: false },
     }[ action.type ];
 
-    return updateState !== undefined
-        ? { ...state, ...updateState }
-        : state;
+    return updateState === undefined
+        ? state
+        : { ...state, ...updateState };
 };

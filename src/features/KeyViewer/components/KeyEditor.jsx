@@ -85,9 +85,9 @@ export default class KeyEditor extends React.Component {
                     onClick={ this.handleSaveClicked }
                 >
                     <Icon name='save' />
-                    { !editorError
-                        ? <Tr { ...messages.save } />
-                        : <Tr { ...messages.syntaxError } />
+                    { editorError
+                        ? <Tr { ...messages.syntaxError } />
+                        : <Tr { ...messages.save } />
                     }
                 </Button>
             </Segment>
@@ -159,7 +159,7 @@ export default class KeyEditor extends React.Component {
         const { dirtyData } = this.state;
 
         if (isEqual(data, dirtyData))
-            return false;
+            return;
 
         onSaveKeyDataClick(
             selectedKey,
