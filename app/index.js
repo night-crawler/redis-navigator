@@ -8,15 +8,14 @@ import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'react-router-redux';
 
 import 'semantic-ui-css/semantic.min.css';
-import configureStore from './configureStore';
-import initialState from './initialState';
-import enMessages from './translations/en.yml';
-import ruMessages from './translations/ru.yml';
-
 import { extractLanguageCode } from 'utils';
 import InternationalizationProvider, { switchLocale, updateIntl } from 'features/Internationalization';
 import DefaultLayout from 'features/DefaultLayout';
 
+import configureStore from './configureStore';
+import initialState from './initialState';
+import enMessages from './translations/en.yml';
+import ruMessages from './translations/ru.yml';
 
 const history = createHistory();
 const store = configureStore(initialState, history);

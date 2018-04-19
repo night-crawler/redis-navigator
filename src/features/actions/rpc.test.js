@@ -60,24 +60,13 @@ describe('RpcRequestBuilder', () => {
     it('throws correct errors', () => {
         const request = new RpcRequestBuilder();
 
-        function noMethodSpecified() {
-            request.mkSingle();
-        }
-
+        const noMethodSpecified = () => request.mkSingle();
         expect(noMethodSpecified).toThrow(RPCMethodNameError);
 
-
-        function noArgumentsSuppliedForBatch() {
-            request.mkBatch();
-        }
-
+        const noArgumentsSuppliedForBatch = () => request.mkBatch();
         expect(noArgumentsSuppliedForBatch).toThrowError(RPCBatchArgumentsError);
 
-
-        function wrongArgumentType() {
-            request.mkBatch({ test: 1 });
-        }
-
+        const wrongArgumentType = () => request.mkBatch({ test: 1 });
         expect(wrongArgumentType).toThrowError(RPCBatchArgumentsError);
     });
 });

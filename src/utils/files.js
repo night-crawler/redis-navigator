@@ -1,6 +1,6 @@
-export function saveFile(filename, data, content_type = 'application/json') {
+export function saveFile(filename, data, contentType = 'application/json') {
     const a = window.document.createElement('a');
-    a.href = window.URL.createObjectURL(new Blob([ data ], { type: content_type }));
+    a.href = window.URL.createObjectURL(new Blob([ data ], { type: contentType }));
     a.download = filename;
     document.body.appendChild(a);
     a.click();

@@ -6,17 +6,17 @@ import { Helmet } from 'react-helmet';
 import { FormattedMessage as Tr } from 'react-intl';
 import { Route, Switch } from 'react-router-dom';
 
-import messages from '../messages';
-
-import AppContentWrapper from './AppContentWrapper';
-import AppWrapper from './AppWrapper';
-
 import RedisConsole from 'features/RedisConsole';
 import NotificationSystem from 'features/NotificationSystem';
 import Navbar from 'features/Navbar';
 import KeyViewer from 'features/KeyViewer';
 import Dashboard from 'features/Dashboard';
 import { FullPageDimmer, NotFound } from 'features/Common/components';
+
+import messages from '../messages';
+
+import AppWrapper from './AppWrapper';
+import AppContentWrapper from './AppContentWrapper';
 
 
 export default class DefaultLayout extends React.Component {

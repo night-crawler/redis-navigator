@@ -6,6 +6,18 @@ import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 import { createStructuredSelector } from 'reselect';
 
+import { makeAbsoluteUrl, PageHelper, serializeQuery } from 'utils';
+import {
+    hasFetchedSearchKeys,
+    isFetchingSearchKeys,
+    routeInstanceName,
+    routeInstanceSearchUrl,
+    routeKeys,
+    shouldFetchSearchKeys,
+    urls,
+} from 'features/selectors';
+import { fetchKeysPage, RedisRpc, searchKeys } from 'features/actions';
+
 import { setSelectedKey } from './actions';
 import { KeyViewer } from './components';
 import {
@@ -24,17 +36,6 @@ import {
     selectedKeyUpdateResults,
 } from './selectors';
 
-import { makeAbsoluteUrl, PageHelper, serializeQuery } from 'utils';
-import {
-    hasFetchedSearchKeys,
-    isFetchingSearchKeys,
-    routeInstanceName,
-    routeInstanceSearchUrl,
-    routeKeys,
-    shouldFetchSearchKeys,
-    urls,
-} from 'features/selectors';
-import { fetchKeysPage, RedisRpc, searchKeys } from 'features/actions';
 
 
 

@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { AutoSizer, InfiniteLoader, List } from 'react-virtualized';
 
+import { PageHelper } from 'utils';
+
 import KeyRow from './KeyRow';
 
-import { PageHelper } from 'utils';
 
 
 export default class InfiniteKeyList extends React.Component {

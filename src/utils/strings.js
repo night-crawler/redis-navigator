@@ -13,14 +13,14 @@ export function castStringToPrimitive(rawStr) {
             return false;
     }
 
-    const _int = parseInt(rawStr, 10);
-    if (!isNaN(_int) && `${_int}` === rawStr) {
-        return _int;
+    const possibleInteger = parseInt(rawStr, 10);
+    if (!isNaN(possibleInteger) && rawStr === `${possibleInteger}`) {
+        return possibleInteger;
     }
 
-    const _float = parseFloat(rawStr);
-    if (!isNaN(_float)) {
-        return _float;
+    const possibleFloat = parseFloat(rawStr);
+    if (!isNaN(possibleFloat)) {
+        return possibleFloat;
     }
 
     return rawStr;

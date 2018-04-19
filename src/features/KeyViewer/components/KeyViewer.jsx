@@ -5,9 +5,8 @@ import debug from 'debug';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { injectIntl, intlShape } from 'react-intl';
-import { Button, Grid, Input, Segment } from 'semantic-ui-react';
 
-import messages from '../messages';
+import { Timeouts } from 'utils/timers';
 
 import InfiniteKeyList from './InfiniteKeyList';
 import KeyEditor from './KeyEditor';
@@ -16,7 +15,7 @@ import PluralFoundKeys from './PluralFoundKeys';
 import KeyFilterInput from './KeyFilterInput';
 import './KeyViewer.css';
 
-import { Timeouts } from 'utils/timers';
+
 
 
 class KeyViewer extends React.Component {

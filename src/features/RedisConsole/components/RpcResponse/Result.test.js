@@ -1,10 +1,11 @@
 /* eslint-disable react/react-in-jsx-scope,no-undef */
+import { TextareaSpoiler } from 'features/Common/components';
+
 import BooleanCard from './BooleanCard';
 import ObjectTreeViewWidget from './ObjectTreeViewWidget';
 import ImageCard from './ImageCard.jsx';
 import Result, { StringCard } from './Result';
 
-import { TextareaSpoiler } from 'features/Common/components';
 
 
 const GIF = '' +

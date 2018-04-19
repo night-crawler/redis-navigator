@@ -6,13 +6,14 @@ import { HotKeys } from 'react-hotkeys';
 import { injectIntl, intlShape } from 'react-intl';
 import { Button, Dropdown, Grid, Header, Label, Segment } from 'semantic-ui-react';
 
+import { CodeMirrorYamlObjectEditor } from 'features/Common/components';
+
 import messages from '../messages';
 import { parametersToJson, reprMethodDoc } from '../utils';
 
 import MethodParametersList from './MethodParametersList';
 import RpcResponse from './RpcResponse';
 
-import { CodeMirrorYamlObjectEditor } from 'features/Common/components';
 
 
 class MethodCallEditor extends React.Component {

@@ -70,8 +70,7 @@ export default class CodeMirrorTextEditor extends React.Component {
 
     handleResize = contentRect => {
         const { top } = contentRect.bounds;
-        const { offsetHeight } = document.body;
-        this.setState({ height: offsetHeight - top - 50 });
+        this.setState({ height: window.offsetHeight - top - 50 });
 
         this.forceUpdate();
         this.CodeMirror && this.CodeMirror.refresh();
