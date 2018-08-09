@@ -91,41 +91,13 @@ export default class RedisConsole extends React.Component {
                 <Helmet><title>RPC Console</title></Helmet>
 
                 { this.renderEditors() }
+                { this.renderButtons() }
 
-                <Button.Group widths='5' attached='bottom'>
-                    <Button basic={ true } color='grey' onClick={ this.handleAppendCallEditorClicked }>
-                        <Icon name='add' />
-                        <Tr { ...messages.append } />
-                    </Button>
-
-                    <Button basic={ true } color='grey' onClick={ this.handleExportClicked }>
-                        <Icon name='external' />
-                        <Tr { ...messages.export } />
-                    </Button>
-
-                    <Button basic={ true } color='grey' onClick={ this.handleImportClicked }>
-                        <Icon name='download' />
-                        <Tr { ...messages.import } />
-                    </Button>
-
-                    <Button basic={ true } color='red' onClick={ this.handleClearCallEditorsClicked }>
-                        <Icon name='trash' />
-                        <Tr { ...messages.clear } />
-                    </Button>
-
-                    <Button basic={ true } color='green' onClick={ this.handleExecuteAllClicked }>
-                        <Icon name='lightning' />
-                        <Tr { ...messages.execute } />
-                    </Button>
-                </Button.Group>
-
-                {
-                    routeInstanceImportDialogIsVisible &&
+                { routeInstanceImportDialogIsVisible &&
                     <Segment attached='top'>
                         <CommandImporter inspections={ inspections } onImport={ this.handleImport } />
                     </Segment>
                 }
-
             </Segment.Group>
         );
     }
@@ -133,6 +105,37 @@ export default class RedisConsole extends React.Component {
     componentDidMount() {
         const { routeConsoleCommands } = this.props;
         isEmpty(routeConsoleCommands) && this.appendMethodCallEditor();
+    }
+
+    renderButtons() {
+        return (
+            <Button.Group widths='5' attached='bottom'>
+                <Button basic={ true } color='grey' onClick={ this.handleAppendCallEditorClicked }>
+                    <Icon name='add' />
+                    <Tr { ...messages.append } />
+                </Button>
+
+                <Button basic={ true } color='grey' onClick={ this.handleExportClicked }>
+                    <Icon name='external' />
+                    <Tr { ...messages.export } />
+                </Button>
+
+                <Button basic={ true } color='grey' onClick={ this.handleImportClicked }>
+                    <Icon name='download' />
+                    <Tr { ...messages.import } />
+                </Button>
+
+                <Button basic={ true } color='red' onClick={ this.handleClearCallEditorsClicked }>
+                    <Icon name='trash' />
+                    <Tr { ...messages.clear } />
+                </Button>
+
+                <Button basic={ true } color='green' onClick={ this.handleExecuteAllClicked }>
+                    <Icon name='lightning' />
+                    <Tr { ...messages.execute } />
+                </Button>
+            </Button.Group>
+        );
     }
 
     renderEditors() {
@@ -236,5 +239,4 @@ export default class RedisConsole extends React.Component {
             color: COLORS[ routeConsoleCommands.length % COLORS.length ],
         });
     }
-
 }

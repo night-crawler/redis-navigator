@@ -15,16 +15,14 @@ export default function ImportingCommandListPreview(props) {
 
     return (
         <List className='ImportingCommandListPreview' selection={ true } verticalAlign='middle'>
-            {
-                commands.map(({ methodName, methodParams }, i) =>
-                    <List.Item key={ i }>
-                        <List.Header>{ methodName }</List.Header>
-                        <List.Description>
-                            { JSON.stringify(methodParams) }
-                        </List.Description>
-                    </List.Item>
-                )
-            }
+            { commands.map(({ methodName, methodParams }, i) =>
+                <List.Item key={ i }>
+                    <List.Header>{ methodName }</List.Header>
+                    <List.Description>
+                        { JSON.stringify(methodParams) }
+                    </List.Description>
+                </List.Item>
+            ) }
         </List>
     );
 }

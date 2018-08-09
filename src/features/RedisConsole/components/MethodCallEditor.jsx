@@ -122,14 +122,12 @@ class MethodCallEditor extends React.Component {
                             constantHeight={ 'auto' }
                         />
                     </Grid.Column>
-                    {
-                        response &&
+                    { response &&
                         <Grid.Column width={ 10 }>
                             <RpcResponse response={ response } />
                         </Grid.Column>
                     }
                 </Grid>
-
 
             </Segment>
         );

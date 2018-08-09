@@ -19,5 +19,5 @@ export default function Response(props) {
     if (error !== undefined) {
         return <RpcError error={ error } />;
     }
-    return <div>Command is not executed yet...</div>;
+    return <div>Command has not been executed yet...</div>;
 }

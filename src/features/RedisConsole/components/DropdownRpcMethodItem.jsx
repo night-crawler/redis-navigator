@@ -23,9 +23,7 @@ export default function DropdownRpcMethodItem(props) {
     return (
         <div className='ui mini buttons DropdownRpcMethodItem'>
             <div className='ui blue button'>{ name }</div>
-
-            {
-                parameters.length &&
+            { parameters.length &&
                 <div className='ui blue basic button' style={ { padding: 2 } }>
                     { <MethodParametersList parameters={ parameters } /> }
                 </div>
@@ -34,6 +32,5 @@ export default function DropdownRpcMethodItem(props) {
             { return_type && <div className='ui red basic button'>{ return_type }</div> }
             { doc && <div className='ui blue basic button'>{ cleanMethodDoc(doc) }</div> }
         </div>
-
     );
 }

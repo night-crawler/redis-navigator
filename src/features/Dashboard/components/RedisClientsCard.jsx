@@ -80,18 +80,16 @@ function getFlagsRepr(flags, flagMapping) {
         throw new Error('Flags must be a string');
 
     return (
-        <div>
-            {
-                [...flags].map((flag, i) =>
-                    <Popup
-                        key={ i }
-                        wide={ true }
-                        trigger={ <Label>{ flag }</Label> }
-                        content={ flagMapping[flag] }
-                    />
-                )
-            }
-        </div>
+        <React.Fragment>
+            { [...flags].map((flag, i) =>
+                <Popup
+                    key={ i }
+                    wide={ true }
+                    trigger={ <Label>{flag}</Label> }
+                    content={ flagMapping[flag] }
+                />
+            ) }
+        </React.Fragment>
     );
 
 }
@@ -117,11 +115,9 @@ function ClientRow(props) {
 
     return (
         <Table.Row>
-            {
-                clientArray.map((clientOption, i) =>
-                    <Table.Cell key={ i }>{ clientOption }</Table.Cell>
-                )
-            }
+            { clientArray.map((clientOption, i) =>
+                <Table.Cell key={ i }>{clientOption}</Table.Cell>
+            ) }
         </Table.Row>
     );
 }
@@ -131,18 +127,16 @@ function ClientHeader() {
     return (
         <Table.Header className='ClientHeader'>
             <Table.Row>
-                {
-                    FIELD_NAMES.map((fieldName, i) =>
-                        <Table.HeaderCell key={ i }>
-                            <Popup
-                                wide={ true }
-                                trigger={ <span>{ fieldName }</span> }
-                                content={ FIELD_NAME_TO_DESCRIPTION_MAPPING[fieldName] }
-                            />
+                { FIELD_NAMES.map((fieldName, i) =>
+                    <Table.HeaderCell key={ i }>
+                        <Popup
+                            wide={ true }
+                            trigger={ <span>{fieldName}</span> }
+                            content={ FIELD_NAME_TO_DESCRIPTION_MAPPING[fieldName] }
+                        />
 
-                        </Table.HeaderCell>
-                    )
-                }
+                    </Table.HeaderCell>
+                ) }
             </Table.Row>
         </Table.Header>
     );
@@ -165,11 +159,9 @@ export default class RedisClientsCard extends React.Component {
                     <Table celled={ true } compact='very' unstackable={ true } size='small' textAlign='center'>
                         <ClientHeader />
                         <Table.Body>
-                            {
-                                clients.map((clientArray, i) =>
-                                    <ClientRow key={ i } clientArray={ clientArray } />
-                                )
-                            }
+                            { clients.map((clientArray, i) =>
+                                <ClientRow key={ i } clientArray={ clientArray } />
+                            ) }
                         </Table.Body>
                     </Table>
 

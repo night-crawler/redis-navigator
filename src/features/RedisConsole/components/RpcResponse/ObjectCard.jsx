@@ -50,10 +50,9 @@ export default class ObjectCard extends React.Component {
 
                     </Card.Meta>
                     <Card.Description>
-                        {
-                            widget === 'editor'
-                                ? this.renderJsonEditor()
-                                : this.renderJsonView()
+                        { widget === 'editor'
+                            ? this.renderJsonEditor()
+                            : this.renderJsonView()
                         }
                     </Card.Description>
                 </Card.Content>

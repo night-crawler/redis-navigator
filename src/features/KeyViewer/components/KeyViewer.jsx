@@ -16,8 +16,6 @@ import KeyFilterInput from './KeyFilterInput';
 import './KeyViewer.css';
 
 
-
-
 class KeyViewer extends React.Component {
     static propTypes = {
         intl: intlShape.isRequired,

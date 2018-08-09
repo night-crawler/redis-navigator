@@ -57,8 +57,7 @@ export default function Navbar(props) {
 
     return (
         <Menu className='Navbar' fixed='top'>
-            {
-                progressIsVisible &&
+            { progressIsVisible &&
                 <TopNailedFullWidthContainer>
                     <Progress indicating={ true } percent={ progressPercent } attached='top' color='green' />
                 </TopNailedFullWidthContainer>
@@ -95,16 +94,14 @@ export default function Navbar(props) {
                         </Dropdown.Item>
 
                         { !_.isEmpty(instances) && <Dropdown.Divider /> }
-                        {
-                            instances.map((redisOptions, i) =>
-                                <DropdownRedisItem
-                                    { ...redisOptions }
-                                    key={ i }
-                                    active={ activeInstanceName === redisOptions.name }
-                                    handleClick={ () => actions.setActiveInstance(redisOptions.name) }
-                                />
-                            )
-                        }
+                        { instances.map((redisOptions, i) =>
+                            <DropdownRedisItem
+                                { ...redisOptions }
+                                key={ i }
+                                active={ activeInstanceName === redisOptions.name }
+                                handleClick={ () => actions.setActiveInstance(redisOptions.name) }
+                            /> 
+                        ) }
                     </Dropdown.Menu>
                 </Dropdown>
             </Container>
