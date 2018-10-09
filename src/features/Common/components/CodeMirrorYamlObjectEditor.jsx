@@ -17,6 +17,8 @@ export default class CodeMirrorYamlObjectEditor extends React.Component {
       onError: PropTypes.func,
       flowLevel: PropTypes.number,
       constantHeight: PropTypes.oneOfType([ PropTypes.number, PropTypes.string ]),
+      
+      // TODO: deprecated
       showInlineError: PropTypes.bool,
     };
 
