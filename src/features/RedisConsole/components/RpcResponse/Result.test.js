@@ -1,5 +1,5 @@
 /* eslint-disable react/react-in-jsx-scope,no-undef */
-import { TextareaSpoiler } from 'features/Common/components';
+import { TextareaSpoiler } from '~/features/Common/components';
 
 import BooleanCard from './BooleanCard';
 import ObjectTreeViewWidget from './ObjectTreeViewWidget';

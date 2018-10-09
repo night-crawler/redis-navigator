@@ -4,9 +4,9 @@ import { Image } from 'semantic-ui-react';
 
 
 ImageCard.propTypes = {
-    dataUri: PropTypes.string.isRequired,
+  dataUri: PropTypes.string.isRequired,
 };
 export default function ImageCard(props) {
-    const { dataUri } = props;
-    return <Image className='ImageCard' src={ dataUri } size='medium' />;
+  const { dataUri } = props;
+  return <Image className='ImageCard' src={ dataUri } size='medium' />;
 }

@@ -1,4 +1,4 @@
-import { SET_ACTIVE_INSTANCE } from 'features/actions';
+import { SET_ACTIVE_INSTANCE } from '~/features/actions';
 
 
 export const activeInstanceName = (state = '', action) => {

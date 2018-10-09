@@ -6,21 +6,21 @@ import React from 'react';
 import { UnControlled as CodeMirror } from 'react-codemirror2';
 
 EditorWidgetJson.propTypes = {
-    result: PropTypes.string,
+  result: PropTypes.string,
 };
 export default function EditorWidgetJson(props) {
-    const { result } = props;
+  const { result } = props;
 
-    return (
-        <CodeMirror
-            value={ result }
-            options={ {
-                theme: 'default',
-                matchBrackets: true,
-                autoCloseBrackets: true,
-                mode: 'application/json',
-                lineNumbers: true
-            } }
-        />
-    );
+  return (
+    <CodeMirror
+      value={ result }
+      options={ {
+        theme: 'default',
+        matchBrackets: true,
+        autoCloseBrackets: true,
+        mode: 'application/json',
+        lineNumbers: true
+      } }
+    />
+  );
 }

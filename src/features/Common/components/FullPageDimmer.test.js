@@ -2,10 +2,10 @@
 import { FullPageDimmer } from '.';
 
 describe('FullPageDimmer', () => {
-    it('should render FullPageDimmer', () => {
-        const wrapper = shallow(
-            <FullPageDimmer message='lol' />
-        );
-        expect(wrapper).toMatchSnapshot();
-    });
+  it('should render FullPageDimmer', () => {
+    const wrapper = shallow(
+      <FullPageDimmer message='lol' />
+    );
+    expect(wrapper).toMatchSnapshot();
+  });
 });

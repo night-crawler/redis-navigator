@@ -6,16 +6,16 @@ import { Icon, Popup } from 'semantic-ui-react';
 
 
 KeyTypeIcon.propTypes = {
-    keyType: PropTypes.string.isRequired,
+  keyType: PropTypes.string.isRequired,
 };
 
 export default function KeyTypeIcon(props) {
-    const { keyType } = props;
-    const iconOpts = REDIS_KEY_TYPE_ICON_MAP[keyType] || { name: 'spinner' };
+  const { keyType } = props;
+  const iconOpts = REDIS_KEY_TYPE_ICON_MAP[keyType] || { name: 'spinner' };
 
-    return <Popup
-        position='right center'
-        trigger={ <Icon { ...iconOpts } /> }
-        content={ keyType }
-    />;
+  return <Popup
+    position='right center'
+    trigger={ <Icon { ...iconOpts } /> }
+    content={ keyType }
+  />;
 }

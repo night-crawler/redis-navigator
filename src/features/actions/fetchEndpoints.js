@@ -9,14 +9,14 @@ export const FETCH_ENDPOINTS_FAIL = 'redisNavigator/fetch/endpoints/fail';
 
 
 export const fetchEndpoints = (url) => ({
-    [RSAA]: {
-        endpoint: url,
-        method: 'GET',
-        types: [
-            FETCH_ENDPOINTS_START,
-            FETCH_ENDPOINTS_SUCCESS,
-            FETCH_ENDPOINTS_FAIL,
-        ],
-        ...getApiMiddlewareOptions(),
-    }
+  [RSAA]: {
+    endpoint: url,
+    method: 'GET',
+    types: [
+      FETCH_ENDPOINTS_START,
+      FETCH_ENDPOINTS_SUCCESS,
+      FETCH_ENDPOINTS_FAIL,
+    ],
+    ...getApiMiddlewareOptions(),
+  }
 });

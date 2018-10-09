@@ -3,36 +3,36 @@ import { createStructuredSelector } from 'reselect';
 
 import { fetchInstances, setActiveInstance, toggleProgressBarVisible } from '../actions';
 import {
-    activeInstanceName,
-    instances,
-    urls,
-    progressIsVisible,
-    progressPercent,
-    location,
+  activeInstanceName,
+  instances,
+  urls,
+  progressIsVisible,
+  progressPercent,
+  location,
 } from '../selectors';
 
 import { Navbar } from './components';
 
 
 function mapDispatchToProps(dispatch) {
-    return {
-        actions: {
-            setActiveInstance: name => dispatch(setActiveInstance(name)),
-            toggleProgressBarVisible: isVisible => dispatch(toggleProgressBarVisible(isVisible)),
-            fetchInstances: (statusUrl) => dispatch(fetchInstances(statusUrl)),
-        }
-    };
+  return {
+    actions: {
+      setActiveInstance: name => dispatch(setActiveInstance(name)),
+      toggleProgressBarVisible: isVisible => dispatch(toggleProgressBarVisible(isVisible)),
+      fetchInstances: (statusUrl) => dispatch(fetchInstances(statusUrl)),
+    }
+  };
 }
 
 
 export default connect(
-    createStructuredSelector({
-        instances,
-        activeInstanceName,
-        urls,
-        progressIsVisible,
-        progressPercent,
-        location
-    }),
-    mapDispatchToProps,
+  createStructuredSelector({
+    instances,
+    activeInstanceName,
+    urls,
+    progressIsVisible,
+    progressPercent,
+    location
+  }),
+  mapDispatchToProps,
 )(Navbar);

@@ -2,9 +2,9 @@ export const TOGGLE_IMPORT_DIALOG_VISIBLE = 'redisNavigator/ui/console/toggleImp
 
 
 export const toggleImportDialogVisible = (instanceName, isVisible) => ({
-    type: TOGGLE_IMPORT_DIALOG_VISIBLE,
-    payload: {
-        isVisible,
-    },
-    meta: { path: instanceName },
+  type: TOGGLE_IMPORT_DIALOG_VISIBLE,
+  payload: {
+    isVisible,
+  },
+  meta: { path: instanceName },
 });

@@ -6,9 +6,9 @@ import CodeMirrorYamlObjectEditor from './CodeMirrorYamlObjectEditor';
 
 
 export {
-    FullPageDimmer,
-    NotFound,
-    TextareaSpoiler,
-    CodeMirrorTextEditor,
-    CodeMirrorYamlObjectEditor
+  FullPageDimmer,
+  NotFound,
+  TextareaSpoiler,
+  CodeMirrorTextEditor,
+  CodeMirrorYamlObjectEditor
 };

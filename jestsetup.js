@@ -11,12 +11,12 @@ global.render = render;
 global.mount = mount;
 
 window.requestAnimationFrame = function (callback) {
-    setTimeout(callback, 0);
-    return 0;
+  setTimeout(callback, 0);
+  return 0;
 };
 
 console.error = message => {
-    throw new Error(message);
+  throw new Error(message);
 };
 
 
@@ -26,13 +26,13 @@ console.error = message => {
 
 // Create IntlProvider to retrieve React Intl context
 const intlProvider = new IntlProvider(
-    {
-        locale: 'en',
-        messages: {
-            message1: 'Hello world'
-        }
-    },
-    {}
+  {
+    locale: 'en',
+    messages: {
+      message1: 'Hello world'
+    }
+  },
+  {}
 );
 const { intl } = intlProvider.getChildContext();
 
@@ -41,30 +41,30 @@ const nodeWithIntlProp = node => React.cloneElement(node, { intl });
 
 // shallow() with React Intl context
 global.shallowWithIntl = (node, { context, ...options } = {}) => {
-    return shallow(nodeWithIntlProp(node), {
-        ...options,
-        context: {
-            ...context,
-            intl
-        }
-    });
+  return shallow(nodeWithIntlProp(node), {
+    ...options,
+    context: {
+      ...context,
+      intl
+    }
+  });
 };
 // mount() with React Intl context
 global.mountWithIntl = (
-    node,
-    { context, childContextTypes, ...options } = {}
+  node,
+  { context, childContextTypes, ...options } = {}
 ) => {
-    return mount(nodeWithIntlProp(node), {
-        ...options,
-        context: {
-            ...context,
-            intl
-        },
-        childContextTypes: {
-            intl: intlShape,
-            ...childContextTypes
-        }
-    });
+  return mount(nodeWithIntlProp(node), {
+    ...options,
+    context: {
+      ...context,
+      intl
+    },
+    childContextTypes: {
+      intl: intlShape,
+      ...childContextTypes
+    }
+  });
 };
 
 configure({ adapter: new Adapter() });

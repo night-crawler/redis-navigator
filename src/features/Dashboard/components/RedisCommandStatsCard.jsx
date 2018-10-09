@@ -9,53 +9,53 @@ import DefinitionsCard from './DefinitionsCard';
 
 
 function StatsHeader() {
-    return (
-        <Table.Header className='StatsHeader'>
-            <Table.Row>
-                <Table.HeaderCell textAlign='right' content={ <Tr { ...messages.command } /> } />
-                <Table.HeaderCell content={ <Tr { ...messages.calls } /> } />
-                <Table.HeaderCell content='μs' />
-                <Table.HeaderCell content={ <Tr { ...messages.usPerCall } /> } />
-            </Table.Row>
-        </Table.Header>
-    );
+  return (
+    <Table.Header className='StatsHeader'>
+      <Table.Row>
+        <Table.HeaderCell textAlign='right' content={ <Tr { ...messages.command } /> } />
+        <Table.HeaderCell content={ <Tr { ...messages.calls } /> } />
+        <Table.HeaderCell content='μs' />
+        <Table.HeaderCell content={ <Tr { ...messages.usPerCall } /> } />
+      </Table.Row>
+    </Table.Header>
+  );
 }
 
 
 StatsRow.propTypes = {
-    defName: PropTypes.string,
-    defValue: PropTypes.shape({
-        calls: PropTypes.string,
-        usec: PropTypes.string,
-        usec_per_call: PropTypes.string,
-    }),
-    textAlign: PropTypes.string,
+  defName: PropTypes.string,
+  defValue: PropTypes.shape({
+    calls: PropTypes.string,
+    usec: PropTypes.string,
+    usec_per_call: PropTypes.string,
+  }),
+  textAlign: PropTypes.string,
 };
 function StatsRow({ defName, defValue, textAlign }) {
-    const cmdName = defName.split('cmdstat_').pop();
-    const { calls, usec, usec_per_call } = defValue;
+  const cmdName = defName.split('cmdstat_').pop();
+  const { calls, usec, usec_per_call } = defValue;
 
-    return (
-        <Table.Row className='StatsRow'>
-            <Table.Cell textAlign={ textAlign } content={ cmdName } />
-            <Table.Cell content={ calls } />
-            <Table.Cell content={ usec } />
-            <Table.Cell content={ usec_per_call } />
-        </Table.Row>
-    );
+  return (
+    <Table.Row className='StatsRow'>
+      <Table.Cell textAlign={ textAlign } content={ cmdName } />
+      <Table.Cell content={ calls } />
+      <Table.Cell content={ usec } />
+      <Table.Cell content={ usec_per_call } />
+    </Table.Row>
+  );
 }
 
 
 RedisCommandsStatsCard.propTypes = {
-    stats: PropTypes.object,
+  stats: PropTypes.object,
 };
 export default function RedisCommandsStatsCard(props) {
-    const { stats } = props;
-    return <DefinitionsCard
-        className='RedisCommandsStatsCard'
-        header={ <Tr { ...messages.commandStats } /> }
-        headerComponent={ StatsHeader }
-        rowComponent={ StatsRow }
-        definitions={ stats }
-    />;
+  const { stats } = props;
+  return <DefinitionsCard
+    className='RedisCommandsStatsCard'
+    header={ <Tr { ...messages.commandStats } /> }
+    headerComponent={ StatsHeader }
+    rowComponent={ StatsRow }
+    definitions={ stats }
+  />;
 }

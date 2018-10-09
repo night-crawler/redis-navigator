@@ -4,14 +4,14 @@ import { Card } from 'semantic-ui-react';
 
 
 BooleanCard.propTypes = {
-    result: PropTypes.bool.isRequired,
+  result: PropTypes.bool.isRequired,
 };
 export default function BooleanCard(props) {
-    const { result } = props;
-    return <Card
-        className='BooleanCard'
-        fluid={ true }
-        header='Boolean'
-        description={ `${result}` }
-    />;
+  const { result } = props;
+  return <Card
+    className='BooleanCard'
+    fluid={ true }
+    header='Boolean'
+    description={ `${result}` }
+  />;
 }

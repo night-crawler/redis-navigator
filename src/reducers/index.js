@@ -1,27 +1,11 @@
 import { combineReducers } from 'redux';
 
-import { keyViewer } from 'features/KeyViewer/reducer';
-
-import { activeInstanceName } from './activeInstanceName';
-import { hasFetched, isFetching } from './fetching';
-import { inspections } from './inspections';
-import { instances } from './instances';
-import { instancesData } from './instancesData';
-import { progress } from './progress';
-import { urls } from './urls';
+import { routeReducer } from './routeReducer';
 
 
+const createRootReducer = injectedReducers => combineReducers({
+  route: routeReducer,
 
-export const redisNavigator = combineReducers({
-    instances,
-    instancesData,
-    activeInstanceName,
-    hasFetched,
-    isFetching,
-    inspections,
-    urls,
-    progress,
-    keyViewer,
+  ...injectedReducers,
 });
-
-export default redisNavigator;
+export default createRootReducer;

@@ -1,4 +1,4 @@
-import { FETCH_INSPECTIONS_SUCCESS } from 'features/actions';
+import { FETCH_INSPECTIONS_SUCCESS } from '~/features/actions';
 
 
 export const inspections = (state = {}, action) => {

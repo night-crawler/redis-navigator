@@ -1,4 +1,4 @@
-import { FETCH_INSTANCES_SUCCESS } from 'features/actions';
+import { FETCH_INSTANCES_SUCCESS } from '~/features/actions';
 
 
 export const instances = (state = [], action) => {

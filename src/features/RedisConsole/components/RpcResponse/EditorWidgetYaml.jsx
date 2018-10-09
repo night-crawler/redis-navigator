@@ -6,21 +6,21 @@ import React from 'react';
 import { UnControlled as CodeMirror } from 'react-codemirror2';
 
 EditorWidgetYaml.propTypes = {
-    result: PropTypes.string,
+  result: PropTypes.string,
 };
 export default function EditorWidgetYaml(props) {
-    const { result } = props;
+  const { result } = props;
 
-    return (
-        <CodeMirror
-            value={ result }
-            options={ {
-                theme: 'default',
-                matchBrackets: true,
-                autoCloseBrackets: true,
-                mode: 'yaml',
-                lineNumbers: true
-            } }
-        />
-    );
+  return (
+    <CodeMirror
+      value={ result }
+      options={ {
+        theme: 'default',
+        matchBrackets: true,
+        autoCloseBrackets: true,
+        mode: 'yaml',
+        lineNumbers: true
+      } }
+    />
+  );
 }

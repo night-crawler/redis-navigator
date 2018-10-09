@@ -8,10 +8,10 @@ export const FETCH_INSPECTIONS_FAIL = 'redisNavigator/fetch/inspections/fail';
 export const FETCH_INSPECTIONS_SUCCESS ='redisNavigator/fetch/inspections/success';
 
 export const fetchInspections = (url) => ({
-    [RSAA]: {
-        endpoint: url,
-        method: 'GET',
-        types: [FETCH_INSPECTIONS_START, FETCH_INSPECTIONS_SUCCESS, FETCH_INSPECTIONS_FAIL],
-        ...getApiMiddlewareOptions(),
-    }
+  [RSAA]: {
+    endpoint: url,
+    method: 'GET',
+    types: [FETCH_INSPECTIONS_START, FETCH_INSPECTIONS_SUCCESS, FETCH_INSPECTIONS_FAIL],
+    ...getApiMiddlewareOptions(),
+  }
 });

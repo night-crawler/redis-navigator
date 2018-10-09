@@ -11,75 +11,75 @@ import EditorWidgetYaml from './EditorWidgetYaml';
 
 export default class ObjectCard extends React.Component {
     static propTypes = {
-        widget: PropTypes.oneOf(['editor', 'object']),
-        mode: PropTypes.oneOf(['json', 'yaml']).isRequired,
-        result: PropTypes.any,
+      widget: PropTypes.oneOf(['editor', 'object']),
+      mode: PropTypes.oneOf(['json', 'yaml']).isRequired,
+      result: PropTypes.any,
     };
 
     static defaultProps = {
-        widget: 'editor',
+      widget: 'editor',
     };
 
     constructor(props) {
-        super(props);
+      super(props);
 
-        const { widget } = props;
+      const { widget } = props;
 
-        this.state = { widget };
+      this.state = { widget };
     }
 
     render() {
-        const { widget } = this.state;
-        const { mode } = this.props;
+      const { widget } = this.state;
+      const { mode } = this.props;
 
-        return (
-            <Card className='ObjectCard' fluid={ true }>
-                <Card.Content>
-                    <Card.Header>
-                        { upperFirst(mode) }
-                        <Button
-                            size='mini' icon='tree' floated='right' active={ widget === 'object' }
-                            onClick={ this.handleSetObjectWidget }
-                        />
-                        <Button
-                            size='mini' icon='edit' floated='right' active={ widget === 'editor' }
-                            onClick={ this.handleSetEditorWidget }
-                        />
-                    </Card.Header>
-                    <Card.Meta>
+      return (
+        <Card className='ObjectCard' fluid={ true }>
+          <Card.Content>
+            <Card.Header>
+              { upperFirst(mode) }
+              <Button
+                size='mini' icon='tree' floated='right' active={ widget === 'object' }
+                onClick={ this.handleSetObjectWidget }
+              />
+              <Button
+                size='mini' icon='edit' floated='right' active={ widget === 'editor' }
+                onClick={ this.handleSetEditorWidget }
+              />
+            </Card.Header>
+            <Card.Meta>
 
-                    </Card.Meta>
-                    <Card.Description>
-                        { widget === 'editor'
-                            ? this.renderJsonEditor()
-                            : this.renderJsonView()
-                        }
-                    </Card.Description>
-                </Card.Content>
-            </Card>
-        );
+            </Card.Meta>
+            <Card.Description>
+              { widget === 'editor'
+                ? this.renderJsonEditor()
+                : this.renderJsonView()
+              }
+            </Card.Description>
+          </Card.Content>
+        </Card>
+      );
     }
 
     renderJsonEditor() {
-        const { result, mode } = this.props;
+      const { result, mode } = this.props;
 
-        if (mode === 'json')
-            return <EditorWidgetJson result={ result } />;
-        if (mode === 'yaml')
-            return <EditorWidgetYaml result={ result } />;
+      if (mode === 'json')
+        return <EditorWidgetJson result={ result } />;
+      if (mode === 'yaml')
+        return <EditorWidgetYaml result={ result } />;
     }
 
     renderJsonView() {
-        const { result, mode } = this.props;
+      const { result, mode } = this.props;
 
-        if (mode === 'json') {
-            const resultObject = JSON.parse(result);
-            return <ObjectTreeViewWidget result={ resultObject } />;
-        }
-        if (mode === 'yaml') {
-            const resultObject = yaml.safeLoad(result);
-            return <ObjectTreeViewWidget result={ resultObject } />;
-        }
+      if (mode === 'json') {
+        const resultObject = JSON.parse(result);
+        return <ObjectTreeViewWidget result={ resultObject } />;
+      }
+      if (mode === 'yaml') {
+        const resultObject = yaml.safeLoad(result);
+        return <ObjectTreeViewWidget result={ resultObject } />;
+      }
 
     }
     

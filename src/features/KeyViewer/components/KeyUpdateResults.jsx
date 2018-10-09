@@ -9,28 +9,28 @@ import messages from '../messages';
 
 KeyUpdateResults.displayName = 'KeyUpdateResults';
 KeyUpdateResults.propTypes = {
-    results: PropTypes.any,
-    hasErrors: PropTypes.bool,
+  results: PropTypes.any,
+  hasErrors: PropTypes.bool,
 };
 function KeyUpdateResults(props) {
-    const { hasErrors, results } = props;
-    if (results === undefined || hasErrors === undefined)
-        return false;
+  const { hasErrors, results } = props;
+  if (results === undefined || hasErrors === undefined)
+    return false;
 
-    const iconName = hasErrors ? 'exclamation triangle' : 'thumbs up';
-    const data = yaml.dump(results);
+  const iconName = hasErrors ? 'exclamation triangle' : 'thumbs up';
+  const data = yaml.dump(results);
 
-    const message = hasErrors
-        ? <Tr { ...messages.saveError } />
-        : <Tr { ...messages.saveSuccess } />;
+  const message = hasErrors
+    ? <Tr { ...messages.saveError } />
+    : <Tr { ...messages.saveSuccess } />;
 
-    return (
-        <div className='KeyUpdateResults'>
-            <Icon name={ iconName } />
-            { message }
-            <pre>{ data }</pre>
-        </div>
-    );
+  return (
+    <div className='KeyUpdateResults'>
+      <Icon name={ iconName } />
+      { message }
+      <pre>{ data }</pre>
+    </div>
+  );
 }
 
 export default KeyUpdateResults;

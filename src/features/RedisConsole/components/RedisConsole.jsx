@@ -19,224 +19,224 @@ import MethodCallEditor from './MethodCallEditor';
 
 
 const ConsoleCommandType = PropTypes.shape({
-    key: PropTypes.string,
-    methodName: PropTypes.string,
-    methodParams: PropTypes.object,
-    response: PropTypes.any,
+  key: PropTypes.string,
+  methodName: PropTypes.string,
+  methodParams: PropTypes.object,
+  response: PropTypes.any,
 });
 
 export default class RedisConsole extends React.Component {
     static propTypes = {
-        inspections: PropTypes.object.isRequired,
+      inspections: PropTypes.object.isRequired,
 
-        routeInstanceName: PropTypes.string.isRequired,
-        routeInstanceImportDialogIsVisible: PropTypes.bool,
+      routeInstanceName: PropTypes.string.isRequired,
+      routeInstanceImportDialogIsVisible: PropTypes.bool,
 
-        routeConsoleCommands: PropTypes.arrayOf(ConsoleCommandType),
-        routeConsoleCommandsToExecute: PropTypes.arrayOf(ConsoleCommandType),
+      routeConsoleCommands: PropTypes.arrayOf(ConsoleCommandType),
+      routeConsoleCommandsToExecute: PropTypes.arrayOf(ConsoleCommandType),
 
-        actions: PropTypes.shape({
-            batchExecute: PropTypes.func.isRequired,
+      actions: PropTypes.shape({
+        batchExecute: PropTypes.func.isRequired,
 
-            appendCallEditor: PropTypes.func.isRequired,
-            removeCallEditor: PropTypes.func.isRequired,
-            changeCallEditorMethodName: PropTypes.func.isRequired,
-            changeCallEditorMethodParams: PropTypes.func.isRequired,
-            clearCallEditors: PropTypes.func.isRequired,
-            bindCallEditorToId: PropTypes.func.isRequired,
-            toggleImportDialogVisible: PropTypes.func,
-        }).isRequired,
+        appendCallEditor: PropTypes.func.isRequired,
+        removeCallEditor: PropTypes.func.isRequired,
+        changeCallEditorMethodName: PropTypes.func.isRequired,
+        changeCallEditorMethodParams: PropTypes.func.isRequired,
+        clearCallEditors: PropTypes.func.isRequired,
+        bindCallEditorToId: PropTypes.func.isRequired,
+        toggleImportDialogVisible: PropTypes.func,
+      }).isRequired,
 
-        notifications: PropTypes.shape({
-            warning: PropTypes.func,
-        }),
+      notifications: PropTypes.shape({
+        warning: PropTypes.func,
+      }),
     };
 
     keyMap = {
-        executeAll: 'alt+x',
-        clearCallEditors: 'alt+c',
-        appendCallEditor: 'alt+a',
+      executeAll: 'alt+x',
+      clearCallEditors: 'alt+c',
+      appendCallEditor: 'alt+a',
     };
 
     constructor(props) {
-        super(props);
-        const { inspections } = props;
-        debug.enable('*');
-        this.log = debug('RedisConsole');
-        this.log('initialized', props);
+      super(props);
+      const { inspections } = props;
+      debug.enable('*');
+      this.log = debug('RedisConsole');
+      this.log('initialized', props);
 
-        this.ddMethodsOptions = Object.entries(inspections).map(([ fName, fOptions ]) => ({
-            key: fName,
-            text: fName,
-            value: fName,
-            content: <DropdownRpcMethodItem { ...fOptions } name={ fName } />
-        }));
+      this.ddMethodsOptions = Object.entries(inspections).map(([ fName, fOptions ]) => ({
+        key: fName,
+        text: fName,
+        value: fName,
+        content: <DropdownRpcMethodItem { ...fOptions } name={ fName } />
+      }));
 
-        this.keyMapHandlers = {
-            executeAll: this.handleExecuteAllClicked,
-            clearCallEditors: this.handleClearCallEditorsClicked,
-            appendCallEditor: this.handleAppendCallEditorClicked,
-        };
+      this.keyMapHandlers = {
+        executeAll: this.handleExecuteAllClicked,
+        clearCallEditors: this.handleClearCallEditorsClicked,
+        appendCallEditor: this.handleAppendCallEditorClicked,
+      };
     }
 
     render() {
-        this.log('render');
-        const { inspections, routeInstanceImportDialogIsVisible } = this.props;
+      this.log('render');
+      const { inspections, routeInstanceImportDialogIsVisible } = this.props;
 
-        return (
-            <Segment.Group
-                className='RedisConsole'
-                as={ HotKeys } keyMap={ this.keyMap } handlers={ this.keyMapHandlers } focused={ true }
-            >
-                <Helmet><title>RPC Console</title></Helmet>
+      return (
+        <Segment.Group
+          className='RedisConsole'
+          as={ HotKeys } keyMap={ this.keyMap } handlers={ this.keyMapHandlers } focused={ true }
+        >
+          <Helmet><title>RPC Console</title></Helmet>
 
-                { this.renderEditors() }
-                { this.renderButtons() }
+          { this.renderEditors() }
+          { this.renderButtons() }
 
-                { routeInstanceImportDialogIsVisible &&
-                    <Segment attached='top'>
-                        <CommandImporter inspections={ inspections } onImport={ this.handleImport } />
-                    </Segment>
-                }
-            </Segment.Group>
-        );
+          { routeInstanceImportDialogIsVisible &&
+          <Segment attached='top'>
+            <CommandImporter inspections={ inspections } onImport={ this.handleImport } />
+          </Segment>
+          }
+        </Segment.Group>
+      );
     }
 
     componentDidMount() {
-        const { routeConsoleCommands } = this.props;
-        isEmpty(routeConsoleCommands) && this.appendMethodCallEditor();
+      const { routeConsoleCommands } = this.props;
+      isEmpty(routeConsoleCommands) && this.appendMethodCallEditor();
     }
 
     renderButtons() {
-        return (
-            <Button.Group widths='5' attached='bottom'>
-                <Button basic={ true } color='grey' onClick={ this.handleAppendCallEditorClicked }>
-                    <Icon name='add' />
-                    <Tr { ...messages.append } />
-                </Button>
+      return (
+        <Button.Group widths='5' attached='bottom'>
+          <Button basic={ true } color='grey' onClick={ this.handleAppendCallEditorClicked }>
+            <Icon name='add' />
+            <Tr { ...messages.append } />
+          </Button>
 
-                <Button basic={ true } color='grey' onClick={ this.handleExportClicked }>
-                    <Icon name='external' />
-                    <Tr { ...messages.export } />
-                </Button>
+          <Button basic={ true } color='grey' onClick={ this.handleExportClicked }>
+            <Icon name='external' />
+            <Tr { ...messages.export } />
+          </Button>
 
-                <Button basic={ true } color='grey' onClick={ this.handleImportClicked }>
-                    <Icon name='download' />
-                    <Tr { ...messages.import } />
-                </Button>
+          <Button basic={ true } color='grey' onClick={ this.handleImportClicked }>
+            <Icon name='download' />
+            <Tr { ...messages.import } />
+          </Button>
 
-                <Button basic={ true } color='red' onClick={ this.handleClearCallEditorsClicked }>
-                    <Icon name='trash' />
-                    <Tr { ...messages.clear } />
-                </Button>
+          <Button basic={ true } color='red' onClick={ this.handleClearCallEditorsClicked }>
+            <Icon name='trash' />
+            <Tr { ...messages.clear } />
+          </Button>
 
-                <Button basic={ true } color='green' onClick={ this.handleExecuteAllClicked }>
-                    <Icon name='lightning' />
-                    <Tr { ...messages.execute } />
-                </Button>
-            </Button.Group>
-        );
+          <Button basic={ true } color='green' onClick={ this.handleExecuteAllClicked }>
+            <Icon name='lightning' />
+            <Tr { ...messages.execute } />
+          </Button>
+        </Button.Group>
+      );
     }
 
     renderEditors() {
-        const { routeConsoleCommands, inspections, actions, routeInstanceName } = this.props;
+      const { routeConsoleCommands, inspections, actions, routeInstanceName } = this.props;
 
-        return routeConsoleCommands.map(editorOptions =>
-            <MethodCallEditor
-                { ...editorOptions }
+      return routeConsoleCommands.map(editorOptions =>
+        <MethodCallEditor
+          { ...editorOptions }
 
-                key={ editorOptions.key }
-                instanceName={ routeInstanceName }
-                inspections={ inspections }
-                ddMethodsOptions={ this.ddMethodsOptions }
+          key={ editorOptions.key }
+          instanceName={ routeInstanceName }
+          inspections={ inspections }
+          ddMethodsOptions={ this.ddMethodsOptions }
 
-                onRemove={
-                    () => actions.removeCallEditor(routeInstanceName, editorOptions.key)
-                }
-                onMethodNameChange={
-                    methodName => actions.changeCallEditorMethodName(routeInstanceName, methodName, editorOptions.key)
-                }
-                onMethodParamsChange={
-                    methodParams => actions.changeCallEditorMethodParams(routeInstanceName, methodParams, editorOptions.key)
-                }
-                onRetry={
-                    () => this.handleCallEditorRetryClicked(editorOptions.key)
-                }
-            />
-        );
+          onRemove={
+            () => actions.removeCallEditor(routeInstanceName, editorOptions.key)
+          }
+          onMethodNameChange={
+            methodName => actions.changeCallEditorMethodName(routeInstanceName, methodName, editorOptions.key)
+          }
+          onMethodParamsChange={
+            methodParams => actions.changeCallEditorMethodParams(routeInstanceName, methodParams, editorOptions.key)
+          }
+          onRetry={
+            () => this.handleCallEditorRetryClicked(editorOptions.key)
+          }
+        />
+      );
     }
 
     handleExportClicked = () => {
-        const { routeConsoleCommands } = this.props;
-        saveFile(
-            'consoleCommands.json',
-            JSON.stringify(routeConsoleCommands, null, 4)
-        );
+      const { routeConsoleCommands } = this.props;
+      saveFile(
+        'consoleCommands.json',
+        JSON.stringify(routeConsoleCommands, null, 4)
+      );
     };
 
     handleImportClicked = () => {
-        const { actions, routeInstanceName } = this.props;
-        actions.toggleImportDialogVisible(routeInstanceName);
+      const { actions, routeInstanceName } = this.props;
+      actions.toggleImportDialogVisible(routeInstanceName);
     };
 
     handleImport = (commands) => {
-        const { actions, routeInstanceName } = this.props;
-        commands.forEach((command, i) => {
-            actions.appendCallEditor({
-                instanceName: routeInstanceName,
-                color: COLORS[ i % COLORS.length ],
-                ...command
-            });
+      const { actions, routeInstanceName } = this.props;
+      commands.forEach((command, i) => {
+        actions.appendCallEditor({
+          instanceName: routeInstanceName,
+          color: COLORS[ i % COLORS.length ],
+          ...command
         });
-        actions.toggleImportDialogVisible(routeInstanceName);
+      });
+      actions.toggleImportDialogVisible(routeInstanceName);
     };
 
     handleCallEditorRetryClicked = (key) => {
-        const { routeConsoleCommands } = this.props;
-        const cmd = find(routeConsoleCommands, { key });
-        this.handleBatchExecute([ cmd ]);
+      const { routeConsoleCommands } = this.props;
+      const cmd = find(routeConsoleCommands, { key });
+      this.handleBatchExecute([ cmd ]);
     };
 
     handleClearCallEditorsClicked = () => {
-        const { actions, routeInstanceName } = this.props;
-        actions.clearCallEditors(routeInstanceName);
+      const { actions, routeInstanceName } = this.props;
+      actions.clearCallEditors(routeInstanceName);
     };
 
     handleAppendCallEditorClicked = () => this.appendMethodCallEditor();
 
     handleBatchExecute(commands) {
-        const { routeInstanceName, actions } = this.props;
-        const cmdPairBundles = commands.map(cmd => [ cmd.methodName, cmd.methodParams ]);
+      const { routeInstanceName, actions } = this.props;
+      const cmdPairBundles = commands.map(cmd => [ cmd.methodName, cmd.methodParams ]);
 
-        actions.batchExecute(...cmdPairBundles)
-            .then(data =>
-                zip(map(commands, 'key'), map(data.meta.request, 'id'))
-                    .forEach(([ key, id ]) =>
-                        actions.bindCallEditorToId(routeInstanceName, key, id))
-            );
+      actions.batchExecute(...cmdPairBundles)
+        .then(data =>
+          zip(map(commands, 'key'), map(data.meta.request, 'id'))
+            .forEach(([ key, id ]) =>
+              actions.bindCallEditorToId(routeInstanceName, key, id))
+        );
     }
 
     handleExecuteAllClicked = () => {
-        const {
-                routeConsoleCommandsToExecute: commands,
-                notifications,
-            } = this.props,
-            cmdPairBundles = commands.map(cmd => [ cmd.methodName, cmd.methodParams ]);
+      const {
+          routeConsoleCommandsToExecute: commands,
+          notifications,
+        } = this.props,
+        cmdPairBundles = commands.map(cmd => [ cmd.methodName, cmd.methodParams ]);
 
-        if (isEmpty(cmdPairBundles))
-            return notifications.warning({
-                title: <Tr { ...messages.nothingToExecute } />,
-                message: <Tr { ...messages.changeSomething } />,
-            });
+      if (isEmpty(cmdPairBundles))
+        return notifications.warning({
+          title: <Tr { ...messages.nothingToExecute } />,
+          message: <Tr { ...messages.changeSomething } />,
+        });
 
-        this.handleBatchExecute(commands);
+      this.handleBatchExecute(commands);
     };
 
     appendMethodCallEditor() {
-        const { routeInstanceName, actions, routeConsoleCommands } = this.props;
-        actions.appendCallEditor({
-            instanceName: routeInstanceName,
-            color: COLORS[ routeConsoleCommands.length % COLORS.length ],
-        });
+      const { routeInstanceName, actions, routeConsoleCommands } = this.props;
+      actions.appendCallEditor({
+        instanceName: routeInstanceName,
+        color: COLORS[ routeConsoleCommands.length % COLORS.length ],
+      });
     }
 }
