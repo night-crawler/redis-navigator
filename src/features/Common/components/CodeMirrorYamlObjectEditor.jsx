@@ -2,7 +2,7 @@ import 'codemirror/addon/edit/matchbrackets';
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/mode/yaml/yaml';
 import yaml from 'js-yaml';
-import { isEqual } from 'lodash';
+// import { isEqual } from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { UnControlled as CodeMirror } from 'react-codemirror2';
@@ -80,18 +80,12 @@ export class CodeMirrorYamlObjectEditor extends React.Component {
       );
     }
 
-    static getDerivedStateFromProps(newProps, prevState) {
-      const { params: newParams, flowLevel } = newProps;
-      const { params: prevParams } = prevState;
-
-      // death from above
-      if (!isEqual(newParams, prevParams))
-        return {
-          textParams: yaml.dump(newParams, { flowLevel }),
-          params: newParams
-        };
-
-      return null;
+    shouldComponentUpdate = (nextProps, nextState) => {
+      if (nextState.error !== this.state.error)
+        return true;
+  
+      console.log('params are not equal!', this.state.params, nextState.params, nextProps.params);
+      return false;
     }
 
     handleResize = contentRect => {
@@ -105,8 +99,8 @@ export class CodeMirrorYamlObjectEditor extends React.Component {
       try {
         const newParams = yaml.load(value);
         this.setState(
-          { error: false, params: newParams },
-          () => onChange(newParams)  // no race conditions
+          { error: null, params: newParams },
+          () => onChange(newParams)
         );
       } catch (e) {
         this.setState(
