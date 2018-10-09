@@ -19,7 +19,7 @@ import {
   RPCEmptyRequestError,
   RPCEndpointError,
   RPCMethodNameError
-} from '~/errors/rpc';
+} from '~/features/actions/rpc.errors';
 
 
 describe('RpcRequestBuilder', () => {
