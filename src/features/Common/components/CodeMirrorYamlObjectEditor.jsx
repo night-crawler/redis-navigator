@@ -2,7 +2,6 @@ import 'codemirror/addon/edit/matchbrackets';
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/mode/yaml/yaml';
 import yaml from 'js-yaml';
-// import { isEqual } from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { UnControlled as CodeMirror } from 'react-codemirror2';
@@ -84,7 +83,6 @@ export class CodeMirrorYamlObjectEditor extends React.Component {
       if (nextState.error !== this.state.error)
         return true;
   
-      console.log('params are not equal!', this.state.params, nextState.params, nextProps.params);
       return false;
     }
 
