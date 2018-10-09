@@ -1,7 +1,7 @@
 /* eslint-disable react/react-in-jsx-scope,no-undef */
-import Response from './Response';
-import Result from './Result';
-import Error from './Error';
+import { Response } from './Response';
+import { Result } from './Result';
+import { RpcError } from './Error';
 
 
 describe('Response', () => {
@@ -22,12 +22,12 @@ describe('Response', () => {
       }
     };
     const wrapper = shallow(<Response response={ errorResponse } />);
-    expect(wrapper.containsMatchingElement(<Error />)).toEqual(true);
+    expect(wrapper.containsMatchingElement(<RpcError />)).toEqual(true);
   });
 
   it('should show a placeholder message if there is no result or error', () => {
     const wrapper = shallow(<Response response={ {nothing: 1} } />);
     expect(wrapper.containsMatchingElement(<Result />)).toEqual(false);
-    expect(wrapper.containsMatchingElement(<Error />)).toEqual(false);
+    expect(wrapper.containsMatchingElement(<RpcError />)).toEqual(false);
   });
 });

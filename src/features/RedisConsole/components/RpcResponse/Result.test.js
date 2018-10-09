@@ -1,10 +1,10 @@
 /* eslint-disable react/react-in-jsx-scope,no-undef */
 import { TextareaSpoiler } from '~/features/Common/components';
 
-import BooleanCard from './BooleanCard';
-import ObjectTreeViewWidget from './ObjectTreeViewWidget';
-import ImageCard from './ImageCard.jsx';
-import Result, { StringCard } from './Result';
+import { BooleanCard } from './BooleanCard';
+import { ObjectTreeViewWidget } from './ObjectTreeViewWidget';
+import { ImageCard } from './ImageCard.jsx';
+import { StringCard, Result } from './Result';
 
 
 
@@ -19,53 +19,53 @@ const GIF = '' +
 const GIF_BIN = atob(GIF);
 
 
-describe('Result', () => {
-    it('should render Result.StringCard', () => {
-        const wrapper = shallow(<Result result='1' />);
-        expect(wrapper).toMatchSnapshot();
-        expect(wrapper.containsMatchingElement(<StringCard result='1' />)).toEqual(true);
-    });
+describe('<Result />', () => {
+  it('should render Result.StringCard', () => {
+    const wrapper = shallow(<Result result='1' />);
+    expect(wrapper).toMatchSnapshot();
+    expect(wrapper.containsMatchingElement(<StringCard result='1' />)).toEqual(true);
+  });
 
-    it('should render Result.BooleanCard', () => {
-        const wrapper = shallow(<Result result={ true } />);
-        expect(wrapper).toMatchSnapshot();
-        expect(wrapper.containsMatchingElement(<BooleanCard result={ true } />)).toEqual(true);
-    });
+  it('should render Result.BooleanCard', () => {
+    const wrapper = shallow(<Result result={ true } />);
+    expect(wrapper).toMatchSnapshot();
+    expect(wrapper.containsMatchingElement(<BooleanCard result={ true } />)).toEqual(true);
+  });
 
-    it('should render Result.ObjectTreeViewWidget[Array]', () => {
-        const wrapper = shallow(<Result result={ [1, 2, 3] } />);
-        expect(wrapper).toMatchSnapshot();
-        expect(wrapper.contains(<ObjectTreeViewWidget result={ [1, 2, 3] } />)).toEqual(true);
-    });
+  it('should render Result.ObjectTreeViewWidget[Array]', () => {
+    const wrapper = shallow(<Result result={ [1, 2, 3] } />);
+    expect(wrapper).toMatchSnapshot();
+    expect(wrapper.contains(<ObjectTreeViewWidget result={ [1, 2, 3] } />)).toEqual(true);
+  });
 
-    it('should render Result.ObjectTreeViewWidget[Object]', () => {
-        const wrapper = shallow(<Result result={ { a: 1, b: 2, c: 3 } } />);
-        expect(wrapper).toMatchSnapshot();
-        expect(wrapper.contains(<ObjectTreeViewWidget result={ { a: 1, b: 2, c: 3 } } />)).toEqual(true);
-    });
+  it('should render Result.ObjectTreeViewWidget[Object]', () => {
+    const wrapper = shallow(<Result result={ { a: 1, b: 2, c: 3 } } />);
+    expect(wrapper).toMatchSnapshot();
+    expect(wrapper.contains(<ObjectTreeViewWidget result={ { a: 1, b: 2, c: 3 } } />)).toEqual(true);
+  });
 
-    it('should render null', () => {
-        const wrapper = shallow(<Result result={ null } />);
-        expect(wrapper).toMatchSnapshot();
-        expect(wrapper.contains(<div>null</div>)).toEqual(true);
-    });
+  it('should render null', () => {
+    const wrapper = shallow(<Result result={ null } />);
+    expect(wrapper).toMatchSnapshot();
+    expect(wrapper.contains(<div>null</div>)).toEqual(true);
+  });
 
-    it('should render image', () => {
-        const wrapper = shallow(<Result result={ GIF_BIN } />);
-        expect(wrapper).toMatchSnapshot();
-        expect(wrapper.find(ImageCard)).toHaveLength(1);
-    });
+  it('should render image', () => {
+    const wrapper = shallow(<Result result={ GIF_BIN } />);
+    expect(wrapper).toMatchSnapshot();
+    expect(wrapper.find(ImageCard)).toHaveLength(1);
+  });
 });
 
 
 describe('StringCard', () => {
-    it('should render TextareaSpoiler for base64', () => {
-        const wrapper = shallow(<StringCard result='buckbuck' />);
-        expect(wrapper.find(TextareaSpoiler)).toHaveLength(1);
-    });
+  it('should render TextareaSpoiler for base64', () => {
+    const wrapper = shallow(<StringCard result='buckbuck' />);
+    expect(wrapper.find(TextareaSpoiler)).toHaveLength(1);
+  });
 
-    it('should not treat strings shorter 4 chars as b64', () => {
-        const wrapper = shallow(<StringCard result='buck' />);
-        expect(wrapper.find(TextareaSpoiler)).toHaveLength(0);
-    });
+  it('should not treat strings shorter 4 chars as b64', () => {
+    const wrapper = shallow(<StringCard result='buck' />);
+    expect(wrapper.find(TextareaSpoiler)).toHaveLength(0);
+  });
 });

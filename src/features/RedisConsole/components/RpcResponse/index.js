@@ -1,3 +1,3 @@
-import RpcResponse from './Response';
+import { Response } from './Response';
 
-export default RpcResponse;
+export default Response;

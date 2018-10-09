@@ -7,7 +7,7 @@ import Measure from 'react-measure';
 import './FixCodeMirrorStyles.css';
 
 
-export default class CodeMirrorTextEditor extends React.Component {
+export class CodeMirrorTextEditor extends React.Component {
     static propTypes = {
       text: PropTypes.string.isRequired,
       onChange: PropTypes.func.isRequired,

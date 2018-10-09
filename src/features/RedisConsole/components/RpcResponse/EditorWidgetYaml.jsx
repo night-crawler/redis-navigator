@@ -8,7 +8,7 @@ import { UnControlled as CodeMirror } from 'react-codemirror2';
 EditorWidgetYaml.propTypes = {
   result: PropTypes.string,
 };
-export default function EditorWidgetYaml(props) {
+export function EditorWidgetYaml(props) {
   const { result } = props;
 
   return (

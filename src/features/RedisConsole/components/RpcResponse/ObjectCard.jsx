@@ -4,12 +4,12 @@ import { Card, Button } from 'semantic-ui-react';
 import { upperFirst } from 'lodash';
 import yaml from 'js-yaml';
 
-import EditorWidgetJson from './EditorWidgetJson';
-import ObjectTreeViewWidget from './ObjectTreeViewWidget';
-import EditorWidgetYaml from './EditorWidgetYaml';
+import { EditorWidgetJson } from './EditorWidgetJson';
+import { ObjectTreeViewWidget } from './ObjectTreeViewWidget';
+import { EditorWidgetYaml } from './EditorWidgetYaml';
 
 
-export default class ObjectCard extends React.Component {
+export class ObjectCard extends React.Component {
     static propTypes = {
       widget: PropTypes.oneOf(['editor', 'object']),
       mode: PropTypes.oneOf(['json', 'yaml']).isRequired,
@@ -22,9 +22,7 @@ export default class ObjectCard extends React.Component {
 
     constructor(props) {
       super(props);
-
       const { widget } = props;
-
       this.state = { widget };
     }
 

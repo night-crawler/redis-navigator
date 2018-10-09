@@ -7,10 +7,10 @@ import { TextareaSpoiler } from '~/features/Common/components';
 
 import { isJson, MimeDetector, isBase64, isValidNumber, isYaml } from '~/utils';
 
-import BooleanCard from './BooleanCard';
-import ImageCard from './ImageCard';
-import ObjectCard from './ObjectCard';
-import ObjectTreeViewWidget from './ObjectTreeViewWidget';
+import { BooleanCard } from './BooleanCard';
+import { ImageCard } from './ImageCard';
+import { ObjectCard } from './ObjectCard';
+import { ObjectTreeViewWidget } from './ObjectTreeViewWidget';
 
 
 StringCard.propTypes = {
@@ -55,7 +55,7 @@ Result.propTypes = {
   result: PropTypes.any,
 };
 
-export default function Result(props) {
+export function Result(props) {
   const
     { result } = props,
     detector = new MimeDetector(result);

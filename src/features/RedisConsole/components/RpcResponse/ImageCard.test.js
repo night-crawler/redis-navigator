@@ -1,5 +1,5 @@
 /* eslint-disable react/react-in-jsx-scope,no-undef */
-import ImageCard from './ImageCard';
+import { ImageCard } from './ImageCard';
 
 
 describe('ImageCard', () => {

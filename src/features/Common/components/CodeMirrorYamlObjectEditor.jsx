@@ -10,7 +10,7 @@ import Measure from 'react-measure';
 import './FixCodeMirrorStyles.css';
 
 
-export default class CodeMirrorYamlObjectEditor extends React.Component {
+export class CodeMirrorYamlObjectEditor extends React.Component {
     static propTypes = {
       params: PropTypes.oneOfType([ PropTypes.object, PropTypes.array ]).isRequired,
       onChange: PropTypes.func.isRequired,

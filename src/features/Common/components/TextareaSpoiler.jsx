@@ -13,7 +13,7 @@ export const Textarea = styled.textarea`
 `;
 
 
-export default class TextareaSpoiler extends React.Component {
+export class TextareaSpoiler extends React.Component {
     static propTypes = {
       result: PropTypes.any.isRequired,
       show: PropTypes.bool,

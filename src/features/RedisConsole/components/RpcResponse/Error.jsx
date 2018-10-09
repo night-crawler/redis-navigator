@@ -12,7 +12,7 @@ RpcError.propTypes = {
   }),
 };
 
-export default function RpcError(props) {
+export function RpcError(props) {
   const { error } = props;
   const errorRepr = isArray(error.data) || isPlainObject(error.data)
     ? <ReactJson src={ error.data } name={ false } />

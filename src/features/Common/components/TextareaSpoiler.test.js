@@ -1,5 +1,5 @@
 /* eslint-disable react/react-in-jsx-scope,no-undef */
-import TextareaSpoiler from './TextareaSpoiler';
+import { TextareaSpoiler } from './TextareaSpoiler';
 
 
 describe('<TextareaSpoiler>', () => {

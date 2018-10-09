@@ -6,7 +6,7 @@ import { Card } from 'semantic-ui-react';
 BooleanCard.propTypes = {
   result: PropTypes.bool.isRequired,
 };
-export default function BooleanCard(props) {
+export function BooleanCard(props) {
   const { result } = props;
   return <Card
     className='BooleanCard'

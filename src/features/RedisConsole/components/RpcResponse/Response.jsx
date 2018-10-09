@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import RpcError from './Error';
-import Result from './Result';
+import { RpcError } from './Error';
+import { Result } from './Result';
 
 
 Response.propTypes = {
@@ -11,7 +11,7 @@ Response.propTypes = {
     result: PropTypes.any,
   })
 };
-export default function Response(props) {
+export function Response(props) {
   const { response: { result, error } } = props;
   if (result !== undefined) {
     return <Result result={ result } />;

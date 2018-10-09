@@ -16,7 +16,7 @@ FullPageDimmer.defaultProps = {
   inverted: true,
 };
 
-export default function FullPageDimmer(props) {
+export function FullPageDimmer(props) {
   const { inverted, message, ...rest } = props;
   return (
     <div style={ { height: '100%' } } className='FullPageDimmer'>

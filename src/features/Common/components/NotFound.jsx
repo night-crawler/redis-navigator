@@ -9,7 +9,7 @@ import messages from '../messages';
 NotFound.propTypes = {
   message: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
 };
-export default function NotFound(props) {
+export function NotFound(props) {
   const { message = <Tr { ...messages.notFound } /> } = props;
 
   return (

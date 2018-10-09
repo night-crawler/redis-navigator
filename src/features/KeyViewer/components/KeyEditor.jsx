@@ -8,7 +8,7 @@ import { HotKeys } from 'react-hotkeys';
 import { FormattedMessage as Tr } from 'react-intl';
 import { Button, Header, Icon, Segment } from 'semantic-ui-react';
 
-import FullPageDimmer from '~/features/Common/components/FullPageDimmer';
+import { FullPageDimmer } from '~/features/Common/components/FullPageDimmer';
 
 import { CodeMirrorYamlObjectEditor, CodeMirrorTextEditor } from '~/features/Common/components';
 

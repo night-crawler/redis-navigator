@@ -8,7 +8,7 @@ import { UnControlled as CodeMirror } from 'react-codemirror2';
 EditorWidgetJson.propTypes = {
   result: PropTypes.string,
 };
-export default function EditorWidgetJson(props) {
+export function EditorWidgetJson(props) {
   const { result } = props;
 
   return (
