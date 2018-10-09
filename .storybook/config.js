@@ -1,8 +1,7 @@
 import { withConsole } from '@storybook/addon-console';
-import { setDefaults as setInfoDefaults } from '@storybook/addon-info';
-import { setOptions } from '@storybook/addon-options';
+import { withOptions } from '@storybook/addon-options';
 import { addDecorator, configure } from '@storybook/react';
-
+import { withInfo } from '@storybook/addon-info';
 import { addLocaleData } from 'react-intl';
 import enLocaleData from 'react-intl/locale-data/en';
 import deLocaleData from 'react-intl/locale-data/ru';
@@ -29,23 +28,32 @@ setIntlConfig({
     getMessages,
 });
 
-setInfoDefaults({
+addDecorator(
+  withOptions({
+    hierarchySeparator: /\/|\./,
+    hierarchyRootSeparator: /\|/,
+  })
+);
+
+addDecorator(withIntl);
+addDecorator(
+  withInfo({
     header: false,
     inline: false,
     styles: {
-        children: {
-            position: 'inherit',
-            zIndex: 0,
-        },
+      button: {
+        base: {
+          zIndex: 5000,
+        }
+      },
+      children: {
+        position: 'inherit',
+        zIndex: 0,
+      },
     }
-});
+  })
+);
 
-setOptions({
-    hierarchySeparator: /\/|\./,
-    hierarchyRootSeparator: /\|/,
-});
-
-addDecorator(withIntl);
 addDecorator((storyFn, context) => withConsole()(storyFn)(context));
 
 const req = require.context('../stories', true, /.stories.js$/);
