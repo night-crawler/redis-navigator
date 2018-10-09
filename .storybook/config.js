@@ -8,8 +8,8 @@ import enLocaleData from 'react-intl/locale-data/en';
 import deLocaleData from 'react-intl/locale-data/ru';
 import 'semantic-ui-css/semantic.min.css';
 import { setIntlConfig, withIntl } from 'storybook-addon-intl';
-import enMessages from '../app/translations/en.yml';
-import ruMessages from '../app/translations/ru.yml';
+import enMessages from '../src/translations/en.yml';
+import ruMessages from '../src/translations/ru.yml';
 
 
 addLocaleData(enLocaleData);
@@ -48,8 +48,9 @@ setOptions({
 addDecorator(withIntl);
 addDecorator((storyFn, context) => withConsole()(storyFn)(context));
 
+const req = require.context('../stories', true, /.stories.js$/);
 function loadStories() {
-    require('../stories');
+  req.keys().forEach(filename => req(filename));
 }
 
 configure(loadStories, module);
