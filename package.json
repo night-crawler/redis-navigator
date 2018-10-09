@@ -83,7 +83,8 @@
     "webpack": "4.19.1",
     "webpack-dev-server": "3.1.9",
     "webpack-manifest-plugin": "2.0.4",
-    "workbox-webpack-plugin": "3.6.2"
+    "workbox-webpack-plugin": "3.6.2",
+    "yml-loader": "^2.1.0"
   },
   "scripts": {
     "start": "webpack-dashboard -- node scripts/start.js",
@@ -136,6 +137,7 @@
     "enzyme": "^3.7.0",
     "enzyme-adapter-react-16": "^1.6.0",
     "eslint-import-resolver-webpack": "^0.10.1",
+    "js-yaml-loader": "^1.0.0",
     "moment": "^2.22.2",
     "prop-types": "^15.6.2",
     "react-test-renderer": "^16.5.2",

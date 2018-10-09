@@ -5,7 +5,7 @@ import { Card, Header, Segment } from 'semantic-ui-react';
 
 import { TextareaSpoiler } from '~/features/Common/components';
 
-import { isJson, MimeDetector, isBase64, isValidNumber, isYaml } from 'utils';
+import { isJson, MimeDetector, isBase64, isValidNumber, isYaml } from '~/utils';
 
 import BooleanCard from './BooleanCard';
 import ImageCard from './ImageCard';

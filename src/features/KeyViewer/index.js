@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 import { createStructuredSelector } from 'reselect';
 
-import { makeAbsoluteUrl, PageHelper, serializeQuery } from 'utils';
+import { makeAbsoluteUrl, PageHelper, serializeQuery } from '~/utils';
 
 import {
   hasFetchedSearchKeys,

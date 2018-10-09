@@ -15,7 +15,7 @@ import {
   TOGGLE_IMPORT_DIALOG_VISIBLE
 } from '~/features/RedisConsole/actions';
 
-import { mapRpcRequestsById, mapRpcResponsesById, prepareServerInfo } from 'utils';
+import { mapRpcRequestsById, mapRpcResponsesById, prepareServerInfo } from '~/utils';
 
 
 export const instancesData = (state = {}, action) => produce(state, draft => {

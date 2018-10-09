@@ -1,6 +1,6 @@
 import { RSAA } from 'redux-api-middleware';
 
-import { getApiMiddlewareOptions } from 'utils';
+import { getApiMiddlewareOptions } from '~/utils';
 
 
 export const FETCH_ENDPOINTS_START = 'redisNavigator/fetch/endpoints/start';

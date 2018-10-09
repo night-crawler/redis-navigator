@@ -5,7 +5,7 @@ import { createSelector } from 'reselect';
 
 import { keyViewer, locationSearchParams, urls } from '~/features/selectors';
 
-import { makeAbsoluteUrl } from 'utils';
+import { makeAbsoluteUrl } from '~/utils';
 
 
 /**

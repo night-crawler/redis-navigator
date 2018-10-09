@@ -9,7 +9,8 @@ import {
   SEARCH_KEYS_SUCCESS,
 } from '~/features/actions';
 
-import { prepareKeyInfo, prepareKeyTypesMap } from 'utils';
+import { prepareKeyInfo, prepareKeyTypesMap } from '~/utils';
+
 import { prepareUpdateKeyData } from 'utils/rpc';
 
 import { SET_SELECTED_KEY } from './actions';

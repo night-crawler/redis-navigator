@@ -8,7 +8,7 @@ import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'react-router-redux';
 
 import 'semantic-ui-css/semantic.min.css';
-import { extractLanguageCode } from 'utils';
+import { extractLanguageCode } from '~/utils';
 
 import InternationalizationProvider, { switchLocale, updateIntl } from '~/features/Internationalization';
 
@@ -26,7 +26,6 @@ const MOUNT_NODE = document.getElementById('root');
 
 
 const render = () => {
-  // console.log(enLocaleData);
   addLocaleData(enLocaleData);
   addLocaleData(ruLocaleData);
 

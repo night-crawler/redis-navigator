@@ -1,16 +1,17 @@
 import { routerMiddleware } from 'react-router-redux';
 import { applyMiddleware, compose, createStore } from 'redux';
 import { apiMiddleware } from 'redux-api-middleware';
+// import { createLogger } from 'redux-logger';
 import thunkMiddleware from 'redux-thunk';
 
-import createRootReducer from '~/reducers/rootReducer';
+import createRootReducer from '~/reducers';
 
 
 export default function configureStore(initialState = {}, history) {
   const middlewares = [
     apiMiddleware,
     thunkMiddleware,
-    // createLogger,
+    // createLogger(),
     routerMiddleware(history),
   ];
 
@@ -32,7 +33,6 @@ export default function configureStore(initialState = {}, history) {
     initialState,
     composeEnhancers(...enhancers)
   );
-
   store.injectedReducers = {}; // Reducer registry
 
   // Make reducers hot reloadable, see http://mxs.is/googmo

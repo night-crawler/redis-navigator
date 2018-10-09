@@ -1,7 +1,7 @@
 import { every, filter, find } from 'lodash';
 import { createSelector } from 'reselect';
 
-import { deserializeQuery } from 'utils';
+import { deserializeQuery } from '~/utils';
 
 
 export const redisNavigator = state => state.redisNavigator;

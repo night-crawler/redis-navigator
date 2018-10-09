@@ -8,7 +8,7 @@ import { FormattedMessage as Tr } from 'react-intl';
 import { Button, Icon, Segment } from 'semantic-ui-react';
 import { COLORS } from 'semantic-ui-react/dist/es/lib/SUI';
 
-import { saveFile } from 'utils';
+import { saveFile } from '~/utils';
 
 import messages from '../messages';
 
