@@ -1,4 +1,4 @@
-import { changeCallEditorMethodParams } from '.';
+import { changeCallEditorMethodParams } from './changeCallEditorMethodParams';
 
 
 describe('RedisConsole.actions', () => {

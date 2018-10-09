@@ -1,4 +1,4 @@
-import { setActiveInstance } from '.';
+import { setActiveInstance } from './setActiveInstance';
 
 
 describe('features.actions', () => {

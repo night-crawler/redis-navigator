@@ -1,4 +1,4 @@
-import { initStoreWithUrls } from '.';
+import { initStoreWithUrls } from './initStoreWithUrls';
 
 
 describe('features.actions', () => {

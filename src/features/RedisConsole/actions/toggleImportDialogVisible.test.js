@@ -1,4 +1,4 @@
-import { toggleImportDialogVisible } from '.';
+import { toggleImportDialogVisible } from './toggleImportDialogVisible';
 
 
 describe('RedisConsole.actions', () => {

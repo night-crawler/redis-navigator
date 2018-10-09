@@ -1,4 +1,4 @@
-import { toggleProgressBarVisible } from '.';
+import { toggleProgressBarVisible } from './toggleProgressBarVisible';
 
 
 describe('actions', () => {

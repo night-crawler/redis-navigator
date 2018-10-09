@@ -11,7 +11,7 @@ import {
   RpcActionCreator,
   RpcRequestBuilder,
   RSAARpcActionCreator,
-} from '.';
+} from './index';
 
 import {
   RPCBadActionTypesError,
@@ -19,7 +19,7 @@ import {
   RPCEmptyRequestError,
   RPCEndpointError,
   RPCMethodNameError
-} from 'errors/rpc';
+} from '~/errors/rpc';
 
 
 describe('RpcRequestBuilder', () => {

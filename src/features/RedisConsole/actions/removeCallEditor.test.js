@@ -1,4 +1,4 @@
-import { removeCallEditor } from '.';
+import { removeCallEditor } from './removeCallEditor';
 
 
 describe('RedisConsole.actions', () => {

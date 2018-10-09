@@ -1,4 +1,4 @@
-import { bindCallEditorToId } from '.';
+import { bindCallEditorToId } from './bindCallEditorToId';
 
 
 describe('RedisConsole.actions', () => {

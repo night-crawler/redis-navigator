@@ -9,7 +9,7 @@ import {
   RPCEmptyRequestError,
   RPCEndpointError,
   RPCMethodNameError
-} from 'errors/rpc';
+} from '~/errors/rpc';
 
 
 export const RPC_EXECUTE_START = 'redisNavigator/rpc/execute/start';

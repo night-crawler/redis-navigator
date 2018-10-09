@@ -1,6 +1,6 @@
 import { RSAA } from 'redux-api-middleware';
 
-import { fetchInstances } from '.';
+import { fetchInstances } from './fetchInstances';
 
 
 describe('features.actions', () => {

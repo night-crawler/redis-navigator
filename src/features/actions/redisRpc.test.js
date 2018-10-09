@@ -1,4 +1,4 @@
-import { RedisRpc } from '.';
+import { RedisRpc } from './redisRpc';
 
 
 describe('RedisRpc actions', () => {

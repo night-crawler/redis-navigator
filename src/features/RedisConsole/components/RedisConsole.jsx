@@ -6,7 +6,8 @@ import { Helmet } from 'react-helmet';
 import { HotKeys } from 'react-hotkeys';
 import { FormattedMessage as Tr } from 'react-intl';
 import { Button, Icon, Segment } from 'semantic-ui-react';
-import { COLORS } from 'semantic-ui-react/dist/es/lib/SUI';
+
+import { SUI_COLORS as COLORS } from '~/utils/semanticConstants';
 
 import { saveFile } from '~/utils';
 
