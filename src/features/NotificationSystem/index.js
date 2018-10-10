@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
 
-import { NotificationSystem } from './components';
+import { NotificationSystemComponent } from './NotificationSystemComponent';
 
 
 export default connect(
-    state => ( { notifications: state.notifications } )
-)(NotificationSystem);
+  state => ( { notifications: state.notifications } )
+)(NotificationSystemComponent);

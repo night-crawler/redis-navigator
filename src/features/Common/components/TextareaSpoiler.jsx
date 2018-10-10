@@ -13,17 +13,17 @@ export const Textarea = styled.textarea`
 `;
 
 
-export default class TextareaSpoiler extends React.Component {
+export class TextareaSpoiler extends React.Component {
     static propTypes = {
-        result: PropTypes.any.isRequired,
-        show: PropTypes.bool,
+      result: PropTypes.any.isRequired,
+      show: PropTypes.bool,
     };
     static defaultProps = { show: false };
     state = { isShown: false };
 
     componentDidMount() {
-        const { show } = this.props;
-        this.handleSetShown(show);
+      const { show } = this.props;
+      this.handleSetShown(show);
     }
 
     handleSetShown = isShown => this.setState({ isShown });
@@ -31,32 +31,32 @@ export default class TextareaSpoiler extends React.Component {
     handleHide = () => this.handleSetShown(false);
 
     render() {
-        const { isShown } = this.state;
+      const { isShown } = this.state;
 
-        return isShown
-            ? this.renderData()
-            : this.renderShowDataButton();
+      return isShown
+        ? this.renderData()
+        : this.renderShowDataButton();
     }
 
     renderData() {
-        const { result } = this.props;
-        return (
-            <div className='TextareaSpoiler'>
-                <div onClick={ this.handleHide } className='hide-shown'>
-                    <Tr { ...messages.hide } />
-                </div>
-                <Textarea className='response-data' rows={ 6 } value={ result } readOnly={ true } />
-            </div>
-        );
+      const { result } = this.props;
+      return (
+        <div className='TextareaSpoiler'>
+          <div onClick={ this.handleHide } className='hide-shown'>
+            <Tr { ...messages.hide } />
+          </div>
+          <Textarea className='response-data' rows={ 6 } value={ result } readOnly={ true } />
+        </div>
+      );
     }
 
     renderShowDataButton() {
-        return (
-            <div className='TextareaSpoiler'>
-                <div onClick={ this.handleShow } className='show-hidden'>
-                    <Tr { ...messages.show } />
-                </div>
-            </div>
-        );
+      return (
+        <div className='TextareaSpoiler'>
+          <div onClick={ this.handleShow } className='show-hidden'>
+            <Tr { ...messages.show } />
+          </div>
+        </div>
+      );
     }
 }

@@ -1,3 +1,2 @@
-import Internationalization from './Internationalization';
-
+import { Internationalization } from './Internationalization';
 export { Internationalization };

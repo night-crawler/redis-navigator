@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 
-export default styled.div`
-   overflow: hidden;
-   height: 100vh;
+export const AppWrapper = styled.div`
+  overflow: hidden;
+  height: 100vh;
 `;

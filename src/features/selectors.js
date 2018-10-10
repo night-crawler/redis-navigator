@@ -1,7 +1,7 @@
 import { every, filter, find } from 'lodash';
 import { createSelector } from 'reselect';
 
-import { deserializeQuery } from 'utils';
+import { deserializeQuery } from '~/utils';
 
 
 export const redisNavigator = state => state.redisNavigator;
@@ -25,8 +25,8 @@ export const locationSearch = createSelector(location, location => location.sear
  * URLSearchParams(state.route.location.search)
  */
 export const locationSearchParams = createSelector(
-    locationSearch,
-    locationSearch => deserializeQuery(locationSearch)
+  locationSearch,
+  locationSearch => deserializeQuery(locationSearch)
 );
 
 
@@ -46,7 +46,7 @@ export const instancesData = createSelector(redisNavigator, redisNavigator => re
  * state.redisNavigator.activeInstanceName
  */
 export const activeInstanceName = createSelector(
-    redisNavigator, redisNavigator => redisNavigator.activeInstanceName || null);
+  redisNavigator, redisNavigator => redisNavigator.activeInstanceName || null);
 
 /**
  * state.redisNavigator.instances
@@ -154,8 +154,8 @@ export const isFetchingEndpoints = createSelector(isFetching, isFetching => isFe
 
 
 export const isReady = createSelector(
-    [hasFetchedInspections, hasFetchedInstances, hasFetchedEndpoints],
-    (...flags) => every(flags)
+  [hasFetchedInspections, hasFetchedInstances, hasFetchedEndpoints],
+  (...flags) => every(flags)
 );
 
 // ============
@@ -183,8 +183,8 @@ export const routeInstanceName = createSelector(routeMatchParams, params => para
  * If it isn't so, we're got wrong `routeInstanceName`
  */
 export const routeInstanceDataExists = createSelector(
-    [instancesData, routeInstanceName],
-    (instancesData, routeInstanceName) => instancesData[routeInstanceName] !== undefined
+  [instancesData, routeInstanceName],
+  (instancesData, routeInstanceName) => instancesData[routeInstanceName] !== undefined
 );
 
 
@@ -192,8 +192,8 @@ export const routeInstanceDataExists = createSelector(
  * state.redisNavigator.instancesData[:instanceName]
  */
 export const routeInstanceData = createSelector(
-    [instancesData, routeInstanceName],
-    (instancesData, routeInstanceName) => instancesData[routeInstanceName] || {}
+  [instancesData, routeInstanceName],
+  (instancesData, routeInstanceName) => instancesData[routeInstanceName] || {}
 );
 
 
@@ -207,8 +207,8 @@ export const routeInstanceInfo = createSelector(routeInstanceData, routeInstance
  * state.redisNavigator.instancesData[:instanceName].requests
  */
 export const routeInstanceRequests = createSelector(
-    routeInstanceData,
-    routeInstanceData => routeInstanceData.requests
+  routeInstanceData,
+  routeInstanceData => routeInstanceData.requests
 );
 
 
@@ -216,8 +216,8 @@ export const routeInstanceRequests = createSelector(
  * state.redisNavigator.instancesData[:instanceName].responses
  */
 export const routeInstanceResponses = createSelector(
-    routeInstanceData,
-    routeInstanceData => routeInstanceData.responses
+  routeInstanceData,
+  routeInstanceData => routeInstanceData.responses
 );
 
 
@@ -225,8 +225,8 @@ export const routeInstanceResponses = createSelector(
  * state.redisNavigator.instancesData[:instanceName].consoleCommands
  */
 export const routeConsoleCommands = createSelector(
-    routeInstanceData,
-    routeInstanceData => routeInstanceData.consoleCommands
+  routeInstanceData,
+  routeInstanceData => routeInstanceData.consoleCommands
 );
 
 
@@ -234,8 +234,8 @@ export const routeConsoleCommands = createSelector(
  * state.redisNavigator.instancesData[:instanceName].importDialogIsVisible
  */
 export const routeInstanceImportDialogIsVisible = createSelector(
-    routeInstanceData,
-    routeInstanceData => routeInstanceData.importDialogIsVisible
+  routeInstanceData,
+  routeInstanceData => routeInstanceData.importDialogIsVisible
 );
 
 
@@ -244,18 +244,18 @@ export const routeInstanceImportDialogIsVisible = createSelector(
  * WHERE dirty === true AND cmd.methodName is not falsy
  */
 export const routeConsoleCommandsToExecute = createSelector(
+  routeConsoleCommands,
+  routeConsoleCommands => filter(
     routeConsoleCommands,
-    routeConsoleCommands => filter(
-        routeConsoleCommands,
-        cmd => cmd.dirty === true && cmd.methodName
-    )
+    cmd => cmd.dirty === true && cmd.methodName
+  )
 );
 
 
 export const activeInstance = createSelector(
-    [instances, activeInstanceName],
-    (instances, activeInstanceName) =>
-        find(instances, { name: activeInstanceName })
+  [instances, activeInstanceName],
+  (instances, activeInstanceName) =>
+    find(instances, { name: activeInstanceName })
 );
 
 
@@ -263,9 +263,9 @@ export const activeInstance = createSelector(
  * state.redisNavigator.instances[:instanceName]
  */
 export const routeInstance = createSelector(
-    [instances, routeInstanceName],
-    (instances, routeInstanceName) =>
-        find(instances, { name: routeInstanceName })
+  [instances, routeInstanceName],
+  (instances, routeInstanceName) =>
+    find(instances, { name: routeInstanceName })
 );
 
 
@@ -273,8 +273,8 @@ export const routeInstance = createSelector(
  * state.redisNavigator.instances[:instanceName].search_url
  */
 export const routeInstanceSearchUrl = createSelector(
-    routeInstance,
-    routeInstance => routeInstance.search_url
+  routeInstance,
+  routeInstance => routeInstance.search_url
 );
 
 
@@ -282,34 +282,34 @@ export const routeInstanceSearchUrl = createSelector(
  * state.redisNavigator.keys[:instanceName]
  */
 export const routeKeys = createSelector(
-    [keys, routeInstanceName],
-    (keys, routeInstanceName) => keys[routeInstanceName] || {}
+  [keys, routeInstanceName],
+  (keys, routeInstanceName) => keys[routeInstanceName] || {}
 );
 
 
 export const shouldFetchEndpoints = createSelector(
-    [hasFetchedEndpoints, isFetchingEndpoints, urls],
-    (hasFetchedEndpoints, isFetchingEndpoints, urls) =>
-        urls.endpoints && !hasFetchedEndpoints && !isFetchingEndpoints
+  [hasFetchedEndpoints, isFetchingEndpoints, urls],
+  (hasFetchedEndpoints, isFetchingEndpoints, urls) =>
+    urls.endpoints && !hasFetchedEndpoints && !isFetchingEndpoints
 );
 
 
 export const shouldFetchInstances = createSelector(
-    [hasFetchedInstances, isFetchingInstances, hasFetchedEndpoints],
-    (hasFetchedInstances, isFetchingInstances, hasFetchedEndpoints) =>
-        hasFetchedEndpoints && !hasFetchedInstances && !isFetchingInstances
+  [hasFetchedInstances, isFetchingInstances, hasFetchedEndpoints],
+  (hasFetchedInstances, isFetchingInstances, hasFetchedEndpoints) =>
+    hasFetchedEndpoints && !hasFetchedInstances && !isFetchingInstances
 );
 
 
 export const shouldFetchInspections = createSelector(
-    [hasFetchedInspections, isFetchingInspections, hasFetchedEndpoints],
-    (hasFetchedInspections, isFetchingInspections, hasFetchedEndpoints) =>
-        hasFetchedEndpoints && !hasFetchedInspections && !isFetchingInspections
+  [hasFetchedInspections, isFetchingInspections, hasFetchedEndpoints],
+  (hasFetchedInspections, isFetchingInspections, hasFetchedEndpoints) =>
+    hasFetchedEndpoints && !hasFetchedInspections && !isFetchingInspections
 );
 
 
 export const shouldFetchSearchKeys = createSelector(
-    [hasFetchedSearchKeys, isFetchingSearchKeys],
-    (hasFetchedSearchKeys, isFetchingSearchKeys) =>
-        !hasFetchedSearchKeys && !isFetchingSearchKeys
+  [hasFetchedSearchKeys, isFetchingSearchKeys],
+  (hasFetchedSearchKeys, isFetchingSearchKeys) =>
+    !hasFetchedSearchKeys && !isFetchingSearchKeys
 );

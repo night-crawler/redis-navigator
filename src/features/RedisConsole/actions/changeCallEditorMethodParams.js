@@ -2,7 +2,7 @@ export const CHANGE_CALL_EDITOR_METHOD_PARAMS = 'redisNavigator/ui/console/chang
 
 
 export const changeCallEditorMethodParams = (instanceName, methodParams, key) => ({
-    type: CHANGE_CALL_EDITOR_METHOD_PARAMS,
-    payload: { methodParams, key },
-    meta: { path: instanceName },
+  type: CHANGE_CALL_EDITOR_METHOD_PARAMS,
+  payload: { methodParams, key },
+  meta: { path: instanceName },
 });

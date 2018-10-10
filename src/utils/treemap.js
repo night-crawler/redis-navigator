@@ -25,35 +25,35 @@ import { findFirstDelimiter, splitKey } from './strings';
     }
  */
 export function addToSMTree(rootObject, path, value, delimiters = [ '::', ':', '/' ]) {
-    const
-        pathParts = splitKey(path, delimiters),
-        delimiter = findFirstDelimiter(path, delimiters);
+  const
+    pathParts = splitKey(path, delimiters),
+    delimiter = findFirstDelimiter(path, delimiters);
 
-    if (rootObject.keyMap === undefined)
-        rootObject.keyMap = SortedMap();
+  if (rootObject.keyMap === undefined)
+    rootObject.keyMap = SortedMap();
 
-    let obj = rootObject;
-    for (let pathItem of pathParts) {
-        if (!obj.keyMap.has(pathItem))
-            obj.keyMap.set(pathItem, {
-                keyMap: SortedMap(),
-                value: undefined,
-            });
+  let obj = rootObject;
+  for (let pathItem of pathParts) {
+    if (!obj.keyMap.has(pathItem))
+      obj.keyMap.set(pathItem, {
+        keyMap: SortedMap(),
+        value: undefined,
+      });
 
-        obj = obj.keyMap.get(pathItem);
-    }
-    obj.value = value;
-    return obj;
+    obj = obj.keyMap.get(pathItem);
+  }
+  obj.value = value;
+  return obj;
 }
 
 
 export function dumpSMTree(tree) {
-    const newObject = { value: tree.value };
-    // newObject.keyMap = newObject.keyMap.keys().map(key => dumpSMTree())
-    newObject.keyMap = fromPairs(
-        tree.keyMap.entries().map(
-            ([ keyName, inner ]) => [ keyName, dumpSMTree(inner) ]
-        )
-    );
-    return newObject;
+  const newObject = { value: tree.value };
+  // newObject.keyMap = newObject.keyMap.keys().map(key => dumpSMTree())
+  newObject.keyMap = fromPairs(
+    tree.keyMap.entries().map(
+      ([ keyName, inner ]) => [ keyName, dumpSMTree(inner) ]
+    )
+  );
+  return newObject;
 }

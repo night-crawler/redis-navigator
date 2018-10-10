@@ -3,8 +3,9 @@ import { DEFAULT_SEARCH_KEYS_PARAMS } from 'constants';
 import { fromPairs, pickBy, toPairs, trimEnd } from 'lodash';
 import { createSelector } from 'reselect';
 
-import { keyViewer, locationSearchParams, urls } from 'features/selectors';
-import { makeAbsoluteUrl } from 'utils';
+import { keyViewer, locationSearchParams, urls } from '~/features/selectors';
+
+import { makeAbsoluteUrl } from '~/utils';
 
 
 /**
@@ -18,11 +19,11 @@ export const selectedKey = createSelector(keyViewer, keyViewer => keyViewer.sele
  * URLSearchParams(state.route.location.search) + defaults
  */
 export const locationSearchParamsWithDefaults = createSelector(
-    locationSearchParams,
-    locationSearchParams => ({
-        ...DEFAULT_SEARCH_KEYS_PARAMS,
-        ...pickBy(locationSearchParams, (val) => val !== undefined)
-    })
+  locationSearchParams,
+  locationSearchParams => ({
+    ...DEFAULT_SEARCH_KEYS_PARAMS,
+    ...pickBy(locationSearchParams, (val) => val !== undefined)
+  })
 );
 
 
@@ -30,8 +31,8 @@ export const locationSearchParamsWithDefaults = createSelector(
  * state.redisNavigator.keyViewer[ state.route.location.search[pattern] ]
  */
 export const searchInfo = createSelector(
-    [ keyViewer, locationSearchParamsWithDefaults ],
-    (keyViewer, searchParams) => keyViewer[ searchParams.pattern ] || {}
+  [ keyViewer, locationSearchParamsWithDefaults ],
+  (keyViewer, searchParams) => keyViewer[ searchParams.pattern ] || {}
 );
 
 
@@ -39,11 +40,11 @@ export const searchInfo = createSelector(
  * state.redisNavigator.keyViewer[ state.route.location.search[pattern] ]
  */
 export const searchEndpoints = createSelector(
-    [ searchInfo, urls ],
-    (searchInfo, urls) =>
-        fromPairs(toPairs(searchInfo.endpoints).map(
-            ([ name, relativeUrl ]) => [ name, makeAbsoluteUrl(urls.base, relativeUrl) ]
-        ))
+  [ searchInfo, urls ],
+  (searchInfo, urls) =>
+    fromPairs(toPairs(searchInfo.endpoints).map(
+      ([ name, relativeUrl ]) => [ name, makeAbsoluteUrl(urls.base, relativeUrl) ]
+    ))
 );
 
 
@@ -51,20 +52,20 @@ export const searchEndpoints = createSelector(
  * state.redisNavigator.keyViewer[ state.route.location.search[pattern] ]
  */
 export const searchFirstPageUrl = createSelector(
-    searchEndpoints, searchEndpoints => searchEndpoints.get_page
+  searchEndpoints, searchEndpoints => searchEndpoints.get_page
 );
 
 
 export const searchPageUrlPrefix = createSelector(
-    searchFirstPageUrl, searchFirstPageUrl =>
-        trimEnd(searchFirstPageUrl).split('/').slice(0, -1).join('/')
+  searchFirstPageUrl, searchFirstPageUrl =>
+    trimEnd(searchFirstPageUrl).split('/').slice(0, -1).join('/')
 );
 
 
 export const searchNumPages = createSelector(
-    [ searchInfo, locationSearchParamsWithDefaults ],
-    (searchInfo, searchParams) =>
-        Math.ceil(searchInfo.count / searchParams.perPage || 1)
+  [ searchInfo, locationSearchParamsWithDefaults ],
+  (searchInfo, searchParams) =>
+    Math.ceil(searchInfo.count / searchParams.perPage || 1)
 );
 
 
@@ -74,9 +75,9 @@ export const searchNumPages = createSelector(
  * ]
  */
 export const searchPagesMap = createSelector(
-    [ keyViewer, locationSearchParamsWithDefaults ],
-    (keyViewer, locationSearchParamsWithDefaults) =>
-        keyViewer[ `keys:${locationSearchParamsWithDefaults.pattern}` ]
+  [ keyViewer, locationSearchParamsWithDefaults ],
+  (keyViewer, locationSearchParamsWithDefaults) =>
+    keyViewer[ `keys:${locationSearchParamsWithDefaults.pattern}` ]
 );
 
 
@@ -108,8 +109,8 @@ export const keyUpdateResultsMap = createSelector(keyViewer, keyViewer => keyVie
  * state.redisNavigator.keyViewer.types[selectedKey]
  */
 export const selectedKeyType = createSelector(
-    [ keyTypes, selectedKey ],
-    (keyTypes, selectedKey) => keyTypes[ selectedKey ]
+  [ keyTypes, selectedKey ],
+  (keyTypes, selectedKey) => keyTypes[ selectedKey ]
 );
 
 
@@ -117,8 +118,8 @@ export const selectedKeyType = createSelector(
  * state.redisNavigator.keyViewer.info[selectedKey]
  */
 export const selectedKeyInfo = createSelector(
-    [ keyInfo, selectedKey ],
-    (keyInfo, selectedKey) => keyInfo[ selectedKey ]
+  [ keyInfo, selectedKey ],
+  (keyInfo, selectedKey) => keyInfo[ selectedKey ]
 );
 
 
@@ -126,8 +127,8 @@ export const selectedKeyInfo = createSelector(
  * state.redisNavigator.keyViewer.data[selectedKey]
  */
 export const selectedKeyData = createSelector(
-    [ keyData, selectedKey ],
-    (keyData, selectedKey) => keyData[ selectedKey ]
+  [ keyData, selectedKey ],
+  (keyData, selectedKey) => keyData[ selectedKey ]
 );
 
 
@@ -135,6 +136,6 @@ export const selectedKeyData = createSelector(
  * state.redisNavigator.keyViewer.updateResultsMap[selectedKey]
  */
 export const selectedKeyUpdateResults = createSelector(
-    [ keyUpdateResultsMap, selectedKey ],
-    (keyUpdateResultsMap, selectedKey) => keyUpdateResultsMap[ selectedKey ]
+  [ keyUpdateResultsMap, selectedKey ],
+  (keyUpdateResultsMap, selectedKey) => keyUpdateResultsMap[ selectedKey ]
 );

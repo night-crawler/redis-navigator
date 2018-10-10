@@ -2,7 +2,7 @@ export const BIND_CALL_EDITOR_TO_ID = 'redisNavigator/ui/console/bindCallEditorT
 
 
 export const bindCallEditorToId = (instanceName, key, requestId) => ({
-    type: BIND_CALL_EDITOR_TO_ID,
-    payload: { key, requestId },
-    meta: { path: instanceName },
+  type: BIND_CALL_EDITOR_TO_ID,
+  payload: { key, requestId },
+  meta: { path: instanceName },
 });
