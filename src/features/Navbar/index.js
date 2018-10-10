@@ -11,7 +11,7 @@ import {
   location,
 } from '../selectors';
 
-import { Navbar } from './components';
+import { NavbarComponent } from './NavbarComponent';
 
 
 function mapDispatchToProps(dispatch) {
@@ -35,4 +35,4 @@ export default connect(
     location
   }),
   mapDispatchToProps,
-)(Navbar);
+)(NavbarComponent);

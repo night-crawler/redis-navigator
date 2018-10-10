@@ -10,7 +10,7 @@ import RedisConsole from '~/features/RedisConsole';
 
 import NotificationSystem from '~/features/NotificationSystem';
 
-import Navbar from '~/features/Navbar';
+import NavbarComponent from '~/features/Navbar';
 
 import KeyViewer from '~/features/KeyViewer';
 
@@ -72,7 +72,7 @@ export class DefaultLayout extends React.Component {
             <meta name='description' content='Redis Navigator application' />
           </Helmet>
 
-          <Navbar />
+          <NavbarComponent />
 
           <AppContentWrapper>
             <Switch>

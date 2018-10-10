@@ -7,14 +7,13 @@ import { Container, Dropdown, Icon, Label, Menu, Progress } from 'semantic-ui-re
 
 import { Timeouts } from 'utils/timers';
 
-import messages from '../messages';
-
+import messages from './messages';
 import { DropdownRedisItem } from './DropdownRedisItem';
 import { TopNailedFullWidthContainer } from './TopNailedFullWidthContainer';
-import './Navbar.css';
+import './NavbarComponent.css';
 
 
-Navbar.propTypes = {
+NavbarComponent.propTypes = {
   actions: PropTypes.shape({
     fetchInstances: PropTypes.func.isRequired,
     setActiveInstance: PropTypes.func.isRequired,
@@ -34,7 +33,7 @@ Navbar.propTypes = {
   progressPercent: PropTypes.number,
   progressIsVisible: PropTypes.bool,
 };
-export function Navbar(props) {
+export function NavbarComponent(props) {
   const {
     instances = {},
     activeInstanceName,
@@ -56,7 +55,7 @@ export function Navbar(props) {
   });
 
   return (
-    <Menu className='Navbar' fixed='top'>
+    <Menu className='NavbarComponent' fixed='top'>
       { progressIsVisible &&
       <TopNailedFullWidthContainer>
         <Progress indicating={ true } percent={ progressPercent } attached='top' color='green' />
