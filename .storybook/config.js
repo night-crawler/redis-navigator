@@ -7,9 +7,11 @@ import enLocaleData from 'react-intl/locale-data/en';
 import deLocaleData from 'react-intl/locale-data/ru';
 import 'semantic-ui-css/semantic.min.css';
 import { setIntlConfig, withIntl } from 'storybook-addon-intl';
+import { host } from 'storybook-host';
+import { withKnobs } from '@storybook/addon-knobs';
+
 import enMessages from '../src/translations/en.yml';
 import ruMessages from '../src/translations/ru.yml';
-
 
 addLocaleData(enLocaleData);
 addLocaleData(deLocaleData);
@@ -27,6 +29,14 @@ setIntlConfig({
     defaultLocale: 'en',
     getMessages,
 });
+
+addDecorator(withKnobs);
+
+addDecorator(host({
+  align: 'center middle',
+  height: '90%',
+  width: '90%',
+}));
 
 addDecorator(
   withOptions({
