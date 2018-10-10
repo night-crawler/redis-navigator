@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Notifications from 'react-notification-system-redux';
 
 
-export default class Notification extends React.Component {
+export class NotificationSystemComponent extends React.Component {
     static propTypes = {
       notifications: PropTypes.array
     };

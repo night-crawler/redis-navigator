@@ -1,6 +1,6 @@
 import ReactJson from 'react-json-view';
 
-import { RpcError } from './Error';
+import { RpcError } from './RpcError';
 
 
 describe('Error', () => {
@@ -13,7 +13,6 @@ describe('Error', () => {
     const wrapper = shallow(<RpcError error={ { data: { a: 1 } } } />);
     expect(wrapper.find(ReactJson)).toHaveLength(1);
   });
-
 
   it('should NOT render ReactJson for simple data types', () => {
     const wrapper = shallow(<RpcError error={ { data: '123' } } />);

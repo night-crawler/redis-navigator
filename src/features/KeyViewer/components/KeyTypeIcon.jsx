@@ -9,7 +9,7 @@ KeyTypeIcon.propTypes = {
   keyType: PropTypes.string.isRequired,
 };
 
-export default function KeyTypeIcon(props) {
+export function KeyTypeIcon(props) {
   const { keyType } = props;
   const iconOpts = REDIS_KEY_TYPE_ICON_MAP[keyType] || { name: 'spinner' };
 

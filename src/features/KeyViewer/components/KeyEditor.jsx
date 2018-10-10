@@ -14,12 +14,12 @@ import { CodeMirrorYamlObjectEditor, CodeMirrorTextEditor } from '~/features/Com
 
 import messages from '../messages';
 
-import KeyInfo from './KeyInfo';
+import { KeyInfo } from './KeyInfo';
 import './KeyEditor.css';
 
 
 
-export default class KeyEditor extends React.Component {
+export class KeyEditor extends React.Component {
     static propTypes = {
       type: PropTypes.string,
       selectedKey: PropTypes.string,

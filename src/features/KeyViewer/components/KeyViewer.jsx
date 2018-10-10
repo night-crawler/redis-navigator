@@ -8,11 +8,11 @@ import { injectIntl, intlShape } from 'react-intl';
 
 import { Timeouts } from 'utils/timers';
 
-import InfiniteKeyList from './InfiniteKeyList';
-import KeyEditor from './KeyEditor';
-import KeyUpdateResults from './KeyUpdateResults';
-import PluralFoundKeys from './PluralFoundKeys';
-import KeyFilterInput from './KeyFilterInput';
+import { InfiniteKeyList } from './InfiniteKeyList';
+import { KeyEditor } from './KeyEditor';
+import { KeyUpdateResults } from './KeyUpdateResults';
+import { PluralFoundKeys } from './PluralFoundKeys';
+import { KeyFilterInput } from './KeyFilterInput';
 import './KeyViewer.css';
 
 

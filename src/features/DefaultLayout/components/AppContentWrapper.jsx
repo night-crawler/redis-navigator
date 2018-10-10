@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 
-export default styled.div`
+export const AppContentWrapper = styled.div`
   margin-top: 45px;
   overflow-x: hidden;
   overflow-y: auto;

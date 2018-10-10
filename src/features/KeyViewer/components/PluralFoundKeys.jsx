@@ -28,5 +28,3 @@ export function PluralFoundKeys(props) {
     </div>
   );
 }
-
-export default PluralFoundKeys;

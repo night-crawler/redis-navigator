@@ -10,7 +10,7 @@ ImportingCommandListPreview.propTypes = {
   })).isRequired,
 };
 
-export default function ImportingCommandListPreview(props) {
+export function ImportingCommandListPreview(props) {
   const { commands } = props;
 
   return (

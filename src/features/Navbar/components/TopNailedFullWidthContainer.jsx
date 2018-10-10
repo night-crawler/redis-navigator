@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 
-export default styled.div`
+export const TopNailedFullWidthContainer = styled.div`
   position: fixed;
   top: 0;
   left: 0;

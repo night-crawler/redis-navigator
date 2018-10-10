@@ -74,7 +74,6 @@
     "sass-loader": "7.1.0",
     "semantic-ui-css": "^2.4.0",
     "semantic-ui-react": "^0.82.5",
-    "storybook-addon-jsx": "^5.4.0",
     "style-loader": "0.23.0",
     "styled-components": "^3.4.9",
     "terser-webpack-plugin": "1.1.0",
@@ -142,6 +141,7 @@
     "prop-types": "^15.6.2",
     "react-test-renderer": "^16.5.2",
     "storybook-addon-intl": "^2.3.1",
+    "storybook-addon-jsx": "^5.4.0",
     "storybook-host": "^5.0.1",
     "webpack-dashboard": "^2.0.0"
   },

@@ -15,7 +15,7 @@ import { RedisKeySpaceCard } from './RedisKeySpaceCard';
 
 
 
-export default class Dashboard extends React.Component {
+export class Dashboard extends React.Component {
     static propTypes = {
       actions: PropTypes.shape({
         fetchInfo: PropTypes.func.isRequired,

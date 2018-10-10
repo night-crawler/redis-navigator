@@ -20,11 +20,11 @@ import { FullPageDimmer, NotFound } from '~/features/Common/components';
 
 import messages from '../messages';
 
-import AppWrapper from './AppWrapper';
-import AppContentWrapper from './AppContentWrapper';
+import { AppWrapper } from './AppWrapper';
+import { AppContentWrapper } from './AppContentWrapper';
 
 
-export default class DefaultLayout extends React.Component {
+export class DefaultLayout extends React.Component {
     static propTypes = {
       actions: PropTypes.shape({
         initStoreWithUrls: PropTypes.func,

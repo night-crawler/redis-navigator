@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import './KeyRow.css';
-import KeyTypeIcon from './KeyTypeIcon';
+import { KeyTypeIcon } from './KeyTypeIcon';
 
 
 KeyRow.propTypes = {
@@ -12,7 +12,7 @@ KeyRow.propTypes = {
   onClick: PropTypes.func,
   isActive: PropTypes.bool,
 };
-export default function KeyRow(props) {
+export function KeyRow(props) {
   const { style, keyType, item, onClick, isActive } = props;
   const activeClass = isActive ? 'active' : '';
 

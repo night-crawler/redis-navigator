@@ -6,8 +6,8 @@ import { injectIntl, intlShape } from 'react-intl';
 import messages from '~/features/KeyViewer/messages';
 
 
-KeyFilterInput.defaultProps = {};
-KeyFilterInput.propTypes = {
+_KeyFilterInput.defaultProps = {};
+_KeyFilterInput.propTypes = {
   intl: intlShape.isRequired,
 
   locationSearchParams: PropTypes.shape({
@@ -22,7 +22,7 @@ KeyFilterInput.propTypes = {
   onChange: PropTypes.func,
 };
 
-function KeyFilterInput(props) {
+function _KeyFilterInput(props) {
   const {
     intl,
     locationSearchParams,
@@ -56,4 +56,4 @@ function KeyFilterInput(props) {
 
 }
 
-export default injectIntl(KeyFilterInput);
+export const KeyFilterInput = injectIntl(_KeyFilterInput);

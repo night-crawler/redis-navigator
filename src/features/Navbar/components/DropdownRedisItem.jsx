@@ -13,7 +13,7 @@ DropdownRedisItem.propTypes = {
   display_name: PropTypes.string,
   handleClick: PropTypes.func.isRequired,
 };
-export default function DropdownRedisItem(props) {
+export function DropdownRedisItem(props) {
   const circleColor = props.closed === false ? 'green' : 'red';
 
   return (

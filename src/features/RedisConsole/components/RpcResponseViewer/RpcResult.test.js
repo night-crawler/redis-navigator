@@ -4,7 +4,7 @@ import { TextareaSpoiler } from '~/features/Common/components';
 import { BooleanCard } from './BooleanCard';
 import { ObjectTreeViewWidget } from './ObjectTreeViewWidget';
 import { ImageCard } from './ImageCard.jsx';
-import { StringCard, Result } from './Result';
+import { StringCard, RpcResult } from './RpcResult';
 
 
 
@@ -19,39 +19,39 @@ const GIF = '' +
 const GIF_BIN = atob(GIF);
 
 
-describe('<Result />', () => {
+describe('<RpcResult />', () => {
   it('should render Result.StringCard', () => {
-    const wrapper = shallow(<Result result='1' />);
+    const wrapper = shallow(<RpcResult result='1' />);
     expect(wrapper).toMatchSnapshot();
     expect(wrapper.containsMatchingElement(<StringCard result='1' />)).toEqual(true);
   });
 
   it('should render Result.BooleanCard', () => {
-    const wrapper = shallow(<Result result={ true } />);
+    const wrapper = shallow(<RpcResult result={ true } />);
     expect(wrapper).toMatchSnapshot();
     expect(wrapper.containsMatchingElement(<BooleanCard result={ true } />)).toEqual(true);
   });
 
   it('should render Result.ObjectTreeViewWidget[Array]', () => {
-    const wrapper = shallow(<Result result={ [1, 2, 3] } />);
+    const wrapper = shallow(<RpcResult result={ [1, 2, 3] } />);
     expect(wrapper).toMatchSnapshot();
     expect(wrapper.contains(<ObjectTreeViewWidget result={ [1, 2, 3] } />)).toEqual(true);
   });
 
   it('should render Result.ObjectTreeViewWidget[Object]', () => {
-    const wrapper = shallow(<Result result={ { a: 1, b: 2, c: 3 } } />);
+    const wrapper = shallow(<RpcResult result={ { a: 1, b: 2, c: 3 } } />);
     expect(wrapper).toMatchSnapshot();
     expect(wrapper.contains(<ObjectTreeViewWidget result={ { a: 1, b: 2, c: 3 } } />)).toEqual(true);
   });
 
   it('should render null', () => {
-    const wrapper = shallow(<Result result={ null } />);
+    const wrapper = shallow(<RpcResult result={ null } />);
     expect(wrapper).toMatchSnapshot();
     expect(wrapper.contains(<div>null</div>)).toEqual(true);
   });
 
   it('should render image', () => {
-    const wrapper = shallow(<Result result={ GIF_BIN } />);
+    const wrapper = shallow(<RpcResult result={ GIF_BIN } />);
     expect(wrapper).toMatchSnapshot();
     expect(wrapper.find(ImageCard)).toHaveLength(1);
   });

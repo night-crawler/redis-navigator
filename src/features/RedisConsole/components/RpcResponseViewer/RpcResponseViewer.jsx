@@ -1,20 +1,20 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import { RpcError } from './Error';
-import { Result } from './Result';
+import { RpcError } from './RpcError';
+import { RpcResult } from './RpcResult';
 
 
-Response.propTypes = {
+RpcResponseViewer.propTypes = {
   response: PropTypes.shape({
     error: PropTypes.any,
     result: PropTypes.any,
   })
 };
-export function Response(props) {
+export function RpcResponseViewer(props) {
   const { response: { result, error } } = props;
   if (result !== undefined) {
-    return <Result result={ result } />;
+    return <RpcResult result={ result } />;
   }
   if (error !== undefined) {
     return <RpcError error={ error } />;

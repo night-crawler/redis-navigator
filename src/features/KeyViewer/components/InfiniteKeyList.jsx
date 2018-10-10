@@ -5,11 +5,11 @@ import { AutoSizer, InfiniteLoader, List } from 'react-virtualized';
 
 import { PageHelper } from '~/utils';
 
-import KeyRow from './KeyRow';
+import { KeyRow } from './KeyRow';
 
 
 
-export default class InfiniteKeyList extends React.Component {
+export class InfiniteKeyList extends React.Component {
     static propTypes = {
       count: PropTypes.number.isRequired,
       searchPagesMap: PropTypes.object.isRequired,

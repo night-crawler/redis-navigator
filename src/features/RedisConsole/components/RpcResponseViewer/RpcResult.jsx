@@ -33,7 +33,7 @@ export function StringCard(props) {
       <Segment basic={ true }>
         <Header as='h5'>String[{ result.length }], { type }</Header>
         <TextareaSpoiler className='left floated' result={ result } />
-        { <Result result={ innerResult } /> }
+        { <RpcResult result={ innerResult } /> }
       </Segment>
     );
   }
@@ -51,11 +51,11 @@ export function StringCard(props) {
 }
 
 
-Result.propTypes = {
+RpcResult.propTypes = {
   result: PropTypes.any,
 };
 
-export function Result(props) {
+export function RpcResult(props) {
   const
     { result } = props,
     detector = new MimeDetector(result);

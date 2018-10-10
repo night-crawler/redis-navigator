@@ -13,9 +13,9 @@ import { saveFile } from '~/utils';
 
 import messages from '../messages';
 
-import CommandImporter from './CommandImporter';
-import DropdownRpcMethodItem from './DropdownRpcMethodItem';
-import MethodCallEditor from './MethodCallEditor';
+import { CommandImporter } from './CommandImporter';
+import { DropdownRpcMethodItem } from './DropdownRpcMethodItem';
+import { MethodCallEditor } from './MethodCallEditor';
 
 
 
@@ -26,7 +26,7 @@ const ConsoleCommandType = PropTypes.shape({
   response: PropTypes.any,
 });
 
-export default class RedisConsole extends React.Component {
+export class RedisConsole extends React.Component {
     static propTypes = {
       inspections: PropTypes.object.isRequired,
 

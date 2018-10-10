@@ -12,7 +12,7 @@ KeyUpdateResults.propTypes = {
   results: PropTypes.any,
   hasErrors: PropTypes.bool,
 };
-function KeyUpdateResults(props) {
+export function KeyUpdateResults(props) {
   const { hasErrors, results } = props;
   if (results === undefined || hasErrors === undefined)
     return false;
@@ -32,5 +32,3 @@ function KeyUpdateResults(props) {
     </div>
   );
 }
-
-export default KeyUpdateResults;

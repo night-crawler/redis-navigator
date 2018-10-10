@@ -3,7 +3,7 @@ import React from 'react';
 
 import { cleanMethodDoc } from '../utils';
 
-import MethodParametersList from './MethodParametersList';
+import { MethodParametersList } from './MethodParametersList';
 
 
 DropdownRpcMethodItem.propTypes = {
@@ -18,7 +18,7 @@ DropdownRpcMethodItem.propTypes = {
     type: PropTypes.any,
   })),
 };
-export default function DropdownRpcMethodItem(props) {
+export function DropdownRpcMethodItem(props) {
   const { name, return_type, doc, parameters } = props;
   return (
     <div className='ui mini buttons DropdownRpcMethodItem'>

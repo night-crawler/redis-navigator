@@ -3,7 +3,7 @@ import React from 'react';
 import { IntlProvider } from 'react-intl';
 
 
-export default class Internationalization extends React.PureComponent {
+export class Internationalization extends React.PureComponent {
     static propTypes = {
       activeLocale: PropTypes.string,
       activeLocaleData: PropTypes.shape({

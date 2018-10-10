@@ -30,7 +30,7 @@ export function MethodParameter(props) {
 MethodParametersList.propTypes = {
   parameters: PropTypes.arrayOf(PropTypes.shape(parameterType)),
 };
-export default function MethodParametersList(props) {
+export function MethodParametersList(props) {
   const { parameters } = props;
   return parameters.map(
     (params, i) => <MethodParameter key={ i } { ...params } />

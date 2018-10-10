@@ -9,8 +9,8 @@ import { Timeouts } from 'utils/timers';
 
 import messages from '../messages';
 
-import DropdownRedisItem from './DropdownRedisItem';
-import TopNailedFullWidthContainer from './TopNailedFullWidthContainer';
+import { DropdownRedisItem } from './DropdownRedisItem';
+import { TopNailedFullWidthContainer } from './TopNailedFullWidthContainer';
 import './Navbar.css';
 
 
@@ -34,7 +34,7 @@ Navbar.propTypes = {
   progressPercent: PropTypes.number,
   progressIsVisible: PropTypes.bool,
 };
-export default function Navbar(props) {
+export function Navbar(props) {
   const {
     instances = {},
     activeInstanceName,

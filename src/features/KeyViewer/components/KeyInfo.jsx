@@ -15,7 +15,7 @@ KeyInfo.propTypes = {
   object_idletime: PropTypes.number,
 };
 
-export default function KeyInfo(props) {
+export function KeyInfo(props) {
   const {
     memory_usage,
     ttl,
