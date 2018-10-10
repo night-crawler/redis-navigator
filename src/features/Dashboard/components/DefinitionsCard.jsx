@@ -6,17 +6,20 @@ import { injectIntl, intlShape } from 'react-intl';
 
 import messages from '../messages';
 
-import ResponsiveDefinitionTable from './ResponsiveDefinitionTable';
+import { ResponsiveDefinitionTable } from './ResponsiveDefinitionTable';
 
-
-class DefinitionsCard extends React.Component {
+class _DefinitionsCard extends React.Component {
     static propTypes = {
       intl: intlShape.isRequired,
       definitions: PropTypes.object,
-      header: PropTypes.oneOfType([PropTypes.string, PropTypes.element, PropTypes.func]),
+      header: PropTypes.oneOfType([
+        PropTypes.string, 
+        PropTypes.element, 
+        PropTypes.func
+      ]),
       description: PropTypes.string,
-      rowComponent: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
-      headerComponent: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
+      rowComponent: PropTypes.oneOfType([ PropTypes.element, PropTypes.func ]),
+      headerComponent: PropTypes.oneOfType([ PropTypes.element, PropTypes.func ]),
     };
 
     constructor(props) {
@@ -75,7 +78,6 @@ class DefinitionsCard extends React.Component {
         </Card>
       );
     }
-
 }
 
-export default injectIntl(DefinitionsCard);
+export const DefinitionsCard = injectIntl(_DefinitionsCard);

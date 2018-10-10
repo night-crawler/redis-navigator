@@ -5,7 +5,7 @@ import { FormattedMessage as Tr } from 'react-intl';
 
 import messages from '../messages';
 
-import DefinitionsCard from './DefinitionsCard';
+import { DefinitionsCard } from './DefinitionsCard';
 
 
 function StatsHeader() {
@@ -49,7 +49,7 @@ function StatsRow({ defName, defValue, textAlign }) {
 RedisCommandsStatsCard.propTypes = {
   stats: PropTypes.object,
 };
-export default function RedisCommandsStatsCard(props) {
+export function RedisCommandsStatsCard(props) {
   const { stats } = props;
   return <DefinitionsCard
     className='RedisCommandsStatsCard'

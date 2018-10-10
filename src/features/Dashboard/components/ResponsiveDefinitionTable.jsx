@@ -30,7 +30,7 @@ const TableWrapper = styled.div`
 `;
 
 
-export default class ResponsiveDefinitionTable extends React.Component {
+export class ResponsiveDefinitionTable extends React.Component {
     static propTypes = {
       definitions: PropTypes.object,
       rowComponent: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
@@ -57,14 +57,9 @@ export default class ResponsiveDefinitionTable extends React.Component {
             { HeaderComponent && <HeaderComponent textAlign={ textAlign } /> }
 
             <Table.Body>
-              {
-                Object.entries(definitions).map(([defName, defValue], i) =>
-                  <RowComponent
-                    { ...{ defName, defValue, textAlign } }
-                    key={ i }
-                  />
-                )
-              }
+              { Object.entries(definitions).map(([defName, defValue], i) =>
+                <RowComponent { ...{ defName, defValue, textAlign } } key={ i } />
+              ) }
             </Table.Body>
           </Table>
 

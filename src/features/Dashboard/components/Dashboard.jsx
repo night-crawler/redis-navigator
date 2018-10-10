@@ -8,10 +8,10 @@ import { FormattedMessage as Tr } from 'react-intl';
 
 import messages from '../messages';
 
-import DefinitionsCard from './DefinitionsCard';
-import RedisClientsCard from './RedisClientsCard';
-import RedisCommandsStatsCard from './RedisCommandStatsCard';
-import RedisKeySpaceCard from './RedisKeySpaceCard';
+import { DefinitionsCard } from './DefinitionsCard';
+import { RedisClientsCard } from './RedisClientsCard';
+import { RedisCommandsStatsCard } from './RedisCommandStatsCard';
+import { RedisKeySpaceCard } from './RedisKeySpaceCard';
 
 
 
@@ -100,7 +100,8 @@ export default class Dashboard extends React.Component {
             </Header>
 
             <Card.Group itemsPerRow={ 3 } doubling={ true } stackable={ true }>
-              <DefinitionsCard header={ <Tr { ...messages.server } /> }
+              <DefinitionsCard 
+                header={ <Tr { ...messages.server } /> }
                 definitions={ sections.result.server }
               />
               <DefinitionsCard

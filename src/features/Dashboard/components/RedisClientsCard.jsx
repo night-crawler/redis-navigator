@@ -143,30 +143,30 @@ function ClientHeader() {
 }
 
 
-export default class RedisClientsCard extends React.Component {
-    static propTypes = {
-      clients: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string)),
-    };
+export class RedisClientsCard extends React.Component {
+  static propTypes = {
+    clients: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string)),
+  };
 
-    render() {
-      const { clients } = this.props;
+  render() {
+    const { clients } = this.props;
 
-      return (
-        <Card fluid={ true } className='RedisClientsCard'>
-          <Card.Content>
-            <Card.Header content={ <Tr { ...messages.clients } /> } />
+    return (
+      <Card fluid={ true } className='RedisClientsCard'>
+        <Card.Content>
+          <Card.Header content={ <Tr { ...messages.clients } /> } />
 
-            <Table celled={ true } compact='very' unstackable={ true } size='small' textAlign='center'>
-              <ClientHeader />
-              <Table.Body>
-                { clients.map((clientArray, i) =>
-                  <ClientRow key={ i } clientArray={ clientArray } />
-                ) }
-              </Table.Body>
-            </Table>
+          <Table celled={ true } compact='very' unstackable={ true } size='small' textAlign='center'>
+            <ClientHeader />
+            <Table.Body>
+              { clients.map((clientArray, i) =>
+                <ClientRow key={ i } clientArray={ clientArray } />
+              ) }
+            </Table.Body>
+          </Table>
 
-          </Card.Content>
-        </Card>
-      );
-    }
+        </Card.Content>
+      </Card>
+    );
+  }
 }

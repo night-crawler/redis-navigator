@@ -5,7 +5,7 @@ import { FormattedMessage as Tr } from 'react-intl';
 
 import messages from '../messages';
 
-import DefinitionsCard from './DefinitionsCard';
+import { DefinitionsCard } from './DefinitionsCard';
 
 
 RedisKeySpaceHeader.propTypes = {
@@ -51,7 +51,7 @@ function RedisKeySpaceRow({ defName, defValue, textAlign }) {
 RedisKeySpaceCard.propTypes = {
   keyspace: PropTypes.object,
 };
-export default function RedisKeySpaceCard(props) {
+export function RedisKeySpaceCard(props) {
   const { keyspace } = props;
   return <DefinitionsCard
     header={ <Tr { ...messages.keySpace } /> }
