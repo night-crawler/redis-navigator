@@ -1,4 +1,4 @@
-import { text, object } from '@storybook/addon-knobs';
+import { object } from '@storybook/addon-knobs';
 import { setAddon, storiesOf } from '@storybook/react';
 import React from 'react';
 import JSXAddon from 'storybook-addon-jsx';
