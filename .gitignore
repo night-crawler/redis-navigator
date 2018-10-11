@@ -179,3 +179,9 @@ crashlytics-build.properties
 fabric.properties
 
 lib
+
+# testing
+/coverage
+
+# production
+/build

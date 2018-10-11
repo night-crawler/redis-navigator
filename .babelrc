@@ -5,14 +5,19 @@
         "lodash",
         "transform-react-remove-prop-types",
         [
-          "transform-react-constant-elements",
+          "@babel/plugin-transform-react-constant-elements",
           {
             "allowMutablePropsOnTags": [
               "FormattedMessage"
             ]
           }
         ],
-        "transform-react-inline-elements"
+        "@babel/plugin-transform-react-inline-elements"
+      ]
+    },
+    "development": {
+      "plugins": [
+        "lodash"
       ]
     }
   },

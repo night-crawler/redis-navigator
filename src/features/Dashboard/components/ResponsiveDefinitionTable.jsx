@@ -3,6 +3,8 @@ import { Responsive, Table } from 'semantic-ui-react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
+import { ReactComponentType } from '~/utils/react';
+
 
 OptionRow.propTypes = {
   textAlign: PropTypes.string,
@@ -31,40 +33,44 @@ const TableWrapper = styled.div`
 
 
 export class ResponsiveDefinitionTable extends React.Component {
-    static propTypes = {
-      definitions: PropTypes.object,
-      rowComponent: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
-      headerComponent: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
-    };
+  static propTypes = {
+    definitions: PropTypes.object,
+    rowComponent: ReactComponentType,
+    headerComponent: ReactComponentType,
+  };
 
-    state = {};
-    handleOnUpdate = (e, { width }) => this.setState({ width });
+  static defaultProps = {
+    rowComponent: OptionRow,
+    definitions: {},
+  };
 
-    render() {
-      const { definitions, rowComponent = OptionRow, headerComponent } = this.props;
-      const [ RowComponent, HeaderComponent ] = [ rowComponent, headerComponent ];
-      const { width } = this.state;
-      const textAlign = width >= Responsive.onlyComputer.minWidth ? 'right' : 'left';
+  state = {};
+  handleOnUpdate = (e, { width }) => this.setState({ width });
 
-      return (
-        <Responsive
-          as={ TableWrapper }
-          columns={ 1 }
-          fireOnMount={ true }
-          onUpdate={ this.handleOnUpdate }
-        >
-          <Table basic='very' celled={ true } compact='very' definition={ true } size='small'>
-            { HeaderComponent && <HeaderComponent textAlign={ textAlign } /> }
+  render() {
+    const { definitions, rowComponent: RowComponent, headerComponent: HeaderComponent } = this.props;
+    const { width } = this.state;
+    const textAlign = width >= Responsive.onlyComputer.minWidth ? 'right' : 'left';
 
-            <Table.Body>
-              { Object.entries(definitions).map(([defName, defValue], i) =>
-                <RowComponent { ...{ defName, defValue, textAlign } } key={ i } />
-              ) }
-            </Table.Body>
-          </Table>
+    return (
+      <Responsive
+        as={ TableWrapper }
+        columns={ 1 }
+        fireOnMount={ true }
+        onUpdate={ this.handleOnUpdate }
+      >
+        <Table basic='very' celled={ true } compact='very' definition={ true } size='small'>
+          { HeaderComponent && <HeaderComponent textAlign={ textAlign } /> }
 
-        </Responsive>
+          <Table.Body>
+            { Object.entries(definitions).map(([defName, defValue], i) =>
+              <RowComponent { ...{ defName, defValue, textAlign } } key={ i } />
+            ) }
+          </Table.Body>
+        </Table>
 
-      );
-    }
+      </Responsive>
+
+    );
+  }
 }
