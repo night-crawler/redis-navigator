@@ -128,11 +128,12 @@ export class KeyEditor extends React.Component {
   };
 
   handleEditorChange = nextValue => {
-    console.log('change!', nextValue);
+    // eslint-disable-next-line
     this.setState({ dirtyData: nextValue, editorError: false });
   };
 
   handleEditorError = message => {
+    // eslint-disable-next-line
     this.setState({ editorError: message });
   };
 

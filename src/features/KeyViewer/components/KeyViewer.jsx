@@ -78,6 +78,7 @@ class KeyViewer extends React.Component {
         pane1ClassName='KeysList'
         panel2ClassName='Details'
         onDragFinished={
+          // eslint-disable-next-line
           draggedSize => this.setState({
             keysPaneWidth: draggedSize,
             editorPaneWidth: window.innerWidth - draggedSize - 25*2

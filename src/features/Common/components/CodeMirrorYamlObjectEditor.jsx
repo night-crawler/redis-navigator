@@ -88,6 +88,7 @@ export class CodeMirrorYamlObjectEditor extends React.Component {
 
     handleResize = contentRect => {
       const { top } = contentRect.bounds;
+      // eslint-disable-next-line
       this.setState({ height: window.innerHeight - top - 50 });
       this.CodeMirror && this.CodeMirror.refresh();
     };
@@ -96,11 +97,13 @@ export class CodeMirrorYamlObjectEditor extends React.Component {
       const { onChange, onError } = this.props;
       try {
         const newParams = yaml.load(value);
+        // eslint-disable-next-line
         this.setState(
           { error: null, params: newParams },
           () => onChange(newParams)
         );
       } catch (e) {
+        // eslint-disable-next-line
         this.setState(
           { error: e.message },
           () => onError(e.message)

@@ -70,6 +70,7 @@ export class CodeMirrorTextEditor extends React.Component {
 
     handleResize = contentRect => {
       const { top } = contentRect.bounds;
+      // eslint-disable-next-line
       this.setState({ height: window.innerHeight - top - 50 });
 
       this.forceUpdate();
@@ -78,7 +79,7 @@ export class CodeMirrorTextEditor extends React.Component {
 
     handleOnChange = (value) => {
       const { onChange } = this.props;
-
+      // eslint-disable-next-line
       this.setState(
         { text: value },
         () => onChange(value)
