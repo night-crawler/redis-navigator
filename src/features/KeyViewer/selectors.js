@@ -1,4 +1,4 @@
-import { DEFAULT_SEARCH_KEYS_PARAMS } from 'constants';
+import { DEFAULT_SEARCH_KEYS_PARAMS } from '~/constants';
 
 import { fromPairs, pickBy, toPairs, trimEnd } from 'lodash';
 import { createSelector } from 'reselect';
@@ -22,7 +22,7 @@ export const locationSearchParamsWithDefaults = createSelector(
   locationSearchParams,
   locationSearchParams => ({
     ...DEFAULT_SEARCH_KEYS_PARAMS,
-    ...pickBy(locationSearchParams, (val) => val !== undefined)
+    ...pickBy(locationSearchParams, val => val !== undefined)
   })
 );
 

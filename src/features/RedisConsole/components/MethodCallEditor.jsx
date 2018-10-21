@@ -1,4 +1,3 @@
-import debug from 'debug';
 import { isEqual, isFunction, pickBy } from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -60,9 +59,6 @@ class _MethodCallEditor extends React.Component {
 
   constructor(props) {
     super(props);
-    debug.enable('*');
-    this.log = debug('MethodCallEditor');
-    this.log('initialized', props);
 
     this.keyMapHandlers = {
       execute: this.props.onRetry,

@@ -1,4 +1,3 @@
-import debug from 'debug';
 import { isEmpty } from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -50,13 +49,6 @@ export class DefaultLayout extends React.Component {
     };
 
     state = {};
-
-    constructor(props) {
-      super(props);
-      debug.enable('*');
-      this.log = debug('DefaultLayout');
-      this.log('initialized', props);
-    }
 
     render() {
       const { isReady } = this.props;

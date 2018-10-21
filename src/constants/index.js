@@ -35,6 +35,10 @@ export const REDIS_KEY_TYPE_ICON_MAP = {
     name: 'question',
     color: 'pink'
   },
+  loading: {
+    name: 'spinner',
+    color: 'gray',
+  }
 };
 
 

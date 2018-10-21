@@ -1,5 +1,5 @@
 {
-  "name": "generic-react-project",
+  "name": "redis-navigator",
   "version": "0.1.1",
   "private": true,
   "dependencies": {
@@ -83,7 +83,7 @@
     "webpack-dev-server": "3.1.9",
     "webpack-manifest-plugin": "2.0.4",
     "workbox-webpack-plugin": "3.6.2",
-    "yml-loader": "^2.1.0"
+    "js-yaml-loader": "^1.0.0"
   },
   "scripts": {
     "start": "webpack-dashboard -- node scripts/start.js",

@@ -1,4 +1,4 @@
-import { REDIS_KEY_TYPE_ICON_MAP } from 'constants';
+import { REDIS_KEY_TYPE_ICON_MAP } from '~/constants';
 
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -11,7 +11,7 @@ KeyTypeIcon.propTypes = {
 
 export function KeyTypeIcon(props) {
   const { keyType } = props;
-  const iconOpts = REDIS_KEY_TYPE_ICON_MAP[keyType] || { name: 'spinner' };
+  const iconOpts = REDIS_KEY_TYPE_ICON_MAP[keyType || 'loading'];
 
   return <Popup
     position='right center'

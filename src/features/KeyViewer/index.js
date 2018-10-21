@@ -1,4 +1,4 @@
-import { DEFAULT_SEARCH_KEYS_PARAMS } from 'constants';
+import { DEFAULT_SEARCH_KEYS_PARAMS } from '~/constants';
 
 import { warning, error, success } from 'react-notification-system-redux';
 import { flatten, map, pickBy } from 'lodash';

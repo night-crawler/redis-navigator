@@ -1,4 +1,3 @@
-import debug from 'debug';
 import { find, isEmpty, map, zip } from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -62,9 +61,6 @@ export class RedisConsole extends React.Component {
     constructor(props) {
       super(props);
       const { inspections } = props;
-      debug.enable('*');
-      this.log = debug('RedisConsole');
-      this.log('initialized', props);
 
       this.ddMethodsOptions = Object.entries(inspections).map(([ fName, fOptions ]) => ({
         key: fName,

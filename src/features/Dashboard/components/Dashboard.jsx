@@ -1,4 +1,3 @@
-import debug from 'debug';
 import { isEmpty } from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -14,7 +13,6 @@ import { RedisCommandsStatsCard } from './RedisCommandStatsCard';
 import { RedisKeySpaceCard } from './RedisKeySpaceCard';
 
 
-
 export class Dashboard extends React.Component {
     static propTypes = {
       actions: PropTypes.shape({
@@ -27,9 +25,6 @@ export class Dashboard extends React.Component {
 
     constructor(props) {
       super(props);
-      debug.enable('*');
-      this.log = debug('Dashboard');
-      this.log('initialized', props);
       this.state = {};
     }
 
