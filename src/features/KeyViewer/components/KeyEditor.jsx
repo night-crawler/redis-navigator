@@ -16,7 +16,9 @@ import messages from '../messages';
 import { KeyInfo } from './KeyInfo';
 import './KeyEditor.css';
 
-
+const i18nFetchKeyData = <Tr { ...messages.fetchKeyData } />;
+const i18nSyntaxError = <Tr { ...messages.syntaxError } />;
+const i18nSave = <Tr { ...messages.save } />;
 
 export class KeyEditor extends React.Component {
   static propTypes = {
@@ -45,18 +47,13 @@ export class KeyEditor extends React.Component {
   }
 
   render() {
-    const
-      { type, selectedKey, info } = this.props,
-      { editorError } = this.state;
-
-
-    if (!selectedKey || !type)
+    if (!this.props.selectedKey || !this.props.type)
       return <FullPageDimmer message={ <Tr { ...messages.selectAKey } /> } />;
 
-    if (isEmpty(info))
+    if (isEmpty(this.props.info))
       return <FullPageDimmer />;
 
-    const iconName = (REDIS_KEY_TYPE_ICON_MAP[ type ] || { name: 'spinner' }).name;
+    const iconName = (REDIS_KEY_TYPE_ICON_MAP[ this.props.type || 'loading' ]).name;
 
     return (
       <Segment
@@ -66,13 +63,13 @@ export class KeyEditor extends React.Component {
       >
         <Header as='h2'>
           <Icon name={ iconName } />
-          { `[${type}] ${selectedKey}` }
+          { `[${this.props.type}] ${this.props.selectedKey}` }
         </Header>
-        <KeyInfo { ...info } />
+        <KeyInfo { ...this.props.info } />
 
         <Button fluid={ true } onClick={ this.handleFetchKeyDataClicked }>
           <Icon name='refresh' />
-          <Tr { ...messages.fetchKeyData } />
+          { i18nFetchKeyData }
         </Button>
 
         { this.renderEditor() }
@@ -82,10 +79,7 @@ export class KeyEditor extends React.Component {
           onClick={ this.handleSaveClicked }
         >
           <Icon name='save' />
-          { editorError
-            ? <Tr { ...messages.syntaxError } />
-            : <Tr { ...messages.save } />
-          }
+          { this.state.editorError ? i18nSyntaxError : i18nSave }
         </Button>
       </Segment>
     );
@@ -108,33 +102,23 @@ export class KeyEditor extends React.Component {
           onError={ this.handleEditorError }
         />;
       case 'string':
-        return <CodeMirrorTextEditor text={ data } onChange={ this.handleEditorChange } />;
+        return <CodeMirrorTextEditor 
+          text={ data } 
+          onChange={ this.handleEditorChange } 
+        />;
 
       default:
         throw new Error(`Unknown type: ${type}`);
     }
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    const { data: nextData } = nextProps;
-    const { data: prevData } = prevState;
-
-    if (!isEqual(nextData, prevData)) {
-      return { dirtyData: nextData };
-    }
-    return null;
-  }
-
   checkCanClickSave = () => {
-    const
-      { data } = this.props,
-      { dirtyData, editorError } = this.state;
-
-    if (editorError)
+    if (this.state.editorError)
       return false;
-    if (isEqual(data, dirtyData))
+    if (this.state.dirtyData === undefined)
       return false;
-
+    if (isEqual(this.props.data, this.state.dirtyData))
+      return false;
     return true;
   };
 
@@ -144,6 +128,7 @@ export class KeyEditor extends React.Component {
   };
 
   handleEditorChange = nextValue => {
+    console.log('change!', nextValue);
     this.setState({ dirtyData: nextValue, editorError: false });
   };
 
