@@ -11,11 +11,9 @@ ImportingCommandListPreview.propTypes = {
 };
 
 export function ImportingCommandListPreview(props) {
-  const { commands } = props;
-
   return (
     <List className='ImportingCommandListPreview' selection={ true } verticalAlign='middle'>
-      { commands.map(({ methodName, methodParams }, i) =>
+      { props.commands.map(({ methodName, methodParams }, i) =>
         <List.Item key={ i }>
           <List.Header>{ methodName }</List.Header>
           <List.Description>

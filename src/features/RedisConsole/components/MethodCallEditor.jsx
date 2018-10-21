@@ -66,39 +66,33 @@ class _MethodCallEditor extends React.Component {
   }
 
   render() {
-    const {
-      methodName, methodParams, response, dirty,
-      instanceName, color, inspections,
-      onRemove, onRetry
-    } = this.props;
-
-    if (!methodName)
+    if (!this.props.methodName)
       return this.renderMethodSelector();
 
-    const methodProps = inspections[ methodName ];
+    const methodProps = this.props.inspections[ this.props.methodName ];
 
-    if (!methodParams)
-      return false;
+    if (!this.props.methodParams)
+      return null;
 
     return (
       <Segment
-        className='MethodCallEditor' basic={ true } color={ color }
+        className='MethodCallEditor' basic={ true } color={ this.props.color }
         as={ HotKeys } keyMap={ this.keyMap } handlers={ this.keyMapHandlers } focused={ true }
       >
-        <Header as='h2' color={ this.isSuccess() && !dirty ? 'green' : undefined }>
+        <Header as='h2' color={ this.isSuccess() && !this.props.dirty ? 'green' : undefined }>
           <Header.Content>
             <Button
               basic={ true } color='orange' icon='remove' size='huge'
-              onClick={ onRemove }
+              onClick={ this.props.onRemove }
             />
           </Header.Content>
           <Header.Content>
-            { instanceName }.{ methodName }
+            { this.props.instanceName }.{ this.props.methodName }
             { <MethodParametersList parameters={ methodProps.parameters } /> }
             <Button
               as={ Label } icon='repeat' color='orange'
               basic={ true } circular={ true }
-              onClick={ onRetry }
+              onClick={ this.props.onRetry }
             />
           </Header.Content>
           <Header.Subheader>
@@ -111,14 +105,14 @@ class _MethodCallEditor extends React.Component {
           <Grid.Column width={ 6 }>
             <CodeMirrorYamlObjectEditor
               showInlineError={ true }
-              params={ methodParams }
+              params={ this.props.methodParams }
               onChange={ this.handleJsonChanged }
               constantHeight={ 'auto' }
             />
           </Grid.Column>
-          { response &&
+          { this.props.response &&
           <Grid.Column width={ 10 }>
-            <RpcResponseViewer response={ response } />
+            <RpcResponseViewer response={ this.props.response } />
           </Grid.Column>
           }
         </Grid>
@@ -146,61 +140,48 @@ class _MethodCallEditor extends React.Component {
   }
 
   isSuccess() {
-    const { response } = this.props;
-    if (!response)
+    if (!this.props.response)
       return false;
 
-    if (response.result !== undefined)
+    if (this.props.response.result !== undefined)
       return true;
 
-    if (response.error !== undefined)
+    if (this.props.response.error !== undefined)
       return false;
 
     return false;
   }
 
-  handleMethodNameChanged = (e, { value }) => {
-    const { onMethodNameChange } = this.props;
-    onMethodNameChange(value);
-  };
+  handleMethodNameChanged = (e, { value }) =>
+    this.props.onMethodNameChange(value);
 
-  handleJsonChanged = newObject => {
-    const { onMethodParamsChange } = this.props;
-    onMethodParamsChange(newObject);
-  };
+  handleJsonChanged = newObject =>
+    this.props.onMethodParamsChange(newObject);
 
-  renderMethodSelector() {
-    const { instanceName, color, onRemove } = this.props;
+  renderMethodSelector = () => 
+    <Segment basic={ true } color={ this.props.color }>
+      <Header as='h2'>
+        <Header.Content>
+          <Button
+            basic={ true } color='orange' icon='remove' size='huge'
+            onClick={ this.props.onRemove }
+          />
+        </Header.Content>
+        <Header.Content>{ this.props.instanceName }.?</Header.Content>
+      </Header>
+      { this.renderMethodDropdown() }
+    </Segment>
 
-    return (
-      <Segment basic={ true } color={ color }>
-        <Header as='h2'>
-          <Header.Content>
-            <Button
-              basic={ true } color='orange' icon='remove' size='huge'
-              onClick={ onRemove }
-            />
-          </Header.Content>
-          <Header.Content>{ instanceName }.?</Header.Content>
-        </Header>
-        { this.renderMethodDropdown() }
-      </Segment>
-    );
-  }
-
-  renderMethodDropdown() {
-    const { ddMethodsOptions, intl } = this.props;
-    return <Dropdown
-      options={ ddMethodsOptions }
-      placeholder={ intl.formatMessage({ ...messages.findCommand }) }
+  renderMethodDropdown = () =>
+    <Dropdown
+      options={ this.props.ddMethodsOptions }
+      placeholder={ this.props.intl.formatMessage({ ...messages.findCommand }) }
       search={ true }
       fluid={ true }
       selection={ true }
       onChange={ this.handleMethodNameChanged }
       selectOnNavigation={ false }
     />;
-  }
-
 }
 
 

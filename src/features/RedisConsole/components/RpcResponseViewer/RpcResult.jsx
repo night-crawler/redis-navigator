@@ -17,22 +17,20 @@ StringCard.propTypes = {
   result: PropTypes.string.isRequired,
 };
 export function StringCard(props) {
-  const { result } = props;
-
   let innerResult = false, type = '';
 
-  if (isBase64(result, 4)) {
-    innerResult = atob(result);
+  if (isBase64(props.result, 4)) {
+    innerResult = atob(props.result);
     type = 'base64';
-  } else if (isValidNumber(result)) {
+  } else if (isValidNumber(props.result)) {
     // just deny json conversion
   }
 
   if (innerResult) {
     return (
       <Segment basic={ true }>
-        <Header as='h5'>String[{ result.length }], { type }</Header>
-        <TextareaSpoiler className='left floated' result={ result } />
+        <Header as='h5'>String[{ props.result.length }], { type }</Header>
+        <TextareaSpoiler className='left floated' result={ props.result } />
         { <RpcResult result={ innerResult } /> }
       </Segment>
     );
@@ -41,9 +39,9 @@ export function StringCard(props) {
   return (
     <Card fluid={ true }>
       <Card.Content>
-        <Card.Header>String[{ result.length }]{ type ? ', ' : '' }{ type }</Card.Header>
+        <Card.Header>String[{ props.result.length }]{ type ? ', ' : '' }{ type }</Card.Header>
         <Card.Description>
-          <pre>{ result }</pre>
+          <pre>{ props.result }</pre>
         </Card.Description>
       </Card.Content>
     </Card>
@@ -56,34 +54,31 @@ RpcResult.propTypes = {
 };
 
 export function RpcResult(props) {
-  const
-    { result } = props,
-    detector = new MimeDetector(result);
+  const detector = new MimeDetector(props.result);
 
   if (detector.isImage)
     return <ImageCard dataUri={ detector.imageDataURI } />;
 
-  if (isArray(result))
-    return <ObjectTreeViewWidget result={ result } />;
+  if (isArray(props.result))
+    return <ObjectTreeViewWidget result={ props.result } />;
 
-  if (isPlainObject(result))
-    return <ObjectTreeViewWidget result={ result } />;
+  if (isPlainObject(props.result))
+    return <ObjectTreeViewWidget result={ props.result } />;
 
-  if (isBoolean(result))
-    return <BooleanCard result={ result } />;
+  if (isBoolean(props.result))
+    return <BooleanCard result={ props.result } />;
 
-  if (isJson(result))
-    return <ObjectCard result={ result } mode='json' />;
+  if (isJson(props.result))
+    return <ObjectCard result={ props.result } mode='json' />;
 
-  if (isYaml(result))
-    return <ObjectCard result={ result } mode='yaml' />;
+  if (isYaml(props.result))
+    return <ObjectCard result={ props.result } mode='yaml' />;
 
-  if (isString(result))
-    return <StringCard result={ result } />;
+  if (isString(props.result))
+    return <StringCard result={ props.result } />;
 
-  if (result === null)
+  if (props.result === null)
     return <div>null</div>;
 
-  return <div>{ result }</div>;
+  return <div>{ props.result }</div>;
 }
-

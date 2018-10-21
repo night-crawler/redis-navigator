@@ -22,25 +22,21 @@ export class ObjectCard extends React.Component {
 
     constructor(props) {
       super(props);
-      const { widget } = props;
-      this.state = { widget };
+      this.state = { widget: this.props.widget };
     }
 
     render() {
-      const { widget } = this.state;
-      const { mode } = this.props;
-
       return (
         <Card className='ObjectCard' fluid={ true }>
           <Card.Content>
             <Card.Header>
-              { upperFirst(mode) }
+              { upperFirst(this.props.mode) }
               <Button
-                size='mini' icon='tree' floated='right' active={ widget === 'object' }
+                size='mini' icon='tree' floated='right' active={ this.state.widget === 'object' }
                 onClick={ this.handleSetObjectWidget }
               />
               <Button
-                size='mini' icon='edit' floated='right' active={ widget === 'editor' }
+                size='mini' icon='edit' floated='right' active={ this.state.widget === 'editor' }
                 onClick={ this.handleSetEditorWidget }
               />
             </Card.Header>
@@ -48,7 +44,7 @@ export class ObjectCard extends React.Component {
 
             </Card.Meta>
             <Card.Description>
-              { widget === 'editor'
+              { this.state.widget === 'editor'
                 ? this.renderJsonEditor()
                 : this.renderJsonView()
               }
@@ -59,23 +55,19 @@ export class ObjectCard extends React.Component {
     }
 
     renderJsonEditor() {
-      const { result, mode } = this.props;
-
-      if (mode === 'json')
-        return <EditorWidgetJson result={ result } />;
-      if (mode === 'yaml')
-        return <EditorWidgetYaml result={ result } />;
+      if (this.props.mode === 'json')
+        return <EditorWidgetJson result={ this.props.result } />;
+      if (this.props.mode === 'yaml')
+        return <EditorWidgetYaml result={ this.props.result } />;
     }
 
     renderJsonView() {
-      const { result, mode } = this.props;
-
-      if (mode === 'json') {
-        const resultObject = JSON.parse(result);
+      if (this.props.mode === 'json') {
+        const resultObject = JSON.parse(this.props.result);
         return <ObjectTreeViewWidget result={ resultObject } />;
       }
-      if (mode === 'yaml') {
-        const resultObject = yaml.safeLoad(result);
+      if (this.props.mode === 'yaml') {
+        const resultObject = yaml.safeLoad(this.props.result);
         return <ObjectTreeViewWidget result={ resultObject } />;
       }
 

@@ -7,6 +7,11 @@ import messages from '../messages';
 
 import { DefinitionsCard } from './DefinitionsCard';
 
+const i18nDb = <Tr { ...messages.db } />;
+const i18nKeys = <Tr { ...messages.keys } />;
+const i18nExpires = <Tr { ...messages.expires } />;
+const i18nAvgTTL = <Tr { ...messages.avgTTL } />;
+const i18nKeySpace = <Tr { ...messages.keySpace } />;
 
 RedisKeySpaceHeader.propTypes = {
   textAlign: PropTypes.string,
@@ -15,10 +20,10 @@ function RedisKeySpaceHeader({ textAlign='right' }) {
   return (
     <Table.Header className='RedisKeySpaceHeader'>
       <Table.Row>
-        <Table.HeaderCell textAlign={ textAlign } content={ <Tr { ...messages.db } /> } />
-        <Table.HeaderCell content={ <Tr { ...messages.keys } /> } />
-        <Table.HeaderCell content={ <Tr { ...messages.expires } /> } />
-        <Table.HeaderCell content={ <Tr { ...messages.avgTTL } /> } />
+        <Table.HeaderCell textAlign={ textAlign } content={ i18nDb } />
+        <Table.HeaderCell content={ i18nKeys } />
+        <Table.HeaderCell content={ i18nExpires } />
+        <Table.HeaderCell content={ i18nAvgTTL } />
       </Table.Row>
     </Table.Header>
   );
@@ -35,14 +40,12 @@ RedisKeySpaceRow.propTypes = {
   textAlign: PropTypes.string,
 };
 function RedisKeySpaceRow({ defName, defValue, textAlign }) {
-  const { keys, expires, avg_ttl } = defValue;
-
   return (
     <Table.Row className='RedisKeySpaceRow'>
       <Table.Cell textAlign={ textAlign } content={ defName } />
-      <Table.Cell content={ keys } />
-      <Table.Cell content={ expires } />
-      <Table.Cell content={ avg_ttl } />
+      <Table.Cell content={ defValue.keys } />
+      <Table.Cell content={ defValue.expires } />
+      <Table.Cell content={ defValue.avg_ttl } />
     </Table.Row>
   );
 }
@@ -52,11 +55,10 @@ RedisKeySpaceCard.propTypes = {
   keyspace: PropTypes.object,
 };
 export function RedisKeySpaceCard(props) {
-  const { keyspace } = props;
   return <DefinitionsCard
-    header={ <Tr { ...messages.keySpace } /> }
+    header={ i18nKeySpace }
     headerComponent={ RedisKeySpaceHeader }
     rowComponent={ RedisKeySpaceRow }
-    definitions={ keyspace }
+    definitions={ props.keyspace }
   />;
 }

@@ -12,15 +12,13 @@ OptionRow.propTypes = {
   defValue: PropTypes.any,
 };
 function OptionRow(props) {
-  const { textAlign, defName, defValue } = props;
-
   return (
     <Table.Row>
-      <Table.Cell textAlign={ textAlign } width={ 8 }>
-        { defName }
+      <Table.Cell textAlign={ props.textAlign } width={ 8 }>
+        { props.defName }
       </Table.Cell>
       <Table.Cell width={ 8 }>
-        { defValue === '' ? '-' : defValue }
+        { props.defValue === '' ? '-' : props.defValue }
       </Table.Cell>
     </Table.Row>
   );
@@ -50,7 +48,11 @@ export class ResponsiveDefinitionTable extends React.Component {
     this.setState({ width });
 
   render() {
-    const { definitions, rowComponent: RowComponent, headerComponent: HeaderComponent } = this.props;
+    const { 
+      definitions, 
+      rowComponent: RowComponent, 
+      headerComponent: HeaderComponent 
+    } = this.props;
     const { width } = this.state;
     const textAlign = width >= Responsive.onlyComputer.minWidth ? 'right' : 'left';
 
@@ -72,7 +74,6 @@ export class ResponsiveDefinitionTable extends React.Component {
         </Table>
 
       </Responsive>
-
     );
   }
 }

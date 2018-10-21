@@ -16,7 +16,7 @@ import messages from '../messages';
 
 import { ImportingCommandListPreview } from './ImportingCommandListPreview';
 
-
+const i18nImport = <Tr { ...messages.import } />;
 
 export class CommandImporter extends React.Component {
   static propTypes = {
@@ -38,25 +38,20 @@ export class CommandImporter extends React.Component {
 
   render() {
     const { isValid, mode, value, textValue } = this.state;
-    const { onImport } = this.props;
 
     return (
       <Segment className='CommandImporter'>
         <Header as='h2'>
-                  Import commands { !isValid && '(invalid)' } { isValid && `[${value.length}]` }
+          Import commands { !isValid && '(invalid)' } { isValid && `[${value.length}]` }
         </Header>
         <Grid stackable={ true }>
           <Grid.Column width={ 4 } verticalAlign='bottom'>
-
             { isValid && <ImportingCommandListPreview commands={ value } /> }
-
             <Button
               basic={ true } fluid={ true } disabled={ !isValid } color='green'
-              onClick={ () => onImport(value) }>
-              <Icon name='checkmark' />
-              <Tr { ...messages.import } />
-            </Button>
-
+              onClick={ () => this.props.onImport(value) }
+              content={ i18nImport }
+            />
           </Grid.Column>
 
           <Grid.Column width={ 12 }>
@@ -73,7 +68,6 @@ export class CommandImporter extends React.Component {
             />
 
           </Grid.Column>
-
 
         </Grid>
       </Segment>

@@ -86,29 +86,27 @@ export class KeyEditor extends React.Component {
   }
 
   renderEditor() {
-    const { type, data } = this.props;
-
-    if (!type || !data)
+    if (!this.props.type || !this.props.data)
       return false;
 
-    switch (type.toLowerCase()) {
+    switch (this.props.type.toLowerCase()) {
       case 'list':
       case 'set':
       case 'zset':
       case 'hash':
         return <CodeMirrorYamlObjectEditor
-          params={ data }
+          params={ this.props.data }
           onChange={ this.handleEditorChange }
           onError={ this.handleEditorError }
         />;
       case 'string':
         return <CodeMirrorTextEditor 
-          text={ data } 
+          text={ this.props.data } 
           onChange={ this.handleEditorChange } 
         />;
 
       default:
-        throw new Error(`Unknown type: ${type}`);
+        throw new Error(`Unknown type: ${this.props.type}`);
     }
   }
 
@@ -122,10 +120,8 @@ export class KeyEditor extends React.Component {
     return true;
   };
 
-  handleFetchKeyDataClicked = () => {
-    const { type, selectedKey, onFetchKeyDataClick } = this.props;
-    onFetchKeyDataClick(selectedKey, type);
-  };
+  handleFetchKeyDataClicked = () => 
+    this.props.onFetchKeyDataClick(this.props.selectedKey, this.props.type);
 
   handleEditorChange = nextValue => {
     // eslint-disable-next-line
@@ -138,18 +134,15 @@ export class KeyEditor extends React.Component {
   };
 
   handleSaveClicked = () => {
-    const { onSaveKeyDataClick, selectedKey, info, type, data } = this.props;
-    const { dirtyData } = this.state;
-
-    if (isEqual(data, dirtyData))
+    if (isEqual(this.props.data, this.state.dirtyData))
       return;
 
-    onSaveKeyDataClick(
-      selectedKey,
-      type,
-      data,
-      dirtyData,
-      info.pttl
+    this.props.onSaveKeyDataClick(
+      this.props.selectedKey,
+      this.props.type,
+      this.props.data,
+      this.state.dirtyData,
+      this.props.info.pttl
     );
   };
 }

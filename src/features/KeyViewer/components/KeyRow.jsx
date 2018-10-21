@@ -13,17 +13,14 @@ KeyRow.propTypes = {
   isActive: PropTypes.bool,
 };
 export function KeyRow(props) {
-  const { style, keyType, item, onClick, isActive } = props;
-  const activeClass = isActive ? 'active' : '';
-
   return (
     <div
-      className={ `redis-navigator key-row ${activeClass}` }
-      style={ style }
-      onClick={ () => onClick(item) }
+      className={ `redis-navigator key-row ${props.isActive ? 'active' : ''}` }
+      style={ props.style }
+      onClick={ () => props.onClick(props.item) }
     >
-      <KeyTypeIcon keyType={ keyType } />
-      <span>{ item }</span>
+      <KeyTypeIcon keyType={ props.keyType } />
+      <span>{ props.item }</span>
     </div>
   );
 }

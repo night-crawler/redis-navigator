@@ -6,6 +6,8 @@ import yaml from 'js-yaml';
 
 import messages from '../messages';
 
+const i18nSaveError = <Tr { ...messages.saveError } />;
+const i18nSaveSuccess = <Tr { ...messages.saveSuccess } />;
 
 KeyUpdateResults.displayName = 'KeyUpdateResults';
 KeyUpdateResults.propTypes = {
@@ -13,22 +15,18 @@ KeyUpdateResults.propTypes = {
   hasErrors: PropTypes.bool,
 };
 export function KeyUpdateResults(props) {
-  const { hasErrors, results } = props;
-  if (results === undefined || hasErrors === undefined)
+  if (props.results === undefined || props.hasErrors === undefined)
     return false;
-
-  const iconName = hasErrors ? 'exclamation triangle' : 'thumbs up';
-  const data = yaml.dump(results);
-
-  const message = hasErrors
-    ? <Tr { ...messages.saveError } />
-    : <Tr { ...messages.saveSuccess } />;
-
+  
   return (
     <div className='KeyUpdateResults'>
-      <Icon name={ iconName } />
-      { message }
-      <pre>{ data }</pre>
+      <Icon name={ props.hasErrors ? 'exclamation triangle' : 'thumbs up' } />
+
+      { props.hasErrors 
+        ? i18nSaveError 
+        : i18nSaveSuccess }
+
+      <pre>{ yaml.dump(props.results) }</pre>
     </div>
   );
 }

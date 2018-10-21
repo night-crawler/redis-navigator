@@ -37,7 +37,7 @@ export const REDIS_KEY_TYPE_ICON_MAP = {
   },
   loading: {
     name: 'spinner',
-    color: 'gray',
+    color: 'grey',
   }
 };
 

@@ -11,18 +11,19 @@ RpcError.propTypes = {
     code: PropTypes.any,
   }),
 };
-
+RpcError.defaultProps = {
+  error: {},
+};
 export function RpcError(props) {
-  const { error } = props;
-  const errorRepr = isArray(error.data) || isPlainObject(error.data)
-    ? <ReactJson src={ error.data } name={ false } />
-    : <div className='plain-error'>{ error.data }</div>;
+  const errorRepr = isArray(props.error.data) || isPlainObject(props.error.data)
+    ? <ReactJson src={ props.error.data } name={ false } />
+    : <div className='plain-error'>{ props.error.data }</div>;
 
   return (
     <div className='RpcError'>
       <Header as='h4'>
-        <Header.Content>{ error.message }</Header.Content>
-        <Header.Subheader>Code: { error.code }</Header.Subheader>
+        <Header.Content>{ props.error.message }</Header.Content>
+        <Header.Subheader>Code: { props.error.code }</Header.Subheader>
       </Header>
       { errorRepr }
     </div>

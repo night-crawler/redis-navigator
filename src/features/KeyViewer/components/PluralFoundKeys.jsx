@@ -9,21 +9,18 @@ PluralFoundKeys.displayName = 'PluralFoundKeys';
 PluralFoundKeys.propTypes = {
   keyCount: PropTypes.number,
 };
-
 export function PluralFoundKeys(props) {
-  const { keyCount } = props;
-
-  if (keyCount === undefined)
+  if (props.keyCount === undefined)
     return false;
 
   return (
     <div className='PluralFoundKeys'>
       <FormattedPlural
-        value={ keyCount }
-        zero={ <Tr { ...messages.zeroKeysFound } values={ { keyCount } } /> }
-        one={ <Tr { ...messages.oneKeyFound } values={ { keyCount } } /> }
-        few={ <Tr { ...messages.fewKeysFound } values={ { keyCount } } /> }
-        other={ <Tr { ...messages.otherKeysFound } values={ { keyCount } } /> }
+        value={ props.keyCount }
+        zero={ <Tr { ...messages.zeroKeysFound } values={ { keyCount: props.keyCount } } /> }
+        one={ <Tr { ...messages.oneKeyFound } values={ { keyCount: props.keyCount } } /> }
+        few={ <Tr { ...messages.fewKeysFound } values={ { keyCount: props.keyCount } } /> }
+        other={ <Tr { ...messages.otherKeysFound } values={ { keyCount: props.keyCount } } /> }
       />
     </div>
   );

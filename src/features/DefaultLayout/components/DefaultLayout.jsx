@@ -23,6 +23,8 @@ import { AppWrapper } from './AppWrapper';
 import { AppContentWrapper } from './AppContentWrapper';
 
 
+const i18nLoadingRedisInstances = <Tr { ...messages.loadingRedisInstances } />;
+
 export class DefaultLayout extends React.Component {
     static propTypes = {
       actions: PropTypes.shape({
@@ -51,9 +53,8 @@ export class DefaultLayout extends React.Component {
     state = {};
 
     render() {
-      const { isReady } = this.props;
-      if (!isReady)
-        return <FullPageDimmer message={ <Tr { ...messages.loadingRedisInstances } /> } />;
+      if (!this.props.isReady)
+        return <FullPageDimmer message={ i18nLoadingRedisInstances } />;
 
       return (
         <AppWrapper className='redis-navigator-app DefaultLayout'>
@@ -83,8 +84,7 @@ export class DefaultLayout extends React.Component {
     }
 
     componentDidMount() {
-      const { endpointsUrl, baseUrl, actions } = this.props;
-      actions.initStoreWithUrls(baseUrl, endpointsUrl);
+      this.props.actions.initStoreWithUrls(this.props.baseUrl, this.props.endpointsUrl);
     }
 
     static getDerivedStateFromProps(newProps) {

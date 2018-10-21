@@ -37,24 +37,18 @@ class _DefinitionsCard extends React.Component {
       // eslint-disable-next-line
       this.setState({ filter: '' });
 
-    filterDefinitions = () => {
-      const { definitions } = this.props;
-      const { filter } = this.state;
-
-      return pickBy(
-        definitions,
-        (optValue, optKey) =>
-          lowerCase(optKey).indexOf(lowerCase(filter)) >= 0
-      );
-    };
+    filterDefinitions = () => pickBy(
+      this.props.definitions,
+      (optValue, optKey) =>
+        lowerCase(optKey).indexOf(lowerCase(this.state.filter)) >= 0
+    );
 
     render() {
-      const { header, description, intl, rowComponent, headerComponent } = this.props;
       return (
         <Card className='DefinitionsCard'>
           <Card.Content>
-            <Card.Header content={ header } />
-            <Card.Meta content={ description } />
+            <Card.Header content={ this.props.header } />
+            <Card.Meta content={ this.props.description } />
 
             <Card.Description>
               <Input
@@ -64,13 +58,13 @@ class _DefinitionsCard extends React.Component {
                 fluid={ true }
                 onChange={ this.handleFilterChange }
                 action={ <Button basic={ true } icon='remove' onClick={ this.handleClearFilter } /> }
-                placeholder={ intl.formatMessage({ ...messages.filterOptions }) }
+                placeholder={ this.props.intl.formatMessage({ ...messages.filterOptions }) }
               />
 
               <ResponsiveDefinitionTable
                 definitions={ this.filterDefinitions() }
-                rowComponent={ rowComponent }
-                headerComponent={ headerComponent }
+                rowComponent={ this.props.rowComponent }
+                headerComponent={ this.props.headerComponent }
               />
             </Card.Description>
 

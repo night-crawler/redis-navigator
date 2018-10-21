@@ -19,18 +19,17 @@ DropdownRpcMethodItem.propTypes = {
   })),
 };
 export function DropdownRpcMethodItem(props) {
-  const { name, return_type, doc, parameters } = props;
   return (
     <div className='ui mini buttons DropdownRpcMethodItem'>
-      <div className='ui blue button'>{ name }</div>
-      { parameters.length &&
-      <div className='ui blue basic button' style={ { padding: 2 } }>
-        { <MethodParametersList parameters={ parameters } /> }
-      </div>
-      }
-
-      { return_type && <div className='ui red basic button'>{ return_type }</div> }
-      { doc && <div className='ui blue basic button'>{ cleanMethodDoc(doc) }</div> }
+      <div className='ui blue button'>{ props.name }</div>
+      { props.parameters.length &&
+        <div className='ui blue basic button' style={ { padding: 2 } }>
+          { <MethodParametersList parameters={ props.parameters } /> }
+        </div> }
+      { props.return_type && 
+        <div className='ui red basic button'>{ props.return_type }</div> }
+      { props.doc && 
+        <div className='ui blue basic button'>{ cleanMethodDoc(props.doc) }</div> }
     </div>
   );
 }

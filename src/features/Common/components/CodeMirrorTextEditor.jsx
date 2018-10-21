@@ -15,11 +15,9 @@ export class CodeMirrorTextEditor extends React.Component {
 
     constructor(props) {
       super(props);
-
-      const { text } = this.props;
       this.state = {
-        text,
-        initialText: text,
+        text: this.props.text,
+        initialText: this.props.text,
       };
     }
 
@@ -62,10 +60,7 @@ export class CodeMirrorTextEditor extends React.Component {
     }
 
     shouldComponentUpdate(nextProps) {
-      const { text: newText } = nextProps;
-      const { text: prevText } = this.state;
-
-      return newText !== prevText;
+      return nextProps.text !== this.state.text;
     }
 
     handleResize = contentRect => {
@@ -78,11 +73,10 @@ export class CodeMirrorTextEditor extends React.Component {
     };
 
     handleOnChange = (value) => {
-      const { onChange } = this.props;
       // eslint-disable-next-line
       this.setState(
         { text: value },
-        () => onChange(value)
+        () => this.props.onChange(value)
       );
     };
 }

@@ -7,12 +7,14 @@ ObjectTreeViewWidget.propTypes = {
   result: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
   groupArraysAfterLength: PropTypes.number,
 };
+ObjectTreeViewWidget.defaultProps = {
+  groupArraysAfterLength: 20,
+};
 export function ObjectTreeViewWidget(props) {
-  const { result, groupArraysAfterLength = 20 } = props;
   return (
     <ReactJson
-      src={ result }
-      groupArraysAfterLength={ groupArraysAfterLength }
+      src={ props.result }
+      groupArraysAfterLength={ props.groupArraysAfterLength }
       name={ false }
     />
   );

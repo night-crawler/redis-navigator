@@ -12,6 +12,9 @@ import { RedisClientsCard } from './RedisClientsCard';
 import { RedisCommandsStatsCard } from './RedisCommandStatsCard';
 import { RedisKeySpaceCard } from './RedisKeySpaceCard';
 
+const i18nConfiguration = <Tr { ...messages.configuration } />;
+const i18nMiscellaneous = <Tr { ...messages.miscellaneous } />;
+const i18nInformation = <Tr { ...messages.information } />;
 
 export class Dashboard extends React.Component {
     static propTypes = {
@@ -29,9 +32,8 @@ export class Dashboard extends React.Component {
     }
 
     componentDidMount() {
-      const { routeInstanceName, routeInstanceInfo } = this.props;
-      if (isEmpty(routeInstanceInfo))
-        this.props.actions.fetchInfo(routeInstanceName);
+      if (isEmpty(this.props.routeInstanceInfo))
+        this.props.actions.fetchInfo(this.props.routeInstanceName);
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
@@ -48,38 +50,40 @@ export class Dashboard extends React.Component {
     }
 
     render() {
-      const { routeInstanceInfo, routeInstanceName } = this.props;
-      if (isEmpty(routeInstanceInfo))
+      if (isEmpty(this.props.routeInstanceInfo))
         return (
           <Dimmer active={ true }>
             <Loader size='massive'>
-              <Tr { ...messages.loadingRedisInstanceInfo } values={ { routeInstanceName } } />
+              <Tr 
+                { ...messages.loadingRedisInstanceInfo } 
+                values={ { routeInstanceName: this.props.routeInstanceName } } 
+              />
             </Loader>
           </Dimmer>
         );
 
-      const { clients, config, dbsize, name, sections } = routeInstanceInfo;
+      const { clients, config, dbsize, name, sections } = this.props.routeInstanceInfo;
 
       return (
         <Segment.Group className='Dashboard'>
           <Helmet>
-            <title>{ `Dashboard: ${routeInstanceName}` }</title>
+            <title>{ `Dashboard: ${this.props.routeInstanceName}` }</title>
           </Helmet>
 
           <Segment>
             <Header as='h2'>
               <Icon name='settings' />
-              <Header.Content><Tr { ...messages.configuration } /></Header.Content>
+              <Header.Content>{ i18nConfiguration }</Header.Content>
             </Header>
 
             <Card.Group itemsPerRow={ 3 } doubling={ true } stackable={ true }>
               <DefinitionsCard
-                header={ <Tr { ...messages.configuration } /> }
+                header={ i18nConfiguration }
                 definitions={ config.result }
               />
 
               <DefinitionsCard
-                header={ <Tr { ...messages.miscellaneous } /> }
+                header={ i18nMiscellaneous }
                 definitions={ {
                   dbsize: dbsize.result,
                   name: name.result || '-',
@@ -91,7 +95,7 @@ export class Dashboard extends React.Component {
           <Segment>
             <Header as='h2'>
               <Icon name='info' />
-              <Header.Content><Tr { ...messages.information } /></Header.Content>
+              <Header.Content>{ i18nInformation }</Header.Content>
             </Header>
 
             <Card.Group itemsPerRow={ 3 } doubling={ true } stackable={ true }>

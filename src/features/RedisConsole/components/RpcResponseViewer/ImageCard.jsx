@@ -7,6 +7,9 @@ ImageCard.propTypes = {
   dataUri: PropTypes.string.isRequired,
 };
 export function ImageCard(props) {
-  const { dataUri } = props;
-  return <Image className='ImageCard' src={ dataUri } size='medium' />;
+  return <Image 
+    className='ImageCard' 
+    src={ props.dataUri } 
+    size='medium' 
+  />;
 }

@@ -20,9 +20,6 @@ export class InfiniteKeyList extends React.Component {
   };
 
   render() {
-    const { count } = this.props;
-
-
     return (
       <InfiniteLoader
         ref={ self => {
@@ -31,7 +28,7 @@ export class InfiniteKeyList extends React.Component {
 
         isRowLoaded={ this.isRowLoaded }
         loadMoreRows={ this.loadMoreRows }
-        rowCount={ count }
+        rowCount={ this.props.count }
       >
         { ({ onRowsRendered, registerChild }) => (
 
@@ -51,7 +48,7 @@ export class InfiniteKeyList extends React.Component {
                 width={ width }
 
                 rowHeight={ 25 }
-                rowCount={ count }
+                rowCount={ this.props.count }
               />
 
             ) }
@@ -68,16 +65,17 @@ export class InfiniteKeyList extends React.Component {
     // this.InfiniteLoader.resetLoadMoreRowsCache(true);
   }
 
-  isRowLoaded = ({ index }) => {
-    const { perPage, searchPagesMap } = this.props;
+  isRowLoaded = ({ index }) => new PageHelper(
+    this.props.searchPagesMap, 
+    this.props.perPage
+  ).isRowLoaded(index);
 
-    return new PageHelper(searchPagesMap, perPage).isRowLoaded(index);
-  };
-
-  loadMoreRows = ({ startIndex, stopIndex }) => {
-    const { fetchKeyRangeWithTypes, perPage } = this.props;
-    return fetchKeyRangeWithTypes({ startIndex, stopIndex, perPage });
-  };
+  loadMoreRows = ({ startIndex, stopIndex }) =>
+    this.props.fetchKeyRangeWithTypes({ 
+      startIndex, 
+      stopIndex, 
+      perPage: this.props.perPage,
+    });
 
   // eslint-disable-next-line no-unused-vars
   renderNotLoadedRow = ({ index, key, style }) => {
@@ -88,10 +86,8 @@ export class InfiniteKeyList extends React.Component {
     if (!this.isRowLoaded({ index }))
       return this.renderNotLoadedRow({ index, key, style });
 
-    const { perPage, searchPagesMap, keyTypes, selectedKey, onKeyClick } = this.props;
-
-    const item = new PageHelper(searchPagesMap, perPage).getSubItem(index);
-    const keyType = keyTypes[ item ];
+    const item = new PageHelper(this.props.searchPagesMap, this.props.perPage).getSubItem(index);
+    const keyType = this.props.keyTypes[ item ];
 
     if (keyType === undefined) {
       // eslint-disable-next-line
@@ -99,12 +95,12 @@ export class InfiniteKeyList extends React.Component {
     }
 
     return <KeyRow
-      onClick={ () => onKeyClick(item) }
+      onClick={ () => this.props.onKeyClick(item) }
       item={ item }
       keyType={ keyType }
       style={ style }
       key={ key }
-      isActive={ selectedKey === item }
+      isActive={ this.props.selectedKey === item }
     />;
   };
 }

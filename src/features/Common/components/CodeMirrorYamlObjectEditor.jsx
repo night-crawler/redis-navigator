@@ -30,12 +30,9 @@ export class CodeMirrorYamlObjectEditor extends React.Component {
 
     constructor(props) {
       super(props);
-
-      const { params, flowLevel } = this.props;
-
       this.state = {
-        params,
-        textParams: yaml.dump(params, { flowLevel }),
+        params: this.props.params,
+        textParams: yaml.dump(this.props.params, { flowLevel: this.props.flowLevel }),
         error: false,
         height: 300,
         errorHeight: 0,
@@ -43,10 +40,9 @@ export class CodeMirrorYamlObjectEditor extends React.Component {
     }
 
     render() {
-      const { textParams, height: measuredHeight, error } = this.state;
-      const { constantHeight, showInlineError } = this.props;
-
-      const height = constantHeight === undefined ? measuredHeight : constantHeight;
+      const height = this.props.constantHeight === undefined 
+        ? this.state.height
+        : this.props.constantHeight;
 
       return (
 
@@ -66,13 +62,13 @@ export class CodeMirrorYamlObjectEditor extends React.Component {
                 } }
                 autoScroll={ false }
                 autoFocus={ true }
-                value={ textParams }
-                onChange={ (editor, data, value) => {
-                  this.handleOnChange(value);
-                } }
+                value={ this.state.textParams }
+                onChange={ (editor, data, value) => this.handleOnChange(value) }
               />
 
-              { showInlineError && !!error && <pre>{ error }</pre> }
+              { this.props.showInlineError && 
+                !this.state.error && 
+                <pre>{ this.state.error }</pre> }
             </div>
           }
         </Measure>
@@ -82,7 +78,6 @@ export class CodeMirrorYamlObjectEditor extends React.Component {
     shouldComponentUpdate = (nextProps, nextState) => {
       if (nextState.error !== this.state.error)
         return true;
-  
       return false;
     }
 
@@ -94,19 +89,18 @@ export class CodeMirrorYamlObjectEditor extends React.Component {
     };
 
     handleOnChange = (value) => {
-      const { onChange, onError } = this.props;
       try {
         const newParams = yaml.load(value);
         // eslint-disable-next-line
         this.setState(
           { error: null, params: newParams },
-          () => onChange(newParams)
+          () => this.props.onChange(newParams)
         );
       } catch (e) {
         // eslint-disable-next-line
         this.setState(
           { error: e.message },
-          () => onError(e.message)
+          () => this.props.onError(e.message)
         );
       }
     };

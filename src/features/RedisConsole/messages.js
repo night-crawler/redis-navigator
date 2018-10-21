@@ -9,4 +9,5 @@ export default defineMessages({
   findCommand: 'Find Command',
   nothingToExecute: 'Nothing to execute here',
   changeSomething: 'Change something and try again',
+  commandHasNotBeenExecutedYet: 'Command has not been executed yet',
 });

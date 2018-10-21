@@ -50,12 +50,11 @@ RedisCommandsStatsCard.propTypes = {
   stats: PropTypes.object,
 };
 export function RedisCommandsStatsCard(props) {
-  const { stats } = props;
   return <DefinitionsCard
     className='RedisCommandsStatsCard'
     header={ <Tr { ...messages.commandStats } /> }
     headerComponent={ StatsHeader }
     rowComponent={ StatsRow }
-    definitions={ stats }
+    definitions={ props.stats }
   />;
 }

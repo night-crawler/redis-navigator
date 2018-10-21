@@ -9,8 +9,6 @@ export class NotificationSystemComponent extends React.Component {
     };
 
     render() {
-      const { notifications } = this.props;
-
       //Optional styling
       const style = {
         NotificationItem: { // Override the notification item
@@ -26,7 +24,7 @@ export class NotificationSystemComponent extends React.Component {
 
       return (
         <Notifications
-          notifications={ notifications }
+          notifications={ this.props.notifications }
           style={ style }
         />
       );

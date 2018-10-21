@@ -117,20 +117,18 @@ class KeyViewer extends React.Component {
   }
 
   renderKeyEditor() {
-    const { selectedKey, selectedKeyType, selectedKeyData, selectedKeyInfo } = this.props;
     return <KeyEditor
-      type={ selectedKeyType }
-      info={ selectedKeyInfo }
-      data={ selectedKeyData }
-      selectedKey={ selectedKey }
+      type={ this.props.selectedKeyType }
+      info={ this.props.selectedKeyInfo }
+      data={ this.props.selectedKeyData }
+      selectedKey={ this.props.selectedKey }
       onFetchKeyDataClick={ this.handleFetchKeyDataClicked }
       onSaveKeyDataClick={ this.handleSaveKeyDataClick }
     />;
   }
 
   componentDidMount() {
-    const { locationSearchParams, actions } = this.props;
-    actions.searchKeys(locationSearchParams);
+    this.props.actions.searchKeys(this.props.locationSearchParams);
   }
 
   static getDerivedStateFromProps(nextProps) {
@@ -160,9 +158,8 @@ class KeyViewer extends React.Component {
   }
 
   handleFetchKeyDataClicked = (key, type) => {
-    const { actions } = this.props;
-    actions.fetchKeyInfo(key);
-    actions.fetchKeyData(key, type);
+    this.props.actions.fetchKeyInfo(key);
+    this.props.actions.fetchKeyData(key, type);
   };
 
   handleClearFilterKeysClicked = () => this.props.actions.searchKeys({
@@ -171,34 +168,31 @@ class KeyViewer extends React.Component {
   });
 
   handleKeyClicked = key => {
-    const { actions } = this.props;
-    actions.setSelectedKey(key);
-    actions.fetchKeyInfo(key);
+    this.props.actions.setSelectedKey(key);
+    this.props.actions.fetchKeyInfo(key);
   };
 
-  handleToggleSortKeysClicked = () => {
-    const { locationSearchParams, actions } = this.props;
-    actions.searchKeys({
-      ...locationSearchParams,
-      sortKeys: !locationSearchParams.sortKeys
+  handleToggleSortKeysClicked = () =>
+    this.props.actions.searchKeys({
+      ...this.props.locationSearchParams,
+      sortKeys: !this.props.locationSearchParams.sortKeys
     });
-  };
 
   handleFilterKeysChange = (e, { value }) => {
-    const { locationSearchParams, actions } = this.props;
-    const newParams = { ...locationSearchParams, pattern: value };
+    const newParams = { 
+      ...this.props.locationSearchParams, 
+      pattern: value 
+    };
 
     Timeouts.add({
       name: 'KeyViewer.search',
-      callback: () => actions.searchKeys(newParams),
+      callback: () => this.props.actions.searchKeys(newParams),
       timeout: KEY_VIEWER_SEARCH_TIMEOUT
     });
   };
 
-  handleSaveKeyDataClick = (key, type, prevData, nextData, pexpire) => {
-    const { actions } = this.props;
-    actions.updateKeyDataAndReload(key, type, prevData, nextData, pexpire);
-  }
+  handleSaveKeyDataClick = (key, type, prevData, nextData, pexpire) =>
+    this.props.actions.updateKeyDataAndReload(key, type, prevData, nextData, pexpire);
 }
 
 

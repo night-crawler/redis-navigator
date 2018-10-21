@@ -10,12 +10,11 @@ KeyTypeIcon.propTypes = {
 };
 
 export function KeyTypeIcon(props) {
-  const { keyType } = props;
-  const iconOpts = REDIS_KEY_TYPE_ICON_MAP[keyType || 'loading'];
+  const iconOpts = REDIS_KEY_TYPE_ICON_MAP[ props.keyType || 'loading' ];
 
   return <Popup
     position='right center'
     trigger={ <Icon { ...iconOpts } /> }
-    content={ keyType }
+    content={ props.keyType }
   />;
 }

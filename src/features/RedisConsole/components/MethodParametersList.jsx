@@ -13,15 +13,14 @@ const parameterType = {
 MethodParameter.propTypes = parameterType;
 
 export function MethodParameter(props) {
-  const { name, kind, default: default_, type } = props;
-  const color = kind === 'KEYWORD_ONLY' ? 'red' : '';
-  const varPositional = kind === 'VAR_POSITIONAL' ? '*' : '';
-  const varKeyword = kind === 'VAR_KEYWORD' ? '**' : '';
-  const hasDefault = default_ || (typeof default_ === 'number');
+  const color = props.kind === 'KEYWORD_ONLY' ? 'red' : '';
+  const varPositional = props.kind === 'VAR_POSITIONAL' ? '*' : '';
+  const varKeyword = props.kind === 'VAR_KEYWORD' ? '**' : '';
+  const hasDefault = props.default || (typeof props.default === 'number');
   return (
-    <span className={ `ui basic ${color} label MethodParameter` } title={ kind }>
-      { varPositional || varKeyword }{ name }{ type && `:${type}` }
-      { hasDefault && `=${default_}` }
+    <span className={ `ui basic ${color} label MethodParameter` } title={ props.kind }>
+      { varPositional || varKeyword }{ props.name }{ props.type && `:${props.type}` }
+      { hasDefault && `=${props.default}` }
     </span>
   );
 }
@@ -31,8 +30,7 @@ MethodParametersList.propTypes = {
   parameters: PropTypes.arrayOf(PropTypes.shape(parameterType)),
 };
 export function MethodParametersList(props) {
-  const { parameters } = props;
-  return parameters.map(
+  return props.parameters.map(
     (params, i) => <MethodParameter key={ i } { ...params } />
   );
 }

@@ -7,11 +7,10 @@ BooleanCard.propTypes = {
   result: PropTypes.bool.isRequired,
 };
 export function BooleanCard(props) {
-  const { result } = props;
   return <Card
     className='BooleanCard'
     fluid={ true }
     header='Boolean'
-    description={ `${result}` }
+    description={ `${props.result}` }
   />;
 }

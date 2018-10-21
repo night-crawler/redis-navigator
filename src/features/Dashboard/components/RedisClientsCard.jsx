@@ -149,8 +149,6 @@ export class RedisClientsCard extends React.Component {
   };
 
   render() {
-    const { clients } = this.props;
-
     return (
       <Card fluid={ true } className='RedisClientsCard'>
         <Card.Content>
@@ -159,7 +157,7 @@ export class RedisClientsCard extends React.Component {
           <Table celled={ true } compact='very' unstackable={ true } size='small' textAlign='center'>
             <ClientHeader />
             <Table.Body>
-              { clients.map((clientArray, i) =>
+              { this.props.clients.map((clientArray, i) =>
                 <ClientRow key={ i } clientArray={ clientArray } />
               ) }
             </Table.Body>

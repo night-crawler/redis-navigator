@@ -9,9 +9,10 @@ import messages from '../messages';
 NotFound.propTypes = {
   message: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
 };
-export function NotFound(props) {
-  const { message = <Tr { ...messages.notFound } /> } = props;
 
+const i18nNotFound = <Tr { ...messages.notFound } />;
+
+export function NotFound(props) {
   return (
     <Segment className='NotFound'>
       <Header as='h1' textAlign='center'>
@@ -31,7 +32,7 @@ export function NotFound(props) {
           </Icon.Group>
         </Icon.Group>
         <Header.Content>
-                    404. { message }
+          404. { props.message || i18nNotFound }
         </Header.Content>
       </Header>
     </Segment>

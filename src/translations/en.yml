@@ -39,7 +39,6 @@ features.KeyViewer.messages.save: Save
 features.KeyViewer.messages.saveError: There were some errors
 features.KeyViewer.messages.saveSuccess: Everything have been saved successfully
 features.KeyViewer.messages.selectAKey: Select a key
-features.KeyViewer.messages.someKeysFound: '{keyCount} keys found'
 features.KeyViewer.messages.syntaxError: Syntax error
 features.KeyViewer.messages.ttl: TTL
 features.KeyViewer.messages.zeroKeysFound: '${keyCount} keys found'
@@ -49,6 +48,7 @@ features.Navbar.messages.refresh: Refresh
 features.RedisConsole.messages.append: Append
 features.RedisConsole.messages.changeSomething: Change something and try again
 features.RedisConsole.messages.clear: Clear
+features.RedisConsole.messages.commandHasNotBeenExecutedYet: Command has not been executed yet
 features.RedisConsole.messages.execute: Execute
 features.RedisConsole.messages.export: Export
 features.RedisConsole.messages.findCommand: Find Command

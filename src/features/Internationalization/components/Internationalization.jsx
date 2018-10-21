@@ -13,14 +13,11 @@ export class Internationalization extends React.PureComponent {
     };
 
     render() {
-      const { activeLocale, activeLocaleData, children } = this.props;
-      const { messages } = activeLocaleData;
-
       return (
         <IntlProvider
-          locale={ activeLocale } key={ activeLocale }
-          messages={ messages }>
-          { React.Children.only(children) }
+          locale={ this.props.activeLocale } key={ this.props.activeLocale }
+          messages={ this.props.activeLocaleData?.messages }>
+          { React.Children.only(this.props.children) }
         </IntlProvider>
       );
     }

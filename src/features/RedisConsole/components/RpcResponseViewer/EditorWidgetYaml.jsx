@@ -9,11 +9,9 @@ EditorWidgetYaml.propTypes = {
   result: PropTypes.string,
 };
 export function EditorWidgetYaml(props) {
-  const { result } = props;
-
   return (
     <CodeMirror
-      value={ result }
+      value={ props.result }
       options={ {
         theme: 'default',
         matchBrackets: true,
