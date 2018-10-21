@@ -81,6 +81,7 @@ export class ObjectCard extends React.Component {
 
     }
     
+    // eslint-disable-next-line
     handleSetWidget = widget => this.setState({ widget });
     handleSetObjectWidget = () => this.handleSetWidget('object');
     handleSetEditorWidget = () => this.handleSetWidget('editor');

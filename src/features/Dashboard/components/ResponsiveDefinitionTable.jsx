@@ -45,7 +45,9 @@ export class ResponsiveDefinitionTable extends React.Component {
   };
 
   state = {};
-  handleOnUpdate = (e, { width }) => this.setState({ width });
+  handleOnUpdate = (e, { width }) => 
+    // eslint-disable-next-line
+    this.setState({ width });
 
   render() {
     const { definitions, rowComponent: RowComponent, headerComponent: HeaderComponent } = this.props;

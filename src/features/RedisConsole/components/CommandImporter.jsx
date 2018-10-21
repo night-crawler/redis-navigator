@@ -97,6 +97,7 @@ export class CommandImporter extends React.Component {
       isValid = true;
     }
 
+    // eslint-disable-next-line
     this.setState({ mode, type, value, isValid });
   };
 

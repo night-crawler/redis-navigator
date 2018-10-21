@@ -23,5 +23,3 @@ export const redisNavigator = combineReducers({
   progress,
   keyViewer,
 });
-
-export default redisNavigator;

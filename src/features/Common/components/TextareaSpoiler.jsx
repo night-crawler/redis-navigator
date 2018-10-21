@@ -26,6 +26,7 @@ export class TextareaSpoiler extends React.Component {
       this.handleSetShown(show);
     }
 
+    // eslint-disable-next-line
     handleSetShown = isShown => this.setState({ isShown });
     handleShow = () => this.handleSetShown(true);
     handleHide = () => this.handleSetShown(false);

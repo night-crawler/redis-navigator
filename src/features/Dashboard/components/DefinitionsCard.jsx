@@ -29,13 +29,13 @@ class _DefinitionsCard extends React.Component {
       };
     }
 
-    handleFilterChange = (e, { value }) => {
+    handleFilterChange = (e, { value }) => 
+      // eslint-disable-next-line
       this.setState({ filter: value });
-    };
 
-    handleClearFilter = () => {
+    handleClearFilter = () =>
+      // eslint-disable-next-line
       this.setState({ filter: '' });
-    };
 
     filterDefinitions = () => {
       const { definitions } = this.props;
