@@ -66,7 +66,6 @@ class _MethodCallEditor extends React.Component {
   }
 
   render() {
-    this.log('render');
     const {
       methodName, methodParams, response, dirty,
       instanceName, color, inspections,

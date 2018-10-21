@@ -77,7 +77,6 @@ export class RedisConsole extends React.Component {
     }
 
     render() {
-      this.log('render');
       const { inspections, routeInstanceImportDialogIsVisible } = this.props;
 
       return (

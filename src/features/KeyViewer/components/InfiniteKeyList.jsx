@@ -93,10 +93,10 @@ export class InfiniteKeyList extends React.Component {
     const item = new PageHelper(searchPagesMap, perPage).getSubItem(index);
     const keyType = keyTypes[ item ];
 
-    if (keyType === undefined)
-      this.log(`Key type is undefined for ${item}`);
-
-    // this.log(`renderRow, INDEX: ${index}, item: ${item}, selectedKey: ${selectedKey} ${selectedKey === item}`);
+    if (keyType === undefined) {
+      // eslint-disable-next-line
+      console.debug(`Key type is undefined for ${item}`, item);
+    }
 
     return <KeyRow
       onClick={ () => onKeyClick(item) }
